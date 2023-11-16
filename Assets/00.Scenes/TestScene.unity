@@ -152,11 +152,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb8cb2b504a63466db6fe552af59d193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _selectBlock: {fileID: 0}
+  _targetBlock: {fileID: 0}
   _block_Pref: {fileID: 154688119217358079, guid: 8c4442625a96a4cc9973d327276c1d76,
     type: 3}
   _blockGroup: {fileID: 1903396063}
   _size: {x: 6, y: 6}
   _maxColorCount: 4
+  _posInterval: {x: 0, y: -0.15}
+  _blockMoveSpeed: 0.5
+  _camz: 10
+  _selectStartPos: {x: 0, y: 0, z: 0}
+  _moveDistance: 1
+  _dir: {x: 0, y: 0, z: 0}
+  _dis: 0
 --- !u!4 &220576640
 Transform:
   m_ObjectHideFlags: 0
@@ -863,7 +872,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 31
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

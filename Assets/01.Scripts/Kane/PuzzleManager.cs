@@ -32,8 +32,15 @@ public class PuzzleManager : MonoBehaviour
     [ShowInInspector] public Block[,] _grid;
 
     public float _blockMoveSpeed = 0.5f;
+    public float _camz = 10f;
 
+    public Vector3 _selectStartPos;
+    public float _moveDistance = 1f;
+    public Vector3 _dir;
+    public float _dis;
 
+    //[ShowInInspector]
+    //public List<Block[]> _matchList = new List<Block[]>();
 
 
     private void Awake()
@@ -84,58 +91,167 @@ public class PuzzleManager : MonoBehaviour
                 if (hit.collider.tag == "Block")
                 {
                     _selectBlock = hit.transform.GetComponent<Block>();
-
+                    _selectBlock.gameObject.layer = LayerMask.NameToLayer("SelectBlock");
                     //CheckBlock(_selectBlock);
-
+                    _selectStartPos = _selectBlock.transform.position;
                 }
             }
         }
         else if (Input.GetMouseButton(0))
         {
             //
+            if (_selectBlock != null)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Vector3 temp = hit.point;
+                    temp.y = 0;
+                    //if (Vector3.Distance(_selectStartPos, _selectBlock.transform.position) <= _moveDistance)
+                    //{
+                    _selectBlock.transform.position = temp;
+
+                    //}
+
+                    _dir = (temp - _selectStartPos).normalized;
+                    _dis = Vector3.Distance(_selectStartPos, _selectBlock.transform.position) <= _moveDistance ? Vector3.Distance(_selectStartPos, _selectBlock.transform.position) : _moveDistance;
+
+                    _selectBlock.transform.position = _selectStartPos + _dir * _dis;
+
+
+                }
+            }
 
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            Ray ray;
-            RaycastHit hit;
-
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 1000))
+            if (_selectBlock != null)
             {
-                Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+                Ray ray;
+                RaycastHit hit;
 
-                if (hit.collider.tag == "Block")
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                int _mask = 1 << LayerMask.NameToLayer("WaitBlock");
+                if (Physics.Raycast(ray, out hit, 1000, _mask))
                 {
-                    _targetBlock = hit.transform.GetComponent<Block>();
-                    MoveBlock();
+                    Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+
+                    if (hit.collider.tag == "Block")
+                    {
+                        _targetBlock = hit.transform.GetComponent<Block>();
+                        MoveBlock();
+                    }
                 }
+                else if (_selectBlock != null)
+                {
+                    _selectBlock.SetOrigin();
+
+
+                    _selectBlock.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
+
+
+
+                    _selectBlock = null;
+
+                }
+
+                Debug.Log("CheckBlock");
+                CheckBlock();
             }
-
-
-            // move block();
-            // Check block();
-
         }
     }
 
 
-
+    [Button]
     public void CheckBlock() // check 3 match
     {
+        bool ExistMatch = false;
+        StartCoroutine(Cor_CheckBlock());
+
+        IEnumerator Cor_CheckBlock()
+        {
+            yield return null;
+
+            for (int j = 0; j < _size.y; j++) // horizontal check
+            {
+                for (int i = 0; i < _size.x - 2; i++)
+                {
+                    if ((_grid[i, j]._blockType == _grid[i + 1, j]._blockType)
+                        && (_grid[i, j]._blockType == _grid[i + 2, j]._blockType)
+                        && (_grid[i, j]._level == _grid[i + 1, j]._level)
+                        && (_grid[i, j]._level == _grid[i + 2, j]._level)
+                        )
+                    {
+                        _grid[i, j].isMatch = true;
+                        _grid[i + 1, j].isMatch = true;
+                        _grid[i + 1, j].isPromotion = true;
+                        _grid[i + 2, j].isMatch = true;
+                        ExistMatch = true;
+                    }
+                }
+            }
+            Debug.Log("Horizontal check");
+            //yield return new WaitForSeconds(0.5f);
+
+            for (int i = 0; i < _size.x; i++) // vertical check
+            {
+                for (int j = 0; j < _size.y - 2; j++)
+                {
+                    if ((_grid[i, j]._blockType == _grid[i, j + 1]._blockType)
+                        && (_grid[i, j]._blockType == _grid[i, j + 2]._blockType)
+                        && (_grid[i, j]._level == _grid[i, j + 1]._level)
+                        && (_grid[i, j]._level == _grid[i, j + 2]._level)
+                        )
+                    {
+                        _grid[i, j].isMatch = true;
+                        _grid[i, j + 1].isMatch = true;
+                        _grid[i, j + 1].isPromotion = true;
+                        _grid[i, j + 2].isMatch = true;
+                        ExistMatch = true;
+                    }
+                }
+            }
+            Debug.Log("Vertical check");
+            yield return new WaitForSeconds(0.5f);
+
+            if (ExistMatch == true)
+            {
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j].OnMatchBlock(); // block merge
+
+                    }
+                }
+                Debug.Log("OnMatch");
+                //yield return new WaitForSeconds(0.5f);
 
 
+                SpawnBlock();
+            }
+
+        }
 
 
     }
 
+    //public void MergeBlocks() // 3 match and Pop
+    //{
+
+
+    //    SpawnBlock(); // 
+    //}
+
+
+
+
     public void MoveBlock() // check can move position
     {
-
-        //return ((Mathf.Abs(_selectBlock._pos.x - _targetBlock._pos.x) <= 1)
-        //    && (Mathf.Abs(_selectBlock._pos.y - _targetBlock._pos.y) <= 1)) ? true : false;
-
 
         int _count = 0;
 
@@ -150,18 +266,34 @@ public class PuzzleManager : MonoBehaviour
             _targetBlock.SetPos(_tempPos.x + 2, _tempPos.y + 2);
 
 
+            //check
+            //Block _tempBlock = new Block();
+            //_tempBlock = _grid[_selectBlock._pos.x + 2, _selectBlock._pos.y + 2];
+            //_grid[_selectBlock._pos.x + 2, _selectBlock._pos.y + 2] = _targetBlock;
+            //_grid[_targetBlock._pos.x + 2, _targetBlock._pos.y + 2] = _tempBlock;
+
+            _grid[_selectBlock._pos.x + 2, _selectBlock._pos.y + 2] = _selectBlock;
+            _grid[_targetBlock._pos.x + 2, _targetBlock._pos.y + 2] = _targetBlock;
+
+
+
+        }
+        else
+        {
+            // reverse Block
+            _selectBlock.SetOrigin();
         }
 
+        _selectBlock.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
+        _targetBlock.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
+
+
+        _selectBlock = null;
+        _targetBlock = null;
 
     }
 
 
-    public void MergeBlocks() // 3 match
-    {
-
-
-        SpawnBlock();
-    }
 
     public void SpawnArmy(int _count, int _blocktype)
     {
@@ -210,16 +342,22 @@ public class PuzzleManager : MonoBehaviour
                         Block _block = Managers.Pool.Pop(_block_Pref, transform).GetComponent<Block>();
                         // Instantiate(_block_Pref, transform).GetComponent<Block>();
                         _block.transform.SetParent(_blockGroup);
+                        //_block.transform.name = $"({i},{j})";
                         //_block ._typeNum = Random.Range(0, _maxColorCount);
                         _block._blockType = (Block.BlockType)Random.Range(0, 4);
+                        _block.SetType();
                         //  Random.Range(0, System.Enum.GetValues(typeof(Block.BlockType)).Length);
-                        _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y);
+                        _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);
                         _block.SetPos(i, j);
                         _block.isConnect = false;
                         _grid[i, j] = _block;
+                        _block.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
                     }
                 }
             }
+
+            yield return new WaitForSeconds(_blockMoveSpeed + 0.2f);
+            CheckBlock();
 
         }
 
@@ -227,23 +365,43 @@ public class PuzzleManager : MonoBehaviour
 
     public void SortGrid()
     {
-        for (int k = 0; k < _size.y - 1; k++)
+        for (int k = _size.y - 1; k >= 0; k--)
         {
-            for (int j = 0; j < _size.y - 1; j++)
+            for (int j = _size.y - 1; j > 0; j--)
             {
                 for (int i = 0; i < _size.x; i++)
                 {
                     if (_grid[i, j] == null)
                     {
-                        _grid[i, j] = _grid[i, j + 1];
-                        if (_grid[i, j] != null)
+                        _grid[i, j] = _grid[i, j - 1];
+                        if (_grid[i, j] != null) // 여러개가 없어졋을 경우 한칸만 내려가는 ?
                             _grid[i, j].SetPos(i, j);
-                        _grid[i, j + 1] = null;
+                        _grid[i, j - 1] = null;
 
                     }
                 }
             }
         }
+
+
+        //for (int k = 0; k < _size.y - 1; k++)
+        //{
+        //    for (int j = 0; j < _size.y - 1; j++)
+        //    {
+        //        for (int i = 0; i < _size.x; i++)
+        //        {
+        //            if (_grid[i, j] == null)
+        //            {
+        //                _grid[i, j] = _grid[i, j + 1];
+        //                if (_grid[i, j] != null)
+        //                    _grid[i, j].SetPos(i, j);
+        //                _grid[i, j + 1] = null;
+
+        //            }
+        //        }
+        //    }
+        //}
+
     }
 
 

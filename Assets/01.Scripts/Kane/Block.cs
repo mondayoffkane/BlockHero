@@ -27,8 +27,12 @@ public class Block : MonoBehaviour
     public bool isMatch = false;
     public bool isPromotion = false;
 
+
+    PuzzleManager _puzzleManager;
     public void SetType(bool isMorote = false)
     {
+        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+
         if (isMorote)
         {
             _level++;
@@ -60,14 +64,14 @@ public class Block : MonoBehaviour
 
 
         DOTween.Sequence() //.AppendInterval(1f)
-        .Append(transform.DOLocalMove(new Vector3(_pos.x + PuzzleManager._instance._posInterval.x, 0, _pos.y + PuzzleManager._instance._posInterval.y), PuzzleManager._instance._blockMoveSpeed).SetEase(_ease));
+        .Append(transform.DOLocalMove(new Vector3(_pos.x + _puzzleManager._posInterval.x, 0, _pos.y + _puzzleManager._posInterval.y), _puzzleManager._blockMoveSpeed).SetEase(_ease));
 
     }
 
     public void SetOrigin()
     {
         DOTween.Sequence() //.AppendInterval(1f)
-      .Append(transform.DOLocalMove(new Vector3(_pos.x + PuzzleManager._instance._posInterval.x, 0, _pos.y + PuzzleManager._instance._posInterval.y), PuzzleManager._instance._blockMoveSpeed).SetEase(_ease));
+      .Append(transform.DOLocalMove(new Vector3(_pos.x + _puzzleManager._posInterval.x, 0, _pos.y + _puzzleManager._posInterval.y), _puzzleManager._blockMoveSpeed).SetEase(_ease));
     }
 
 
@@ -94,6 +98,8 @@ public class Block : MonoBehaviour
             Managers.Pool.Push(transform.GetComponent<Poolable>());
 
         }
+
+        // add match particle or block.cs in PuzzleManager match()
 
     }
 

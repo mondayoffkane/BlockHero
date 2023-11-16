@@ -271,16 +271,16 @@ namespace CodeStage.AntiCheat.EditorCode
 			};
 			toolbarLabel.padding.top--;
 
-			toolbarSearchTextField = GetBuiltinStyle("ToolbarSeachTextField") ?? 
+			toolbarSearchTextField = GetBuiltinStyle("ToolbarSearchTextField") ?? 
 									 GetBuiltinStyle("ToolbarSearchTextField");
 
-			toolbarSearchTextFieldPopup = GetBuiltinStyle("ToolbarSeachTextFieldPopup") ?? 
+			toolbarSearchTextFieldPopup = GetBuiltinStyle("ToolbarSearchTextFieldPopup") ?? 
 										  GetBuiltinStyle("ToolbarSearchTextFieldPopup");
 
-			toolbarSearchCancelButton = GetBuiltinStyle("ToolbarSeachCancelButton") ?? 
+			toolbarSearchCancelButton = GetBuiltinStyle("ToolbarSearchCancelButton") ?? 
 										GetBuiltinStyle("ToolbarSearchCancelButton");
 
-			toolbarSearchCancelButtonEmpty = GetBuiltinStyle("ToolbarSeachCancelButtonEmpty") ?? 
+			toolbarSearchCancelButtonEmpty = GetBuiltinStyle("ToolbarSearchCancelButtonEmpty") ?? 
 											 GetBuiltinStyle("ToolbarSearchCancelButtonEmpty");
 
 			inited = true;

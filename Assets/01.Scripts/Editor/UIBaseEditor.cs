@@ -291,8 +291,8 @@ public class UIBaseEditor : Editor
 
         // GUILayout.BeginHorizontal(GUI.skin.FindStyle("Toolbar"), GUILayout.Height(50));
         GUILayout.BeginHorizontal();
-        searchText = GUILayout.TextField(searchText, GUI.skin.FindStyle("ToolbarSeachTextField"));
-        if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSeachCancelButton")))
+        searchText = GUILayout.TextField(searchText, GUI.skin.FindStyle("ToolbarSearchTextField"));
+        if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSearchCancelButton")))
         {
             searchText = "";
             GUI.FocusControl(null);

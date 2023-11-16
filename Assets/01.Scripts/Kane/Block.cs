@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 
 
 public class Block : MonoBehaviour
@@ -54,7 +54,7 @@ public class Block : MonoBehaviour
     public void SetPos(int _x, int _y)
     {
         transform.name = $"({_x},{_y})"; // delete
-        transform.Find("Canvas").Find("Text").GetComponent<Text>().text = $"{_x},{_y}";
+        //transform.Find("Canvas").Find("Text").GetComponent<Text>().text = $"{_x},{_y}";
 
         _pos = new Vector2Int(_x - 2, _y - 2);
 

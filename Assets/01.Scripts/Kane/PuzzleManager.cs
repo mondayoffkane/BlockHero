@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.UI;
+using DG.Tweening;
 
 
 public class PuzzleManager : MonoBehaviour
@@ -23,9 +25,6 @@ public class PuzzleManager : MonoBehaviour
         Fail,
         Lobby
 
-
-
-
     }
     public PuzzleState _puzzleState;
 
@@ -36,6 +35,8 @@ public class PuzzleManager : MonoBehaviour
 
     // =====================
     Camera _mainCam;
+    public GameObject _puzzle_Cam;
+    public GameObject _fight_Cam;
 
     // =================
 
@@ -52,16 +53,34 @@ public class PuzzleManager : MonoBehaviour
     public float _blockMoveSpeed = 0.5f;
     public float _camz = 10f;
 
+    // Same Block Check ===============
+    public int _jumpCount = 2;
+    public float _jumpPower = 5f;
+    public float _jumpTime = 0.5f;
+
+
+    // ====== floating
+
+    public float _floatingY = 2f;
+    public float _floatingTime = 1f;
+    public Vector3 _floatingPos = new Vector3(0f, 0.5f, 5.5f);
 
     // ====== Private
+    [SerializeField] Vector3 _startMousePos;
+    [SerializeField] Vector3 _endMousePos;
+    [SerializeField] float _testDis;
+    public float _mouseDis = 100;
+
+
+    public bool isMove = false;
     Vector3 _selectStartPos;
     float _moveDistance = 1f;
     Vector3 _dir;
     float _dis;
     [SerializeField] int _comboCount = 0;
-    //[ShowInInspector]
-    //public List<Block[]> _matchList = new List<Block[]>();
 
+
+    GameObject _floating_Pref;
 
     private void Awake()
     {
@@ -75,6 +94,8 @@ public class PuzzleManager : MonoBehaviour
     {
         _mainCam = Camera.main;
 
+        _puzzle_Cam.SetActive(true);
+        _fight_Cam.SetActive(false);
 
         _grid = new Block[_size.x, _size.y];
         SpawnBlock();
@@ -85,16 +106,22 @@ public class PuzzleManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKey(KeyCode.Alpha1))
         {
             _changeCount++;
-            Managers._gameUI.ChangeCountText.text = $"{_changeCount}";
+            Managers._gameUI.MoveCountText.text = $"{_changeCount}";
+            _puzzleState = PuzzleState.WaitInput;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
 
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(
+                UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        }
 
 
 
@@ -115,9 +142,18 @@ public class PuzzleManager : MonoBehaviour
                     if (hit.collider.tag == "Block")
                     {
                         _selectBlock = hit.transform.GetComponent<Block>();
+
+                        DOTween.Kill(_selectBlock.gameObject);
+                        Vector3 _tempPos = _selectBlock.transform.position;
+                        _tempPos.y = 0;
+                        _selectBlock.transform.position = _tempPos;
+
+
                         _selectBlock.gameObject.layer = LayerMask.NameToLayer("SelectBlock");
                         //CheckBlock(_selectBlock);
                         _selectStartPos = _selectBlock.transform.position;
+                        _startMousePos = Input.mousePosition;
+                        _endMousePos = _startMousePos;
                     }
                 }
             }
@@ -130,21 +166,32 @@ public class PuzzleManager : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
-
+                _endMousePos = Input.mousePosition;
+                _testDis = Vector3.Distance(_startMousePos, _endMousePos);
+                if (Vector3.Distance(_startMousePos, _endMousePos) > _mouseDis)
+                {
+                    isMove = true;
+                }
                 if (Physics.Raycast(ray, out hit))
                 {
                     Vector3 temp = hit.point;
                     temp.y = 0;
-                    //if (Vector3.Distance(_selectStartPos, _selectBlock.transform.position) <= _moveDistance)
+
+                    //if (Vector3.Distance(_selectStartPos, temp) > 0.2f)
                     //{
-                    _selectBlock.transform.position = temp;
-
+                    //    isMove = true;
                     //}
+                    if (isMove)
+                    {
 
-                    _dir = (temp - _selectStartPos).normalized;
-                    _dis = Vector3.Distance(_selectStartPos, _selectBlock.transform.position) <= _moveDistance ? Vector3.Distance(_selectStartPos, _selectBlock.transform.position) : _moveDistance;
+                        _selectBlock.transform.position = temp;
 
-                    _selectBlock.transform.position = _selectStartPos + _dir * _dis;
+                        _dir = (temp - _selectStartPos).normalized;
+                        _dis = Vector3.Distance(_selectStartPos, _selectBlock.transform.position) <= _moveDistance ? Vector3.Distance(_selectStartPos, _selectBlock.transform.position) : _moveDistance;
+
+                        _selectBlock.transform.position = _selectStartPos + _dir * _dis;
+
+                    }
 
 
                 }
@@ -153,8 +200,17 @@ public class PuzzleManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            _startMousePos = Vector3.zero;
+            _endMousePos = _startMousePos;
             if (_selectBlock != null)
             {
+                if (isMove == false)
+                {
+                    CheckSameType();
+                }
+
+
+
                 Ray ray;
                 RaycastHit hit;
 
@@ -168,12 +224,17 @@ public class PuzzleManager : MonoBehaviour
                     if (hit.collider.tag == "Block")
                     {
                         _targetBlock = hit.transform.GetComponent<Block>();
+                        DOTween.Kill(_targetBlock.gameObject);
+                        Vector3 _tempPos = _targetBlock.transform.position;
+                        _tempPos.y = 0;
+                        _targetBlock.transform.position = _tempPos;
                         MoveBlock();
                     }
                 }
                 else if (_selectBlock != null)
                 {
-                    _selectBlock.SetOrigin();
+                    if (isMove)
+                        _selectBlock.SetOrigin();
 
 
                     _selectBlock.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
@@ -181,10 +242,10 @@ public class PuzzleManager : MonoBehaviour
 
 
                     _selectBlock = null;
-
                 }
+                isMove = false;
 
-                Debug.Log("CheckBlock");
+                //Debug.Log("CheckBlock");
                 CheckBlock();
             }
         }
@@ -220,7 +281,7 @@ public class PuzzleManager : MonoBehaviour
                     }
                 }
             }
-            Debug.Log("Horizontal check");
+            //Debug.Log("Horizontal check");
             //yield return new WaitForSeconds(0.5f);
 
             for (int i = 0; i < _size.x; i++) // vertical check
@@ -241,7 +302,7 @@ public class PuzzleManager : MonoBehaviour
                     }
                 }
             }
-            Debug.Log("Vertical check");
+            //Debug.Log("Vertical check");
             yield return new WaitForSeconds(_blockMoveSpeed);
 
             if (ExistMatch == true)
@@ -249,8 +310,9 @@ public class PuzzleManager : MonoBehaviour
                 _comboCount++;
                 if (_comboCount > 1)
                 {
+                    Floating($"Combo X{_comboCount}", _floatingPos);
                     _changeCount++;
-                    Managers._gameUI.ChangeCountText.text = $"{_changeCount}";
+                    Managers._gameUI.MoveCountText.text = $"{_changeCount}";
                 }
                 _puzzleState = PuzzleState.Match;
 
@@ -262,8 +324,8 @@ public class PuzzleManager : MonoBehaviour
                         // add match particle or block.cs in OnMatchBlock()
                     }
                 }
-                Debug.Log("OnMatch");
-                yield return new WaitForSeconds(0.5f);
+                //Debug.Log("OnMatch");
+                yield return new WaitForSeconds(0.5f + 0.25f);
                 _puzzleState = PuzzleState.WaitInput;
 
 
@@ -279,6 +341,9 @@ public class PuzzleManager : MonoBehaviour
                 {
                     _puzzleState = PuzzleState.ArmySpawn;
                     // add Spawn Army Func();
+                    //FIghtMode();
+
+                    this.TaskDelay(1.5f, FIghtMode);
 
                 }
                 else
@@ -300,7 +365,7 @@ public class PuzzleManager : MonoBehaviour
     public void MoveBlock() // check can move position
     {
         _changeCount--;
-        Managers._gameUI.ChangeCountText.text = $"{_changeCount}";
+        Managers._gameUI.MoveCountText.text = $"{_changeCount}";
         int _count = 0;
 
         _count = Mathf.Abs(_selectBlock._pos.x - _targetBlock._pos.x);
@@ -337,23 +402,6 @@ public class PuzzleManager : MonoBehaviour
 
 
 
-    public void SpawnArmy(int _count, int _blocktype)
-    {
-
-
-
-
-
-    }
-
-    public void SpawnEnemy(int _count, int _blocktype)
-    {
-
-
-
-
-    }
-
 
     [Button]
     public void SpawnBlock()
@@ -386,6 +434,7 @@ public class PuzzleManager : MonoBehaviour
                         Block _block = Managers.Pool.Pop(_block_Pref, transform).GetComponent<Block>();
                         _block.transform.SetParent(_blockGroup);
                         _block._blockType = (Block.BlockType)Random.Range(0, 4);
+                        _block.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
                         _block.SetType();
                         _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);
                         _block.SetPos(i, j);
@@ -538,7 +587,70 @@ public class PuzzleManager : MonoBehaviour
     }
 
 
+    public void Floating(string _str, Vector3 _pos)
+    {
+        if (_floating_Pref == null) _floating_Pref = Resources.Load<GameObject>("FloatingText");
 
+
+        GameObject _floating = Managers.Pool.Pop(_floating_Pref, transform).gameObject;
+        _floating.transform.GetChild(0).GetComponent<Text>().text = _str;
+        _floating.transform.position = _pos;
+        _floating.transform.DOMoveY(transform.position.y + _floatingY, _floatingTime).SetEase(Ease.Linear)
+            .OnComplete(() => Managers.Pool.Push(_floating.transform.GetComponent<Poolable>()));
+
+
+    }
+
+    public void CheckSameType()
+    {
+        for (int i = 0; i < _size.x; i++)
+        {
+            for (int j = 0; j < _size.y; j++)
+            {
+                if (_grid[i, j]._blockType == _selectBlock._blockType
+                    && _grid[i, j]._level == _selectBlock._level)
+                {
+                    Vector3 _tempPos = _grid[i, j].transform.position;
+                    _tempPos.y = 0f;
+                    _grid[i, j].transform.DOJump(_tempPos, _jumpPower, _jumpCount, _jumpTime).SetEase(Ease.Linear);
+                }
+
+
+            }
+        }
+
+    }
+
+
+    public void PuzzleMode()
+    {
+        _puzzle_Cam.SetActive(true);
+        _fight_Cam.SetActive(false);
+    }
+
+    public void FIghtMode()
+    {
+        //_puzzle_Cam.SetActive(false);
+        //_fight_Cam.SetActive(true);
+
+        for (int i = 0; i < _size.x; i++)
+        {
+            for (int j = 0; j < _size.y; j++)
+            {
+                _grid[i, j].SetFightMode();
+            }
+        }
+
+        _puzzleState = PuzzleState.Fight;
+
+        // add Enemy Spawn ();
+
+    }
+
+    public void CheckWar() // 
+    {
+
+    }
 
 
 

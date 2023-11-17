@@ -10,7 +10,7 @@ public class UI_GameScene : UI_Scene
 {
     enum Texts
     {
-        ChangeCountText,
+        MoveCountText,
     }
     enum Images
     {
@@ -24,7 +24,7 @@ public class UI_GameScene : UI_Scene
     }
 
 
-    public TextMeshProUGUI ChangeCountText;
+    public Text MoveCountText;
 
 
 
@@ -32,24 +32,26 @@ public class UI_GameScene : UI_Scene
 
     private void Awake()
     {
+        Bind<UnityEngine.UI.Text>(typeof(Texts));
+        Bind<UnityEngine.UI.Image>(typeof(Images));
+        Bind<GameObject>(typeof(GameObjects));
         Managers._gameUI = this;
 
-        Bind<UnityEngine.UI.Image>(typeof(Images));
-        Bind<TextMeshProUGUI>(typeof(Texts));
-        Bind<GameObject>(typeof(GameObjects));
+        MoveCountText = GetText(Texts.MoveCountText);
 
 
         // =====  Bind  ===================================
-        //ChangeCountText = GetText(Texts.ChangeCountText);
 
-        ChangeCountText = GetTextMesh(Texts.ChangeCountText);
+
+
+        //ChangeCountText = GetText(Texts.ChangeCountText);
 
 
         // ========================
 
         base.Init();
 
-        ChangeCountText.text = "Count : 11";
+
 
 
     }

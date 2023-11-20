@@ -4,15 +4,45 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public float _maxHP = 100f;
+    public float _currentHP;
+
+    public float _speed;
+    public float _damage;
+
+
+
+    private void Start()
     {
-        
+        Init();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Init()
     {
-        
+        _currentHP = _maxHP;
     }
+
+
+    public void OnDamage(float _tempDamage)
+    {
+        if (_currentHP > 0)
+        {
+            _currentHP -= _tempDamage;
+            if (_currentHP <= 0)
+            {
+                Managers._puzzleManager._enemyList.Remove(this);
+                Managers._puzzleManager.DeadEnemy();
+                Managers.Pool.Push(transform.GetComponent<Poolable>());
+            }
+            //Destroy(this.gameObject);
+        }
+
+    }
+
+
+
+
+
+
 }

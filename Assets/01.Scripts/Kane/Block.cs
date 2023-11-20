@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 //using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using Cysharp.Threading.Tasks.Linq;
 
 
 public class Block : MonoBehaviour
@@ -36,17 +37,25 @@ public class Block : MonoBehaviour
     [FoldoutGroup("Army")] public float _attackInterval;
     [FoldoutGroup("Army")] public float _speed;
     [FoldoutGroup("Army")] public Enemy _target;
+    [FoldoutGroup("Army")] public bool isPlay = true;
+    bool isFirst = true;
 
 
+    Rigidbody _rig;
+    BoxCollider[] _colls;
 
     // ==========================================================
 
     PuzzleManager _puzzleManager;
-    public void SetType(bool isMorote = false)
+    public void SetType(bool isNew = false)
     {
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+        if (_rig == null) _rig = GetComponent<Rigidbody>();
+        if (_colls == null) _colls = GetComponents<BoxCollider>();
 
-        if (isMorote)
+        _colls[1].enabled = false;
+
+        if (isNew == false)
         {
             _level++;
 
@@ -63,10 +72,16 @@ public class Block : MonoBehaviour
         //GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
 
         //transform.localScale = Vector3.zero;
-        DOTween.Sequence()
-            .Append(transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.Linear))
-            .AppendCallback(() => GetComponent<MeshFilter>().sharedMesh = _meshes[_level])
-             .Append(transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce));
+        if (isFirst == false)
+        {
+
+            DOTween.Sequence()
+                .Append(transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.Linear))
+                .AppendCallback(() => GetComponent<MeshFilter>().sharedMesh = _meshes[_level])
+                 .Append(transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce))
+                 ;
+        }
+        else isFirst = false;
 
 
     }
@@ -107,7 +122,7 @@ public class Block : MonoBehaviour
         if (isPromotion)
         { // upgrade block
 
-            SetType(true);
+            SetType();
 
         }
         else if (isMatch)
@@ -125,14 +140,13 @@ public class Block : MonoBehaviour
 
     }
 
-
+    // ==== Hero ================================================================================
 
 
     public void SetFightMode()
     {
         if (_level > 0)
         {
-
 
             DOTween.Sequence().Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
                 .AppendInterval(1f)
@@ -141,28 +155,145 @@ public class Block : MonoBehaviour
     }
 
 
+    public enum ArmyState
+    {
+        Wait,
+        Move,
+        Attack,
+        Dead,
+        Victory
+    }
+    public ArmyState _armyState;
+
+
     IEnumerator Cor_Fight()
     {
         yield return null;
 
+        _rig.isKinematic = false;
+        isPlay = true;
+        _colls[1].enabled = true;
 
+        _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+        _colls[1].center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
-        while (true)
+        while (isPlay)
         {
+
+            switch (_armyState)
+            {
+                case ArmyState.Wait:
+                    if (_target == null) FindTarget();
+                    yield return null;
+                    break;
+
+                case ArmyState.Move:
+                    if (_target != null)
+                    {
+
+                        transform.LookAt(_target.transform);
+                        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+
+                        if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
+                        {
+                            _armyState = ArmyState.Attack;
+                        }
+
+                    }
+                    else
+                    {
+                        _armyState = ArmyState.Wait;
+                    }
+                    yield return null;
+                    break;
+
+                case ArmyState.Attack:
+                    Attack();
+                    yield return new WaitForSeconds(_attackInterval);
+                    break;
+
+                case ArmyState.Dead:
+
+                    isPlay = false;
+                    yield return null;
+                    break;
+            }
+
+
+
             yield return null;
         }
 
+        // add Victory Animation
+
     }
-    // ==== Hero ================================================================================
+
 
     protected virtual void Attack()
     {
+        if (_target == null)
+        {
+            _armyState = ArmyState.Wait;
+
+        }
+        else
+        {
+
+
+            _target.OnDamage(_damage);
+
+            if (_target._currentHP <= 0) _target = null;
+        }
+
 
     }
+
+    protected virtual void OnDamage()
+    {
+
+    }
+
 
 
     protected virtual void FindTarget()
     {
+        if (_puzzleManager._enemyList.Count < 1)
+        {
+            isPlay = false;
+            _armyState = ArmyState.Victory;
+            Debug.Log("Test1");
+        }
+        else
+        {
+            _target = _puzzleManager._enemyList[0];
+
+        }
+
+        if (_puzzleManager._enemyList.Count > 2)
+        {
+
+            for (int i = 1; i < _puzzleManager._enemyList.Count; i++)
+            {
+                _target = Vector3.Distance(transform.position, _puzzleManager._enemyList[i].transform.position)
+                < Vector3.Distance(transform.position, _target.transform.position)
+                ? _puzzleManager._enemyList[i] : _target;
+            }
+        }
+
+        if (_target == null)
+        {
+            _armyState = ArmyState.Victory;
+            Debug.Log("Test2");
+        }
+        else if (_target._currentHP <= 0)
+        {
+            _armyState = ArmyState.Wait;
+        }
+        else
+        {
+            _armyState = ArmyState.Move;
+        }
+
 
 
     }

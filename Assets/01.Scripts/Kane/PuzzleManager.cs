@@ -10,6 +10,7 @@ public class PuzzleManager : MonoBehaviour
 {
 
     static public PuzzleManager _instance;
+    public StageData _currentStage;
 
     //public Block.BlockType _blockType;
 
@@ -42,42 +43,49 @@ public class PuzzleManager : MonoBehaviour
 
 
     //==== Puzzle
-    public int _changeCount = 10;
-    public GameObject _block_Pref;
-    public Transform _blockGroup;
-    public Vector2Int _size = new Vector2Int(6, 6);
-    public int _maxColorCount = 4;
-    public Vector2 _posInterval = new Vector2(0f, -0.15f);
-    [ShowInInspector] public Block[,] _grid;
+    [TabGroup("Puzzle")] public int _changeCount = 10;
+    [TabGroup("Puzzle")] public GameObject _block_Pref;
+    [TabGroup("Puzzle")] public Transform _blockGroup;
+    [TabGroup("Puzzle")] public Vector2Int _size = new Vector2Int(6, 6);
+    [TabGroup("Puzzle")] public int _maxColorCount = 4;
+    [TabGroup("Puzzle")] public Vector2 _posInterval = new Vector2(0f, -0.15f);
+    public Block[,] _grid;
 
-    public float _blockMoveSpeed = 0.5f;
-    public float _camz = 10f;
+    [TabGroup("Puzzle")] public float _blockMoveSpeed = 0.5f;
+    [TabGroup("Puzzle")] public float _camz = 10f;
+
+    // ======= Battle
+
+
+    [TabGroup("Battle")] public List<Enemy> _enemyList = new List<Enemy>();
+
 
     // Same Block Check ===============
-    public int _jumpCount = 2;
-    public float _jumpPower = 5f;
-    public float _jumpTime = 0.5f;
+
+    [TabGroup("Direction")] public int _jumpCount = 2;
+    [TabGroup("Direction")] public float _jumpPower = 5f;
+    [TabGroup("Direction")] public float _jumpTime = 0.5f;
 
 
     // ====== floating
 
-    public float _floatingY = 2f;
-    public float _floatingTime = 1f;
-    public Vector3 _floatingPos = new Vector3(0f, 0.5f, 5.5f);
+    [TabGroup("Direction")] public float _floatingY = 2f;
+    [TabGroup("Direction")] public float _floatingTime = 1f;
+    [TabGroup("Direction")] public Vector3 _floatingPos = new Vector3(0f, 0.5f, 5.5f);
 
     // ====== Private
-    [SerializeField] Vector3 _startMousePos;
-    [SerializeField] Vector3 _endMousePos;
-    [SerializeField] float _testDis;
-    public float _mouseDis = 100;
+    Vector3 _startMousePos;
+    Vector3 _endMousePos;
+    float _testDis;
+    float _mouseDis = 100;
 
 
-    public bool isMove = false;
+    bool isMove = false;
     Vector3 _selectStartPos;
     float _moveDistance = 1f;
     Vector3 _dir;
     float _dis;
-    [SerializeField] int _comboCount = 0;
+    int _comboCount = 0;
 
 
     GameObject _floating_Pref;
@@ -93,15 +101,27 @@ public class PuzzleManager : MonoBehaviour
     void Start()
     {
         _mainCam = Camera.main;
-
-        _puzzle_Cam.SetActive(true);
-        _fight_Cam.SetActive(false);
-
         _grid = new Block[_size.x, _size.y];
-        SpawnBlock();
-        //SpawnStage();
+
+        LoadStage(); // will modify, when press the  start button
 
     }
+
+    public void LoadStage()
+    {
+        Managers._gameUI.MoveCountText.text = $"{_changeCount}";
+        Managers._gameUI.ChangePanel(1);
+        CamChange();
+
+        SpawnBlock();
+
+        //_currentStage = Resources.Load<StageData> // will change
+
+
+
+
+    }
+
 
 
     void Update()
@@ -114,7 +134,7 @@ public class PuzzleManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-
+            _changeCount--;
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -343,6 +363,7 @@ public class PuzzleManager : MonoBehaviour
                     // add Spawn Army Func();
                     //FIghtMode();
 
+                    CamChange(false);
                     this.TaskDelay(1.5f, FIghtMode);
 
                 }
@@ -364,15 +385,16 @@ public class PuzzleManager : MonoBehaviour
 
     public void MoveBlock() // check can move position
     {
-        _changeCount--;
-        Managers._gameUI.MoveCountText.text = $"{_changeCount}";
+
         int _count = 0;
 
         _count = Mathf.Abs(_selectBlock._pos.x - _targetBlock._pos.x);
         _count += Mathf.Abs(_selectBlock._pos.y - _targetBlock._pos.y);
 
-        if (_count <= 1)
+        if (_count <= 1 && isMove)
         {
+            _changeCount--;
+            Managers._gameUI.MoveCountText.text = $"{_changeCount}";
             // Swap Block
             Vector2Int _tempPos = _selectBlock._pos;
             _selectBlock.SetPos(_targetBlock._pos.x + 2, _targetBlock._pos.y + 2);
@@ -435,7 +457,7 @@ public class PuzzleManager : MonoBehaviour
                         _block.transform.SetParent(_blockGroup);
                         _block._blockType = (Block.BlockType)Random.Range(0, 4);
                         _block.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
-                        _block.SetType();
+                        _block.SetType(true);
                         _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);
                         _block.SetPos(i, j);
                         _block.isConnect = false;
@@ -622,36 +644,64 @@ public class PuzzleManager : MonoBehaviour
     }
 
 
-    public void PuzzleMode()
+    public void CamChange(bool isMain = true)
     {
-        _puzzle_Cam.SetActive(true);
-        _fight_Cam.SetActive(false);
+        if (isMain)
+        {
+            _puzzle_Cam.SetActive(true);
+            _fight_Cam.SetActive(false);
+
+        }
+        else
+        {
+            _puzzle_Cam.SetActive(false);
+            _fight_Cam.SetActive(true);
+        }
     }
 
     public void FIghtMode()
     {
-        //_puzzle_Cam.SetActive(false);
-        //_fight_Cam.SetActive(true);
+        SpawnEnemy();
 
         for (int i = 0; i < _size.x; i++)
         {
             for (int j = 0; j < _size.y; j++)
             {
-                _grid[i, j].SetFightMode();
+                this.TaskDelay(0.5f, _grid[i, j].SetFightMode);
             }
         }
 
         _puzzleState = PuzzleState.Fight;
 
-        // add Enemy Spawn ();
+        Managers._gameUI.ChangePanel(2);
+
+
 
     }
 
-    public void CheckWar() // 
+
+    public void SpawnEnemy()
     {
 
+        for (int i = 0; i < 10; i++) // Chagne -  _stageData. monster count
+        {
+            Enemy _enemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).GetComponent<Enemy>();
+
+            _enemy.transform.position = new Vector3(0f, 0f, 11f);
+
+            _enemyList.Add(_enemy);
+        }
+
     }
 
+    public void DeadEnemy()
+    {
+        if (_enemyList.Count < 1)
+        {
+            _puzzleState = PuzzleState.Clear;
+            Managers._gameUI.Clear_Panel.SetActive(true);
 
+        }
+    }
 
 }

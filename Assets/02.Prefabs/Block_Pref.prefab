@@ -85,6 +85,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -8220723556769350222}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de625f7536cbb414f9cd883c5c0df70c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8369728177279691201}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de625f7536cbb414f9cd883c5c0df70c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4148767379920687722}
   m_SourcePrefab: {fileID: 100100000, guid: de625f7536cbb414f9cd883c5c0df70c, type: 3}
 --- !u!1 &154688119217358079 stripped
 GameObject:
@@ -144,7 +152,65 @@ MonoBehaviour:
     m_RotationOrder: 4
   isMatch: 0
   isPromotion: 0
+  _maxHP: 100
+  _currentHP: 100
+  _damage: 10
+  _targetRange: 2
+  _attackRange: 5
+  _attackInterval: 1
+  _speed: 3
+  _target: {fileID: 0}
+  isPlay: 0
+  _armyState: 0
 --- !u!65 &-8220723556769350222
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154688119217358079}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.3208358, z: 1}
+  m_Center: {x: 0, y: 0.1604179, z: 0}
+--- !u!54 &-8369728177279691201
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154688119217358079}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!65 &4148767379920687722
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,5 +229,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.3208358, z: 1}
-  m_Center: {x: 0, y: 0.1604179, z: 0}
+  m_Size: {x: 0.364, y: 0.46525526, z: 0.36400002}
+  m_Center: {x: 0, y: 0.23262763, z: -0.000000059604645}

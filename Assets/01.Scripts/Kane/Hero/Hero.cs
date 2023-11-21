@@ -39,7 +39,7 @@ public class Hero : MonoBehaviour
     protected BoxCollider[] _colls;
 
     protected PuzzleManager _puzzleManager;
-
+    public HeroStatus _heroStatus;
 
     // ===============================
 
@@ -48,18 +48,28 @@ public class Hero : MonoBehaviour
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
     }
 
-    public void InitStatus(HeroStatus _status, int _level)
+    public void InitStatus( int _level)
     {
-        _maxHP = _status._maxHP[_level];
+        Debug.Log("Set");
+        //_heroStatus = _status;
+        _maxHP = _heroStatus._maxHP[_level];
         _currentHP = _maxHP;
-        _damage = _status._damages[_level];
-        _attackRange = _status._attackRange[_level];
-        _attackInterval = _status._attackInterval[_level];
-        _speed = _status._speeds[_level];
+        _damage = _heroStatus._damages[_level];
+        _attackRange = _heroStatus._attackRange[_level];
+        _attackInterval = _heroStatus._attackInterval[_level];
+        _speed = _heroStatus._speeds[_level];
+
+
+        if (_rig == null) _rig = GetComponent<Rigidbody>();
+        if (_colls == null) _colls = GetComponents<BoxCollider>();
+
+        _rig.isKinematic = true;
+        _colls[1].enabled = false;
+
 
     }
 
-    public virtual void Fight()
+    public virtual void Fight(int _level)
     {
         Debug.Log("Parent");
     }

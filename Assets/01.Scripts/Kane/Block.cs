@@ -47,8 +47,8 @@ public class Block : MonoBehaviour
 
 
     bool isFirst = true;
-    Rigidbody _rig;
-    BoxCollider[] _colls;
+    //Rigidbody _rig;
+    //BoxCollider[] _colls;
 
     // ==========================================================
 
@@ -81,21 +81,15 @@ public class Block : MonoBehaviour
 
         _meshes = _heroStat._meshes;
         GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
-        _blockHero.InitStatus(_heroStat, _level);
+        _blockHero._heroStatus = _heroStat;
+
     }
 
     public void Init(bool isNew = false)
     {
-        //Debug.Log("SetType");
 
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager; //PuzzleManager._instance;  //
-        if (_rig == null) _rig = GetComponent<Rigidbody>();
-        if (_colls == null) _colls = GetComponents<BoxCollider>();
 
-        _rig.isKinematic = true;
-        _colls[1].enabled = false;
-        //isPlay = false;
-        //_armyState = ArmyState.Wait;
 
 
         if (isNew == false)
@@ -111,10 +105,6 @@ public class Block : MonoBehaviour
         isPromotion = false;
 
 
-        //GetComponent<Renderer>().material = _mats[(int)_blockType];
-        //GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
-
-        //transform.localScale = Vector3.zero;
         if (isFirst == false)
         {
 
@@ -195,7 +185,7 @@ public class Block : MonoBehaviour
                 .AppendInterval(0.5f)
                 .Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
                 .AppendInterval(1f)
-                .AppendCallback(() => _blockHero.Fight());
+                .AppendCallback(() => _blockHero.Fight(_level));
         }
     }
 

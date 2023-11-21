@@ -5,10 +5,11 @@ using UnityEngine;
 public class Archer : Hero
 {
 
-    public override void  Fight()
+    public override void Fight(int _level)
     {
         Debug.Log("Child");
         StartCoroutine(Cor_Fight());
+        InitStatus(_level - 1);
     }
 
 
@@ -16,8 +17,8 @@ public class Archer : Hero
     {
         yield return null;
 
-        _rig.isKinematic = false;
         isPlay = true;
+        _rig.isKinematic = false;
         _colls[1].enabled = true;
 
         _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;

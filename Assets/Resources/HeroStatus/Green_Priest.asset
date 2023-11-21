@@ -34,6 +34,6 @@ MonoBehaviour:
   - 3
   - 4
   _meshes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: -4250068209185078321, guid: e0a9a5876578c4ed588b7ea83ffd2f8e, type: 3}
+  - {fileID: -5721928707568378784, guid: fa9e62ec4f54b4dd78ee57c004753430, type: 3}
+  - {fileID: 2746735759081937267, guid: ee3df1c83de084d2184119547987aab8, type: 3}

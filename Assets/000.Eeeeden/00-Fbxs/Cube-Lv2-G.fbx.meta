@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: de625f7536cbb414f9cd883c5c0df70c
+guid: 4e6cd7d7864b24ba4bfd586d2ecc6918
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Clothes-1
+    second: {fileID: 2100000, guid: 4e0dfbca9d9d543789ad38573147ce57, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Clothes-2-Gold
+    second: {fileID: 2100000, guid: 85818fe51414945b188ccb3c8afadc93, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Main
-    second: {fileID: 2100000, guid: 442bbe2a12fc1401eb720a1de0609fb3, type: 2}
+    second: {fileID: 2100000, guid: 8bb21a3e1c61748279869a6cbbec0afc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin
+    second: {fileID: 2100000, guid: 4953fbc54a4624b8ca32816e2fef0e57, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -40,7 +55,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.9
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -95,7 +110,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.9
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

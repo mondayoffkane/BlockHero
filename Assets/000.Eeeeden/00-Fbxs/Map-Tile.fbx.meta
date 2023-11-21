@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: de625f7536cbb414f9cd883c5c0df70c
+guid: 086c68f3818714d928138f9a6fc7efc0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Main
-    second: {fileID: 2100000, guid: 442bbe2a12fc1401eb720a1de0609fb3, type: 2}
+      name: Map-Outline
+    second: {fileID: 2100000, guid: 628594ff8b11a48c1aa2b868257ece44, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Map-Tile01
+    second: {fileID: 2100000, guid: 46790e6b1571f4aaa92de8030202517a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Map-Tile02
+    second: {fileID: 2100000, guid: 826b6bb32c67644c3be1b3e8b002cee4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -40,7 +50,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.9
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -95,7 +105,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.9
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

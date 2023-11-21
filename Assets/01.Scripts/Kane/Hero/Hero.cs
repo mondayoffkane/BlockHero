@@ -9,6 +9,7 @@ using Sirenix.OdinInspector;
 
 public class Hero : MonoBehaviour
 {
+
     [FoldoutGroup("Army")] public float _maxHP;
     [FoldoutGroup("Army")] public float _currentHP;
     [FoldoutGroup("Army")] public float _damage;
@@ -33,11 +34,11 @@ public class Hero : MonoBehaviour
     }
     public ArmyState _armyState;
 
-    bool isFirst = true;
-    Rigidbody _rig;
-    BoxCollider[] _colls;
+    protected bool isFirst = true;
+    protected Rigidbody _rig;
+    protected BoxCollider[] _colls;
 
-    [SerializeField] PuzzleManager _puzzleManager;
+    protected PuzzleManager _puzzleManager;
 
 
     // ===============================
@@ -47,75 +48,22 @@ public class Hero : MonoBehaviour
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
     }
 
-    public void Fight()
+    public void InitStatus(HeroStatus _status, int _level)
     {
-        StartCoroutine(Cor_Fight());
+        _maxHP = _status._maxHP[_level];
+        _currentHP = _maxHP;
+        _damage = _status._damages[_level];
+        _attackRange = _status._attackRange[_level];
+        _attackInterval = _status._attackInterval[_level];
+        _speed = _status._speeds[_level];
+
     }
 
-
-    IEnumerator Cor_Fight()
+    public virtual void Fight()
     {
-        yield return null;
-
-        _rig.isKinematic = false;
-        isPlay = true;
-        _colls[1].enabled = true;
-
-        _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _colls[1].center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
-
-        while (isPlay)
-        {
-
-            switch (_armyState)
-            {
-                case ArmyState.Wait:
-                    if (_target == null) FindTarget();
-                    else _armyState = ArmyState.Move;
-
-                    yield return null;
-                    break;
-
-                case ArmyState.Move:
-                    if (_target != null)
-                    {
-
-                        transform.LookAt(_target.transform);
-                        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
-
-                        if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
-                        {
-                            _armyState = ArmyState.Attack;
-                        }
-
-                    }
-                    else
-                    {
-                        _armyState = ArmyState.Wait;
-                    }
-                    yield return null;
-                    break;
-
-                case ArmyState.Attack:
-                    Attack();
-                    yield return new WaitForSeconds(_attackInterval);
-                    break;
-
-                case ArmyState.Dead:
-
-                    isPlay = false;
-                    yield return null;
-                    break;
-            }
-
-
-
-            yield return null;
-        }
-
-        // add Victory Animation
-
+        Debug.Log("Parent");
     }
+
 
 
     protected virtual void Attack()

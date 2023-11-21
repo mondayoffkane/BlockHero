@@ -8,9 +8,10 @@ public class HeroStatus : ScriptableObject
     public enum HeroType
     {
         Viking,
-        Wizard,
+        Archer,
         Priest,
-        Archer
+        Wizard
+
 
     }
     public HeroType _heroType;
@@ -22,7 +23,7 @@ public class HeroStatus : ScriptableObject
     public float[] _attackInterval = new float[3];
     public float[] _speeds = new float[3];
 
-
+    public Mesh[] _meshes = new Mesh[3];
 
 
 

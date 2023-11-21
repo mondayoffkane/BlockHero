@@ -11,14 +11,16 @@ public class Block : MonoBehaviour
 {
     [FoldoutGroup("Block")] public bool isConnect = false;
     [FoldoutGroup("Block")] public Vector2Int _pos;
-    [FoldoutGroup("Block")] public Material[] _mats;
+    //[FoldoutGroup("Block")] public Material[] _mats;
+
     [FoldoutGroup("Block")] public Mesh[] _meshes;
     public enum BlockType
     {
         Red, // viking
-        Blue, // wizard
+        Yellow, // archer
         Green, // priest
-        Yellow // archer
+        Blue // wizard
+
     }
     [FoldoutGroup("Block")] public BlockType _blockType;
     [FoldoutGroup("Block")] public int _level;
@@ -52,7 +54,7 @@ public class Block : MonoBehaviour
 
     [SerializeField] PuzzleManager _puzzleManager;
 
-    public void SetType(Mesh[] meshes, int _num)
+    public void SetType(HeroStatus _heroStat, int _num)
     {
         if (_blockHero != null) Destroy(_blockHero);
 
@@ -77,7 +79,9 @@ public class Block : MonoBehaviour
                 break;
         }
 
-        _meshes = meshes;
+        _meshes = _heroStat._meshes;
+        GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
+        _blockHero.InitStatus(_heroStat, _level);
     }
 
     public void Init(bool isNew = false)
@@ -107,7 +111,7 @@ public class Block : MonoBehaviour
         isPromotion = false;
 
 
-        GetComponent<Renderer>().material = _mats[(int)_blockType];
+        //GetComponent<Renderer>().material = _mats[(int)_blockType];
         //GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
 
         //transform.localScale = Vector3.zero;

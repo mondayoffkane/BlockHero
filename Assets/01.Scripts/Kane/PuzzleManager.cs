@@ -56,12 +56,17 @@ public class PuzzleManager : MonoBehaviour
     [TabGroup("Puzzle")] public float _camz = 10f;
 
     // ======== Hero Type
-    [TabGroup("Hero")] public Mesh[] _Hero_0_Meshes;
-    [TabGroup("Hero")] public Mesh[] _Hero_1_Meshes;
-    [TabGroup("Hero")] public Mesh[] _Hero_2_Meshes;
-    [TabGroup("Hero")] public Mesh[] _Hero_3_Meshes;
+    //[TabGroup("Hero")] public Mesh[] _Hero_0_Meshes;
+    //[TabGroup("Hero")] public Mesh[] _Hero_1_Meshes;
+    //[TabGroup("Hero")] public Mesh[] _Hero_2_Meshes;
+    //[TabGroup("Hero")] public Mesh[] _Hero_3_Meshes;
 
-    [TabGroup("Hero")][ShowInInspector] public List<Mesh[]> _heroAllMeshes = new List<Mesh[]>();
+    [TabGroup("Hero")] public HeroStatus[] _selectHeroes = new HeroStatus[4];
+
+
+
+
+    //[TabGroup("Hero")][ShowInInspector] public List<Mesh[]> _heroAllMeshes = new List<Mesh[]>();
 
 
     // ======= Battle
@@ -101,14 +106,14 @@ public class PuzzleManager : MonoBehaviour
     GameObject _floating_Pref;
 
 
-    public void SetBlockMeshes()
-    {
-        _heroAllMeshes.Add(_Hero_0_Meshes);
-        _heroAllMeshes.Add(_Hero_1_Meshes);
-        _heroAllMeshes.Add(_Hero_2_Meshes);
-        _heroAllMeshes.Add(_Hero_3_Meshes);
+    //public void SetBlockMeshes()
+    //{
+    //_heroAllMeshes.Add(_selectHeroes[0]);
+    //_heroAllMeshes.Add(_Hero_1_Meshes);
+    //_heroAllMeshes.Add(_Hero_2_Meshes);
+    //_heroAllMeshes.Add(_Hero_3_Meshes);
 
-    }
+    //}
 
 
     private void Awake()
@@ -121,7 +126,7 @@ public class PuzzleManager : MonoBehaviour
     {
         _mainCam = Camera.main;
         _grid = new Block[_size.x, _size.y];
-        SetBlockMeshes();
+        //SetBlockMeshes();
 
 
 
@@ -502,7 +507,8 @@ public class PuzzleManager : MonoBehaviour
                         _block.transform.SetParent(_blockGroup);
                         //_block._blockType = (Block.BlockType)Random.Range(0, 4);
                         int _num = Random.Range(0, 4);
-                        _block.SetType(_heroAllMeshes[_num], _num);
+                        //_block.SetType(_heroAllMeshes[_num], _num);
+                        _block.SetType(_selectHeroes[_num], _num);
                         _block.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
                         _block.Init(true);
                         _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);

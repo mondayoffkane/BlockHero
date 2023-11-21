@@ -10,26 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e40195a7aa7a0460eb2a8c08ba4c22aa, type: 3}
-  m_Name: Archer
+  m_Name: Green_Priest
   m_EditorClassIdentifier: 
-  _heroType: 3
+  _heroType: 2
   _maxHP:
-  - 0
-  - 0
-  - 0
+  - 100
+  - 200
+  - 300
   _damages:
-  - 0
-  - 0
-  - 0
+  - 10
+  - 20
+  - 30
   _attackRange:
-  - 0
-  - 0
-  - 0
+  - 5
+  - 5
+  - 5
   _attackInterval:
-  - 0
-  - 0
-  - 0
+  - 1
+  - 0.8
+  - 0.5
   _speeds:
-  - 0
-  - 0
-  - 0
+  - 2
+  - 3
+  - 4
+  _meshes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

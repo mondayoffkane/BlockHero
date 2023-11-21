@@ -46,10 +46,12 @@ public class Block : MonoBehaviour
 
     // ==========================================================
 
-    PuzzleManager _puzzleManager;
+    [SerializeField] PuzzleManager _puzzleManager;
     public void SetType(bool isNew = false)
     {
-        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+        Debug.Log("SetType");
+
+        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager; //PuzzleManager._instance;  //
         if (_rig == null) _rig = GetComponent<Rigidbody>();
         if (_colls == null) _colls = GetComponents<BoxCollider>();
 
@@ -148,7 +150,9 @@ public class Block : MonoBehaviour
         if (_level > 0)
         {
 
-            DOTween.Sequence().Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
+            DOTween.Sequence()
+                .AppendInterval(0.5f)
+                .Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
                 .AppendInterval(1f)
                 .AppendCallback(() => StartCoroutine(Cor_Fight()));
         }
@@ -184,6 +188,8 @@ public class Block : MonoBehaviour
             {
                 case ArmyState.Wait:
                     if (_target == null) FindTarget();
+                    else _armyState = ArmyState.Move;
+
                     yield return null;
                     break;
 
@@ -231,18 +237,16 @@ public class Block : MonoBehaviour
 
     protected virtual void Attack()
     {
-        if (_target == null)
+        if (_target == null || _target._currentHP <= 0)
         {
+            _target = null;
             _armyState = ArmyState.Wait;
 
         }
         else
         {
-
-
             _target.OnDamage(_damage);
 
-            if (_target._currentHP <= 0) _target = null;
         }
 
 
@@ -261,22 +265,25 @@ public class Block : MonoBehaviour
         {
             isPlay = false;
             _armyState = ArmyState.Victory;
-            Debug.Log("Test1");
+            //Debug.Log("Test1");
+            Debug.Log(_puzzleManager._enemyList.Count);
         }
         else
         {
             _target = _puzzleManager._enemyList[0];
+            //Debug.Log(_puzzleManager);
+            Debug.Log(_puzzleManager._enemyList.Count);
 
-        }
 
-        if (_puzzleManager._enemyList.Count > 2)
-        {
-
-            for (int i = 1; i < _puzzleManager._enemyList.Count; i++)
+            if (_puzzleManager._enemyList.Count > 2)
             {
-                _target = Vector3.Distance(transform.position, _puzzleManager._enemyList[i].transform.position)
-                < Vector3.Distance(transform.position, _target.transform.position)
-                ? _puzzleManager._enemyList[i] : _target;
+
+                for (int i = 1; i < _puzzleManager._enemyList.Count; i++)
+                {
+                    _target = Vector3.Distance(transform.position, _puzzleManager._enemyList[i].transform.position)
+                    < Vector3.Distance(transform.position, _target.transform.position)
+                    ? _puzzleManager._enemyList[i] : _target;
+                }
             }
         }
 
@@ -284,10 +291,13 @@ public class Block : MonoBehaviour
         {
             _armyState = ArmyState.Victory;
             Debug.Log("Test2");
+            //UnityEditor.EditorApplication.isPaused = true;
         }
         else if (_target._currentHP <= 0)
         {
+            _target = null;
             _armyState = ArmyState.Wait;
+
         }
         else
         {

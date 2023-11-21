@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
         Init();
     }
 
-    void Init()
+    public void Init()
     {
         _currentHP = _maxHP;
     }

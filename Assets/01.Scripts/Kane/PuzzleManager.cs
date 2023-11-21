@@ -49,7 +49,7 @@ public class PuzzleManager : MonoBehaviour
     [TabGroup("Puzzle")] public Vector2Int _size = new Vector2Int(6, 6);
     [TabGroup("Puzzle")] public int _maxColorCount = 4;
     [TabGroup("Puzzle")] public Vector2 _posInterval = new Vector2(0f, -0.15f);
-    public Block[,] _grid;
+    [ShowInInspector] public Block[,] _grid;
 
     [TabGroup("Puzzle")] public float _blockMoveSpeed = 0.5f;
     [TabGroup("Puzzle")] public float _camz = 10f;
@@ -96,32 +96,51 @@ public class PuzzleManager : MonoBehaviour
     }
 
 
-
-
     void Start()
     {
         _mainCam = Camera.main;
         _grid = new Block[_size.x, _size.y];
-
         LoadStage(); // will modify, when press the  start button
 
     }
 
+
     public void LoadStage()
     {
+        InitStage();
+
         Managers._gameUI.MoveCountText.text = $"{_changeCount}";
         Managers._gameUI.ChangePanel(1);
-        CamChange();
+        //CamChange();
 
         SpawnBlock();
 
         //_currentStage = Resources.Load<StageData> // will change
 
+    }
+    public void InitStage()
+    {
 
 
+        for (int i = 0; i < _size.x; i++)
+        {
+            for (int j = 0; j < _size.y; j++)
+            {
+                if (_grid[i, j] != null)
+                {
+                    Managers.Pool.Push(_grid[i, j].GetComponent<Poolable>());
+                    _grid[i, j] = null;
+                }
+            }
+        }
+
+
+        _changeCount = 10;
+        CamChange();
+
+        _puzzleState = PuzzleState.BlockSpawn;
 
     }
-
 
 
     void Update()
@@ -139,8 +158,9 @@ public class PuzzleManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(
-                UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            LoadStage();
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(
+            //    UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
 
 
@@ -667,7 +687,7 @@ public class PuzzleManager : MonoBehaviour
         {
             for (int j = 0; j < _size.y; j++)
             {
-                this.TaskDelay(0.5f, _grid[i, j].SetFightMode);
+                _grid[i, j].SetFightMode();
             }
         }
 
@@ -682,20 +702,23 @@ public class PuzzleManager : MonoBehaviour
 
     public void SpawnEnemy()
     {
+        _enemyList = new List<Enemy>();
 
         for (int i = 0; i < 10; i++) // Chagne -  _stageData. monster count
         {
             Enemy _enemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).GetComponent<Enemy>();
 
+            _enemy.Init();
             _enemy.transform.position = new Vector3(0f, 0f, 11f);
 
             _enemyList.Add(_enemy);
         }
-
+        Debug.Log("Spawn complete");
     }
 
     public void DeadEnemy()
     {
+        Debug.Log("Manger :" + _enemyList.Count);
         if (_enemyList.Count < 1)
         {
             _puzzleState = PuzzleState.Clear;
@@ -703,5 +726,8 @@ public class PuzzleManager : MonoBehaviour
 
         }
     }
+
+
+
 
 }

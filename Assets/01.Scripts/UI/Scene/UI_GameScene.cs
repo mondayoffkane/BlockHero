@@ -70,8 +70,7 @@ public class UI_GameScene : UI_Scene
 
         // =====Button Event==============
 
-        Clear_Button.AddButtonEvent(() => UnityEngine.SceneManagement.SceneManager.LoadScene(
-                UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex));
+        Clear_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
 
 
         // ========================
@@ -92,7 +91,7 @@ public class UI_GameScene : UI_Scene
         Lobby_Panel.SetActive(false);
         Puzzle_Panel.SetActive(false);
         Battle_Panel.SetActive(false);
-
+        Clear_Panel.SetActive(false);
         switch (_num)
         {
             case 0:

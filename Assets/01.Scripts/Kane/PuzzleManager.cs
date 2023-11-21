@@ -43,6 +43,7 @@ public class PuzzleManager : MonoBehaviour
 
 
     //==== Puzzle
+
     [TabGroup("Puzzle")] public int _changeCount = 10;
     [TabGroup("Puzzle")] public GameObject _block_Pref;
     [TabGroup("Puzzle")] public Transform _blockGroup;
@@ -53,6 +54,10 @@ public class PuzzleManager : MonoBehaviour
 
     [TabGroup("Puzzle")] public float _blockMoveSpeed = 0.5f;
     [TabGroup("Puzzle")] public float _camz = 10f;
+
+    // ======== Hero Type
+    [TabGroup("Hero")] public List<Mesh[]> _mesh = new List<Mesh[]>();
+
 
     // ======= Battle
 

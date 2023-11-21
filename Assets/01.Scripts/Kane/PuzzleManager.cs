@@ -56,7 +56,12 @@ public class PuzzleManager : MonoBehaviour
     [TabGroup("Puzzle")] public float _camz = 10f;
 
     // ======== Hero Type
-    [TabGroup("Hero")] public List<Mesh[]> _mesh = new List<Mesh[]>();
+    [TabGroup("Hero")] public Mesh[] _Hero_0_Meshes;
+    [TabGroup("Hero")] public Mesh[] _Hero_1_Meshes;
+    [TabGroup("Hero")] public Mesh[] _Hero_2_Meshes;
+    [TabGroup("Hero")] public Mesh[] _Hero_3_Meshes;
+
+    [TabGroup("Hero")][ShowInInspector] public List<Mesh[]> _heroAllMeshes = new List<Mesh[]>();
 
 
     // ======= Battle
@@ -95,6 +100,17 @@ public class PuzzleManager : MonoBehaviour
 
     GameObject _floating_Pref;
 
+
+    public void SetBlockMeshes()
+    {
+        _heroAllMeshes.Add(_Hero_0_Meshes);
+        _heroAllMeshes.Add(_Hero_1_Meshes);
+        _heroAllMeshes.Add(_Hero_2_Meshes);
+        _heroAllMeshes.Add(_Hero_3_Meshes);
+
+    }
+
+
     private void Awake()
     {
         _instance = this;
@@ -105,6 +121,10 @@ public class PuzzleManager : MonoBehaviour
     {
         _mainCam = Camera.main;
         _grid = new Block[_size.x, _size.y];
+        SetBlockMeshes();
+
+
+
         LoadStage(); // will modify, when press the  start button
 
     }
@@ -480,9 +500,11 @@ public class PuzzleManager : MonoBehaviour
                     {
                         Block _block = Managers.Pool.Pop(_block_Pref, transform).GetComponent<Block>();
                         _block.transform.SetParent(_blockGroup);
-                        _block._blockType = (Block.BlockType)Random.Range(0, 4);
+                        //_block._blockType = (Block.BlockType)Random.Range(0, 4);
+                        int _num = Random.Range(0, 4);
+                        _block.SetType(_heroAllMeshes[_num], _num);
                         _block.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
-                        _block.SetType(true);
+                        _block.Init(true);
                         _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);
                         _block.SetPos(i, j);
                         _block.isConnect = false;

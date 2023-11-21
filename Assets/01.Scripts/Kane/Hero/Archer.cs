@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Archer : Block
+public class Archer : Hero
 {
-    public Archer(Archer archer )
+    public Archer(/*Archer archer*/ )
     {
-        _maxHP = archer._maxHP;
+        _maxHP = 100f;
 
     }
 

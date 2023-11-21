@@ -123,6 +123,33 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &64768661 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 42711d2bc64a941c4936ef4a1a215fc2,
+    type: 3}
+  m_PrefabInstance: {fileID: 492764075}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &64768665
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64768661}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.321945, y: 0.35809112, z: 7.321945}
+  m_Center: {x: 6.6609726, y: 0.17904541, z: 8.3636e-18}
 --- !u!1 &110550178
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +162,7 @@ GameObject:
   - component: {fileID: 110550181}
   - component: {fileID: 110550180}
   - component: {fileID: 110550179}
+  - component: {fileID: 110550183}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
@@ -228,6 +256,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &110550183
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110550178}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &202549308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -290,6 +339,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube-Lv2-R-Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 256530a7eb841428395530f77a267e2d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -358,6 +412,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube-Lv2-G
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e6cd7d7864b24ba4bfd586d2ecc6918,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -536,6 +595,22 @@ MonoBehaviour:
   _posInterval: {x: 0, y: -0.15}
   _blockMoveSpeed: 0.2
   _camz: 10
+  _Hero_0_Meshes:
+  - {fileID: -2126003584284869610, guid: de625f7536cbb414f9cd883c5c0df70c, type: 3}
+  - {fileID: 1737411684031490657, guid: 78e4c14fcd30c4e01be37e591b31c1b4, type: 3}
+  - {fileID: 8193540862342705389, guid: bf1ea7d9db9b04a98a178b31f8e59a3d, type: 3}
+  _Hero_1_Meshes:
+  - {fileID: -2126003584284869610, guid: de625f7536cbb414f9cd883c5c0df70c, type: 3}
+  - {fileID: -9039022023842973886, guid: 73da0b7cc7e834c4da79c3349b54e658, type: 3}
+  - {fileID: -1313312651677506513, guid: 8acacc35b002d45af94e40e1273abc1f, type: 3}
+  _Hero_2_Meshes:
+  - {fileID: -2126003584284869610, guid: de625f7536cbb414f9cd883c5c0df70c, type: 3}
+  - {fileID: 3232055290762301837, guid: 4e6cd7d7864b24ba4bfd586d2ecc6918, type: 3}
+  - {fileID: 2118223754155523633, guid: 07926227982da431ba6e181cb461484a, type: 3}
+  _Hero_3_Meshes:
+  - {fileID: -2126003584284869610, guid: de625f7536cbb414f9cd883c5c0df70c, type: 3}
+  - {fileID: -5136939790718855405, guid: 4e387c5755f99437885a479714bff4af, type: 3}
+  - {fileID: 5013983324158043164, guid: b33bc2d8f4df94e71b83bd3b2677cda7, type: 3}
   _enemyList: []
   _jumpCount: 2
   _jumpPower: 1
@@ -712,7 +787,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42711d2bc64a941c4936ef4a1a215fc2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 64768665}
   m_SourcePrefab: {fileID: 100100000, guid: 42711d2bc64a941c4936ef4a1a215fc2, type: 3}
 --- !u!1001 &528733510
 PrefabInstance:
@@ -776,6 +855,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube-Lv3-B
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8acacc35b002d45af94e40e1273abc1f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1151,6 +1235,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube-Lv3-R
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bf1ea7d9db9b04a98a178b31f8e59a3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1347,6 +1436,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube-Lv2-Y
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e387c5755f99437885a479714bff4af,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1490,6 +1584,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 80, y: 0, z: 0}
+--- !u!1 &1308807504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 42711d2bc64a941c4936ef4a1a215fc2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2116045725}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1308807508
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308807504}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.321945, y: 0.35809112, z: 7.321945}
+  m_Center: {x: 6.6609726, y: 0.17904541, z: 3.5477297e-14}
 --- !u!1001 &1373975674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1552,6 +1673,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube-Lv3-G
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 07926227982da431ba6e181cb461484a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1913,6 +2039,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube-Lv2-B
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 73da0b7cc7e834c4da79c3349b54e658,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2018,6 +2149,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube-Lv1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: de625f7536cbb414f9cd883c5c0df70c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2035,6 +2171,7 @@ GameObject:
   - component: {fileID: 1828711547}
   - component: {fileID: 1828711546}
   - component: {fileID: 1828711545}
+  - component: {fileID: 1828711549}
   m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -2128,6 +2265,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1828711549
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828711544}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.99999994, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1870087058
 GameObject:
   m_ObjectHideFlags: 0
@@ -2294,6 +2452,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube-Lv2-R
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 78e4c14fcd30c4e01be37e591b31c1b4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2361,6 +2524,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube-Lv2-B-Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4d5496864151a412b82e89935b6c1026,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2676,6 +2844,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube-Lv3-Y
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b33bc2d8f4df94e71b83bd3b2677cda7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2857,7 +3030,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42711d2bc64a941c4936ef4a1a215fc2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1308807508}
   m_SourcePrefab: {fileID: 100100000, guid: 42711d2bc64a941c4936ef4a1a215fc2, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -15,10 +15,10 @@ public class Block : MonoBehaviour
     [FoldoutGroup("Block")] public Mesh[] _meshes;
     public enum BlockType
     {
-        Red,
-        Blue,
-        Green,
-        Yellow
+        Red, // viking
+        Blue, // wizard
+        Green, // priest
+        Yellow // archer
     }
     [FoldoutGroup("Block")] public BlockType _blockType;
     [FoldoutGroup("Block")] public int _level;
@@ -26,36 +26,73 @@ public class Block : MonoBehaviour
     [FoldoutGroup("Block")] public bool isMatch = false;
     [FoldoutGroup("Block")] public bool isPromotion = false;
 
+    public Hero _blockHero;
+
+
+
     // ====== Hero==============================
 
 
-    [FoldoutGroup("Army")] public float _maxHP;
-    [FoldoutGroup("Army")] public float _currentHP;
-    [FoldoutGroup("Army")] public float _damage;
-    [FoldoutGroup("Army")] public float _targetRange;
-    [FoldoutGroup("Army")] public float _attackRange;
-    [FoldoutGroup("Army")] public float _attackInterval;
-    [FoldoutGroup("Army")] public float _speed;
-    [FoldoutGroup("Army")] public Enemy _target;
-    [FoldoutGroup("Army")] public bool isPlay = true;
+    //[FoldoutGroup("Army")] public float _maxHP;
+    //[FoldoutGroup("Army")] public float _currentHP;
+    //[FoldoutGroup("Army")] public float _damage;
+    //[FoldoutGroup("Army")] public float _targetRange;
+    //[FoldoutGroup("Army")] public float _attackRange;
+    //[FoldoutGroup("Army")] public float _attackInterval;
+    //[FoldoutGroup("Army")] public float _speed;
+    //[FoldoutGroup("Army")] public Enemy _target;
+    //[FoldoutGroup("Army")] public bool isPlay = true;
+
+
     bool isFirst = true;
-
-
     Rigidbody _rig;
     BoxCollider[] _colls;
 
     // ==========================================================
 
     [SerializeField] PuzzleManager _puzzleManager;
-    public void SetType(bool isNew = false)
+
+    public void SetType(Mesh[] meshes, int _num)
     {
-        Debug.Log("SetType");
+        if (_blockHero != null) Destroy(_blockHero);
+
+        _blockType = (BlockType)_num;
+
+        switch (_blockType)
+        {
+            case BlockType.Red:
+                _blockHero = this.gameObject.AddComponent<Viking>();
+                break;
+
+            case BlockType.Blue:
+                _blockHero = this.gameObject.AddComponent<Wizard>();
+                break;
+
+            case BlockType.Green:
+                _blockHero = this.gameObject.AddComponent<Priest>();
+                break;
+
+            case BlockType.Yellow:
+                _blockHero = this.gameObject.AddComponent<Archer>();
+                break;
+        }
+
+        _meshes = meshes;
+    }
+
+    public void Init(bool isNew = false)
+    {
+        //Debug.Log("SetType");
 
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager; //PuzzleManager._instance;  //
         if (_rig == null) _rig = GetComponent<Rigidbody>();
         if (_colls == null) _colls = GetComponents<BoxCollider>();
 
+        _rig.isKinematic = true;
         _colls[1].enabled = false;
+        //isPlay = false;
+        //_armyState = ArmyState.Wait;
+
 
         if (isNew == false)
         {
@@ -124,7 +161,7 @@ public class Block : MonoBehaviour
         if (isPromotion)
         { // upgrade block
 
-            SetType();
+            Init();
 
         }
         else if (isMatch)
@@ -154,159 +191,158 @@ public class Block : MonoBehaviour
                 .AppendInterval(0.5f)
                 .Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
                 .AppendInterval(1f)
-                .AppendCallback(() => StartCoroutine(Cor_Fight()));
+                .AppendCallback(() => _blockHero.Fight());
         }
     }
 
 
-    public enum ArmyState
-    {
-        Wait,
-        Move,
-        Attack,
-        Dead,
-        Victory
-    }
-    public ArmyState _armyState;
+    //public enum ArmyState
+    //{
+    //    Wait,
+    //    Move,
+    //    Attack,
+    //    Dead,
+    //    Victory
+    //}
+    //public ArmyState _armyState;
 
 
-    IEnumerator Cor_Fight()
-    {
-        yield return null;
+    //IEnumerator Cor_Fight()
+    //{
+    //    yield return null;
 
-        _rig.isKinematic = false;
-        isPlay = true;
-        _colls[1].enabled = true;
+    //    _rig.isKinematic = false;
+    //    isPlay = true;
+    //    _colls[1].enabled = true;
 
-        _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _colls[1].center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
+    //    _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+    //    _colls[1].center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
-        while (isPlay)
-        {
+    //    while (isPlay)
+    //    {
 
-            switch (_armyState)
-            {
-                case ArmyState.Wait:
-                    if (_target == null) FindTarget();
-                    else _armyState = ArmyState.Move;
+    //        switch (_armyState)
+    //        {
+    //            case ArmyState.Wait:
+    //                if (_target == null) FindTarget();
+    //                else _armyState = ArmyState.Move;
 
-                    yield return null;
-                    break;
+    //                yield return null;
+    //                break;
 
-                case ArmyState.Move:
-                    if (_target != null)
-                    {
+    //            case ArmyState.Move:
+    //                if (_target != null)
+    //                {
 
-                        transform.LookAt(_target.transform);
-                        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+    //                    transform.LookAt(_target.transform);
+    //                    transform.Translate(Vector3.forward * _speed * Time.deltaTime);
 
-                        if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
-                        {
-                            _armyState = ArmyState.Attack;
-                        }
+    //                    if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
+    //                    {
+    //                        _armyState = ArmyState.Attack;
+    //                    }
 
-                    }
-                    else
-                    {
-                        _armyState = ArmyState.Wait;
-                    }
-                    yield return null;
-                    break;
+    //                }
+    //                else
+    //                {
+    //                    _armyState = ArmyState.Wait;
+    //                }
+    //                yield return null;
+    //                break;
 
-                case ArmyState.Attack:
-                    Attack();
-                    yield return new WaitForSeconds(_attackInterval);
-                    break;
+    //            case ArmyState.Attack:
+    //                Attack();
+    //                yield return new WaitForSeconds(_attackInterval);
+    //                break;
 
-                case ArmyState.Dead:
+    //            case ArmyState.Dead:
 
-                    isPlay = false;
-                    yield return null;
-                    break;
-            }
-
-
-
-            yield return null;
-        }
-
-        // add Victory Animation
-
-    }
-
-
-    protected virtual void Attack()
-    {
-        if (_target == null || _target._currentHP <= 0)
-        {
-            _target = null;
-            _armyState = ArmyState.Wait;
-
-        }
-        else
-        {
-            _target.OnDamage(_damage);
-
-        }
-
-
-    }
-
-    protected virtual void OnDamage()
-    {
-
-    }
+    //                isPlay = false;
+    //                yield return null;
+    //                break;
+    //        }
 
 
 
-    protected virtual void FindTarget()
-    {
-        if (_puzzleManager._enemyList.Count < 1)
-        {
-            isPlay = false;
-            _armyState = ArmyState.Victory;
-            //Debug.Log("Test1");
-            Debug.Log(_puzzleManager._enemyList.Count);
-        }
-        else
-        {
-            _target = _puzzleManager._enemyList[0];
-            //Debug.Log(_puzzleManager);
-            Debug.Log(_puzzleManager._enemyList.Count);
+    //        yield return null;
+    //    }
+
+    //    // add Victory Animation
+
+    //}
 
 
-            if (_puzzleManager._enemyList.Count > 2)
-            {
+    //protected virtual void Attack()
+    //{
+    //    if (_target == null || _target._currentHP <= 0)
+    //    {
+    //        _target = null;
+    //        _armyState = ArmyState.Wait;
 
-                for (int i = 1; i < _puzzleManager._enemyList.Count; i++)
-                {
-                    _target = Vector3.Distance(transform.position, _puzzleManager._enemyList[i].transform.position)
-                    < Vector3.Distance(transform.position, _target.transform.position)
-                    ? _puzzleManager._enemyList[i] : _target;
-                }
-            }
-        }
+    //    }
+    //    else
+    //    {
+    //        _target.OnDamage(_damage);
 
-        if (_target == null)
-        {
-            _armyState = ArmyState.Victory;
-            Debug.Log("Test2");
-            //UnityEditor.EditorApplication.isPaused = true;
-        }
-        else if (_target._currentHP <= 0)
-        {
-            _target = null;
-            _armyState = ArmyState.Wait;
+    //    }
 
-        }
-        else
-        {
-            _armyState = ArmyState.Move;
-        }
+
+    //}
+
+    //protected virtual void OnDamage(float _enemyDamage )
+    //{
+    //    _currentHP -= _enemyDamage;
+    //    if (_currentHP <= 0) _armyState = ArmyState.Dead;
+    //}
 
 
 
-    }
+    //protected virtual void FindTarget()
+    //{
+    //    if (_puzzleManager._enemyList.Count < 1)
+    //    {
+    //        isPlay = false;
+    //        _armyState = ArmyState.Victory;
+
+    //    }
+    //    else
+    //    {
+    //        _target = _puzzleManager._enemyList[0];
+
+
+
+    //        if (_puzzleManager._enemyList.Count > 2)
+    //        {
+
+    //            for (int i = 1; i < _puzzleManager._enemyList.Count; i++)
+    //            {
+    //                _target = Vector3.Distance(transform.position, _puzzleManager._enemyList[i].transform.position)
+    //                < Vector3.Distance(transform.position, _target.transform.position)
+    //                ? _puzzleManager._enemyList[i] : _target;
+    //            }
+    //        }
+    //    }
+
+    //    if (_target == null)
+    //    {
+    //        _armyState = ArmyState.Victory;
+    //        Debug.Log("Test2");
+
+    //    }
+    //    else if (_target._currentHP <= 0)
+    //    {
+    //        _target = null;
+    //        _armyState = ArmyState.Wait;
+
+    //    }
+    //    else
+    //    {
+    //        _armyState = ArmyState.Move;
+    //    }
+
+
+
+    //}
 
 
 

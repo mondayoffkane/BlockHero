@@ -11,6 +11,8 @@ public class UI_GameScene : UI_Scene
     enum Buttons
     {
         Clear_Button,
+        Retry_Button,
+        Lobby_Button,
     }
     enum Texts
     {
@@ -27,6 +29,7 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel,
         Battle_Panel,
         Clear_Panel,
+        Fail_Panel,
     }
     // ========= val =====================
 
@@ -34,11 +37,14 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel,
         Battle_Panel,
         Clear_Panel
+        , Fail_Panel
         ;
     public Text MoveCountText
         ;
 
     public Button Clear_Button
+        , Retry_Button
+        , Lobby_Button
         ;
 
     // ============================
@@ -60,10 +66,14 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel = GetObject(GameObjects.Puzzle_Panel);
         Battle_Panel = GetObject(GameObjects.Battle_Panel);
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
+        Fail_Panel = GetObject(GameObjects.Fail_Panel);
+
+
 
 
         Clear_Button = GetButton(Buttons.Clear_Button);
-
+        Retry_Button = GetButton(Buttons.Retry_Button);
+        Lobby_Button = GetButton(Buttons.Lobby_Button);
 
 
         //ChangeCountText = GetText(Texts.ChangeCountText);
@@ -71,7 +81,8 @@ public class UI_GameScene : UI_Scene
         // =====Button Event==============
 
         Clear_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
-
+        Retry_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
+        Lobby_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
 
         // ========================
 
@@ -92,6 +103,8 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel.SetActive(false);
         Battle_Panel.SetActive(false);
         Clear_Panel.SetActive(false);
+        Fail_Panel.SetActive(false);
+
         switch (_num)
         {
             case 0:

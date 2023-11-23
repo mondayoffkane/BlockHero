@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1596346569924778532}
   - component: {fileID: 5966449221322036779}
   - component: {fileID: 3143548659670751539}
-  - component: {fileID: 8326125777959958556}
   - component: {fileID: -7209439683150739762}
   m_Layer: 0
   m_Name: Enemy_Pref
@@ -109,22 +108,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &8326125777959958556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3838196733914510387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafa0c6010e1b483a9e2bc06ac93ad19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHP: 100
-  _currentHP: 0
-  _speed: 0
-  _damage: 0
 --- !u!54 &-7209439683150739762
 Rigidbody:
   m_ObjectHideFlags: 0

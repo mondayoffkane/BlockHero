@@ -150,6 +150,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.321945, y: 0.35809112, z: 7.321945}
   m_Center: {x: 6.6609726, y: 0.17904541, z: 8.3636e-18}
+--- !u!1 &73704990 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 086c68f3818714d928138f9a6fc7efc0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1972754388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &110550178
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb8cb2b504a63466db6fe552af59d193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentStage: {fileID: 0}
+  _currentStage: {fileID: 11400000, guid: 4dd9af601d49c4123b55b17a2395f52f, type: 2}
   _puzzleState: 0
   _selectBlock: {fileID: 0}
   _targetBlock: {fileID: 0}
@@ -449,11 +455,13 @@ MonoBehaviour:
   _posInterval: {x: 0, y: -0.15}
   _blockMoveSpeed: 0.2
   _camz: 10
+  _gridObj: {fileID: 73704990}
   _selectHeroes:
   - {fileID: 11400000, guid: 215f655ff278b4678b2f5d6965df5dc8, type: 2}
   - {fileID: 11400000, guid: 63c3e1baa574c42038321035f104002e, type: 2}
   - {fileID: 11400000, guid: 72fc98503ad8b4580b1a3719533aebd4, type: 2}
   - {fileID: 11400000, guid: 85102cdb5aba444788a9a298acfe4d16, type: 2}
+  _heroList: []
   _enemyList: []
   _jumpCount: 2
   _jumpPower: 1
@@ -1857,10 +1865,45 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 826b6bb32c67644c3be1b3e8b002cee4, type: 2}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_DirtyAABB
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: -0.00000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: -0.009999868
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 3.0000005
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.010000044
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 086c68f3818714d928138f9a6fc7efc0,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 4.0000005
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 086c68f3818714d928138f9a6fc7efc0,
         type: 3}
       propertyPath: m_Name
-      value: Map-Tile
+      value: Grid_Tile
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 086c68f3818714d928138f9a6fc7efc0,
         type: 3}

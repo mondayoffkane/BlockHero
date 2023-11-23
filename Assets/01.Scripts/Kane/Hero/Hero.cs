@@ -9,7 +9,7 @@ using Sirenix.OdinInspector;
 
 public class Hero : MonoBehaviour
 {
-
+    [FoldoutGroup("Army")] public int _level;
     [FoldoutGroup("Army")] public float _maxHP;
     [FoldoutGroup("Army")] public float _currentHP;
     [FoldoutGroup("Army")] public float _damage;
@@ -35,7 +35,7 @@ public class Hero : MonoBehaviour
     public ArmyState _armyState;
 
     protected bool isFirst = true;
-    protected Rigidbody _rig;
+    //protected Rigidbody _rig;
     protected BoxCollider[] _colls;
 
     protected PuzzleManager _puzzleManager;
@@ -43,42 +43,51 @@ public class Hero : MonoBehaviour
 
     // ===============================
 
-    private void OnEnable()
+
+    public void Setting()
     {
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
-    }
 
-    public void InitStatus( int _level)
-    {
-        Debug.Log("Set");
-        //_heroStatus = _status;
-        _maxHP = _heroStatus._maxHP[_level];
-        _currentHP = _maxHP;
-        _damage = _heroStatus._damages[_level];
-        _attackRange = _heroStatus._attackRange[_level];
-        _attackInterval = _heroStatus._attackInterval[_level];
-        _speed = _heroStatus._speeds[_level];
-
-
-        if (_rig == null) _rig = GetComponent<Rigidbody>();
+        //if (_rig == null) _rig = GetComponent<Rigidbody>();
         if (_colls == null) _colls = GetComponents<BoxCollider>();
 
-        _rig.isKinematic = true;
+        //_rig.isKinematic = true;
         _colls[1].enabled = false;
+    }
+
+
+    public void InitStatus(int Level)
+    {
+        _level = Level;
+        _maxHP = _heroStatus._maxHP[Level - 1];
+        _currentHP = _maxHP;
+        _damage = _heroStatus._damages[Level - 1];
+        _attackRange = _heroStatus._attackRange[Level - 1];
+        _attackInterval = _heroStatus._attackInterval[Level - 1];
+        _speed = _heroStatus._speeds[Level - 1];
+
+
 
 
     }
 
-    public virtual void Fight(int _level)
+    public void PushHeroList()
     {
-        Debug.Log("Parent");
+        _puzzleManager._heroList.Add(this);
+    }
+
+
+    public virtual void Fight()
+    {
+
+
     }
 
 
 
     protected virtual void Attack()
     {
-        if (_target == null || _target._currentHP <= 0)
+        if (_target == null || _target._enemyState == Enemy.EnemyState.Dead)
         {
             _target = null;
             _armyState = ArmyState.Wait;
@@ -87,33 +96,47 @@ public class Hero : MonoBehaviour
         else
         {
             _target.OnDamage(_damage);
-
+            _armyState = ArmyState.Wait;
         }
 
 
     }
 
-    protected virtual void OnDamage(float _enemyDamage)
+    public virtual void OnDamage(float _enemyDamage)
     {
         _currentHP -= _enemyDamage;
-        if (_currentHP <= 0) _armyState = ArmyState.Dead;
+        if (_currentHP <= 0)
+        {
+            Dead();
+        }
     }
 
+    public void Dead()
+    {
+        _armyState = ArmyState.Dead;
+        _puzzleManager._heroList.Remove(this);
+        Managers._puzzleManager.DeadArnmyNEnemy(true);
+        transform.gameObject.SetActive(false);
+        //Managers.Pool.Push(transform.GetComponent<Poolable>());
+        //Destroy(this);
+
+    }
 
 
     protected virtual void FindTarget()
     {
+
         if (_puzzleManager._enemyList.Count < 1)
         {
+
             isPlay = false;
             _armyState = ArmyState.Victory;
 
         }
         else
         {
+
             _target = _puzzleManager._enemyList[0];
-
-
 
             if (_puzzleManager._enemyList.Count > 2)
             {
@@ -130,11 +153,12 @@ public class Hero : MonoBehaviour
         if (_target == null)
         {
             _armyState = ArmyState.Victory;
-            Debug.Log("Test2");
+
 
         }
-        else if (_target._currentHP <= 0)
+        else if (_target._currentHP <= 0 || _target._enemyState == Enemy.EnemyState.Dead)
         {
+            Debug.Log("enemy is dead");
             _target = null;
             _armyState = ArmyState.Wait;
 

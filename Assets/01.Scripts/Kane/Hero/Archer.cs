@@ -5,11 +5,14 @@ using UnityEngine;
 public class Archer : Hero
 {
 
-    public override void Fight(int _level)
+
+    public override void Fight()
     {
-        Debug.Log("Child");
+
+
         StartCoroutine(Cor_Fight());
-        InitStatus(_level - 1);
+
+
     }
 
 
@@ -18,7 +21,7 @@ public class Archer : Hero
         yield return null;
 
         isPlay = true;
-        _rig.isKinematic = false;
+        //_rig.isKinematic = false;
         _colls[1].enabled = true;
 
         _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
@@ -33,7 +36,7 @@ public class Archer : Hero
                     if (_target == null) FindTarget();
                     else _armyState = ArmyState.Move;
 
-                    yield return null;
+                    //yield return null;
                     break;
 
                 case ArmyState.Move:
@@ -53,7 +56,7 @@ public class Archer : Hero
                     {
                         _armyState = ArmyState.Wait;
                     }
-                    yield return null;
+                    //yield return null;
                     break;
 
                 case ArmyState.Attack:
@@ -64,7 +67,7 @@ public class Archer : Hero
                 case ArmyState.Dead:
 
                     isPlay = false;
-                    yield return null;
+                    //yield return null;
                     break;
             }
 
@@ -76,12 +79,6 @@ public class Archer : Hero
         // add Victory Animation
 
     }
-
-
-
-
-
-
 
 
 

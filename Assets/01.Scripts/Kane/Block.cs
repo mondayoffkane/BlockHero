@@ -54,6 +54,9 @@ public class Block : MonoBehaviour
 
     [SerializeField] PuzzleManager _puzzleManager;
 
+
+
+
     public void SetType(HeroStatus _heroStat, int _num)
     {
         if (_blockHero != null) Destroy(_blockHero);
@@ -79,9 +82,12 @@ public class Block : MonoBehaviour
                 break;
         }
 
+
+
         _meshes = _heroStat._meshes;
         GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
         _blockHero._heroStatus = _heroStat;
+        _blockHero.Setting();
 
     }
 
@@ -95,6 +101,7 @@ public class Block : MonoBehaviour
         if (isNew == false)
         {
             _level++;
+            //Debug.Log("Level :" + _level);
 
         }
         else
@@ -113,6 +120,10 @@ public class Block : MonoBehaviour
                 .AppendCallback(() => GetComponent<MeshFilter>().sharedMesh = _meshes[_level])
                  .Append(transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce))
                  ;
+
+            //Debug.Log("Mesh length :" + _meshes.Length);
+            //Debug.Log(_meshes[_level]);
+
         }
         else isFirst = false;
 
@@ -180,13 +191,24 @@ public class Block : MonoBehaviour
     {
         if (_level > 0)
         {
+            _blockHero.PushHeroList();
+            _blockHero.InitStatus(_level);
+            //_blockHero.Fight(_level);
 
             DOTween.Sequence()
                 .AppendInterval(0.5f)
                 .Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
-                .AppendInterval(1f)
-                .AppendCallback(() => _blockHero.Fight(_level));
+                .AppendInterval(0.5f)
+                .AppendCallback(() => _blockHero.Fight());
         }
+        else
+        {
+            transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
+        }
+
+
+
+
     }
 
 

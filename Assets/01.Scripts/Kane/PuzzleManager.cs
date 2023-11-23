@@ -54,6 +54,7 @@ public class PuzzleManager : MonoBehaviour
 
     [TabGroup("Puzzle")] public float _blockMoveSpeed = 0.5f;
     [TabGroup("Puzzle")] public float _camz = 10f;
+    [TabGroup("Puzzle")] public GameObject _gridObj;
 
     // ======== Hero Type
     //[TabGroup("Hero")] public Mesh[] _Hero_0_Meshes;
@@ -71,7 +72,7 @@ public class PuzzleManager : MonoBehaviour
 
     // ======= Battle
 
-
+    [TabGroup("Battle")] public List<Hero> _heroList = new List<Hero>();
     [TabGroup("Battle")] public List<Enemy> _enemyList = new List<Enemy>();
 
 
@@ -137,20 +138,24 @@ public class PuzzleManager : MonoBehaviour
 
     public void LoadStage()
     {
+        Managers._gameUI.ChangePanel(1);
+        _gridObj.transform.DOLocalMoveY(0f, 0.5f).SetEase(Ease.Linear);
         InitStage();
 
-        Managers._gameUI.MoveCountText.text = $"{_changeCount}";
-        Managers._gameUI.ChangePanel(1);
-        //CamChange();
+        this.TaskDelay(1f, (() =>
+        {
+            Managers._gameUI.MoveCountText.text = $"{_changeCount}";
 
-        SpawnBlock();
 
-        //_currentStage = Resources.Load<StageData> // will change
+            SpawnBlock();
+        }));
+
+
 
     }
     public void InitStage()
     {
-
+        //Debug.Log("Init Stage");
 
         for (int i = 0; i < _size.x; i++)
         {
@@ -159,16 +164,35 @@ public class PuzzleManager : MonoBehaviour
                 if (_grid[i, j] != null)
                 {
                     Managers.Pool.Push(_grid[i, j].GetComponent<Poolable>());
-                    _grid[i, j] = null;
                 }
+                _grid[i, j] = null;
+
             }
         }
+        _grid.Initialize();
 
+        //UnityEditor.EditorApplication.isPaused = true;
 
         _changeCount = 10;
         CamChange();
 
         _puzzleState = PuzzleState.BlockSpawn;
+
+        for (int i = 0; i < _heroList.Count; i++)
+        {
+            Managers.Pool.Push(_heroList[i].GetComponent<Poolable>());
+        }
+        _heroList.Clear();
+
+        for (int i = 0; i < _enemyList.Count; i++)
+        {
+            Managers.Pool.Push(_enemyList[i].GetComponent<Poolable>());
+        }
+        _enemyList.Clear();
+
+
+
+
 
     }
 
@@ -325,6 +349,7 @@ public class PuzzleManager : MonoBehaviour
     [Button]
     public void CheckBlock() // check 3 match
     {
+        //Debug.Log("Check Block");
         _puzzleState = PuzzleState.BlockCheck;
         bool ExistMatch = false;
         StartCoroutine(Cor_CheckBlock());
@@ -414,6 +439,7 @@ public class PuzzleManager : MonoBehaviour
                     //FIghtMode();
 
                     CamChange(false);
+                    Managers._gameUI.ChangePanel(2);
                     this.TaskDelay(1.5f, FIghtMode);
 
                 }
@@ -478,6 +504,7 @@ public class PuzzleManager : MonoBehaviour
     [Button]
     public void SpawnBlock()
     {
+        //Debug.Log("Spawn Block");
         _puzzleState = PuzzleState.BlockSpawn;
 
         if (_blockGroup == null) _blockGroup = new GameObject().transform;
@@ -501,13 +528,15 @@ public class PuzzleManager : MonoBehaviour
             {
                 for (int j = 0; j < _size.y; j++)
                 {
-                    if (_grid[i, j] == false)
+                    if (_grid[i, j] == null)
                     {
                         Block _block = Managers.Pool.Pop(_block_Pref, transform).GetComponent<Block>();
                         _block.transform.SetParent(_blockGroup);
+                        _block.name = $"({i},{j})";
                         //_block._blockType = (Block.BlockType)Random.Range(0, 4);
                         int _num = Random.Range(0, 4);
                         //_block.SetType(_heroAllMeshes[_num], _num);
+                        _block._level = 0;
                         _block.SetType(_selectHeroes[_num], _num);
                         _block.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
                         _block.Init(true);
@@ -516,9 +545,15 @@ public class PuzzleManager : MonoBehaviour
                         _block.isConnect = false;
                         _grid[i, j] = _block;
                         _block.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
+
+                        //Debug.Log("Spawn");
+                        //yield return null;
+                        //UnityEditor.EditorApplication.isPaused = true;
                     }
                 }
             }
+
+            //UnityEditor.EditorApplication.isPaused = true;
 
             yield return new WaitForSeconds(_blockMoveSpeed + 0.2f);
             CheckBlock();
@@ -529,6 +564,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void SortGrid()
     {
+        //Debug.Log("Sort Block");
         for (int k = _size.y - 1; k >= 0; k--)
         {
             for (int j = _size.y - 1; j > 0; j--)
@@ -714,7 +750,16 @@ public class PuzzleManager : MonoBehaviour
 
     public void FIghtMode()
     {
+
+
         SpawnEnemy();
+        //this.TaskDelay(1f, SpawnEnemy);
+
+        _gridObj.transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
+
+
+
+        //SpawnEnemy();
 
         for (int i = 0; i < _size.x; i++)
         {
@@ -724,9 +769,11 @@ public class PuzzleManager : MonoBehaviour
             }
         }
 
+        //this.TaskDelay(2f, (() => _puzzleState = PuzzleState.Fight));
         _puzzleState = PuzzleState.Fight;
 
-        Managers._gameUI.ChangePanel(2);
+
+
 
 
 
@@ -737,30 +784,67 @@ public class PuzzleManager : MonoBehaviour
     {
         _enemyList = new List<Enemy>();
 
-        for (int i = 0; i < 10; i++) // Chagne -  _stageData. monster count
+        for (int i = 0; i < _currentStage._maxEnemyCount; i++) // Chagne -  _stageData. monster count
         {
-            Enemy _enemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).GetComponent<Enemy>();
 
-            _enemy.Init();
-            _enemy.transform.position = new Vector3(0f, 0f, 11f);
+            EnemyStatus _newStatus = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)];
 
-            _enemyList.Add(_enemy);
+            Enemy _newEnemy;
+            switch (_newStatus._enemyType)
+            {
+                case EnemyStatus.EnemyType.Mushroom: // monster type : mushroom
+                    _newEnemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).gameObject.AddComponent<Mushroom>();
+                    break;
+
+                default:
+                    _newEnemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).gameObject.AddComponent<Mushroom>();
+                    break;
+            }
+
+
+            _newEnemy.SetStatus(_newStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y)); // random enemy type and Level
+            _newEnemy.InitStatus();
+
+            _newEnemy.Fight();
+            //_enemy.InitStatus(Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y)); // random level
+            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 11f + Random.Range(-3f, 3f));
+
+            _enemyList.Add(_newEnemy);
+            _newEnemy.transform.localScale = Vector3.zero;
+            DOTween.Sequence()
+                .Append(_newEnemy.transform.DOScale(Vector3.one * 0.5f, 1f).SetEase(Ease.Linear))
+                .AppendInterval(0.5f)
+                .OnComplete(() => _newEnemy._enemyState = Enemy.EnemyState.Wait);
+
         }
-        Debug.Log("Spawn complete");
+
     }
 
-    public void DeadEnemy()
+    public void DeadArnmyNEnemy(bool isHero = true)
     {
-        Debug.Log("Manger :" + _enemyList.Count);
-        if (_enemyList.Count < 1)
+        if (isHero)
         {
-            _puzzleState = PuzzleState.Clear;
-            Managers._gameUI.Clear_Panel.SetActive(true);
+            if (_heroList.Count < 1) // Fail Stage
+            {
+                _puzzleState = PuzzleState.Fail;
+                Managers._gameUI.Fail_Panel.SetActive(true);
 
+
+            }
         }
+        else
+        {
+
+            if (_enemyList.Count < 1) // Clear Stage
+            {
+                _puzzleState = PuzzleState.Clear;
+                Managers._gameUI.Clear_Panel.SetActive(true);
+
+            }
+        }
+
+
     }
-
-
 
 
 }

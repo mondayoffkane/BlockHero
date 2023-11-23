@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HeroStatus", menuName = "ScriptableObj/HeroStatus", order = int.MaxValue - 1)]
+[CreateAssetMenu(fileName = "HeroStatus", menuName = "ScriptableObj/HeroStatus", order = int.MaxValue - 2)]
 public class HeroStatus : ScriptableObject
 {
 

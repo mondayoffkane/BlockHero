@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
+
 
 public class Archer : Hero
 {
+
 
 
     public override void Fight()
@@ -21,7 +25,7 @@ public class Archer : Hero
         yield return null;
 
         isPlay = true;
-        //_rig.isKinematic = false;
+        _rig.isKinematic = false;
         _colls[1].enabled = true;
 
         _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
@@ -40,23 +44,28 @@ public class Archer : Hero
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null)
+                    if (_target != null || _target._currentHP > 0)
                     {
 
                         transform.LookAt(_target.transform);
-                        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                         {
                             _armyState = ArmyState.Attack;
                         }
+                        else
+                        {
+                            transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+                        }
 
                     }
                     else
                     {
+                        _target = null;
                         _armyState = ArmyState.Wait;
                     }
-                    //yield return null;
+                    yield return null;
                     break;
 
                 case ArmyState.Attack:
@@ -73,12 +82,42 @@ public class Archer : Hero
 
 
 
-            yield return null;
+            //yield return null;
         }
 
         // add Victory Animation
 
     }
+
+
+    protected override void Attack()
+    {
+
+        ThrowWeapon _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("Weapons/Arrow"), transform).GetComponent<Arrow>();
+
+
+        //_arrow.transform.position = transform.position + Vector3.up * 0.5f;
+        _arrow.SetInit(0, transform.position + Vector3.up * 0.5f);
+
+
+
+        DOTween.Sequence()
+            .Append(_arrow.transform.DOMove(_target.transform.position, 0.5f))
+            .OnComplete(() =>
+            {
+                base.Attack();
+                //this.TaskDelay(0.5f, base.Attack);
+                Managers.Pool.Push(_arrow.GetComponent<Poolable>());
+            });
+
+
+
+
+        //base.Attack();
+
+
+    }
+
 
 
 

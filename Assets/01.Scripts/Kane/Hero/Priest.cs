@@ -23,7 +23,7 @@ public class Priest : Hero
         yield return null;
 
         isPlay = true;
-        //_rig.isKinematic = false;
+        _rig.isKinematic = false;
         _colls[1].enabled = true;
 
         _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
@@ -42,23 +42,28 @@ public class Priest : Hero
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null)
+                    if (_target != null || _target._currentHP > 0)
                     {
 
                         transform.LookAt(_target.transform);
-                        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                         {
                             _armyState = ArmyState.Attack;
                         }
+                        else
+                        {
+                            transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+                        }
 
                     }
                     else
                     {
+                        _target = null;
                         _armyState = ArmyState.Wait;
                     }
-                    //yield return null;
+                    yield return null;
                     break;
 
                 case ArmyState.Attack:
@@ -75,12 +80,11 @@ public class Priest : Hero
 
 
 
-            yield return null;
+            //yield return null;
         }
 
         // add Victory Animation
 
     }
-
 
 }

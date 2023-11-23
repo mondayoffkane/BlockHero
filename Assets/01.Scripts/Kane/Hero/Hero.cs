@@ -35,7 +35,7 @@ public class Hero : MonoBehaviour
     public ArmyState _armyState;
 
     protected bool isFirst = true;
-    //protected Rigidbody _rig;
+    protected Rigidbody _rig;
     protected BoxCollider[] _colls;
 
     protected PuzzleManager _puzzleManager;
@@ -48,10 +48,10 @@ public class Hero : MonoBehaviour
     {
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
 
-        //if (_rig == null) _rig = GetComponent<Rigidbody>();
+        if (_rig == null) _rig = GetComponent<Rigidbody>();
         if (_colls == null) _colls = GetComponents<BoxCollider>();
 
-        //_rig.isKinematic = true;
+        _rig.isKinematic = true;
         _colls[1].enabled = false;
     }
 
@@ -87,17 +87,22 @@ public class Hero : MonoBehaviour
 
     protected virtual void Attack()
     {
+        //if (_target == null || _target._enemyState == Enemy.EnemyState.Dead)
+        //{
+        //    _target = null;
+        //    _armyState = ArmyState.Wait;
+
+        //}
+
+        _target.OnDamage(_damage);
+        //_armyState = ArmyState.Move;
+
         if (_target == null || _target._enemyState == Enemy.EnemyState.Dead)
         {
             _target = null;
             _armyState = ArmyState.Wait;
+        }
 
-        }
-        else
-        {
-            _target.OnDamage(_damage);
-            _armyState = ArmyState.Wait;
-        }
 
 
     }
@@ -172,6 +177,10 @@ public class Hero : MonoBehaviour
 
     }
 
+    public virtual void Skill_1()
+    {
+
+    }
 
 
 

@@ -22,13 +22,13 @@ MonoBehaviour:
   - 20
   - 30
   _attackRange:
-  - 3
-  - 3
-  - 3
+  - 10
+  - 10
+  - 10
   _attackInterval:
   - 1
-  - 0.8
   - 0.5
+  - 0.2
   _speeds:
   - 2
   - 3

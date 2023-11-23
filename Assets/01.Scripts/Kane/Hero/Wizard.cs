@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Wizard : Hero
 {
+
 
 
     public override void Fight()
@@ -21,7 +23,7 @@ public class Wizard : Hero
         yield return null;
 
         isPlay = true;
-        //_rig.isKinematic = false;
+        _rig.isKinematic = false;
         _colls[1].enabled = true;
 
         _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
@@ -40,11 +42,11 @@ public class Wizard : Hero
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null)
+                    if (_target != null || _target._currentHP > 0)
                     {
 
                         transform.LookAt(_target.transform);
-
+                        
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                         {
@@ -58,9 +60,10 @@ public class Wizard : Hero
                     }
                     else
                     {
+                        _target = null;
                         _armyState = ArmyState.Wait;
                     }
-                    //yield return null;
+                    yield return null;
                     break;
 
                 case ArmyState.Attack:
@@ -77,10 +80,37 @@ public class Wizard : Hero
 
 
 
-            yield return null;
+            //yield return null;
         }
 
         // add Victory Animation
+
+    }
+
+    protected override void Attack()
+    {
+
+        ThrowWeapon _magicBall = Managers.Pool.Pop(Resources.Load<GameObject>("Weapons/MagicBall"), transform).GetComponent<MagicBall>();
+
+        //_magicBall.transform.position = transform.position + Vector3.up * 0.5f;
+        _magicBall.SetInit(3, transform.position + Vector3.up * 0.5f);
+
+
+
+        DOTween.Sequence()
+            .Append(_magicBall.transform.DOJump(_target.transform.position, 2, 1, 1f))
+            .OnComplete(() =>
+            {
+                base.Attack();
+                //this.TaskDelay(0.5f, base.Attack);
+                Managers.Pool.Push(_magicBall.GetComponent<Poolable>());
+            });
+
+
+
+
+        //base.Attack();
+
 
     }
 

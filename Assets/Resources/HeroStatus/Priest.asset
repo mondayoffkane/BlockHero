@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e40195a7aa7a0460eb2a8c08ba4c22aa, type: 3}
-  m_Name: Green_Priest
+  m_Name: Priest
   m_EditorClassIdentifier: 
   _heroType: 2
   _maxHP:
@@ -33,7 +33,11 @@ MonoBehaviour:
   - 2
   - 3
   - 4
-  _meshes:
-  - {fileID: -4250068209185078321, guid: e0a9a5876578c4ed588b7ea83ffd2f8e, type: 3}
+  _blockMeshes:
+  - {fileID: 2590332604439406122, guid: 754a66e9991ca49f790098858cfcd616, type: 3}
+  - {fileID: 5169014092656603640, guid: f4c99560103c64c7fb90c27f501f6386, type: 3}
+  - {fileID: -4085016059685924791, guid: a2a12e9a953cd4335850da967f53ea62, type: 3}
+  _heroMeshes:
+  - {fileID: -4250068209185078321, guid: 54ec43ca5b5774b30a9ae51fa85d0745, type: 3}
   - {fileID: -5721928707568378784, guid: fa9e62ec4f54b4dd78ee57c004753430, type: 3}
   - {fileID: 2746735759081937267, guid: ee3df1c83de084d2184119547987aab8, type: 3}

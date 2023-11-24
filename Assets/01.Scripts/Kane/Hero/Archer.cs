@@ -8,6 +8,17 @@ using DG.Tweening;
 public class Archer : Hero
 {
 
+    public override void InitStatus(HeroStatus HeroStatus, int Level)
+    {
+        //_heroStatus = Resources.Load<HeroStatus>($"HeroStatus/{_heroType.ToString()}");
+
+
+
+        base.InitStatus(HeroStatus, Level);
+
+        Fight();
+    }
+
 
 
     public override void Fight()
@@ -22,16 +33,16 @@ public class Archer : Hero
 
     IEnumerator Cor_Fight()
     {
-        yield return null;
+        yield return new WaitForSeconds(1.5f);
 
-        isPlay = true;
-        _rig.isKinematic = false;
-        _colls[1].enabled = true;
+        //isPlay = true;
+        //_rig.isKinematic = false;
+        //_colls[1].enabled = true;
 
-        _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _colls[1].center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
+        _boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+        _boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
-        while (isPlay)
+        while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
 
             switch (_armyState)
@@ -75,7 +86,8 @@ public class Archer : Hero
 
                 case ArmyState.Dead:
 
-                    isPlay = false;
+
+                    //isPlay = false;
                     //yield return null;
                     break;
             }
@@ -93,7 +105,7 @@ public class Archer : Hero
     protected override void Attack()
     {
 
-        ThrowWeapon _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("Weapons/Arrow"), transform).GetComponent<Arrow>();
+        ThrowWeapon _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Arrow"), transform).GetComponent<Arrow>();
 
 
         //_arrow.transform.position = transform.position + Vector3.up * 0.5f;
@@ -118,7 +130,12 @@ public class Archer : Hero
 
     }
 
+    public override void TestFunc()
+    {
+        base.TestFunc();
 
+        Debug.Log("Hero Child");
+    }
 
 
 

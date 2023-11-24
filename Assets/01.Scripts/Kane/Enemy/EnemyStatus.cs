@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyStatus : ScriptableObject
 {
 
-    public enum EnemyType
-    {
-        Mushroom
+    //public enum EnemyType
+    //{
+    //    Mushroom
 
 
-    }
-    public EnemyType _enemyType;
+    //}
+    public Enemy.EnemyType _enemyType;
 
 
     public float[] _maxHP = new float[3];

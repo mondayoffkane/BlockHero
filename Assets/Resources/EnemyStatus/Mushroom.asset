@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e30d30147349c4c378e2a5dd5f513c35, type: 3}
-  m_Name: Mushroom_Status
+  m_Name: Mushroom
   m_EditorClassIdentifier: 
   _enemyType: 0
   _maxHP:

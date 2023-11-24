@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 
+
 public class PuzzleManager : MonoBehaviour
 {
 
@@ -63,6 +64,7 @@ public class PuzzleManager : MonoBehaviour
     //[TabGroup("Hero")] public Mesh[] _Hero_3_Meshes;
 
     [TabGroup("Hero")] public HeroStatus[] _selectHeroes = new HeroStatus[4];
+
 
 
 
@@ -208,6 +210,11 @@ public class PuzzleManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             _changeCount--;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            _changeCount = 0;
+            CheckBlock();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -362,8 +369,8 @@ public class PuzzleManager : MonoBehaviour
             {
                 for (int i = 0; i < _size.x - 2; i++)
                 {
-                    if ((_grid[i, j]._blockType == _grid[i + 1, j]._blockType)
-                        && (_grid[i, j]._blockType == _grid[i + 2, j]._blockType)
+                    if ((_grid[i, j]._heroType == _grid[i + 1, j]._heroType)
+                        && (_grid[i, j]._heroType == _grid[i + 2, j]._heroType)
                         && (_grid[i, j]._level == _grid[i + 1, j]._level)
                         && (_grid[i, j]._level == _grid[i + 2, j]._level)
                         )
@@ -383,8 +390,8 @@ public class PuzzleManager : MonoBehaviour
             {
                 for (int j = 0; j < _size.y - 2; j++)
                 {
-                    if ((_grid[i, j]._blockType == _grid[i, j + 1]._blockType)
-                        && (_grid[i, j]._blockType == _grid[i, j + 2]._blockType)
+                    if ((_grid[i, j]._heroType == _grid[i, j + 1]._heroType)
+                        && (_grid[i, j]._heroType == _grid[i, j + 2]._heroType)
                         && (_grid[i, j]._level == _grid[i, j + 1]._level)
                         && (_grid[i, j]._level == _grid[i, j + 2]._level)
                         )
@@ -480,8 +487,6 @@ public class PuzzleManager : MonoBehaviour
             _grid[_selectBlock._pos.x + 2, _selectBlock._pos.y + 2] = _selectBlock;
             _grid[_targetBlock._pos.x + 2, _targetBlock._pos.y + 2] = _targetBlock;
 
-
-
         }
         else
         {
@@ -511,10 +516,7 @@ public class PuzzleManager : MonoBehaviour
         _blockGroup.name = "BlockGroup";
         _blockGroup.SetParent(transform);
 
-
         //RemoveAllBlock();
-
-
 
         SortGrid();
 
@@ -533,12 +535,12 @@ public class PuzzleManager : MonoBehaviour
                         Block _block = Managers.Pool.Pop(_block_Pref, transform).GetComponent<Block>();
                         _block.transform.SetParent(_blockGroup);
                         _block.name = $"({i},{j})";
-                        //_block._blockType = (Block.BlockType)Random.Range(0, 4);
+
                         int _num = Random.Range(0, 4);
-                        //_block.SetType(_heroAllMeshes[_num], _num);
+
                         _block._level = 0;
                         _block.SetType(_selectHeroes[_num], _num);
-                        _block.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                        _block.transform.rotation = Quaternion.Euler(new Vector3(0f, /*180f*/ 0f, 0f));
                         _block.Init(true);
                         _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);
                         _block.SetPos(i, j);
@@ -546,14 +548,12 @@ public class PuzzleManager : MonoBehaviour
                         _grid[i, j] = _block;
                         _block.gameObject.layer = LayerMask.NameToLayer("WaitBlock");
 
-                        //Debug.Log("Spawn");
-                        //yield return null;
-                        //UnityEditor.EditorApplication.isPaused = true;
+
                     }
                 }
             }
 
-            //UnityEditor.EditorApplication.isPaused = true;
+
 
             yield return new WaitForSeconds(_blockMoveSpeed + 0.2f);
             CheckBlock();
@@ -582,9 +582,6 @@ public class PuzzleManager : MonoBehaviour
                 }
             }
         }
-
-
-
     }
 
 
@@ -718,7 +715,7 @@ public class PuzzleManager : MonoBehaviour
         {
             for (int j = 0; j < _size.y; j++)
             {
-                if (_grid[i, j]._blockType == _selectBlock._blockType
+                if (_grid[i, j]._heroType == _selectBlock._heroType
                     && _grid[i, j]._level == _selectBlock._level)
                 {
                     Vector3 _tempPos = _grid[i, j].transform.position;
@@ -751,70 +748,60 @@ public class PuzzleManager : MonoBehaviour
     public void FIghtMode()
     {
 
-
-        SpawnEnemy();
-        //this.TaskDelay(1f, SpawnEnemy);
-
-        _gridObj.transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
-
-
-
         //SpawnEnemy();
 
-        for (int i = 0; i < _size.x; i++)
-        {
-            for (int j = 0; j < _size.y; j++)
+        DOTween.Sequence().
+            AppendCallback(() =>
             {
-                _grid[i, j].SetFightMode();
-            }
-        }
+                _gridObj.transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
 
-        //this.TaskDelay(2f, (() => _puzzleState = PuzzleState.Fight));
-        _puzzleState = PuzzleState.Fight;
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j].SpawnHero();
+                    }
+                }
+                SpawnEnemy();
+            })
+            .AppendInterval(1.5f)
+            .AppendCallback(() =>
+            {
 
-
-
-
-
+                _puzzleState = PuzzleState.Fight;
+            })
+            ;
 
     }
 
 
     public void SpawnEnemy()
     {
+
         _enemyList = new List<Enemy>();
 
         for (int i = 0; i < _currentStage._maxEnemyCount; i++) // Chagne -  _stageData. monster count
         {
-
-            EnemyStatus _newStatus = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)];
-
-            Enemy _newEnemy;
-            switch (_newStatus._enemyType)
-            {
-                case EnemyStatus.EnemyType.Mushroom: // monster type : mushroom
-                    _newEnemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).gameObject.AddComponent<Mushroom>();
-                    break;
-
-                default:
-                    _newEnemy = Managers.Pool.Pop(Resources.Load<GameObject>("Enemy_Pref")).gameObject.AddComponent<Mushroom>();
-                    break;
-            }
+            Enemy.EnemyType _enemyType = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)]._enemyType;
 
 
-            _newEnemy.SetStatus(_newStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y)); // random enemy type and Level
-            _newEnemy.InitStatus();
+            GameObject _enemyPref;
+            string _typeString = _enemyType.ToString();
 
-            _newEnemy.Fight();
-            //_enemy.InitStatus(Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y)); // random level
-            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 11f + Random.Range(-3f, 3f));
+            _enemyPref = Resources.Load<GameObject>($"Enemy_Prefs/{_typeString}_Pref");
+            System.Type _enemyClassType = System.Type.GetType(_typeString);
+            Enemy _newEnemy = (Enemy)Managers.Pool.Pop(_enemyPref).GetComponent(_enemyClassType);
+
+            _newEnemy.transform.position = transform.position;
+
+            EnemyStatus _enemyStatus = Resources.Load<EnemyStatus>($"EnemyStatus/{_enemyType.ToString()}");
 
             _enemyList.Add(_newEnemy);
-            _newEnemy.transform.localScale = Vector3.zero;
-            DOTween.Sequence()
-                .Append(_newEnemy.transform.DOScale(Vector3.one * 0.5f, 1f).SetEase(Ease.Linear))
-                .AppendInterval(0.5f)
-                .OnComplete(() => _newEnemy._enemyState = Enemy.EnemyState.Wait);
+            _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
+
+            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 11f + Random.Range(-3f, 3f));
+
+
 
         }
 

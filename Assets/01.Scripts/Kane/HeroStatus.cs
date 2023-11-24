@@ -5,16 +5,16 @@ using UnityEngine;
 public class HeroStatus : ScriptableObject
 {
 
-    public enum HeroType
-    {
-        Viking,
-        Archer,
-        Priest,
-        Wizard
+    //public enum HeroType
+    //{
+    //    Viking,
+    //    Archer,
+    //    Priest,
+    //    Wizard
 
 
-    }
-    public HeroType _heroType;
+    //}
+    public Hero.HeroType _heroType;
 
 
     public float[] _maxHP = new float[3];
@@ -23,7 +23,8 @@ public class HeroStatus : ScriptableObject
     public float[] _attackInterval = new float[3];
     public float[] _speeds = new float[3];
 
-    public Mesh[] _meshes = new Mesh[3];
+    public Mesh[] _blockMeshes = new Mesh[3];
+    public Mesh[] _heroMeshes = new Mesh[3];
 
 
 

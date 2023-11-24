@@ -7,6 +7,13 @@ public class Priest : Hero
 
 
 
+    public override void InitStatus(HeroStatus HeroStatus, int Level)
+    {
+        base.InitStatus(HeroStatus, Level);
+        Fight();
+    }
+
+
 
     public override void Fight()
     {
@@ -20,16 +27,16 @@ public class Priest : Hero
 
     IEnumerator Cor_Fight()
     {
-        yield return null;
+        yield return new WaitForSeconds(1.5f);
 
-        isPlay = true;
-        _rig.isKinematic = false;
-        _colls[1].enabled = true;
+        //isPlay = true;
+        //_rig.isKinematic = false;
+        //_colls[1].enabled = true;
 
-        _colls[1].size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _colls[1].center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
+        _boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+        _boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
-        while (isPlay)
+        while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
 
             switch (_armyState)
@@ -73,7 +80,7 @@ public class Priest : Hero
 
                 case ArmyState.Dead:
 
-                    isPlay = false;
+                    //isPlay = false;
                     //yield return null;
                     break;
             }
@@ -86,5 +93,10 @@ public class Priest : Hero
         // add Victory Animation
 
     }
+    public override void TestFunc()
+    {
+        base.TestFunc();
 
+        Debug.Log("Hero Child");
+    }
 }

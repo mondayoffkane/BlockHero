@@ -5,6 +5,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
+    public enum EnemyType
+    {
+        Mushroom
+
+
+    }
+    public EnemyType _enemyType;
+
     public int _level;
     public float _maxHP;
     public float _currentHP;
@@ -22,6 +30,8 @@ public class Enemy : MonoBehaviour
 
     // =========================================
 
+
+
     public enum EnemyState
     {
         Init,
@@ -34,13 +44,13 @@ public class Enemy : MonoBehaviour
     public EnemyState _enemyState;
 
 
-    public virtual void SetStatus(EnemyStatus _EnemyStatus, int Level)
-    {
-        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
-        _enemyStatus = _EnemyStatus;
-        _level = Level;
+    //public virtual void SetStatus(EnemyStatus _EnemyStatus, int Level)
+    //{
+    //    if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+    //    _enemyStatus = _EnemyStatus;
+    //    _level = Level;
 
-    }
+    //}
 
 
 
@@ -49,8 +59,16 @@ public class Enemy : MonoBehaviour
 
     }
 
-    public virtual void InitStatus()
+
+
+
+    public virtual void InitStatus(EnemyStatus EnemyStatus, int Level)
     {
+        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+
+        _enemyStatus = EnemyStatus;
+        _level = Level;
+
         _maxHP = _enemyStatus._maxHP[_level];
         _currentHP = _maxHP;
         _damage = _enemyStatus._damages[_level];

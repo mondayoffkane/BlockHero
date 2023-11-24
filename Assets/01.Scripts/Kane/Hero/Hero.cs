@@ -9,6 +9,20 @@ using Sirenix.OdinInspector;
 
 public class Hero : MonoBehaviour
 {
+    public enum HeroType
+    {
+        Viking,
+        Archer,
+        Priest,
+        Wizard
+
+
+    }
+    public HeroType _heroType;
+
+
+
+
     [FoldoutGroup("Army")] public int _level;
     [FoldoutGroup("Army")] public float _maxHP;
     [FoldoutGroup("Army")] public float _currentHP;
@@ -18,7 +32,7 @@ public class Hero : MonoBehaviour
     [FoldoutGroup("Army")] public float _attackInterval;
     [FoldoutGroup("Army")] public float _speed;
     [FoldoutGroup("Army")] public Enemy _target;
-    [FoldoutGroup("Army")] public bool isPlay = true;
+    //[FoldoutGroup("Army")] public bool isPlay = true;
     //bool isFirst = true;
 
 
@@ -35,8 +49,9 @@ public class Hero : MonoBehaviour
     public ArmyState _armyState;
 
     protected bool isFirst = true;
-    protected Rigidbody _rig;
-    protected BoxCollider[] _colls;
+    //protected Rigidbody _rig;
+    //protected BoxCollider[] _colls;
+    protected BoxCollider _boxColl;
 
     protected PuzzleManager _puzzleManager;
     public HeroStatus _heroStatus;
@@ -44,21 +59,18 @@ public class Hero : MonoBehaviour
     // ===============================
 
 
-    public void Setting()
+
+
+    public virtual void InitStatus(HeroStatus HeroStatus, int Level)
     {
-        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+        _heroStatus = HeroStatus;
 
-        if (_rig == null) _rig = GetComponent<Rigidbody>();
-        if (_colls == null) _colls = GetComponents<BoxCollider>();
+        _target = null;
+        _armyState = ArmyState.Wait;
 
-        _rig.isKinematic = true;
-        _colls[1].enabled = false;
-    }
-
-
-    public void InitStatus(int Level)
-    {
+        //_heroStatus = HeroStatus;
         _level = Level;
+
         _maxHP = _heroStatus._maxHP[Level - 1];
         _currentHP = _maxHP;
         _damage = _heroStatus._damages[Level - 1];
@@ -67,12 +79,13 @@ public class Hero : MonoBehaviour
         _speed = _heroStatus._speeds[Level - 1];
 
 
-
+        if (_boxColl == null) _boxColl = GetComponent<BoxCollider>();
 
     }
 
     public void PushHeroList()
     {
+        if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
         _puzzleManager._heroList.Add(this);
     }
 
@@ -97,7 +110,7 @@ public class Hero : MonoBehaviour
         _target.OnDamage(_damage);
         //_armyState = ArmyState.Move;
 
-        if (_target == null || _target._enemyState == Enemy.EnemyState.Dead)
+        if (_target == null || _target._enemyState == Enemy.EnemyState.Dead || Vector3.Distance(transform.position, _target.transform.position) > _attackRange)
         {
             _target = null;
             _armyState = ArmyState.Wait;
@@ -134,7 +147,7 @@ public class Hero : MonoBehaviour
         if (_puzzleManager._enemyList.Count < 1)
         {
 
-            isPlay = false;
+            //isPlay = false;
             _armyState = ArmyState.Victory;
 
         }
@@ -184,6 +197,12 @@ public class Hero : MonoBehaviour
 
 
 
+
+    public virtual void TestFunc()
+    {
+        Debug.Log("Hero Parent");
+
+    }
 
 
 

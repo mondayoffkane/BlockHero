@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e40195a7aa7a0460eb2a8c08ba4c22aa, type: 3}
-  m_Name: Red_Viking
+  m_Name: Viking
   m_EditorClassIdentifier: 
   _heroType: 0
   _maxHP:
@@ -33,7 +33,11 @@ MonoBehaviour:
   - 2
   - 3
   - 4
-  _meshes:
-  - {fileID: 1255573449699797483, guid: d5b3e99b5ce2547698889da0a65b28a7, type: 3}
+  _blockMeshes:
+  - {fileID: -8808905338677035017, guid: f5ac24523ee584277835edad47c36eb9, type: 3}
+  - {fileID: 3402968950680987136, guid: 35bdc6c24a56448289efd33b854043b1, type: 3}
+  - {fileID: -947329783035375162, guid: c36b3f525cdf14f03b69c9cb37d2efc5, type: 3}
+  _heroMeshes:
+  - {fileID: 1255573449699797483, guid: da7b934dadcdb4364a1cc1b7088af99c, type: 3}
   - {fileID: -8750291049792945062, guid: 86a742c12d77b45e68e040d8a5135419, type: 3}
   - {fileID: 9110219204681876776, guid: 97f85dbff950f4942b60f49cda3436e7, type: 3}

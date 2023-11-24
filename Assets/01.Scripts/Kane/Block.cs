@@ -5,50 +5,24 @@ using DG.Tweening;
 //using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using Cysharp.Threading.Tasks.Linq;
+using System;
 
 
 public class Block : MonoBehaviour
 {
+    [FoldoutGroup("Block")] public Hero.HeroType _heroType;
     [FoldoutGroup("Block")] public bool isConnect = false;
     [FoldoutGroup("Block")] public Vector2Int _pos;
-    //[FoldoutGroup("Block")] public Material[] _mats;
-
     [FoldoutGroup("Block")] public Mesh[] _meshes;
-    public enum BlockType
-    {
-        Red, // viking
-        Yellow, // archer
-        Green, // priest
-        Blue // wizard
-
-    }
-    [FoldoutGroup("Block")] public BlockType _blockType;
     [FoldoutGroup("Block")] public int _level;
     [FoldoutGroup("Block")] public AnimationCurve _ease;
     [FoldoutGroup("Block")] public bool isMatch = false;
     [FoldoutGroup("Block")] public bool isPromotion = false;
 
-    public Hero _blockHero;
-
-
 
     // ====== Hero==============================
 
-
-    //[FoldoutGroup("Army")] public float _maxHP;
-    //[FoldoutGroup("Army")] public float _currentHP;
-    //[FoldoutGroup("Army")] public float _damage;
-    //[FoldoutGroup("Army")] public float _targetRange;
-    //[FoldoutGroup("Army")] public float _attackRange;
-    //[FoldoutGroup("Army")] public float _attackInterval;
-    //[FoldoutGroup("Army")] public float _speed;
-    //[FoldoutGroup("Army")] public Enemy _target;
-    //[FoldoutGroup("Army")] public bool isPlay = true;
-
-
-    bool isFirst = true;
-    //Rigidbody _rig;
-    //BoxCollider[] _colls;
+    bool isFirstSpawn = true;
 
     // ==========================================================
 
@@ -59,35 +33,12 @@ public class Block : MonoBehaviour
 
     public void SetType(HeroStatus _heroStat, int _num)
     {
-        if (_blockHero != null) Destroy(_blockHero);
 
-        _blockType = (BlockType)_num;
+        _heroType = _heroStat._heroType;
 
-        switch (_blockType)
-        {
-            case BlockType.Red:
-                _blockHero = this.gameObject.AddComponent<Viking>();
-                break;
-
-            case BlockType.Blue:
-                _blockHero = this.gameObject.AddComponent<Wizard>();
-                break;
-
-            case BlockType.Green:
-                _blockHero = this.gameObject.AddComponent<Priest>();
-                break;
-
-            case BlockType.Yellow:
-                _blockHero = this.gameObject.AddComponent<Archer>();
-                break;
-        }
-
-
-
-        _meshes = _heroStat._meshes;
+        _meshes = _heroStat._blockMeshes;
         GetComponent<MeshFilter>().sharedMesh = _meshes[_level];
-        _blockHero._heroStatus = _heroStat;
-        _blockHero.Setting();
+
 
     }
 
@@ -96,12 +47,10 @@ public class Block : MonoBehaviour
 
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager; //PuzzleManager._instance;  //
 
-
-
         if (isNew == false)
         {
             _level++;
-            //Debug.Log("Level :" + _level);
+
 
         }
         else
@@ -112,7 +61,7 @@ public class Block : MonoBehaviour
         isPromotion = false;
 
 
-        if (isFirst == false)
+        if (isFirstSpawn == false)
         {
 
             DOTween.Sequence()
@@ -125,7 +74,7 @@ public class Block : MonoBehaviour
             //Debug.Log(_meshes[_level]);
 
         }
-        else isFirst = false;
+        else isFirstSpawn = false;
 
 
     }
@@ -187,24 +136,30 @@ public class Block : MonoBehaviour
     // ==== Hero ================================================================================
 
 
-    public void SetFightMode()
+    public void SpawnHero() //  Spawn Army
     {
+
         if (_level > 0)
         {
-            _blockHero.PushHeroList();
-            _blockHero.InitStatus(_level);
-            //_blockHero.Fight(_level);
+            GameObject _heroPref;
+            string _typeString = _heroType.ToString();
 
-            DOTween.Sequence()
-                .AppendInterval(0.5f)
-                .Append(transform.DORotate(Vector3.zero, 0.5f).SetEase(Ease.Linear))
-                .AppendInterval(0.5f)
-                .AppendCallback(() => _blockHero.Fight());
+            _heroPref = Resources.Load<GameObject>($"Hero_Prefs/{_typeString}_Pref");
+            Type _heroClassType = Type.GetType(_typeString);
+            Hero _newBlockHero = (Hero)Managers.Pool.Pop(_heroPref).GetComponent(_heroClassType);
+
+            _newBlockHero.transform.position = transform.position;
+
+            HeroStatus _heroStatus = Resources.Load<HeroStatus>($"HeroStatus/{_heroType.ToString()}");
+            _newBlockHero.PushHeroList();
+            _newBlockHero.InitStatus(_heroStatus, _level);
+
+            // add merge particley
         }
-        else
-        {
-            transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
-        }
+        //else
+        //{
+        transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
+        //}
 
 
 

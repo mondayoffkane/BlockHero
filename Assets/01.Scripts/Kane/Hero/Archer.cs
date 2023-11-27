@@ -51,11 +51,12 @@ public class Archer : Hero
                     if (_target == null) FindTarget();
                     else _armyState = ArmyState.Move;
 
-                    //yield return null;
+                    yield return null;
+
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null || _target._currentHP > 0)
+                    if (_target != null && _target._currentHP > 0)
                     {
 
                         transform.LookAt(_target.transform);
@@ -105,27 +106,28 @@ public class Archer : Hero
     protected override void Attack()
     {
 
-        ThrowWeapon _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Arrow"), transform).GetComponent<Arrow>();
+        if (!isReadySkill)
+        {
+            ThrowWeapon _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Arrow"), transform).GetComponent<Arrow>();
+
+            _arrow.SetInit(0, transform.position + Vector3.up * 0.5f);
+
+            DOTween.Sequence()
+                .Append(_arrow.transform.DOMove(_target.transform.position, 0.5f))
+                .OnComplete(() =>
+                {
+                    base.Attack();
+                    //this.TaskDelay(0.5f, base.Attack);
+                    Managers.Pool.Push(_arrow.GetComponent<Poolable>());
+                });
+
+        }
+        else
+        {
+            Skill();
+        }
 
 
-        //_arrow.transform.position = transform.position + Vector3.up * 0.5f;
-        _arrow.SetInit(0, transform.position + Vector3.up * 0.5f);
-
-
-
-        DOTween.Sequence()
-            .Append(_arrow.transform.DOMove(_target.transform.position, 0.5f))
-            .OnComplete(() =>
-            {
-                base.Attack();
-                //this.TaskDelay(0.5f, base.Attack);
-                Managers.Pool.Push(_arrow.GetComponent<Poolable>());
-            });
-
-
-
-
-        //base.Attack();
 
 
     }
@@ -134,9 +136,20 @@ public class Archer : Hero
     {
         base.TestFunc();
 
-        Debug.Log("Hero Child");
     }
 
+
+    protected override void Skill()
+    {
+        Debug.Log("Child Skill");
+        base.Skill();
+
+
+
+
+
+
+    }
 
 
 }

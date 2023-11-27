@@ -131,18 +131,36 @@ public class PuzzleManager : MonoBehaviour
         _grid = new Block[_size.x, _size.y];
         //SetBlockMeshes();
 
+        _puzzleState = PuzzleState.Lobby;
+
+        Managers._gameUI.ChangePanel(0);
 
 
-        LoadStage(); // will modify, when press the  start button
+        //LoadStage(); // will modify, when press the  start button
+
+    }
+
+    public void StartStage()
+    {
+
+        this.TaskDelay(1f, () =>
+        {
+            InitStage();
+            LoadStage();
+        });
 
     }
 
 
+
     public void LoadStage()
     {
+
+        // load stage level
+
         Managers._gameUI.ChangePanel(1);
         _gridObj.transform.DOLocalMoveY(0f, 0.5f).SetEase(Ease.Linear);
-        InitStage();
+        //InitStage();
 
         this.TaskDelay(1f, (() =>
         {
@@ -157,8 +175,6 @@ public class PuzzleManager : MonoBehaviour
     }
     public void InitStage()
     {
-        //Debug.Log("Init Stage");
-
         for (int i = 0; i < _size.x; i++)
         {
             for (int j = 0; j < _size.y; j++)
@@ -219,7 +235,7 @@ public class PuzzleManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            LoadStage();
+            StartStage();
             //UnityEngine.SceneManagement.SceneManager.LoadScene(
             //    UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
@@ -537,9 +553,10 @@ public class PuzzleManager : MonoBehaviour
                         _block.name = $"({i},{j})";
 
                         int _num = Random.Range(0, 4);
+                        //int _num = Random.Range(0, _selectHeroes.Length);
 
                         _block._level = 0;
-                        _block.SetType(_selectHeroes[_num], _num);
+                        _block.SetType(_selectHeroes[_num]);
                         _block.transform.rotation = Quaternion.Euler(new Vector3(0f, /*180f*/ 0f, 0f));
                         _block.Init(true);
                         _block.transform.localPosition = new Vector3(i - 2 + _posInterval.x, 0, j - 2 + _posInterval.y - 15);
@@ -792,18 +809,29 @@ public class PuzzleManager : MonoBehaviour
             System.Type _enemyClassType = System.Type.GetType(_typeString);
             Enemy _newEnemy = (Enemy)Managers.Pool.Pop(_enemyPref).GetComponent(_enemyClassType);
 
-            _newEnemy.transform.position = transform.position;
+            //_newEnemy.transform.position = transform.position;
 
             EnemyStatus _enemyStatus = Resources.Load<EnemyStatus>($"EnemyStatus/{_enemyType.ToString()}");
 
             _enemyList.Add(_newEnemy);
             _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
 
-            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 11f + Random.Range(-3f, 3f));
-
+            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0.5f, 11f + Random.Range(-3f, 3f));
 
 
         }
+
+        EnemyCastle _enemyCastle;
+
+        _enemyCastle = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<EnemyCastle>();
+        _enemyCastle.transform.position = new Vector3(0f, 0.5f, 12f);
+        _enemyList.Add(_enemyCastle);
+
+        _enemyCastle.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/EnemyCastle"), 0);
+
+
+
+
 
     }
 
@@ -816,7 +844,7 @@ public class PuzzleManager : MonoBehaviour
                 _puzzleState = PuzzleState.Fail;
                 Managers._gameUI.Fail_Panel.SetActive(true);
 
-
+                Debug.Log("Fail Stage");
             }
         }
         else
@@ -826,7 +854,7 @@ public class PuzzleManager : MonoBehaviour
             {
                 _puzzleState = PuzzleState.Clear;
                 Managers._gameUI.Clear_Panel.SetActive(true);
-
+                Debug.Log("Clear Stage");
             }
         }
 

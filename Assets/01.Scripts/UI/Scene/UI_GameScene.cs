@@ -10,6 +10,7 @@ public class UI_GameScene : UI_Scene
 {
     enum Buttons
     {
+        Start_Button,
         Clear_Button,
         Retry_Button,
         Lobby_Button,
@@ -42,7 +43,9 @@ public class UI_GameScene : UI_Scene
     public Text MoveCountText
         ;
 
-    public Button Clear_Button
+    public Button
+        Start_Button
+        , Clear_Button
         , Retry_Button
         , Lobby_Button
         ;
@@ -70,7 +73,7 @@ public class UI_GameScene : UI_Scene
 
 
 
-
+        Start_Button = GetButton(Buttons.Start_Button);
         Clear_Button = GetButton(Buttons.Clear_Button);
         Retry_Button = GetButton(Buttons.Retry_Button);
         Lobby_Button = GetButton(Buttons.Lobby_Button);
@@ -79,10 +82,22 @@ public class UI_GameScene : UI_Scene
         //ChangeCountText = GetText(Texts.ChangeCountText);
 
         // =====Button Event==============
+        Start_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
+        Clear_Button.AddButtonEvent(() =>
+        {
+            ChangePanel(0);
+            Managers._puzzleManager.InitStage();
+            //Managers._puzzleManager.LoadStage();
+        });
+        Retry_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
+        Lobby_Button.AddButtonEvent(() =>
+        {
+            ChangePanel(0);
+            Managers._puzzleManager.InitStage();
+            //Managers._puzzleManager.LoadStage();
+        });
 
-        Clear_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
-        Retry_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
-        Lobby_Button.AddButtonEvent(() => Managers._puzzleManager.LoadStage());
+
 
         // ========================
 
@@ -96,6 +111,8 @@ public class UI_GameScene : UI_Scene
     {
         Debug.Log("Test");
     }
+
+
 
     public void ChangePanel(int _num)
     {

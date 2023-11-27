@@ -31,7 +31,7 @@ public class Block : MonoBehaviour
 
 
 
-    public void SetType(HeroStatus _heroStat, int _num)
+    public void SetType(HeroStatus _heroStat)
     {
 
         _heroType = _heroStat._heroType;

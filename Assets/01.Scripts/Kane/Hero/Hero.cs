@@ -26,15 +26,21 @@ public class Hero : MonoBehaviour
     [FoldoutGroup("Army")] public int _level;
     [FoldoutGroup("Army")] public float _maxHP;
     [FoldoutGroup("Army")] public float _currentHP;
+    [FoldoutGroup("Army")] public float _recoveryMP = 20f;
+    [FoldoutGroup("Army")] public float _currentMP = 0f;
+    [FoldoutGroup("Army")] public float _maxMP = 100f;
     [FoldoutGroup("Army")] public float _damage;
     //[FoldoutGroup("Army")] public float _targetRange;
     [FoldoutGroup("Army")] public float _attackRange;
     [FoldoutGroup("Army")] public float _attackInterval;
     [FoldoutGroup("Army")] public float _speed;
+
     [FoldoutGroup("Army")] public Enemy _target;
+
     //[FoldoutGroup("Army")] public bool isPlay = true;
     //bool isFirst = true;
 
+    [FoldoutGroup("UI")] public Image _hpGuage;
 
 
 
@@ -45,6 +51,8 @@ public class Hero : MonoBehaviour
         Attack,
         Dead,
         Victory
+
+
     }
     public ArmyState _armyState;
 
@@ -55,7 +63,7 @@ public class Hero : MonoBehaviour
 
     protected PuzzleManager _puzzleManager;
     public HeroStatus _heroStatus;
-
+    protected bool isReadySkill = false;
     // ===============================
 
 
@@ -63,6 +71,8 @@ public class Hero : MonoBehaviour
 
     public virtual void InitStatus(HeroStatus HeroStatus, int Level)
     {
+        if (_hpGuage == null) _hpGuage = transform.Find("HP_Canvas").Find("HP_Guage").GetComponent<Image>();
+
         _heroStatus = HeroStatus;
 
         _target = null;
@@ -77,7 +87,9 @@ public class Hero : MonoBehaviour
         _attackRange = _heroStatus._attackRange[Level - 1];
         _attackInterval = _heroStatus._attackInterval[Level - 1];
         _speed = _heroStatus._speeds[Level - 1];
-
+        _hpGuage.fillAmount = (_currentHP / _maxHP);
+        _recoveryMP = HeroStatus._recoveryMP;
+        _currentMP = 0f;
 
         if (_boxColl == null) _boxColl = GetComponent<BoxCollider>();
 
@@ -100,21 +112,20 @@ public class Hero : MonoBehaviour
 
     protected virtual void Attack()
     {
-        //if (_target == null || _target._enemyState == Enemy.EnemyState.Dead)
-        //{
-        //    _target = null;
-        //    _armyState = ArmyState.Wait;
 
-        //}
 
         _target.OnDamage(_damage);
-        //_armyState = ArmyState.Move;
+
 
         if (_target == null || _target._enemyState == Enemy.EnemyState.Dead || Vector3.Distance(transform.position, _target.transform.position) > _attackRange)
         {
             _target = null;
             _armyState = ArmyState.Wait;
         }
+
+        _currentMP += _recoveryMP;
+        if (_currentMP >= _maxMP) isReadySkill = true;
+
 
 
 
@@ -123,9 +134,14 @@ public class Hero : MonoBehaviour
     public virtual void OnDamage(float _enemyDamage)
     {
         _currentHP -= _enemyDamage;
+        _hpGuage.fillAmount = (_currentHP / _maxHP);
         if (_currentHP <= 0)
         {
             Dead();
+        }
+        else if (_currentHP >= _maxHP)
+        {
+            _currentHP = _maxHP;
         }
     }
 
@@ -190,9 +206,17 @@ public class Hero : MonoBehaviour
 
     }
 
-    public virtual void Skill_1()
+    protected virtual void Skill()
     {
 
+        if (_target == null || _target._enemyState == Enemy.EnemyState.Dead || Vector3.Distance(transform.position, _target.transform.position) > _attackRange)
+        {
+            _target = null;
+            _armyState = ArmyState.Wait;
+        }
+
+        _currentMP = 0f;
+        isReadySkill = false;
     }
 
 

@@ -29,9 +29,6 @@ public class Priest : Hero
     {
         yield return new WaitForSeconds(1.5f);
 
-        //isPlay = true;
-        //_rig.isKinematic = false;
-        //_colls[1].enabled = true;
 
         _boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
         _boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
@@ -45,11 +42,11 @@ public class Priest : Hero
                     if (_target == null) FindTarget();
                     else _armyState = ArmyState.Move;
 
-                    //yield return null;
+                    yield return null;
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null || _target._currentHP > 0)
+                    if (_target != null && _target._currentHP > 0)
                     {
 
                         transform.LookAt(_target.transform);
@@ -99,4 +96,49 @@ public class Priest : Hero
 
         Debug.Log("Hero Child");
     }
+
+
+    protected override void Attack()
+    {
+        if (!isReadySkill)
+        {
+            base.Attack();
+
+        }
+        else
+        {
+            Skill();
+        }
+    }
+
+    protected override void Skill()
+    {
+        Debug.Log("Healing");
+        base.Skill();
+
+
+        Hero _targetHero;
+        _targetHero = _puzzleManager._heroList[0];
+
+        for (int i = 1; i < _puzzleManager._heroList.Count; i++)
+        {
+            if (_puzzleManager._heroList[i]._currentHP < _targetHero._currentHP)
+                _targetHero = _puzzleManager._heroList[i];
+        }
+
+        Transform _targetHeal = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/HealOnce")).transform;
+        //_targetHeal.transform.position = _targetHero.transform.position;
+        _targetHeal.SetParent(_targetHero.transform);
+        _targetHeal.transform.localPosition = new Vector3(0f, 1f, -0.5f);
+
+        this.TaskDelay(2f, () => Managers.Pool.Push(_targetHeal.GetComponent<Poolable>()));
+
+        // add particle on _target Hero position
+
+        _targetHero.OnDamage(-50f);
+
+
+    }
+
+
 }

@@ -22,6 +22,7 @@ public class HeroStatus : ScriptableObject
     public float[] _attackRange = new float[3];
     public float[] _attackInterval = new float[3];
     public float[] _speeds = new float[3];
+    public float _recoveryMP = 20f;
 
     public Mesh[] _blockMeshes = new Mesh[3];
     public Mesh[] _heroMeshes = new Mesh[3];

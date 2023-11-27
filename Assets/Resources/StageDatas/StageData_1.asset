@@ -15,9 +15,7 @@ MonoBehaviour:
   _stageLevel: 0
   _enemyLevelRange: {x: 0, y: 2}
   _maxEnemyCount: 15
-  _monsterPref: {fileID: 3838196733914510387, guid: fd4e6f478fb9d4597af87e98c0875fc3,
-    type: 3}
-  _bossPref: {fileID: 3838196733914510387, guid: fd4e6f478fb9d4597af87e98c0875fc3,
+  _enemyCastlePref: {fileID: 5845626798958707138, guid: 028b2be9758bf438eac00299b4cb3958,
     type: 3}
   _enemyStatusList:
   - {fileID: 11400000, guid: 4f7b8aa0b96fe4c8092d994c9936550b, type: 2}

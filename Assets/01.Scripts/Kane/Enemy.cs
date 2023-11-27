@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
 
     public enum EnemyType
     {
-        Mushroom
+        Mushroom,
+        Castle
 
 
     }
@@ -43,6 +46,9 @@ public class Enemy : MonoBehaviour
     }
     public EnemyState _enemyState;
 
+    public Image _hpGuage;
+
+
 
     //public virtual void SetStatus(EnemyStatus _EnemyStatus, int Level)
     //{
@@ -65,6 +71,8 @@ public class Enemy : MonoBehaviour
     public virtual void InitStatus(EnemyStatus EnemyStatus, int Level)
     {
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
+        if (_hpGuage == null) _hpGuage = transform.Find("HP_Canvas").Find("HP_Guage").GetComponent<Image>();
+
 
         _enemyStatus = EnemyStatus;
         _level = Level;
@@ -75,6 +83,8 @@ public class Enemy : MonoBehaviour
         _attackRange = _enemyStatus._attackRange[_level];
         _attackInterval = _enemyStatus._attackInterval[_level];
         _speed = _enemyStatus._speeds[_level];
+        _hpGuage.fillAmount = (_currentHP / _maxHP);
+        _enemyState = EnemyState.Wait;
 
         if (_meshfilter == null) _meshfilter = GetComponent<MeshFilter>();
         _meshfilter.sharedMesh = _enemyStatus._meshes[_level];
@@ -105,9 +115,14 @@ public class Enemy : MonoBehaviour
         if (_currentHP > 0 && _enemyState != EnemyState.Dead)
         {
             _currentHP -= _tempDamage;
+            _hpGuage.fillAmount = (_currentHP / _maxHP);
             if (_currentHP <= 0)
             {
                 Dead();
+            }
+            else if (_currentHP >= _maxHP)
+            {
+                _currentHP = _maxHP;
             }
             //Destroy(this.gameObject);
         }

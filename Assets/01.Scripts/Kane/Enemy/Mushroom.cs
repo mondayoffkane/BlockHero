@@ -8,8 +8,7 @@ public class Mushroom : Enemy
 
     public override void InitStatus(EnemyStatus EnemyStatus, int Level)
     {
-        //_enemyStatus = Resources.Load<EnemyStatus>($"EnemyStatus/{_enemyType.ToString()}");
-
+      
         base.InitStatus(EnemyStatus, Level);
         Fight();
     }
@@ -28,10 +27,6 @@ public class Mushroom : Enemy
                 _enemyState = EnemyState.Wait;
                 StartCoroutine(Cor_Fight());
             });
-
-
-
-
 
 
     }

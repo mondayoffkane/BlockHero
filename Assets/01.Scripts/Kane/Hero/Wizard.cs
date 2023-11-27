@@ -45,11 +45,11 @@ public class Wizard : Hero
                     if (_target == null) FindTarget();
                     else _armyState = ArmyState.Move;
 
-                    //yield return null;
+                    yield return null;
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null || _target._currentHP > 0)
+                    if (_target != null && _target._currentHP > 0)
                     {
                         transform.LookAt(_target.transform);
 
@@ -95,22 +95,29 @@ public class Wizard : Hero
     protected override void Attack()
     {
 
-        ThrowWeapon _magicBall = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/MagicBall"), transform).GetComponent<MagicBall>();
 
-        //_magicBall.transform.position = transform.position + Vector3.up * 0.5f;
-        _magicBall.SetInit(3, transform.position + Vector3.up * 0.5f);
+        if (!isReadySkill)
+        {
+            ThrowWeapon _magicBall = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/MagicBall"), transform).GetComponent<MagicBall>();
+
+            //_magicBall.transform.position = transform.position + Vector3.up * 0.5f;
+            _magicBall.SetInit(3, transform.position + Vector3.up * 0.5f);
 
 
 
-        DOTween.Sequence()
-            .Append(_magicBall.transform.DOJump(_target.transform.position, 2, 1, 1f))
-            .OnComplete(() =>
-            {
-                base.Attack();
-                //this.TaskDelay(0.5f, base.Attack);
-                Managers.Pool.Push(_magicBall.GetComponent<Poolable>());
-            });
-
+            DOTween.Sequence()
+                .Append(_magicBall.transform.DOJump(_target.transform.position, 2, 1, 1f))
+                .OnComplete(() =>
+                {
+                    base.Attack();
+                    //this.TaskDelay(0.5f, base.Attack);
+                    Managers.Pool.Push(_magicBall.GetComponent<Poolable>());
+                });
+        }
+        else
+        {
+            Skill();
+        }
 
 
 

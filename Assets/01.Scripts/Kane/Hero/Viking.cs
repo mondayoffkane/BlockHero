@@ -43,11 +43,11 @@ public class Viking : Hero
                     if (_target == null) FindTarget();
                     else _armyState = ArmyState.Move;
 
-                    //yield return null;
+                    yield return null;
                     break;
 
                 case ArmyState.Move:
-                    if (_target != null || _target._currentHP > 0)
+                    if (_target != null && _target._currentHP > 0)
                     {
 
                         transform.LookAt(_target.transform);
@@ -98,5 +98,26 @@ public class Viking : Hero
 
         Debug.Log("Hero Child");
     }
+
+    protected override void Attack()
+    {
+        if (!isReadySkill)
+        {
+        base.Attack();
+
+        }
+        else
+        {
+            Skill();
+        }
+
+    }
+
+    protected override void Skill()
+    {
+        base.Skill();
+    }
+
+
 
 }

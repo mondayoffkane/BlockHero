@@ -37,6 +37,7 @@ public class PuzzleManager : MonoBehaviour
 
     // =====================
     Camera _mainCam;
+    public GameObject _lobby_Cam;
     public GameObject _puzzle_Cam;
     public GameObject _fight_Cam;
 
@@ -192,7 +193,7 @@ public class PuzzleManager : MonoBehaviour
         //UnityEditor.EditorApplication.isPaused = true;
 
         _changeCount = 10;
-        CamChange();
+        CamChange(1);
 
         _puzzleState = PuzzleState.BlockSpawn;
 
@@ -233,7 +234,7 @@ public class PuzzleManager : MonoBehaviour
             //CheckBlock();
             _puzzleState = PuzzleState.ArmySpawn;
 
-            CamChange(false);
+            CamChange(1);
             Managers._gameUI.ChangePanel(2);
             this.TaskDelay(1.5f, FIghtMode);
 
@@ -467,7 +468,7 @@ public class PuzzleManager : MonoBehaviour
                     // add Spawn Army Func();
                     //FIghtMode();
 
-                    CamChange(false);
+                    CamChange(2);
                     Managers._gameUI.ChangePanel(2);
                     this.TaskDelay(1.5f, FIghtMode);
 
@@ -753,18 +754,27 @@ public class PuzzleManager : MonoBehaviour
     }
 
 
-    public void CamChange(bool isMain = true)
+    public void CamChange(int _num)
     {
-        if (isMain)
-        {
-            _puzzle_Cam.SetActive(true);
-            _fight_Cam.SetActive(false);
+        _lobby_Cam.SetActive(false);
+        _puzzle_Cam.SetActive(false);
+        _fight_Cam.SetActive(false);
 
-        }
-        else
+        switch (_num)
         {
-            _puzzle_Cam.SetActive(false);
-            _fight_Cam.SetActive(true);
+            case 0:
+                _lobby_Cam.SetActive(true);
+                break;
+
+            case 1:
+                _puzzle_Cam.SetActive(true);
+                break;
+
+            case 2:
+                _fight_Cam.SetActive(true);
+                break;
+
+
         }
     }
 

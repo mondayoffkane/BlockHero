@@ -33,6 +33,7 @@ MonoBehaviour:
   - 2
   - 3
   - 4
+  _recoveryMP: 20
   _blockMeshes:
   - {fileID: 2590332604439406122, guid: 754a66e9991ca49f790098858cfcd616, type: 3}
   - {fileID: 5169014092656603640, guid: f4c99560103c64c7fb90c27f501f6386, type: 3}
@@ -41,3 +42,6 @@ MonoBehaviour:
   - {fileID: -4250068209185078321, guid: 54ec43ca5b5774b30a9ae51fa85d0745, type: 3}
   - {fileID: -5721928707568378784, guid: fa9e62ec4f54b4dd78ee57c004753430, type: 3}
   - {fileID: 2746735759081937267, guid: ee3df1c83de084d2184119547987aab8, type: 3}
+  _controllers:
+  - {fileID: 22100000, guid: 1a2eb40e6b31e4500a5e66aca228e0ca, type: 2}
+  - {fileID: 22100000, guid: b1022cdf9844e462d96bb35df8989a49, type: 2}

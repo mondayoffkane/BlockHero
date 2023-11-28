@@ -45,7 +45,7 @@ public class Priest : Hero
                         _armyState = ArmyState.Move;
                         _animator.SetBool("Run", true);
                     }
-                    _animator.SetBool("Heal", false);
+                    _animator.SetBool("Attack", false);
                     yield return null;
                     break;
 
@@ -70,14 +70,14 @@ public class Priest : Hero
                     {
                         _target = null;
                         _armyState = ArmyState.Wait;
-                        _animator.SetBool("Heal", false);
+                        _animator.SetBool("Attack", false);
                     }
                     yield return null;
                     break;
 
                 case ArmyState.Attack:
                     _animator.SetBool("Run", false);
-                    _animator.SetBool("Heal", true);
+                    _animator.SetBool("Attack", true);
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;
@@ -120,7 +120,7 @@ public class Priest : Hero
 
     protected override void Skill()
     {
-        Debug.Log("Healing");
+        //Debug.Log("Healing");
         base.Skill();
 
 

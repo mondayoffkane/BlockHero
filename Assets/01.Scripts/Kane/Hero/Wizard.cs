@@ -47,7 +47,7 @@ public class Wizard : Hero
                     _armyState = ArmyState.Move;
                         _animator.SetBool("Run", true);
                     }
-                    _animator.SetBool("Magic", false);
+                    _animator.SetBool("Attack", false);
                     yield return null;
                     break;
 
@@ -70,14 +70,14 @@ public class Wizard : Hero
                     {
                         _target = null;
                         _armyState = ArmyState.Wait;
-                        _animator.SetBool("Magic", false);
+                        _animator.SetBool("Attack", false);
                     }
                     yield return null;
                     break;
 
                 case ArmyState.Attack:
                     _animator.SetBool("Run", false);
-                    _animator.SetBool("Magic", true);
+                    _animator.SetBool("Attack", true);
 
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);

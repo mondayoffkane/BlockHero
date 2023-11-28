@@ -25,14 +25,11 @@ public class Viking : Hero
 
     IEnumerator Cor_Fight()
     {
+        _animator.SetBool("Idle", true);
         yield return new WaitForSeconds(1.5f);
 
-        //isPlay = true;
-        //_rig.isKinematic = false;
-        //_colls[1].enabled = true;
-
-        _boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
+        //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+        //_boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
         while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
@@ -41,7 +38,12 @@ public class Viking : Hero
             {
                 case ArmyState.Wait:
                     if (_target == null) FindTarget();
-                    else _armyState = ArmyState.Move;
+                    else
+                    {
+                        _armyState = ArmyState.Move;
+                        _animator.SetBool("Run", true);
+                    }
+
 
                     yield return null;
                     break;
@@ -67,11 +69,14 @@ public class Viking : Hero
                     {
                         _target = null;
                         _armyState = ArmyState.Wait;
+                        _animator.SetBool("Smash", false);
                     }
                     yield return null;
                     break;
 
                 case ArmyState.Attack:
+                    _animator.SetBool("Run", false);
+                    _animator.SetBool("Smash", true);
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;
@@ -103,7 +108,7 @@ public class Viking : Hero
     {
         if (!isReadySkill)
         {
-        base.Attack();
+            base.Attack();
 
         }
         else

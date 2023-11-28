@@ -392,9 +392,8 @@ GameObject:
   - component: {fileID: 8531504252882661940}
   - component: {fileID: 4385673803706687509}
   - component: {fileID: -7592666635355059095}
-  - component: {fileID: 3965117052184008171}
   m_Layer: 0
-  m_Name: Viking_Pref
+  m_Name: Viking_Pref 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -493,27 +492,6 @@ MonoBehaviour:
   _hpGuage: {fileID: 0}
   _armyState: 0
   _heroStatus: {fileID: 0}
---- !u!95 &3965117052184008171
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7835735899071343509}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0ad30345c24de46749e29f6d72fb7993, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2768158079513986064
 PrefabInstance:
   m_ObjectHideFlags: 0

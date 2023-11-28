@@ -42,7 +42,8 @@ public class Hero : MonoBehaviour
 
     [FoldoutGroup("UI")] public Image _hpGuage;
 
-
+    SkinnedMeshRenderer _skinnedMesh;
+  protected   Animator _animator;
 
     public enum ArmyState
     {
@@ -71,6 +72,8 @@ public class Hero : MonoBehaviour
 
     public virtual void InitStatus(HeroStatus HeroStatus, int Level)
     {
+        if (_animator == null) _animator = GetComponent<Animator>();
+        if (_skinnedMesh == null) _skinnedMesh = transform.Find("Mesh").GetComponent<SkinnedMeshRenderer>();
         if (_hpGuage == null) _hpGuage = transform.Find("HP_Canvas").Find("HP_Guage").GetComponent<Image>();
 
         _heroStatus = HeroStatus;
@@ -92,6 +95,16 @@ public class Hero : MonoBehaviour
         _currentMP = 0f;
 
         if (_boxColl == null) _boxColl = GetComponent<BoxCollider>();
+
+        _skinnedMesh.sharedMesh = _heroStatus._heroMeshes[_level];
+
+        _animator.SetBool("Idle", true);
+        _animator.SetBool("Smash", false);
+        _animator.SetBool("Magic", false);
+        _animator.SetBool("Arrow", false);
+        _animator.SetBool("Heal", false);
+        _animator.SetBool("Dead", false);
+        _animator.SetBool("Run", false);
 
     }
 
@@ -151,6 +164,7 @@ public class Hero : MonoBehaviour
         _puzzleManager._heroList.Remove(this);
         Managers._puzzleManager.DeadArnmyNEnemy(true);
         transform.gameObject.SetActive(false);
+        _animator.SetBool("Dead", true);
         //Managers.Pool.Push(transform.GetComponent<Poolable>());
         //Destroy(this);
 

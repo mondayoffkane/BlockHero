@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1914824283946407833}
   - component: {fileID: 1596346569924778532}
   - component: {fileID: 5966449221322036779}
-  - component: {fileID: 3143548659670751539}
   - component: {fileID: -7209439683150739762}
   - component: {fileID: -5205636387491067578}
+  - component: {fileID: 2047045371003086179}
   m_Layer: 0
   m_Name: Mushroom_Pref
   m_TagString: Enemy
@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 3838196733914510387}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0.5}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 923953285420585750}
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3838196733914510387}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -7104418448196588392, guid: fc6f0f324476f4f6fbc6e83026d63f4b, type: 3}
 --- !u!23 &5966449221322036779
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -87,29 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3143548659670751539
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3838196733914510387}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &-7209439683150739762
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,6 +138,27 @@ MonoBehaviour:
   _enemyStatus: {fileID: 0}
   _enemyState: 0
   _hpGuage: {fileID: 0}
+--- !u!65 &2047045371003086179
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3838196733914510387}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.57081544, y: 0.73681307, z: 0.5708152}
+  m_Center: {x: -0.00000010430813, y: 0.36840653, z: -0.000000014901161}
 --- !u!1001 &8193849905127768753
 PrefabInstance:
   m_ObjectHideFlags: 0

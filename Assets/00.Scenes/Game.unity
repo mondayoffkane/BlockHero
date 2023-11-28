@@ -292,7 +292,7 @@ MonoBehaviour:
   _blockGroup: {fileID: 1870087059}
   _size: {x: 6, y: 6}
   _maxColorCount: 4
-  _posInterval: {x: 0, y: -0.15}
+  _posInterval: {x: 0, y: 0}
   _blockMoveSpeed: 0.2
   _camz: 10
   _gridObj: {fileID: 1286060610}

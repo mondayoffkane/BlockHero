@@ -349,7 +349,11 @@ ModelImporter:
     - name: Arm_L
       parentName: Head&Body
       position: {x: -0.38860643, y: 0.28331658, z: 0.000000090822866}
+<<<<<<< HEAD
       rotation: {x: -0.004848597, y: 0.010656833, z: 0.4141179, w: 0.9101479}
+=======
+      rotation: {x: -0.0048485952, y: 0.010656833, z: 0.41411793, w: 0.910148}
+>>>>>>> fec5c65ac5d74fa5cdc34fdd5383e2edbd006d3d
       scale: {x: 1, y: 1, z: 1}
     - name: Weapon_L
       parentName: Arm_L
@@ -390,7 +394,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 1
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1

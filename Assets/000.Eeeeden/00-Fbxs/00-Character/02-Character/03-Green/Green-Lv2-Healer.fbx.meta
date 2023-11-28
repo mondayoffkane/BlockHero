@@ -21,7 +21,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
+    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
+      human bone 'LeftUpperLeg' not found\n"
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -29,7 +30,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -87,7 +88,62 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Green-Lv2-Healer(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Green-Lv2-Healer
+      parentName: Green-Lv2-Healer(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Character-Bone
+      parentName: Green-Lv2-Healer(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.00000003774895, y: 0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Main
+      parentName: Character-Bone
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.000000053385083, y: 0.7071068, z: 0.7071067, w: -0.00000005338507}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head&Body
+      parentName: Main
+      position: {x: -0.000000042158028, y: 0.00000002980232, z: 0.2792}
+      rotation: {x: -0.16267626, y: 0.68813986, z: 0.68813986, w: 0.16267633}
+      scale: {x: 1, y: 0.9999997, z: 0.99999994}
+    - name: Arm_L
+      parentName: Head&Body
+      position: {x: -0.38860643, y: 0.28331658, z: 0.000000090822866}
+      rotation: {x: -0.004848597, y: 0.010656833, z: 0.4141179, w: 0.9101479}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Weapon_L
+      parentName: Arm_L
+      position: {x: -0.0000000019505306, y: 0.31721842, z: 0.00000004457889}
+      rotation: {x: 0.70691293, y: 0.000000026112293, z: 0.016555756, w: 0.70710677}
+      scale: {x: 1, y: 1, z: 1.0000001}
+    - name: Arm_R
+      parentName: Head&Body
+      position: {x: 0.38860643, y: 0.28331658, z: -0.00000009447913}
+      rotation: {x: 0.011707506, y: -0.0000000027277278, z: 0.99993145, w: 0.000000075514315}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Weapon_R
+      parentName: Arm_R
+      position: {x: 0.0000000019505062, y: 0.31721842, z: 0.000000044578876}
+      rotation: {x: 0.70691293, y: -0.000000088032444, z: -0.016555695, w: 0.70710677}
+      scale: {x: 1, y: 1, z: 1.0000001}
+    - name: Leg_L
+      parentName: Head&Body
+      position: {x: -0.13077337, y: 0.042467117, z: -0.000000015783897}
+      rotation: {x: -0.011707247, y: -0.0000000030383944, z: 0.9999315, w: -0.00000007551796}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Leg_R
+      parentName: Head&Body
+      position: {x: 0.13077337, y: 0.042467117, z: -0.0000000781415}
+      rotation: {x: 0.0117074, y: -0.0000000030384333, z: 0.99993145, w: 0.00000007551795}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -98,7 +154,7 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

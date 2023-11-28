@@ -143,7 +143,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void StartStage()
     {
-
+        CamChange(1);
         //this.TaskDelay(1f, () =>
         //{
         InitStage();
@@ -193,7 +193,7 @@ public class PuzzleManager : MonoBehaviour
         //UnityEditor.EditorApplication.isPaused = true;
 
         _changeCount = 10;
-        CamChange(1);
+        //CamChange(2);
 
         _puzzleState = PuzzleState.BlockSpawn;
 
@@ -234,7 +234,7 @@ public class PuzzleManager : MonoBehaviour
             //CheckBlock();
             _puzzleState = PuzzleState.ArmySpawn;
 
-            CamChange(1);
+            CamChange(2);
             Managers._gameUI.ChangePanel(2);
             this.TaskDelay(1.5f, FIghtMode);
 

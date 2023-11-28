@@ -8,7 +8,7 @@ public class Mushroom : Enemy
 
     public override void InitStatus(EnemyStatus EnemyStatus, int Level)
     {
-      
+
         base.InitStatus(EnemyStatus, Level);
         Fight();
     }
@@ -20,7 +20,7 @@ public class Mushroom : Enemy
         transform.localScale = Vector3.zero;
 
         DOTween.Sequence()
-            .Append(transform.DOScale(Vector3.one * 0.5f, 1f).SetEase(Ease.Linear))
+            .Append(transform.DOScale(Vector3.one, 1f).SetEase(Ease.Linear))
             .AppendInterval(0.5f)
             .OnComplete(() =>
             {

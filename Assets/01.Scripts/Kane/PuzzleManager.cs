@@ -229,8 +229,14 @@ public class PuzzleManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            _changeCount = 0;
-            CheckBlock();
+            //_changeCount = 0;
+            //CheckBlock();
+            _puzzleState = PuzzleState.ArmySpawn;
+
+            CamChange(false);
+            Managers._gameUI.ChangePanel(2);
+            this.TaskDelay(1.5f, FIghtMode);
+
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -816,7 +822,7 @@ public class PuzzleManager : MonoBehaviour
             _enemyList.Add(_newEnemy);
             _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
 
-            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0.5f, 11f + Random.Range(-3f, 3f));
+            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 11f + Random.Range(-3f, 3f));
 
 
         }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hero_Wizard_2
+  m_Controller: {fileID: 9100000, guid: ef28f301ff1b641f18643872b3a3bd7c, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -5396053878802970414, guid: d9017171ea87c454da52abf9714b35d2,
+      type: 3}
+    m_OverrideClip: {fileID: -111300012396366453, guid: cdad9181a1830400ea0c8335bdab3efc,
+      type: 3}
+  - m_OriginalClip: {fileID: 8273325049105940540, guid: d9017171ea87c454da52abf9714b35d2,
+      type: 3}
+    m_OverrideClip: {fileID: 8273325049105940540, guid: cdad9181a1830400ea0c8335bdab3efc,
+      type: 3}
+  - m_OriginalClip: {fileID: -5252816984213320552, guid: d9017171ea87c454da52abf9714b35d2,
+      type: 3}
+    m_OverrideClip: {fileID: -5252816984213320552, guid: cdad9181a1830400ea0c8335bdab3efc,
+      type: 3}
+  - m_OriginalClip: {fileID: 5522812681064789136, guid: d9017171ea87c454da52abf9714b35d2,
+      type: 3}
+    m_OverrideClip: {fileID: 5522812681064789136, guid: cdad9181a1830400ea0c8335bdab3efc,
+      type: 3}

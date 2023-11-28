@@ -26,7 +26,7 @@ public class HeroStatus : ScriptableObject
 
     public Mesh[] _blockMeshes = new Mesh[3];
     public Mesh[] _heroMeshes = new Mesh[3];
-
+    public RuntimeAnimatorController[] _controllers;
 
 
 

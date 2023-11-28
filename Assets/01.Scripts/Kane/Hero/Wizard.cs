@@ -33,8 +33,8 @@ public class Wizard : Hero
         //_rig.isKinematic = false;
         //_colls[1].enabled = true;
 
-        _boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
+        //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+        //_boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
         while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
@@ -43,8 +43,11 @@ public class Wizard : Hero
             {
                 case ArmyState.Wait:
                     if (_target == null) FindTarget();
-                    else _armyState = ArmyState.Move;
-
+                    else {
+                    _armyState = ArmyState.Move;
+                        _animator.SetBool("Run", true);
+                    }
+                    _animator.SetBool("Magic", false);
                     yield return null;
                     break;
 
@@ -67,11 +70,15 @@ public class Wizard : Hero
                     {
                         _target = null;
                         _armyState = ArmyState.Wait;
+                        _animator.SetBool("Magic", false);
                     }
                     yield return null;
                     break;
 
                 case ArmyState.Attack:
+                    _animator.SetBool("Run", false);
+                    _animator.SetBool("Magic", true);
+
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;

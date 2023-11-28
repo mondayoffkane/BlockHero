@@ -43,7 +43,7 @@ public class Hero : MonoBehaviour
     [FoldoutGroup("UI")] public Image _hpGuage;
 
     SkinnedMeshRenderer _skinnedMesh;
-  protected   Animator _animator;
+    protected Animator _animator;
 
     public enum ArmyState
     {
@@ -161,10 +161,17 @@ public class Hero : MonoBehaviour
     public void Dead()
     {
         _armyState = ArmyState.Dead;
-        _puzzleManager._heroList.Remove(this);
-        Managers._puzzleManager.DeadArnmyNEnemy(true);
-        transform.gameObject.SetActive(false);
         _animator.SetBool("Dead", true);
+        _puzzleManager._heroList.Remove(this);
+
+        this.TaskDelay(2f, () =>
+        {
+            Managers._puzzleManager.DeadArnmyNEnemy(true);
+            transform.gameObject.SetActive(false);
+        });
+
+        //Managers._puzzleManager.DeadArnmyNEnemy(true);
+        //transform.gameObject.SetActive(false);
         //Managers.Pool.Push(transform.GetComponent<Poolable>());
         //Destroy(this);
 

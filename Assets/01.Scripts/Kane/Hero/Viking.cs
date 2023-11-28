@@ -25,7 +25,7 @@ public class Viking : Hero
 
     IEnumerator Cor_Fight()
     {
-        _animator.SetBool("Idle", true);
+        
         yield return new WaitForSeconds(1.5f);
 
         //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
@@ -43,7 +43,7 @@ public class Viking : Hero
                         _armyState = ArmyState.Move;
                         _animator.SetBool("Run", true);
                     }
-
+                    _animator.SetBool("Smash", false);
 
                     yield return null;
                     break;

@@ -30,8 +30,8 @@ public class Priest : Hero
         yield return new WaitForSeconds(1.5f);
 
 
-        _boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        _boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
+        //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
+        //_boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
         while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
@@ -40,8 +40,12 @@ public class Priest : Hero
             {
                 case ArmyState.Wait:
                     if (_target == null) FindTarget();
-                    else _armyState = ArmyState.Move;
-
+                    else
+                    {
+                        _armyState = ArmyState.Move;
+                        _animator.SetBool("Run", true);
+                    }
+                    _animator.SetBool("Heal", false);
                     yield return null;
                     break;
 
@@ -66,11 +70,14 @@ public class Priest : Hero
                     {
                         _target = null;
                         _armyState = ArmyState.Wait;
+                        _animator.SetBool("Heal", false);
                     }
                     yield return null;
                     break;
 
                 case ArmyState.Attack:
+                    _animator.SetBool("Run", false);
+                    _animator.SetBool("Heal", true);
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;

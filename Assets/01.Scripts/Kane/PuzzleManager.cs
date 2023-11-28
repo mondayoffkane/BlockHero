@@ -143,11 +143,11 @@ public class PuzzleManager : MonoBehaviour
     public void StartStage()
     {
 
-        this.TaskDelay(1f, () =>
-        {
-            InitStage();
-            LoadStage();
-        });
+        //this.TaskDelay(1f, () =>
+        //{
+        InitStage();
+        LoadStage();
+        //});
 
     }
 
@@ -449,7 +449,7 @@ public class PuzzleManager : MonoBehaviour
                     }
                 }
                 //Debug.Log("OnMatch");
-                yield return new WaitForSeconds(0.5f + 0.25f);
+                yield return new WaitForSeconds(0.5f  /*+ 0.25f*/);
                 _puzzleState = PuzzleState.WaitInput;
 
 

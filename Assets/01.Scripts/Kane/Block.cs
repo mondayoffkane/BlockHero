@@ -148,7 +148,7 @@ public class Block : MonoBehaviour
             GameObject _heroPref;
             string _typeString = _heroType.ToString();
 
-            _heroPref = Resources.Load<GameObject>($"Hero_Prefs/{_typeString}_Pref");
+            _heroPref = Resources.Load<GameObject>($"Hero_Prefs/{_typeString}_{_level}_Pref");
             Type _heroClassType = Type.GetType(_typeString);
             Hero _newBlockHero = (Hero)Managers.Pool.Pop(_heroPref).GetComponent(_heroClassType);
 

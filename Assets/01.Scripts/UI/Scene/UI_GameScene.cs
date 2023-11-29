@@ -94,7 +94,7 @@ public class UI_GameScene : UI_Scene
         {
             ChangePanel(0);
             Managers._puzzleManager.CamChange(0);
-            //Managers._puzzleManager.InitStage();
+            Managers._puzzleManager.InitStage();
             //Managers._puzzleManager.LoadStage();
         });
 

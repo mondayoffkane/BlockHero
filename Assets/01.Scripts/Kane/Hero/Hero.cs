@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using System;
 
 
 
@@ -37,6 +38,7 @@ public class Hero : MonoBehaviour
 
     [FoldoutGroup("Army")] public Enemy _target;
     [FoldoutGroup("Army")] public RuntimeAnimatorController[] _controllers;
+    [FoldoutGroup("Army")] public GameObject[] _deadEffects;
 
     //[FoldoutGroup("Army")] public bool isPlay = true;
     //bool isFirst = true;
@@ -105,13 +107,14 @@ public class Hero : MonoBehaviour
 
         _animator.runtimeAnimatorController = _controllers[_level - 1];
 
-        _animator.SetBool("Idle", true);
-        _animator.SetBool("Smash", false);
-        _animator.SetBool("Magic", false);
-        _animator.SetBool("Arrow", false);
-        _animator.SetBool("Heal", false);
+        //_animator.SetBool("Idle", true);
+        //_animator.SetBool("Smash", false);
+        //_animator.SetBool("Magic", false);
+        //_animator.SetBool("Arrow", false);
+        //_animator.SetBool("Heal", false);
         _animator.SetBool("Dead", false);
         _animator.SetBool("Run", false);
+        _animator.SetBool("Attack", false);
 
     }
 
@@ -171,6 +174,15 @@ public class Hero : MonoBehaviour
         _animator.SetBool("Dead", true);
         _puzzleManager._heroList.Remove(this);
 
+        foreach (GameObject _effect in _deadEffects)
+        {
+            DOTween.Sequence().AppendCallback(() => _effect.SetActive(true))
+           .AppendInterval(3f).
+           AppendCallback(() => _effect.SetActive(false));
+        }
+
+
+
         this.TaskDelay(2f, () =>
         {
             Managers._puzzleManager.DeadArnmyNEnemy(true);
@@ -229,6 +241,10 @@ public class Hero : MonoBehaviour
         {
             _armyState = ArmyState.Move;
             _animator.SetBool("Run", true);
+
+            Type _enemyType = Type.GetType(_target._enemyType.ToString());
+            _target = (Enemy)_target.GetComponent(_enemyType);
+
         }
 
 

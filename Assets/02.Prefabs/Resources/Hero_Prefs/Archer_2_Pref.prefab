@@ -226,6 +226,8 @@ Transform:
   - {fileID: 3451109194120928717}
   - {fileID: 591020367840664035}
   - {fileID: 8025611293742492547}
+  - {fileID: 245381803633908219}
+  - {fileID: 2002833359058329073}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &141118899976973482
@@ -301,6 +303,9 @@ MonoBehaviour:
   _speed: 0
   _target: {fileID: 0}
   _controllers: []
+  _deadEffects:
+  - {fileID: 828254474050789185}
+  - {fileID: 7529123042084340628}
   _hpGuage: {fileID: 0}
   _armyState: 0
   _heroStatus: {fileID: 0}
@@ -599,6 +604,166 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000008940697, y: -0.09290694, z: 0.7871682}
     m_Extent: {x: 0.66796064, y: 0.54027975, z: 0.7871683}
   m_DirtyAABB: 0
+--- !u!1001 &455856023237510839
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4232382863876681188}
+    m_Modifications:
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7939660494240875811, guid: aa95004855ba64306a02b6d109b6e1d8,
+        type: 3}
+      propertyPath: m_Name
+      value: BloodPool_Yellow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aa95004855ba64306a02b6d109b6e1d8, type: 3}
+--- !u!4 &2002833359058329073 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2132728164696333126, guid: aa95004855ba64306a02b6d109b6e1d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 455856023237510839}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7529123042084340628 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7939660494240875811, guid: aa95004855ba64306a02b6d109b6e1d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 455856023237510839}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1201728402210057572
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4232382863876681188}
+    m_Modifications:
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005201977962050085, guid: 5b6ae885488d44655844b780a5a64a66,
+        type: 3}
+      propertyPath: m_Name
+      value: BloodExplosion_Yellow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5b6ae885488d44655844b780a5a64a66, type: 3}
+--- !u!4 &245381803633908219 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1426129176712967327, guid: 5b6ae885488d44655844b780a5a64a66,
+    type: 3}
+  m_PrefabInstance: {fileID: 1201728402210057572}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &828254474050789185 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2005201977962050085, guid: 5b6ae885488d44655844b780a5a64a66,
+    type: 3}
+  m_PrefabInstance: {fileID: 1201728402210057572}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1298267589246237220
 PrefabInstance:
   m_ObjectHideFlags: 0

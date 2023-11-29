@@ -78,8 +78,12 @@ public class Hero : MonoBehaviour
         if (_animator == null) _animator = GetComponent<Animator>();
         if (_skinnedMesh == null) _skinnedMesh = transform.Find("Mesh").GetComponent<SkinnedMeshRenderer>();
         if (_hpGuage == null) _hpGuage = transform.Find("HP_Canvas").Find("HP_Guage").GetComponent<Image>();
+        //if(_deadEffects==null) _deadEffects[0]
 
-
+        foreach (GameObject _obj in _deadEffects)
+        {
+            _obj.SetActive(false);
+        }
         _heroStatus = HeroStatus;
 
         _target = null;
@@ -177,13 +181,13 @@ public class Hero : MonoBehaviour
         foreach (GameObject _effect in _deadEffects)
         {
             DOTween.Sequence().AppendCallback(() => _effect.SetActive(true))
-           .AppendInterval(3f).
+                           .AppendInterval(3f).
            AppendCallback(() => _effect.SetActive(false));
         }
 
 
 
-        this.TaskDelay(2f, () =>
+        this.TaskDelay(3.5f, () =>
         {
             Managers._puzzleManager.DeadArnmyNEnemy(true);
             transform.gameObject.SetActive(false);

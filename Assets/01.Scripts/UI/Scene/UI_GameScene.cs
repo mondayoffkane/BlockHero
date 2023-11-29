@@ -93,7 +93,8 @@ public class UI_GameScene : UI_Scene
         Lobby_Button.AddButtonEvent(() =>
         {
             ChangePanel(0);
-            Managers._puzzleManager.InitStage();
+            Managers._puzzleManager.CamChange(0);
+            //Managers._puzzleManager.InitStage();
             //Managers._puzzleManager.LoadStage();
         });
 

@@ -36,6 +36,7 @@ public class Hero : MonoBehaviour
     [FoldoutGroup("Army")] public float _speed;
 
     [FoldoutGroup("Army")] public Enemy _target;
+    [FoldoutGroup("Army")] public RuntimeAnimatorController[] _controllers;
 
     //[FoldoutGroup("Army")] public bool isPlay = true;
     //bool isFirst = true;
@@ -43,7 +44,7 @@ public class Hero : MonoBehaviour
     [FoldoutGroup("UI")] public Image _hpGuage;
 
     SkinnedMeshRenderer _skinnedMesh;
-  protected   Animator _animator;
+    protected Animator _animator;
 
     public enum ArmyState
     {
@@ -76,6 +77,7 @@ public class Hero : MonoBehaviour
         if (_skinnedMesh == null) _skinnedMesh = transform.Find("Mesh").GetComponent<SkinnedMeshRenderer>();
         if (_hpGuage == null) _hpGuage = transform.Find("HP_Canvas").Find("HP_Guage").GetComponent<Image>();
 
+
         _heroStatus = HeroStatus;
 
         _target = null;
@@ -97,6 +99,11 @@ public class Hero : MonoBehaviour
         if (_boxColl == null) _boxColl = GetComponent<BoxCollider>();
 
         _skinnedMesh.sharedMesh = _heroStatus._heroMeshes[_level];
+
+
+        _controllers = _heroStatus._controllers;
+
+        _animator.runtimeAnimatorController = _controllers[_level - 1];
 
         _animator.SetBool("Idle", true);
         _animator.SetBool("Smash", false);
@@ -161,10 +168,17 @@ public class Hero : MonoBehaviour
     public void Dead()
     {
         _armyState = ArmyState.Dead;
-        _puzzleManager._heroList.Remove(this);
-        Managers._puzzleManager.DeadArnmyNEnemy(true);
-        transform.gameObject.SetActive(false);
         _animator.SetBool("Dead", true);
+        _puzzleManager._heroList.Remove(this);
+
+        this.TaskDelay(2f, () =>
+        {
+            Managers._puzzleManager.DeadArnmyNEnemy(true);
+            transform.gameObject.SetActive(false);
+        });
+
+        //Managers._puzzleManager.DeadArnmyNEnemy(true);
+        //transform.gameObject.SetActive(false);
         //Managers.Pool.Push(transform.GetComponent<Poolable>());
         //Destroy(this);
 
@@ -214,6 +228,7 @@ public class Hero : MonoBehaviour
         else
         {
             _armyState = ArmyState.Move;
+            _animator.SetBool("Run", true);
         }
 
 

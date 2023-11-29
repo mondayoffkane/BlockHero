@@ -591,7 +591,7 @@ GameObject:
   - component: {fileID: 5510801620854712499}
   - component: {fileID: 5344943467252908733}
   m_Layer: 5
-  m_Name: 'Lobby_Button '
+  m_Name: Home_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1287,7 +1287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3762451129177383386
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1569,7 +1569,7 @@ GameObject:
   - component: {fileID: 1698452569956976930}
   - component: {fileID: 3784101337798682168}
   m_Layer: 5
-  m_Name: 'Retry_Button '
+  m_Name: Retry_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2381,12 +2381,12 @@ MonoBehaviour:
   Puzzle_Panel: {fileID: 0}
   Battle_Panel: {fileID: 0}
   Clear_Panel: {fileID: 0}
-  Fail_Panel: {fileID: 0}
+  Defeat_Panel: {fileID: 0}
   MoveCountText: {fileID: 0}
   Start_Button: {fileID: 0}
   Clear_Button: {fileID: 0}
   Retry_Button: {fileID: 0}
-  Lobby_Button: {fileID: 0}
+  Home_Button: {fileID: 0}
 --- !u!1 &6764009724412099463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2475,7 +2475,7 @@ GameObject:
   - component: {fileID: 6193488889039648138}
   - component: {fileID: 6850308982471384149}
   m_Layer: 5
-  m_Name: Stage
+  m_Name: Fail_Stage_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2556,7 +2556,7 @@ GameObject:
   - component: {fileID: 3844053257185297422}
   - component: {fileID: 8124456460179327044}
   m_Layer: 5
-  m_Name: Stage
+  m_Name: Clear_Stage_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3028,7 +3028,7 @@ GameObject:
   - component: {fileID: 2295349820968941256}
   - component: {fileID: 1018076142850149031}
   m_Layer: 5
-  m_Name: Fail_Panel
+  m_Name: Defeat_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -12,12 +12,14 @@ public class UI_GameScene : UI_Scene
     {
         Start_Button,
         Clear_Button,
+        Home_Button,
         Retry_Button,
-        Lobby_Button,
     }
     enum Texts
     {
         MoveCountText,
+        Clear_Stage_Text,
+        Fail_Stage_Text,
     }
     enum Images
     {
@@ -30,7 +32,7 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel,
         Battle_Panel,
         Clear_Panel,
-        Fail_Panel,
+        Defeat_Panel,
     }
     // ========= val =====================
 
@@ -38,7 +40,7 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel,
         Battle_Panel,
         Clear_Panel
-        , Fail_Panel
+        , Defeat_Panel
         ;
     public Text MoveCountText
         ;
@@ -47,7 +49,7 @@ public class UI_GameScene : UI_Scene
         Start_Button
         , Clear_Button
         , Retry_Button
-        , Lobby_Button
+        , Home_Button
         ;
 
     // ============================
@@ -69,14 +71,14 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel = GetObject(GameObjects.Puzzle_Panel);
         Battle_Panel = GetObject(GameObjects.Battle_Panel);
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
-        Fail_Panel = GetObject(GameObjects.Fail_Panel);
+        Defeat_Panel = GetObject(GameObjects.Defeat_Panel);
 
 
 
         Start_Button = GetButton(Buttons.Start_Button);
         Clear_Button = GetButton(Buttons.Clear_Button);
         Retry_Button = GetButton(Buttons.Retry_Button);
-        Lobby_Button = GetButton(Buttons.Lobby_Button);
+        Home_Button = GetButton(Buttons.Home_Button);
 
 
         //ChangeCountText = GetText(Texts.ChangeCountText);
@@ -90,7 +92,7 @@ public class UI_GameScene : UI_Scene
             //Managers._puzzleManager.LoadStage();
         });
         Retry_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
-        Lobby_Button.AddButtonEvent(() =>
+        Home_Button.AddButtonEvent(() =>
         {
             ChangePanel(0);
             Managers._puzzleManager.CamChange(0);
@@ -121,7 +123,7 @@ public class UI_GameScene : UI_Scene
         Puzzle_Panel.SetActive(false);
         Battle_Panel.SetActive(false);
         Clear_Panel.SetActive(false);
-        Fail_Panel.SetActive(false);
+        Defeat_Panel.SetActive(false);
 
         switch (_num)
         {

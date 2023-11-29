@@ -895,7 +895,7 @@ public class PuzzleManager : MonoBehaviour
                 {
                     _puzzleState = PuzzleState.Fail;
                     _uiEffecter.FailEffect();
-                    this.TaskDelay(1.5f, () => Managers._gameUI.Fail_Panel.SetActive(true));
+                    this.TaskDelay(1.5f, () => Managers._gameUI.Defeat_Panel.SetActive(true));
 
                 });
 

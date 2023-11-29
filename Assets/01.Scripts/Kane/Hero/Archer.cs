@@ -33,7 +33,7 @@ public class Archer : Hero
 
     IEnumerator Cor_Fight()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         //isPlay = true;
         //_rig.isKinematic = false;

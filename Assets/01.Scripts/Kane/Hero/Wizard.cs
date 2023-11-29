@@ -27,7 +27,7 @@ public class Wizard : Hero
 
     IEnumerator Cor_Fight()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         //isPlay = true;
         //_rig.isKinematic = false;
@@ -43,8 +43,9 @@ public class Wizard : Hero
             {
                 case ArmyState.Wait:
                     if (_target == null) FindTarget();
-                    else {
-                    _armyState = ArmyState.Move;
+                    else
+                    {
+                        _armyState = ArmyState.Move;
                         _animator.SetBool("Run", true);
                     }
                     _animator.SetBool("Attack", false);

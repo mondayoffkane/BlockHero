@@ -129,8 +129,10 @@ MonoBehaviour:
   _speed: 0
   _target: {fileID: 0}
   _enemyStatus: {fileID: 0}
+  _deadEffects: []
   _enemyState: 0
   _hpGuage: {fileID: 0}
+  _onDamageEffect: {fileID: 105310, guid: 8d566f57980744f67a4b3dff34ca7c8a, type: 3}
 --- !u!1001 &8984021849318901823
 PrefabInstance:
   m_ObjectHideFlags: 0

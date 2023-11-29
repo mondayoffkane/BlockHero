@@ -47,7 +47,7 @@ public class PuzzleManager : MonoBehaviour
 
     //==== Puzzle
     public int _stageLevel = 0;
-    [TabGroup("Puzzle")] public int _changeCount = 10;
+    [TabGroup("Puzzle")] public int _changeCount = 5;
     [TabGroup("Puzzle")] public GameObject _block_Pref;
     [TabGroup("Puzzle")] public Transform _blockGroup;
     [TabGroup("Puzzle")] public Vector2Int _size = new Vector2Int(6, 6);
@@ -110,6 +110,7 @@ public class PuzzleManager : MonoBehaviour
 
     GameObject _floating_Pref;
     UiEffectManager _uiEffecter;
+    bool isEnd = false;
     // =========================================================
     //public void SetBlockMeshes()
     //{
@@ -147,7 +148,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void StartStage()
     {
-        CamChange(1);
+        CamChange(1, 0f);
         //this.TaskDelay(1f, () =>
         //{
         InitStage();
@@ -162,15 +163,13 @@ public class PuzzleManager : MonoBehaviour
     {
 
         // load stage level
-
+        Managers._gameUI.MoveCountText.text = $"{_changeCount}";
         Managers._gameUI.ChangePanel(1);
         _gridObj.transform.DOLocalMoveY(0f, 0.5f).SetEase(Ease.Linear);
         //InitStage();
 
         this.TaskDelay(1f, (() =>
         {
-            Managers._gameUI.MoveCountText.text = $"{_changeCount}";
-
 
             SpawnBlock();
         }));
@@ -195,8 +194,8 @@ public class PuzzleManager : MonoBehaviour
         _grid.Initialize();
 
         //UnityEditor.EditorApplication.isPaused = true;
-
-        _changeCount = 10;
+        isEnd = false;
+        _changeCount = 6;
         //CamChange(2);
 
         _puzzleState = PuzzleState.BlockSpawn;
@@ -255,11 +254,23 @@ public class PuzzleManager : MonoBehaviour
 
                 }
             }
-            _puzzleState = PuzzleState.ArmySpawn;
 
-            CamChange(2);
-            Managers._gameUI.ChangePanel(2);
-            this.TaskDelay(1.5f, FIghtMode);
+            _puzzleState = PuzzleState.ArmySpawn;
+            this.TaskDelay(1f, () =>
+               {
+                   Managers._gameUI.ChangePanel(2);
+                   FIghtMode();
+                   this.TaskDelay(1f, () =>
+                   {
+                       CamChange(2);
+                   });
+               });
+
+            //_puzzleState = PuzzleState.ArmySpawn;
+
+            //CamChange(2);
+            //Managers._gameUI.ChangePanel(2);
+            //this.TaskDelay(1.5f, FIghtMode);
 
         }
 
@@ -493,9 +504,18 @@ public class PuzzleManager : MonoBehaviour
                     // add Spawn Army Func();
                     //FIghtMode();
 
-                    CamChange(2);
-                    Managers._gameUI.ChangePanel(2);
-                    this.TaskDelay(1.5f, FIghtMode);
+                    this.TaskDelay(1f, () =>
+                    {
+
+                        Managers._gameUI.ChangePanel(2);
+                        FIghtMode();
+                        this.TaskDelay(1f, () =>
+                        {
+                            CamChange(2);
+                        });
+                    });
+
+
 
                 }
                 else
@@ -583,6 +603,7 @@ public class PuzzleManager : MonoBehaviour
                         Block _block = Managers.Pool.Pop(_block_Pref, transform).GetComponent<Block>();
                         _block.transform.SetParent(_blockGroup);
                         _block.name = $"({i},{j})";
+                        _block.transform.localScale = Vector3.one;
 
                         int _num = Random.Range(0, 4);
                         //int _num = Random.Range(0, _selectHeroes.Length);
@@ -779,8 +800,12 @@ public class PuzzleManager : MonoBehaviour
     }
 
 
-    public void CamChange(int _num)
+    public void CamChange(int _num, float _time = 0.5f)
     {
+        //Camera.main.GetComponent<Cinemachine.CinemachineBlendDefinition>().BlendTime = _time;
+        Camera.main.GetComponent<Cinemachine.CinemachineBrain>().m_DefaultBlend.m_Time = _time;
+
+
         _lobby_Cam.SetActive(false);
         _puzzle_Cam.SetActive(false);
         _fight_Cam.SetActive(false);
@@ -833,7 +858,7 @@ public class PuzzleManager : MonoBehaviour
                 }
                 SpawnEnemy();
             })
-            .AppendInterval(1.5f)
+            .AppendInterval(3f)
             .AppendCallback(() =>
             {
 
@@ -849,7 +874,7 @@ public class PuzzleManager : MonoBehaviour
 
         _enemyList = new List<Enemy>();
 
-        for (int i = 0; i < _currentStage._maxEnemyCount; i++) // Chagne -  _stageData. monster count
+        for (int i = 0; i < _currentStage._maxEnemyCount + _stageLevel * 2; i++) // Chagne -  _stageData. monster count
         {
             Enemy.EnemyType _enemyType = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)]._enemyType;
 
@@ -868,7 +893,7 @@ public class PuzzleManager : MonoBehaviour
             _enemyList.Add(_newEnemy);
             _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
 
-            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 11f + Random.Range(-3f, 3f));
+            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 13f + Random.Range(0f, 2f));
 
 
         }
@@ -876,7 +901,7 @@ public class PuzzleManager : MonoBehaviour
         EnemyCastle _enemyCastle;
 
         _enemyCastle = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<EnemyCastle>();
-        _enemyCastle.transform.position = new Vector3(0f, 0.5f, 12f);
+        _enemyCastle.transform.position = new Vector3(0f, 0.5f, 17f);
         _enemyList.Add(_enemyCastle);
 
         _enemyCastle.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/EnemyCastle"), 0);
@@ -891,9 +916,9 @@ public class PuzzleManager : MonoBehaviour
     {
         if (isHero)
         {
-            if (_heroList.Count < 1) // Fail Stage
+            if (_heroList.Count < 1 && isEnd == false) // Fail Stage
             {
-
+                isEnd = true;
                 this.TaskDelay(1f, () =>
                 {
                     _puzzleState = PuzzleState.Fail;
@@ -913,8 +938,9 @@ public class PuzzleManager : MonoBehaviour
         else
         {
 
-            if (_enemyList.Count < 1) // Clear Stage
+            if (_enemyList.Count < 1 && isEnd == false) // Clear Stage
             {
+                isEnd = true;
                 this.TaskDelay(3f, () =>
                 {
                     _puzzleState = PuzzleState.Clear;

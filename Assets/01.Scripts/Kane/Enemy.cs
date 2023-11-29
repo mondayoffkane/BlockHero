@@ -96,6 +96,9 @@ public class Enemy : MonoBehaviour
             _obj.SetActive(false);
         }
 
+        _hpGuage.transform.parent.gameObject.SetActive(false);
+
+
     }
 
 
@@ -124,6 +127,16 @@ public class Enemy : MonoBehaviour
         {
             _currentHP -= _tempDamage;
             _hpGuage.fillAmount = (_currentHP / _maxHP);
+
+            if (_hpGuage.fillAmount >= 0.95f)
+            {
+                _hpGuage.transform.parent.gameObject.SetActive(false);
+            }
+            else if (_hpGuage.transform.parent.gameObject.activeSelf == false)
+            {
+                _hpGuage.transform.parent.gameObject.SetActive(true);
+            }
+
             if (_currentHP <= 0)
             {
                 Dead();

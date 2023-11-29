@@ -116,15 +116,15 @@ public class Block : MonoBehaviour
         { // upgrade block
 
             Init();
-            //var _effect = Managers.Pool.Pop(Resources.Load<GameObject>("Effect/MergePromote"));
-            //_effect.transform.position = transform.position + Vector3.up * 0.5f;
+            var _effect = Managers.Pool.Pop(Resources.Load<GameObject>("Effect/MergePromote"));
+            _effect.transform.position = transform.position + Vector3.up * 0.5f;
             //this.TaskDelay(1f, () => Managers.Pool.Push(_effect));
         }
         else if (isMatch)
         { // delete block
             PuzzleManager._instance._grid[_pos.x + 2, _pos.y + 2] = null;
-            //var _effect = Managers.Pool.Pop(Resources.Load<GameObject>("Effect/MergeRemove"));
-            //_effect.transform.position = transform.position + Vector3.up * 0.5f;
+            var _effect = Managers.Pool.Pop(Resources.Load<GameObject>("Effect/MergeRemove"));
+            _effect.transform.position = transform.position + Vector3.up * 0.5f;
             //this.TaskDelay(1f, () => Managers.Pool.Push(_effect));
             transform.DOScale(0, 0.25f).SetEase(Ease.Linear)
                 .OnComplete(() => Managers.Pool.Push(transform.GetComponent<Poolable>()));
@@ -162,7 +162,8 @@ public class Block : MonoBehaviour
         }
         //else
         //{
-        transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
+        //transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
+        transform.DOScale(0f, 0.5f).SetEase(Ease.Linear);
         //}
 
 

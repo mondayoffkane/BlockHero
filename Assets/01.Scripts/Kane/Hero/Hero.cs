@@ -113,14 +113,26 @@ public class Hero : MonoBehaviour
 
         _animator.runtimeAnimatorController = _controllers[_level - 1];
 
-        //_animator.SetBool("Idle", true);
-        //_animator.SetBool("Smash", false);
-        //_animator.SetBool("Magic", false);
-        //_animator.SetBool("Arrow", false);
-        //_animator.SetBool("Heal", false);
+
         _animator.SetBool("Dead", false);
         _animator.SetBool("Run", false);
         _animator.SetBool("Attack", false);
+
+
+        _hpGuage.transform.parent.gameObject.SetActive(false);
+
+        DOTween.Sequence()
+            .Append(transform.DOScale(0f, 0f))
+                        .AppendCallback(() =>
+            {
+                var _effect = Managers.Pool.Pop(Resources.Load<GameObject>("Effect/SpawnHero"));
+                _effect.transform.position = transform.position + Vector3.up * 0.5f;
+            })
+                        .AppendInterval(0.5f)
+            .Append(transform.DOScale(1f, 1f).SetEase(Ease.OutBounce));
+
+        //transform.DOScale(0f, 0f);
+        //transform.DOScale(1f, 1f).SetEase(Ease.OutBounce);
 
     }
 
@@ -164,6 +176,16 @@ public class Hero : MonoBehaviour
     {
         _currentHP -= _enemyDamage;
         _hpGuage.fillAmount = (_currentHP / _maxHP);
+
+        if (_hpGuage.fillAmount >= 0.95f)
+        {
+            _hpGuage.transform.parent.gameObject.SetActive(false);
+        }
+        else if (_hpGuage.transform.parent.gameObject.activeSelf == false)
+        {
+            _hpGuage.transform.parent.gameObject.SetActive(true);
+        }
+
         if (_currentHP <= 0)
         {
             Dead();

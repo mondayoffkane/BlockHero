@@ -20,8 +20,8 @@ public class Mushroom : Enemy
         transform.localScale = Vector3.zero;
 
         DOTween.Sequence()
-            .Append(transform.DOScale(Vector3.one, 1f).SetEase(Ease.Linear))
-            .AppendInterval(0.5f)
+            .Append(transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.Linear))
+            .AppendInterval(1.5f)
             .OnComplete(() =>
             {
                 _enemyState = EnemyState.Wait;

@@ -92,15 +92,17 @@ public class UI_GameScene : UI_Scene
         Start_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
         Clear_Button.AddButtonEvent(() =>
         {
-            ChangePanel(0);
-            Managers._puzzleManager.InitStage();
-            //Managers._puzzleManager.LoadStage();
+            //ChangePanel(0);
+            //Managers._puzzleManager.InitStage();
+            ////Managers._puzzleManager.LoadStage();
+
+            Managers._puzzleManager.StartStage();
         });
         Retry_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
         Home_Button.AddButtonEvent(() =>
         {
             ChangePanel(0);
-            Managers._puzzleManager.CamChange(0);
+            Managers._puzzleManager.CamChange(0,0f);
             Managers._puzzleManager.InitStage();
             //Managers._puzzleManager.LoadStage();
         });

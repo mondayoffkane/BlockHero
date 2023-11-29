@@ -14,6 +14,9 @@ scopes = {
 	"last_search.110DEAF1" = "blood"
 	"OpenInspectorPreview.110DEAF1" = "0"
 	"currentGroup.110DEAF1" = "asset"
+	"last_search.3BE40471" = "blood"
+	"OpenInspectorPreview.3BE40471" = "0"
+	"currentGroup.3BE40471" = "asset"
 }
 providers = {
 	packages = {

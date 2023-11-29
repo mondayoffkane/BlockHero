@@ -7,6 +7,7 @@ using DG.Tweening;
 
 
 
+
 public class PuzzleManager : MonoBehaviour
 {
 
@@ -45,7 +46,7 @@ public class PuzzleManager : MonoBehaviour
 
 
     //==== Puzzle
-
+    public int _stageLevel = 0;
     [TabGroup("Puzzle")] public int _changeCount = 10;
     [TabGroup("Puzzle")] public GameObject _block_Pref;
     [TabGroup("Puzzle")] public Transform _blockGroup;
@@ -124,6 +125,8 @@ public class PuzzleManager : MonoBehaviour
     {
         _instance = this;
         if (_uiEffecter == null) _uiEffecter = GetComponent<UiEffectManager>();
+
+        _stageLevel = ES3.Load<int>("StageLevel", 0);
     }
 
 
@@ -894,6 +897,7 @@ public class PuzzleManager : MonoBehaviour
                 this.TaskDelay(1f, () =>
                 {
                     _puzzleState = PuzzleState.Fail;
+                    Managers._gameUI.Fail_Stage_Text.text = $"Stage {_stageLevel + 1}";
                     _uiEffecter.FailEffect();
                     this.TaskDelay(1.5f, () => Managers._gameUI.Defeat_Panel.SetActive(true));
 
@@ -914,6 +918,9 @@ public class PuzzleManager : MonoBehaviour
                 this.TaskDelay(3f, () =>
                 {
                     _puzzleState = PuzzleState.Clear;
+                    _stageLevel++;
+                    ES3.Save<int>("StageLevel", _stageLevel);
+                    Managers._gameUI.Clear_Stage_Text.text = $"Stage {_stageLevel + 1}";
                     _uiEffecter.ClearEffect();
                     this.TaskDelay(1.5f, () => Managers._gameUI.Clear_Panel.SetActive(true));
 

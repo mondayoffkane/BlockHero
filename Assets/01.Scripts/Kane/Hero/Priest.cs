@@ -132,17 +132,21 @@ public class Priest : Hero
             if (_puzzleManager._heroList[i]._currentHP < _targetHero._currentHP)
                 _targetHero = _puzzleManager._heroList[i];
         }
+        if (_targetHero._currentHP >= 0 && _targetHero._armyState != ArmyState.Dead)
+        {
 
-        Transform _targetHeal = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/HealOnce")).transform;
-        //_targetHeal.transform.position = _targetHero.transform.position;
-        _targetHeal.SetParent(_targetHero.transform);
-        _targetHeal.transform.localPosition = new Vector3(0f, 1f, -0.5f);
 
-        this.TaskDelay(2f, () => Managers.Pool.Push(_targetHeal.GetComponent<Poolable>()));
+            Transform _targetHeal = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/HealOnce")).transform;
+            //_targetHeal.transform.position = _targetHero.transform.position;
+            _targetHeal.SetParent(_targetHero.transform);
+            _targetHeal.transform.localPosition = new Vector3(0f, 1f, -0.5f);
 
-        // add particle on _target Hero position
+            this.TaskDelay(2f, () => Managers.Pool.Push(_targetHeal.GetComponent<Poolable>()));
 
-        _targetHero.OnDamage(-50f);
+            // add particle on _target Hero position
+
+            _targetHero.OnDamage(-50f);
+        }
 
 
     }

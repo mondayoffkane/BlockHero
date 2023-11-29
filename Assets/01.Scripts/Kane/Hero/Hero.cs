@@ -104,6 +104,8 @@ public class Hero : MonoBehaviour
 
         if (_boxColl == null) _boxColl = GetComponent<BoxCollider>();
 
+        _boxColl.isTrigger = false;
+
         _skinnedMesh.sharedMesh = _heroStatus._heroMeshes[_level];
 
 
@@ -174,8 +176,12 @@ public class Hero : MonoBehaviour
 
     public void Dead()
     {
+
+        _boxColl.isTrigger = true;
         _armyState = ArmyState.Dead;
         _animator.SetBool("Dead", true);
+        _animator.SetBool("Attack", false);
+        _animator.SetBool("Run", false);
         _puzzleManager._heroList.Remove(this);
 
         foreach (GameObject _effect in _deadEffects)
@@ -209,6 +215,8 @@ public class Hero : MonoBehaviour
 
             //isPlay = false;
             _armyState = ArmyState.Victory;
+            _animator.SetBool("Run", false);
+            _animator.SetBool("Attack", false);
 
         }
         else
@@ -231,7 +239,8 @@ public class Hero : MonoBehaviour
         if (_target == null)
         {
             _armyState = ArmyState.Victory;
-
+            _animator.SetBool("Run", false);
+            _animator.SetBool("Attack", false);
 
         }
         else if (_target._currentHP <= 0 || _target._enemyState == Enemy.EnemyState.Dead)

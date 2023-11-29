@@ -43,6 +43,8 @@ public class UI_GameScene : UI_Scene
         , Defeat_Panel
         ;
     public Text MoveCountText
+        , Clear_Stage_Text
+        , Fail_Stage_Text
         ;
 
     public Button
@@ -66,6 +68,9 @@ public class UI_GameScene : UI_Scene
         // =====  Bind  ===================================
 
         MoveCountText = GetText(Texts.MoveCountText);
+        Clear_Stage_Text = GetText(Texts.Clear_Stage_Text);
+        Fail_Stage_Text = GetText(Texts.Fail_Stage_Text);
+
 
         Lobby_Panel = GetObject(GameObjects.Lobby_Panel);
         Puzzle_Panel = GetObject(GameObjects.Puzzle_Panel);

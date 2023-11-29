@@ -89,6 +89,13 @@ public class Enemy : MonoBehaviour
 
         if (_meshfilter == null) _meshfilter = GetComponent<MeshFilter>();
         _meshfilter.sharedMesh = _enemyStatus._meshes[_level];
+
+
+        foreach (GameObject _obj in _deadEffects)
+        {
+            _obj.SetActive(false);
+        }
+
     }
 
 

@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     public enum EnemyType
     {
         Mushroom,
-        Castle
+        EnemyCastle
 
 
     }
@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
 
     MeshFilter _meshfilter;
 
+    public GameObject[] _deadEffects;
     // =========================================
 
 
@@ -135,6 +136,14 @@ public class Enemy : MonoBehaviour
         Managers._puzzleManager._enemyList.Remove(this);
         Managers._puzzleManager.DeadArnmyNEnemy(false);
         Managers.Pool.Push(transform.GetComponent<Poolable>());
+
+        foreach (GameObject _effect in _deadEffects)
+        {
+            DOTween.Sequence().AppendCallback(() => _effect.SetActive(true))
+           .AppendInterval(3f).
+           AppendCallback(() => _effect.SetActive(false));
+        }
+
     }
 
 

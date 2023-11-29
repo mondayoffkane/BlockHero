@@ -92,7 +92,7 @@ public class PuzzleManager : MonoBehaviour
     [TabGroup("Direction")] public float _floatingTime = 1f;
     [TabGroup("Direction")] public Vector3 _floatingPos = new Vector3(0f, 0.5f, 5.5f);
 
-    // ====== Private
+    // ====== Private ==========================================
     Vector3 _startMousePos;
     Vector3 _endMousePos;
     float _testDis;
@@ -108,8 +108,8 @@ public class PuzzleManager : MonoBehaviour
 
 
     GameObject _floating_Pref;
-
-
+    UiEffectManager _uiEffecter;
+    // =========================================================
     //public void SetBlockMeshes()
     //{
     //_heroAllMeshes.Add(_selectHeroes[0]);
@@ -123,6 +123,7 @@ public class PuzzleManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        if (_uiEffecter == null) _uiEffecter = GetComponent<UiEffectManager>();
     }
 
 
@@ -239,6 +240,27 @@ public class PuzzleManager : MonoBehaviour
             this.TaskDelay(1.5f, FIghtMode);
 
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            for (int i = 0; i < _size.x; i++)
+            {
+                for (int j = 0; j < _size.y; j++)
+                {
+                    _grid[i, j]._heroType = Hero.HeroType.Wizard;
+                    _grid[i, j]._level = 1;
+
+
+                }
+            }
+            _puzzleState = PuzzleState.ArmySpawn;
+
+            CamChange(2);
+            Managers._gameUI.ChangePanel(2);
+            this.TaskDelay(1.5f, FIghtMode);
+
+        }
+
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -782,9 +804,18 @@ public class PuzzleManager : MonoBehaviour
     {
 
         //SpawnEnemy();
+        //_gridObj.transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
 
-
-        // 
+        //for (int i = 0; i < _size.x; i++)
+        //{
+        //    for (int j = 0; j < _size.y; j++)
+        //    {
+        //        _grid[i, j].SpawnHero();
+        //    }
+        //}
+        //SpawnEnemy();
+        //_puzzleState = PuzzleState.Fight;
+        // //////////
         DOTween.Sequence().
             AppendCallback(() =>
             {
@@ -859,10 +890,20 @@ public class PuzzleManager : MonoBehaviour
         {
             if (_heroList.Count < 1) // Fail Stage
             {
-                _puzzleState = PuzzleState.Fail;
-                Managers._gameUI.Fail_Panel.SetActive(true);
 
-                Debug.Log("Fail Stage");
+                this.TaskDelay(1f, () =>
+                {
+                    _puzzleState = PuzzleState.Fail;
+                    _uiEffecter.FailEffect();
+                    this.TaskDelay(1.5f, () => Managers._gameUI.Fail_Panel.SetActive(true));
+
+                });
+
+
+
+                //Managers._gameUI.Fail_Panel.SetActive(true);
+
+                //Debug.Log("Fail Stage");
             }
         }
         else
@@ -870,9 +911,17 @@ public class PuzzleManager : MonoBehaviour
 
             if (_enemyList.Count < 1) // Clear Stage
             {
-                _puzzleState = PuzzleState.Clear;
-                Managers._gameUI.Clear_Panel.SetActive(true);
-                Debug.Log("Clear Stage");
+                this.TaskDelay(3f, () =>
+                {
+                    _puzzleState = PuzzleState.Clear;
+                    _uiEffecter.ClearEffect();
+                    this.TaskDelay(1.5f, () => Managers._gameUI.Clear_Panel.SetActive(true));
+
+                });
+
+
+                //Managers._gameUI.Clear_Panel.SetActive(true);
+                //Debug.Log("Clear Stage");
             }
         }
 

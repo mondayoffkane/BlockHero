@@ -148,7 +148,7 @@ public class Archer : Hero
 
     protected override void Skill()
     {
-        Debug.Log("Child Skill");
+        //Debug.Log("Child Skill");
         base.Skill();
 
 

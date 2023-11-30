@@ -152,7 +152,7 @@ public class Block : MonoBehaviour
             Type _heroClassType = Type.GetType(_typeString);
             Hero _newBlockHero = (Hero)Managers.Pool.Pop(_heroPref).GetComponent(_heroClassType);
 
-            _newBlockHero.transform.position = transform.position;
+            _newBlockHero.transform.position = transform.position + Vector3.up * -0.5f;
 
             HeroStatus _heroStatus = Resources.Load<HeroStatus>($"HeroStatus/{_heroType.ToString()}");
             _newBlockHero.PushHeroList();

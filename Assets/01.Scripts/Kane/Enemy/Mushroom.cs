@@ -57,7 +57,7 @@ public class Mushroom : Enemy
                     if (_target != null || _target._currentHP > 0)
                     {
                         Vector3 _targetpos = _target.transform.position;
-                        _targetpos.y = 0.5f;
+                        _targetpos.y = transform.position.y;
                         transform.LookAt(_targetpos);
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
@@ -67,6 +67,8 @@ public class Mushroom : Enemy
                         else
                         {
                             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+                            Vector3 _pos = transform.position;
+                            transform.position = new Vector3(_pos.x, -0.5f, _pos.z);
                         }
 
                     }

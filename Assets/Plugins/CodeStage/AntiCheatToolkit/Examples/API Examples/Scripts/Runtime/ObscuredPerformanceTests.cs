@@ -4,6 +4,8 @@
 // ------------------------------------------------------
 #endregion
 
+using System.Numerics;
+
 namespace CodeStage.AntiCheat.Examples
 {
 	using Storage;
@@ -42,6 +44,9 @@ namespace CodeStage.AntiCheat.Examples
 
 		public bool longTest = true;
 		public int longIterations = 2500000;
+		
+		public bool bigIntTest = true;
+		public int bigIntIterations = 2500000;
 
 		public bool floatTest = true;
 		public int floatIterations = 2500000;
@@ -77,6 +82,7 @@ namespace CodeStage.AntiCheat.Examples
 			if (intTest) TestInt();
 			if (uintTest) TestUInt();
 			if (longTest) TestLong();
+			if (bigIntTest) TestBigInt();
 			if (floatTest) TestFloat();
 			if (doubleTest) TestDouble();
 			if (stringTest) TestString();
@@ -334,41 +340,41 @@ namespace CodeStage.AntiCheat.Examples
 			if (Math.Abs(notObscured) > 0.00001f) {}
 		}
 
-		private void TestInt()
+		private void TestBigInt()
 		{
-			logBuilder.AppendLine("ObscuredInt vs int, " + intIterations + " iterations for read and write");
+			logBuilder.AppendLine("ObscuredBigInteger vs BigInteger, " + bigIntIterations + " iterations for read and write");
 
-			ObscuredInt obscured = 100;
-			int notObscured = obscured;
-			var dummy = 0;
+			ObscuredBigInteger obscured = 100;
+			BigInteger notObscured = obscured;
+			BigInteger dummy = 0;
 
 			var sw = Stopwatch.StartNew();
 
-			for (var i = 0; i < intIterations; i++)
+			for (var i = 0; i < bigIntIterations; i++)
 			{
 				dummy = obscured;
 			}
 
-			for (var i = 0; i < intIterations; i++)
+			for (var i = 0; i < bigIntIterations; i++)
 			{
 				obscured = dummy;
 			}
 			sw.Stop();
-			logBuilder.AppendLine("ObscuredInt:").AppendLine(sw.ElapsedMilliseconds + " ms");
+			logBuilder.AppendLine("ObscuredBigInteger:").AppendLine(sw.ElapsedMilliseconds + " ms");
 
 			sw.Reset();
 			sw.Start();
-			for (var i = 0; i < intIterations; i++)
+			for (var i = 0; i < bigIntIterations; i++)
 			{
 				dummy = notObscured;
 			}
 
-			for (var i = 0; i < intIterations; i++)
+			for (var i = 0; i < bigIntIterations; i++)
 			{
 				notObscured = dummy;
 			}
 			sw.Stop();
-			logBuilder.AppendLine("int:").AppendLine(sw.ElapsedMilliseconds + " ms");
+			logBuilder.AppendLine("BigInteger:").AppendLine(sw.ElapsedMilliseconds + " ms");
 
 			if (dummy != 0) {}
 			if (obscured != 0) {}
@@ -410,6 +416,47 @@ namespace CodeStage.AntiCheat.Examples
 			}
 			sw.Stop();
 			logBuilder.AppendLine("long:").AppendLine(sw.ElapsedMilliseconds + " ms");
+
+			if (dummy != 0) {}
+			if (obscured != 0) {}
+			if (notObscured != 0) {}
+		}
+		
+		private void TestInt()
+		{
+			logBuilder.AppendLine("ObscuredInt vs int, " + intIterations + " iterations for read and write");
+
+			ObscuredInt obscured = 100;
+			int notObscured = obscured;
+			var dummy = 0;
+
+			var sw = Stopwatch.StartNew();
+
+			for (var i = 0; i < intIterations; i++)
+			{
+				dummy = obscured;
+			}
+
+			for (var i = 0; i < intIterations; i++)
+			{
+				obscured = dummy;
+			}
+			sw.Stop();
+			logBuilder.AppendLine("ObscuredInt:").AppendLine(sw.ElapsedMilliseconds + " ms");
+
+			sw.Reset();
+			sw.Start();
+			for (var i = 0; i < intIterations; i++)
+			{
+				dummy = notObscured;
+			}
+
+			for (var i = 0; i < intIterations; i++)
+			{
+				notObscured = dummy;
+			}
+			sw.Stop();
+			logBuilder.AppendLine("int:").AppendLine(sw.ElapsedMilliseconds + " ms");
 
 			if (dummy != 0) {}
 			if (obscured != 0) {}

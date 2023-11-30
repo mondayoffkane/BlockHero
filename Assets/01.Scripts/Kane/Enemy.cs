@@ -10,7 +10,8 @@ public class Enemy : MonoBehaviour
     public enum EnemyType
     {
         Mushroom,
-        EnemyCastle
+        EnemyCastle,
+        BossDragon
 
 
     }
@@ -109,6 +110,7 @@ public class Enemy : MonoBehaviour
         //_animator.SetBool("Attack", false);
 
         _boxcol.size = _meshfilter.sharedMesh.bounds.size;
+        _boxcol.center = _meshfilter.sharedMesh.bounds.center;
     }
 
 

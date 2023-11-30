@@ -49,7 +49,7 @@ public class Priest : Hero
                     if (_target != null && _target._currentHP > 0)
                     {
                         Vector3 _targetpos = _target.transform.position;
-                        _targetpos.y = 0.5f;
+                        _targetpos.y = transform.position.y;
                         transform.LookAt(_target.transform);
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
@@ -60,7 +60,7 @@ public class Priest : Hero
                         {
                             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
                             Vector3 _pos = transform.position;
-                            transform.position = new Vector3(_pos.x, 0f, _pos.z);
+                            transform.position = new Vector3(_pos.x, -0.5f, _pos.z);
                         }
 
                     }
@@ -141,14 +141,29 @@ public class Priest : Hero
         }
         if (_targetHero._currentHP >= 0 && _targetHero._armyState != ArmyState.Dead)
         {
+            Poolable _effect;
 
 
-            Transform _targetHeal = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/HealOnce")).transform;
-            //_targetHeal.transform.position = _targetHero.transform.position;
-            _targetHeal.SetParent(_targetHero.transform);
-            _targetHeal.transform.localPosition = new Vector3(0f, 1f, -0.5f);
+            switch (_level)
+            {
+                case 1:
+                    _effect = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Healer-Lv1"));
+                    break;
 
-            this.TaskDelay(2f, () => Managers.Pool.Push(_targetHeal.GetComponent<Poolable>()));
+                case 2:
+                    _effect = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Healer-Lv2"));
+                    break;
+
+                default:
+                    _effect = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Healer-Lv1"));
+                    break;
+            }
+
+            //Transform _targetHeal = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Healer-Lv1")).transform;
+            _effect.transform.SetParent(_targetHero.transform);
+            _effect.transform.localPosition = new Vector3(0f, 0f, 0f);
+
+            this.TaskDelay(2f, () => Managers.Pool.Push(_effect));
 
             // add particle on _target Hero position
 

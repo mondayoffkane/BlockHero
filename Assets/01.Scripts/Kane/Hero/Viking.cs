@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Viking : Hero
 {
@@ -47,7 +48,7 @@ public class Viking : Hero
                     if (_target != null && _target._currentHP > 0)
                     {
                         Vector3 _targetpos = _target.transform.position;
-                        _targetpos.y = 0.5f;
+                        _targetpos.y = transform.position.y;
                         transform.LookAt(_target.transform);
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
@@ -58,7 +59,7 @@ public class Viking : Hero
                         {
                             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
                             Vector3 _pos = transform.position;
-                            transform.position = new Vector3(_pos.x, 0f, _pos.z);
+                            transform.position = new Vector3(_pos.x, -0.5f, _pos.z);
                         }
 
                     }
@@ -114,6 +115,36 @@ public class Viking : Hero
     {
         if (!isReadySkill)
         {
+            Poolable _effect;
+
+            switch (_level)
+            {
+                case 1:
+                    _effect = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Warrior-Lv1"), transform);
+
+                    _effect.transform.localPosition = new Vector3(0.4f, 0.5f, 0.4f);
+
+                    break;
+
+                case 2:
+                    _effect = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Warrior-Lv2"), transform);
+                    _effect.transform.localPosition = new Vector3(0.5f, 0.5f, 0.25f);
+                    break;
+
+                default:
+                    _effect = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Warrior-Lv1"), transform);
+                    _effect.transform.localPosition = new Vector3(0.4f, 0.5f, 0.4f);
+                    break;
+            }
+
+
+
+            DOTween.Sequence()
+                .AppendInterval(2f)
+                .AppendCallback(() =>
+            Managers.Pool.Push(_effect));
+
+
             base.Attack();
 
         }

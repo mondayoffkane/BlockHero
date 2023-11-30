@@ -195,7 +195,7 @@ public class PuzzleManager : MonoBehaviour
 
         //UnityEditor.EditorApplication.isPaused = true;
         isEnd = false;
-        _changeCount = 6;
+        _changeCount = 6 + _stageLevel / 2;
         //CamChange(2);
 
         _puzzleState = PuzzleState.BlockSpawn;
@@ -466,7 +466,6 @@ public class PuzzleManager : MonoBehaviour
             }
             //Debug.Log("Horizontal check");
             //yield return new WaitForSeconds(0.5f);
-
             for (int i = 0; i < _size.x; i++) // vertical check
             {
                 for (int j = 0; j < _size.y - 2; j++)
@@ -485,7 +484,7 @@ public class PuzzleManager : MonoBehaviour
                     }
                 }
             }
-            //Debug.Log("Vertical check");
+
             yield return new WaitForSeconds(_blockMoveSpeed);
 
             if (ExistMatch == true)
@@ -504,10 +503,8 @@ public class PuzzleManager : MonoBehaviour
                     for (int j = 0; j < _size.y; j++)
                     {
                         _grid[i, j].OnMatchBlock(); // block merge
-                        // add match particle or block.cs in OnMatchBlock()
                     }
                 }
-                //Debug.Log("OnMatch");
                 yield return new WaitForSeconds(0.5f  /*+ 0.25f*/);
                 _puzzleState = PuzzleState.WaitInput;
 
@@ -896,7 +893,7 @@ public class PuzzleManager : MonoBehaviour
 
         _enemyList = new List<Enemy>();
 
-        for (int i = 0; i < _currentStage._maxEnemyCount + _stageLevel * 2; i++) // Chagne -  _stageData. monster count
+        for (int i = 0; i < _currentStage._maxEnemyCount + _stageLevel * 1; i++) // Chagne -  _stageData. monster count
         {
             Enemy.EnemyType _enemyType = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)]._enemyType;
 
@@ -915,7 +912,7 @@ public class PuzzleManager : MonoBehaviour
             _enemyList.Add(_newEnemy);
             _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
 
-            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), 0f, 13f + Random.Range(0f, 2f));
+            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), -0.5f, 13f + Random.Range(0f, 2f));
 
 
         }
@@ -923,7 +920,7 @@ public class PuzzleManager : MonoBehaviour
         EnemyCastle _enemyCastle;
 
         _enemyCastle = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<EnemyCastle>();
-        _enemyCastle.transform.position = new Vector3(0f, 0f, 17f);
+        _enemyCastle.transform.position = new Vector3(0f, -0.5f, 17f);
         _enemyList.Add(_enemyCastle);
 
         _enemyCastle.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/EnemyCastle"), 0);
@@ -963,14 +960,14 @@ public class PuzzleManager : MonoBehaviour
             if (_enemyList.Count < 1 && isEnd == false) // Clear Stage
             {
                 isEnd = true;
-                this.TaskDelay(3f, () =>
+                this.TaskDelay(2f, () =>
                 {
                     _puzzleState = PuzzleState.Clear;
                     _stageLevel++;
                     ES3.Save<int>("StageLevel", _stageLevel);
                     Managers._gameUI.Clear_Stage_Text.text = $"Stage {_stageLevel + 1}";
                     _uiEffecter.ClearEffect();
-                    this.TaskDelay(1.5f, () => Managers._gameUI.Clear_Panel.SetActive(true));
+                    this.TaskDelay(2f, () => Managers._gameUI.Clear_Panel.SetActive(true));
 
                 });
 

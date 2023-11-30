@@ -31,6 +31,10 @@ public class UI_GameScene : UI_Scene
         Lobby_Panel,
         Puzzle_Panel,
         Battle_Panel,
+        Sword_L,
+        Sword_R,
+        Pos_L,
+        Pos_R,
         Clear_Panel,
         Defeat_Panel,
     }
@@ -41,7 +45,12 @@ public class UI_GameScene : UI_Scene
         Battle_Panel,
         Clear_Panel
         , Defeat_Panel
+        , Sword_L
+        , Sword_R
+        , Pos_L
+        , Pos_R
         ;
+
     public Text MoveCountText
         , Clear_Stage_Text
         , Fail_Stage_Text
@@ -78,6 +87,8 @@ public class UI_GameScene : UI_Scene
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
         Defeat_Panel = GetObject(GameObjects.Defeat_Panel);
 
+        Sword_L = GetObject(GameObjects.Sword_L);
+        Sword_R = GetObject(GameObjects.Sword_R);
 
 
         Start_Button = GetButton(Buttons.Start_Button);
@@ -102,7 +113,7 @@ public class UI_GameScene : UI_Scene
         Home_Button.AddButtonEvent(() =>
         {
             ChangePanel(0);
-            Managers._puzzleManager.CamChange(0,0f);
+            Managers._puzzleManager.CamChange(0, 0f);
             Managers._puzzleManager.InitStage();
             //Managers._puzzleManager.LoadStage();
         });
@@ -123,9 +134,9 @@ public class UI_GameScene : UI_Scene
     }
 
 
-
     public void ChangePanel(int _num)
     {
+
         Lobby_Panel.SetActive(false);
         Puzzle_Panel.SetActive(false);
         Battle_Panel.SetActive(false);
@@ -136,6 +147,7 @@ public class UI_GameScene : UI_Scene
         {
             case 0:
                 Lobby_Panel.SetActive(true);
+
                 break;
 
             case 1:
@@ -145,6 +157,22 @@ public class UI_GameScene : UI_Scene
 
             case 2:
                 Battle_Panel.SetActive(true);
+                Sword_L.SetActive(true);
+                Sword_R.SetActive(true);
+
+                DOTween.Sequence()
+                    .AppendCallback(() =>
+                    {
+                        Battle_Panel.GetComponent<Animator>().Play("BattlePanel");
+                    })
+                    .AppendInterval(1f)
+                    .AppendCallback(() =>
+                    {
+                        Sword_L.SetActive(false);
+                        Sword_R.SetActive(false);
+                    });
+
+
                 break;
 
             default:

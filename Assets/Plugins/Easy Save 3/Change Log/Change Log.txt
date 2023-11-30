@@ -14,7 +14,7 @@
 - Auto Saves are now processed in order of their position in the hierarchy.
 - Resolved issue where members would be serialized twice when it was marked as ES3Serializable in both concrete and base classes.
 - Worked around Unity bug where Unity would throw an error when trying to set a scripting define symbol for Stadia.
-- Accounted for change in 2022.3 LTS where Unity have fixed a typo in their Editor API ("ToolbarSearchTextField")
+- Accounted for change in 2022.3 LTS where Unity have fixed a typo in their Editor API ("ToolbarSeachTextField")
 
 3.5.4
 - You can now enable Assembly Definition Files for Easy Save by going to Tools > Easy Save 3 > Enable Assembly Definition Files.

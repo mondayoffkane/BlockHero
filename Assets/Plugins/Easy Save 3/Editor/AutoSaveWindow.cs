@@ -8,12 +8,12 @@ using UnityEditor.SceneManagement;
 
 namespace ES3Editor
 {
-    [System.Serializable]
-    public class AutoSaveWindow : SubWindow
-    {
-        public bool showAdvancedSettings = false;
+	[System.Serializable]
+	public class AutoSaveWindow : SubWindow
+	{
+		public bool showAdvancedSettings = false;
 
-        public ES3AutoSaveMgr mgr = null;
+		public ES3AutoSaveMgr mgr = null;
 
         private HierarchyItem[] hierarchy = null;
         public HierarchyItem selected = null;
@@ -36,19 +36,19 @@ namespace ES3Editor
         }
 
         public override void OnGUI()
-        {
-            Init();
+		{
+			Init();
 
-            if (mgr == null)
-            {
+			if(mgr == null)
+			{
                 EditorGUILayout.Space();
                 if (GUILayout.Button("Enable Auto Save for this scene"))
                     mgr = ES3Postprocessor.AddManagerToScene().GetComponent<ES3AutoSaveMgr>();
                 else
                     return;
-            }
+			}
 
-            var style = EditorStyle.Get;
+			var style = EditorStyle.Get;
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())
             {
@@ -103,8 +103,8 @@ namespace ES3Editor
                         searchTerm = GUILayout.TextField(searchTerm, GUI.skin.FindStyle("ToolbarSearchTextField"));
                         if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSearchCancelButton")))
 #else
-                        searchTerm = GUILayout.TextField(searchTerm, GUI.skin.FindStyle("ToolbarSearchTextField"));
-                        if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSearchCancelButton")))
+                        searchTerm = GUILayout.TextField(searchTerm, GUI.skin.FindStyle("ToolbarSeachTextField"));
+                        if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSeachCancelButton")))
 #endif
                         {
                             // Remove focus if cleared
@@ -125,8 +125,8 @@ namespace ES3Editor
             }
         }
 
-        public void Init()
-        {
+		public void Init()
+		{
             if (mgr == null)
                 foreach (var thisMgr in Resources.FindObjectsOfTypeAll<ES3AutoSaveMgr>())
                     if (thisMgr != null && thisMgr.gameObject.scene == SceneManager.GetActiveScene())
@@ -147,12 +147,12 @@ namespace ES3Editor
                 var prefabs = ES3ReferenceMgr.Current.prefabs;
                 parentObjects = new GameObject[prefabs.Count];
                 for (int i = 0; i < prefabs.Count; i++)
-                    if (prefabs[i] != null)
+                    if(prefabs[i] != null)
                         parentObjects[i] = prefabs[i].gameObject;
             }
             hierarchy = new HierarchyItem[parentObjects.Length];
             for (int i = 0; i < parentObjects.Length; i++)
-                if (parentObjects[i] != null)
+                if(parentObjects[i] != null)
                     hierarchy[i] = new HierarchyItem(parentObjects[i].transform, null, this);
         }
 
@@ -202,7 +202,7 @@ namespace ES3Editor
                 if (t != null)
                 {
                     // Filter by tag if it's prefixed by "tag:"
-                    if (searchTerm.StartsWith("tag:") && t.tag.ToLowerInvariant().Contains(searchTerm.Remove(0, 4)))
+                    if (searchTerm.StartsWith("tag:") && t.tag.ToLowerInvariant().Contains(searchTerm.Remove(0,4)))
                         containsSearchTerm = true;
                     // Else filter by name
                     else

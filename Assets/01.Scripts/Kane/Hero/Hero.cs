@@ -68,9 +68,9 @@ public class Hero : MonoBehaviour
     protected PuzzleManager _puzzleManager;
     public HeroStatus _heroStatus;
     protected bool isReadySkill = false;
-    // ===============================
 
 
+    // =====================================================
 
 
     public virtual void InitStatus(HeroStatus HeroStatus, int Level)
@@ -103,15 +103,11 @@ public class Hero : MonoBehaviour
         _currentMP = 0f;
 
         if (_boxColl == null) _boxColl = GetComponent<BoxCollider>();
-
         _boxColl.isTrigger = false;
-
         _skinnedMesh.sharedMesh = _heroStatus._heroMeshes[_level];
-
-
         _controllers = _heroStatus._controllers;
-
         _animator.runtimeAnimatorController = _controllers[_level - 1];
+
 
 
         _animator.SetBool("Dead", false);
@@ -128,11 +124,20 @@ public class Hero : MonoBehaviour
                 var _effect = Managers.Pool.Pop(Resources.Load<GameObject>("Effect/SpawnHero"));
                 _effect.transform.position = transform.position + Vector3.up * 0.5f;
             })
-                        .AppendInterval(0.5f)
-            .Append(transform.DOScale(1f, 1f).SetEase(Ease.OutBounce));
+            .AppendInterval(0.5f)
+            .Append(transform.DOScale(2f, 0.5f).SetEase(Ease.Linear))
+           .Append(transform.DOScale(1f, 0.5f).SetEase(Ease.Linear));
 
-        //transform.DOScale(0f, 0f);
-        //transform.DOScale(1f, 1f).SetEase(Ease.OutBounce);
+
+        //.AppendCallback(() =>
+        //{
+        //    transform.DOScale(1f, 1f).SetEase(Ease.OutBounce);
+        //    transform.DOMoveY(1f, 1f).SetEase(Ease.Linear);
+        //})
+        //.AppendInterval(1f)
+        //.Append(transform.DOMoveY(-0.5f, 0.5f).SetEase(Ease.Linear));
+
+
 
     }
 
@@ -154,9 +159,7 @@ public class Hero : MonoBehaviour
     protected virtual void Attack()
     {
 
-
         _target.OnDamage(_damage);
-
 
         if (_target == null || _target._enemyState == Enemy.EnemyState.Dead || Vector3.Distance(transform.position, _target.transform.position) > _attackRange)
         {
@@ -166,8 +169,6 @@ public class Hero : MonoBehaviour
 
         _currentMP += _recoveryMP;
         if (_currentMP >= _maxMP) isReadySkill = true;
-
-
 
 
     }
@@ -213,28 +214,19 @@ public class Hero : MonoBehaviour
            AppendCallback(() => _effect.SetActive(false));
         }
 
-
-
         this.TaskDelay(3.5f, () =>
         {
             Managers._puzzleManager.DeadArnmyNEnemy(true);
             transform.gameObject.SetActive(false);
         });
 
-        //Managers._puzzleManager.DeadArnmyNEnemy(true);
-        //transform.gameObject.SetActive(false);
-        //Managers.Pool.Push(transform.GetComponent<Poolable>());
-        //Destroy(this);
-
     }
-
 
     protected virtual void FindTarget()
     {
 
         if (_puzzleManager._enemyList.Count < 1)
         {
-
             //isPlay = false;
             _armyState = ArmyState.Victory;
             _animator.SetBool("Run", false);
@@ -281,10 +273,8 @@ public class Hero : MonoBehaviour
             _target = (Enemy)_target.GetComponent(_enemyType);
 
         }
-
-
-
     }
+
 
     protected virtual void Skill()
     {
@@ -298,8 +288,6 @@ public class Hero : MonoBehaviour
         _currentMP = 0f;
         isReadySkill = false;
     }
-
-
 
 
     public virtual void TestFunc()

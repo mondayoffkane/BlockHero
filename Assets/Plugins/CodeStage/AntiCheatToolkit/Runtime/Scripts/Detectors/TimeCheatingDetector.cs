@@ -661,6 +661,13 @@ namespace CodeStage.AntiCheat.Detectors
 			currentDomain = currentUri.GetLeftPart(UriPartial.Authority);
 		}
 #endif
+		
+		// making sure it will reset statics even if domain reload is disabled
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void SubsystemRegistration()
+		{
+			Instance = null;
+		}
 
 		private static NonValidatingCertificateHandler InstantiateCertificateHandler()
 		{

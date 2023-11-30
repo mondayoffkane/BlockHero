@@ -82,6 +82,14 @@ namespace CodeStage.AntiCheat.Genuine.CodeHash
 		{
 			return GetOrCreateInstance.GenerateInternalAsync(maxThreads);
 		}
+		
+		// making sure it will reset statics even if domain reload is disabled
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void SubsystemRegistration()
+		{
+			HashGenerated = null;
+			Instance = null;
+		}
 
 		/// <summary>
 		/// Indicates if hash generation is currently in process.

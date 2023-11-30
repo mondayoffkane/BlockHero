@@ -10,9 +10,27 @@ public class ThrowWeapon : MonoBehaviour
     //TrailRenderer _trail;
 
 
-    public void SetInit(int _num, Vector3 _pos)
+    public virtual  void SetInit(int _num, Vector3 _pos)
     {
         transform.position = _pos;
+
+        GetComponent<ParticleSystem>().Clear(true);
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            //if(transform.GetChild(i).GetComponent<ParticleSystem>() != null)
+            //{
+            //    transform.GetChild(i).GetComponent<ParticleSystem>().Clear(true);
+            //}
+            if (transform.GetChild(i).GetComponent<TrailRenderer>() != null)
+            {
+                transform.GetChild(i).GetComponent<TrailRenderer>().Clear();
+                //transform.GetChild(i).GetComponent<TrailRenderer>().po
+            }
+        }
+
+
+
 
         //if (_trail == null) _trail = GetComponent<TrailRenderer>();
 

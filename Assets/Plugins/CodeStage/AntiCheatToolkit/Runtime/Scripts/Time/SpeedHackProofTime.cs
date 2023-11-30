@@ -183,6 +183,22 @@ namespace CodeStage.AntiCheat.Time
 				return speedHackDetected ? reliableTimeSinceLevelLoad : Time.timeSinceLevelLoad;
 			}
 		}
+		
+		// making sure it will reset statics even if domain reload is disabled
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void SubsystemRegistration()
+		{
+		    inited = false;
+		    speedHackDetected = false;
+		    reliableTime = 0;
+		    reliableDeltaTime = 0;
+		    reliableUnscaledTime = 0;
+		    reliableUnscaledDeltaTime = 0;
+		    reliableRealtimeSinceStartup = 0;
+		    reliableTimeSinceLevelLoad = 0;
+		    warningShot = false;
+			Instance = null;
+		}
 
 		private bool InitInternal()
 		{

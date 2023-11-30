@@ -47,16 +47,18 @@ public class Mushroom : Enemy
                     else
                     {
                         _enemyState = EnemyState.Move;
-                        _animator.SetBool("Run", true);
+                        //_animator.SetBool("Run", true);
                     }
-                    _animator.SetBool("Attack", false);
+                    //_animator.SetBool("Attack", false);
                     //yield return null;
                     break;
 
                 case EnemyState.Move:
                     if (_target != null || _target._currentHP > 0)
                     {
-                        transform.LookAt(_target.transform);
+                        Vector3 _targetpos = _target.transform.position;
+                        _targetpos.y = 0.5f;
+                        transform.LookAt(_targetpos);
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                         {
@@ -72,14 +74,14 @@ public class Mushroom : Enemy
                     {
                         _target = null;
                         _enemyState = EnemyState.Wait;
-                        _animator.SetBool("Attack", false);
+                        //_animator.SetBool("Attack", false);
                     }
                     yield return null;
                     break;
 
                 case EnemyState.Attack:
-                    _animator.SetBool("Run", false);
-                    _animator.SetBool("Attack", true);
+                    //_animator.SetBool("Run", false);
+                    //_animator.SetBool("Attack", true);
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;

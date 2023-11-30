@@ -31,16 +31,10 @@ public class Archer : Hero
     }
 
 
+
     IEnumerator Cor_Fight()
     {
         yield return new WaitForSeconds(2f);
-
-        //isPlay = true;
-        //_rig.isKinematic = false;
-        //_colls[1].enabled = true;
-
-        //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        //_boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
         while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
@@ -56,15 +50,14 @@ public class Archer : Hero
                     }
                     _animator.SetBool("Attack", false);
                     yield return null;
-
                     break;
 
                 case ArmyState.Move:
                     if (_target != null && _target._currentHP > 0)
                     {
-
+                        Vector3 _targetpos = _target.transform.position;
+                        _targetpos.y = 0.5f;
                         transform.LookAt(_target.transform);
-
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                         {
@@ -73,6 +66,8 @@ public class Archer : Hero
                         else
                         {
                             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+                            Vector3 _pos = transform.position;
+                            transform.position = new Vector3(_pos.x, 0f, _pos.z);
                         }
 
                     }
@@ -86,8 +81,17 @@ public class Archer : Hero
                     break;
 
                 case ArmyState.Attack:
+
+                    if (_target != null)
+                    {
+                        Vector3 _targetpos2 = _target.transform.position;
+                        _targetpos2.y = 0.5f;
+                        transform.LookAt(_target.transform);
+                    }
+
                     _animator.SetBool("Run", false);
                     _animator.SetBool("Attack", true);
+
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;
@@ -115,10 +119,26 @@ public class Archer : Hero
 
         if (!isReadySkill)
         {
-            ThrowWeapon _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Arrow"), transform).GetComponent<Arrow>();
+            ThrowWeapon _arrow;
+
+            switch (_level)
+            {
+                case 1:
+                    _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Archer-Lv1")).GetComponent<Arrow>();
+
+                    break;
+
+                case 2:
+                    _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Archer-Lv2")).GetComponent<Arrow>();
+                    break;
+
+                default:
+                    _arrow = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Archer-Lv1")).GetComponent<Arrow>();
+                    break;
+            }
 
             _arrow.SetInit(0, transform.position + Vector3.up * 0.5f);
-
+            _arrow.transform.LookAt(_target.transform);
             DOTween.Sequence()
                 .Append(_arrow.transform.DOMove(_target.transform.position, 0.5f))
                 .OnComplete(() =>

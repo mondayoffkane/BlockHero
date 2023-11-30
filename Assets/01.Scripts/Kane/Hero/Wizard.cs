@@ -29,13 +29,6 @@ public class Wizard : Hero
     {
         yield return new WaitForSeconds(2f);
 
-        //isPlay = true;
-        //_rig.isKinematic = false;
-        //_colls[1].enabled = true;
-
-        //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        //_boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
-
         while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
 
@@ -55,6 +48,8 @@ public class Wizard : Hero
                 case ArmyState.Move:
                     if (_target != null && _target._currentHP > 0)
                     {
+                        Vector3 _targetpos = _target.transform.position;
+                        _targetpos.y = 0.5f;
                         transform.LookAt(_target.transform);
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
@@ -64,6 +59,8 @@ public class Wizard : Hero
                         else
                         {
                             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+                            Vector3 _pos = transform.position;
+                            transform.position = new Vector3(_pos.x, 0f, _pos.z);
                         }
 
                     }
@@ -77,6 +74,14 @@ public class Wizard : Hero
                     break;
 
                 case ArmyState.Attack:
+
+                    if (_target != null)
+                    {
+                        Vector3 _targetpos2 = _target.transform.position;
+                        _targetpos2.y = 0.5f;
+                        transform.LookAt(_target.transform);
+                    }
+
                     _animator.SetBool("Run", false);
                     _animator.SetBool("Attack", true);
 
@@ -106,21 +111,45 @@ public class Wizard : Hero
 
         if (!isReadySkill)
         {
-            ThrowWeapon _magicBall = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/MagicBall"), transform).GetComponent<MagicBall>();
 
-            //_magicBall.transform.position = transform.position + Vector3.up * 0.5f;
-            _magicBall.SetInit(3, transform.position + Vector3.up * 0.5f);
+            switch (_level)
+            {
+                case 1:
+                    ThrowWeapon _magicBall = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Wizard-Lv1")).GetComponent<MagicBall>();
+
+                    _magicBall.SetInit(3, transform.position + Vector3.up * 0.5f);
+
+                    DOTween.Sequence()
+                        .Append(_magicBall.transform.DOJump(_target.transform.position, 2, 1, 1f))
+                        .OnComplete(() =>
+                        {
+                            base.Attack();
+                            Managers.Pool.Push(_magicBall.GetComponent<Poolable>());
+                        });
+                    break;
+
+                case 2:
+
+                    ThrowWeapon _magicBall2 = Managers.Pool.Pop(Resources.Load<GameObject>("AttackObjects/Wizard-Lv2")).GetComponent<MagicBall>();
+
+                    _magicBall2.SetInit(3, _target.transform.position);
+
+                    DOTween.Sequence()
+                        .AppendInterval(1f)
+                        .AppendCallback(() => base.Attack())
+                        .AppendInterval(2f)
+                        //.Append(_magicBall2.transform.DOJump(_target.transform.position, 2, 1, 1f))
+                        .OnComplete(() =>
+                        {
+                            //base.Attack();
+                            Managers.Pool.Push(_magicBall2.GetComponent<Poolable>());
+                        });
 
 
+                    break;
+            }
 
-            DOTween.Sequence()
-                .Append(_magicBall.transform.DOJump(_target.transform.position, 2, 1, 1f))
-                .OnComplete(() =>
-                {
-                    base.Attack();
-                    //this.TaskDelay(0.5f, base.Attack);
-                    Managers.Pool.Push(_magicBall.GetComponent<Poolable>());
-                });
+
         }
         else
         {

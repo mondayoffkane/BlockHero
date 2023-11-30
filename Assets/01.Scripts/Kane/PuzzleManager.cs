@@ -248,7 +248,7 @@ public class PuzzleManager : MonoBehaviour
             {
                 for (int j = 0; j < _size.y; j++)
                 {
-                    _grid[i, j]._heroType = Hero.HeroType.Wizard;
+                    //_grid[i, j]._heroType = Hero.HeroType.Wizard;
                     _grid[i, j]._level = 1;
 
 
@@ -266,11 +266,33 @@ public class PuzzleManager : MonoBehaviour
                    });
                });
 
-            //_puzzleState = PuzzleState.ArmySpawn;
 
-            //CamChange(2);
-            //Managers._gameUI.ChangePanel(2);
-            //this.TaskDelay(1.5f, FIghtMode);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            for (int i = 0; i < _size.x; i++)
+            {
+                for (int j = 0; j < _size.y; j++)
+                {
+                    _grid[i, j]._heroType = Hero.HeroType.Wizard;
+                    _grid[i, j]._level = 1;
+
+                }
+            }
+
+            _puzzleState = PuzzleState.ArmySpawn;
+            this.TaskDelay(1f, () =>
+            {
+                Managers._gameUI.ChangePanel(2);
+                FIghtMode();
+                this.TaskDelay(1f, () =>
+                {
+                    CamChange(2);
+                });
+            });
+
+
 
         }
 
@@ -901,7 +923,7 @@ public class PuzzleManager : MonoBehaviour
         EnemyCastle _enemyCastle;
 
         _enemyCastle = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<EnemyCastle>();
-        _enemyCastle.transform.position = new Vector3(0f, 0.5f, 17f);
+        _enemyCastle.transform.position = new Vector3(0f, 0f, 17f);
         _enemyList.Add(_enemyCastle);
 
         _enemyCastle.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/EnemyCastle"), 0);

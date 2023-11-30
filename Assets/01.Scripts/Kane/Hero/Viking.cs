@@ -25,11 +25,7 @@ public class Viking : Hero
 
     IEnumerator Cor_Fight()
     {
-        
         yield return new WaitForSeconds(2f);
-
-        //_boxColl.size = GetComponent<MeshFilter>().sharedMesh.bounds.size;
-        //_boxColl.center = GetComponent<MeshFilter>().sharedMesh.bounds.center;
 
         while (_armyState != ArmyState.Dead && _armyState != ArmyState.Victory)
         {
@@ -44,16 +40,15 @@ public class Viking : Hero
                         _animator.SetBool("Run", true);
                     }
                     _animator.SetBool("Attack", false);
-
                     yield return null;
                     break;
 
                 case ArmyState.Move:
                     if (_target != null && _target._currentHP > 0)
                     {
-
+                        Vector3 _targetpos = _target.transform.position;
+                        _targetpos.y = 0.5f;
                         transform.LookAt(_target.transform);
-
 
                         if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                         {
@@ -62,6 +57,8 @@ public class Viking : Hero
                         else
                         {
                             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+                            Vector3 _pos = transform.position;
+                            transform.position = new Vector3(_pos.x, 0f, _pos.z);
                         }
 
                     }
@@ -75,8 +72,17 @@ public class Viking : Hero
                     break;
 
                 case ArmyState.Attack:
+
+                    if (_target != null)
+                    {
+                        Vector3 _targetpos2 = _target.transform.position;
+                        _targetpos2.y = 0.5f;
+                        transform.LookAt(_target.transform);
+                    }
+
                     _animator.SetBool("Run", false);
                     _animator.SetBool("Attack", true);
+
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;

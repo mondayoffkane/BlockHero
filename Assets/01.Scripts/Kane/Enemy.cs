@@ -32,6 +32,10 @@ public class Enemy : MonoBehaviour
     MeshFilter _meshfilter;
 
     public GameObject[] _deadEffects;
+
+    protected Animator _animator;
+
+
     // =========================================
 
 
@@ -71,6 +75,8 @@ public class Enemy : MonoBehaviour
 
     public virtual void InitStatus(EnemyStatus EnemyStatus, int Level)
     {
+
+        if (_animator == null) _animator = GetComponent<Animator>();
         if (_puzzleManager == null) _puzzleManager = Managers._puzzleManager;
         if (_hpGuage == null) _hpGuage = transform.Find("HP_Canvas").Find("HP_Guage").GetComponent<Image>();
 
@@ -97,7 +103,9 @@ public class Enemy : MonoBehaviour
         }
 
         _hpGuage.transform.parent.gameObject.SetActive(false);
-
+        _animator.SetBool("Dead", false);
+        _animator.SetBool("Run", false);
+        _animator.SetBool("Attack", false);
 
     }
 
@@ -156,7 +164,9 @@ public class Enemy : MonoBehaviour
         Managers._puzzleManager._enemyList.Remove(this);
         Managers._puzzleManager.DeadArnmyNEnemy(false);
         Managers.Pool.Push(transform.GetComponent<Poolable>());
-
+        _animator.SetBool("Dead", true);
+        _animator.SetBool("Attack", false);
+        _animator.SetBool("Run", false);
         foreach (GameObject _effect in _deadEffects)
         {
             DOTween.Sequence().AppendCallback(() => _effect.SetActive(true))
@@ -173,6 +183,8 @@ public class Enemy : MonoBehaviour
         if (_puzzleManager._heroList.Count < 1)
         {
             _enemyState = EnemyState.Victory;
+            _animator.SetBool("Run", false);
+            _animator.SetBool("Attack", false);
         }
         else
         {
@@ -193,6 +205,8 @@ public class Enemy : MonoBehaviour
         {
             //Debug.Log("enemy victory");
             _enemyState = EnemyState.Victory;
+            _animator.SetBool("Run", false);
+            _animator.SetBool("Attack", false);
 
         }
         else if (_target._currentHP <= 0 || _target._armyState == Hero.ArmyState.Dead)
@@ -204,6 +218,7 @@ public class Enemy : MonoBehaviour
         else
         {
             _enemyState = EnemyState.Move;
+            _animator.SetBool("Run", true);
         }
 
 

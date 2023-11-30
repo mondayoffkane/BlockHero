@@ -44,8 +44,12 @@ public class Mushroom : Enemy
             {
                 case EnemyState.Wait:
                     if (_target == null) FindTarget();
-                    else _enemyState = EnemyState.Move;
-
+                    else
+                    {
+                        _enemyState = EnemyState.Move;
+                        _animator.SetBool("Run", true);
+                    }
+                    _animator.SetBool("Attack", false);
                     //yield return null;
                     break;
 
@@ -68,11 +72,14 @@ public class Mushroom : Enemy
                     {
                         _target = null;
                         _enemyState = EnemyState.Wait;
+                        _animator.SetBool("Attack", false);
                     }
                     yield return null;
                     break;
 
                 case EnemyState.Attack:
+                    _animator.SetBool("Run", false);
+                    _animator.SetBool("Attack", true);
                     Attack();
                     yield return new WaitForSeconds(_attackInterval);
                     break;

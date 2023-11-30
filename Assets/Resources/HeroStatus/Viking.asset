@@ -26,13 +26,13 @@ MonoBehaviour:
   - 1
   - 1
   _attackInterval:
-  - 1
-  - 0.8
   - 0.5
+  - 0.3
+  - 0.2
   _speeds:
-  - 2
-  - 3
   - 4
+  - 5
+  - 6
   _recoveryMP: 20
   _blockMeshes:
   - {fileID: -8808905338677035017, guid: f5ac24523ee584277835edad47c36eb9, type: 3}

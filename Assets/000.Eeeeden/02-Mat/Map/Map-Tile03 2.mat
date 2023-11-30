@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Map-Tile02 1
+  m_Name: Map-Tile03 2
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords:
   - _EMISSION
@@ -126,8 +126,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.16571732, g: 0.17968158, b: 0.26415092, a: 1}
-    - _Color: {r: 0.16571727, g: 0.17968154, b: 0.2641509, a: 1}
-    - _EmissionColor: {r: 0.08321468, g: 0.10016912, b: 0.20754719, a: 1}
+    - _BaseColor: {r: 0.34669814, g: 0.36518872, b: 0.46226418, a: 1}
+    - _Color: {r: 0.3466981, g: 0.3651887, b: 0.46226412, a: 1}
+    - _EmissionColor: {r: 0.15325737, g: 0.17305978, b: 0.26415092, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

@@ -167,6 +167,7 @@ public class Enemy : MonoBehaviour
         _enemyState = EnemyState.Dead;
         Managers._puzzleManager._enemyList.Remove(this);
         Managers._puzzleManager.DeadArnmyNEnemy(false);
+
         Managers.Pool.Push(transform.GetComponent<Poolable>());
         //_animator.SetBool("Dead", true);
         //_animator.SetBool("Attack", false);
@@ -175,7 +176,11 @@ public class Enemy : MonoBehaviour
         {
             DOTween.Sequence().AppendCallback(() => _effect.SetActive(true))
            .AppendInterval(3f).
-           AppendCallback(() => _effect.SetActive(false));
+           AppendCallback(() =>
+           {
+               _effect.SetActive(false);
+               //Managers.Pool.Push(transform.GetComponent<Poolable>());
+           });
         }
 
     }

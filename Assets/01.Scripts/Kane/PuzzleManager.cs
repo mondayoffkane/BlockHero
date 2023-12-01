@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 
 
@@ -216,72 +217,196 @@ public class PuzzleManager : MonoBehaviour
 
 
 
-
-
     }
 
+    public void CheatKey(int _num)
+    {
+        switch (_num)
+        {
+            case 0:
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j]._heroType = Hero.HeroType.Viking;
+                        _grid[i, j]._level = 1;
+
+                    }
+                }
+
+                _puzzleState = PuzzleState.ArmySpawn;
+                this.TaskDelay(1f, () =>
+                {
+                    Managers._gameUI.ChangePanel(2);
+                    FIghtMode();
+                    this.TaskDelay(1f, () =>
+                    {
+                        CamChange(2);
+                    });
+                });
+
+                break;
+
+            case 1:
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j]._heroType = Hero.HeroType.Archer;
+                        _grid[i, j]._level = 1;
+
+                    }
+                }
+
+                _puzzleState = PuzzleState.ArmySpawn;
+                this.TaskDelay(1f, () =>
+                {
+                    Managers._gameUI.ChangePanel(2);
+                    FIghtMode();
+                    this.TaskDelay(1f, () =>
+                    {
+                        CamChange(2);
+                    });
+                });
+                break;
+
+            case 2:
+
+
+
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j]._heroType = Hero.HeroType.Priest;
+                        _grid[i, j]._level = 2;
+
+                    }
+                }
+
+                _puzzleState = PuzzleState.ArmySpawn;
+                this.TaskDelay(1f, () =>
+                {
+                    Managers._gameUI.ChangePanel(2);
+                    FIghtMode();
+                    this.TaskDelay(1f, () =>
+                    {
+                        CamChange(2);
+                    });
+                });
+                break;
+
+            case 3:
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j]._heroType = Hero.HeroType.Wizard;
+                        _grid[i, j]._level = 1;
+
+                    }
+                }
+
+                _puzzleState = PuzzleState.ArmySpawn;
+                this.TaskDelay(1f, () =>
+                {
+                    Managers._gameUI.ChangePanel(2);
+                    FIghtMode();
+                    this.TaskDelay(1f, () =>
+                    {
+                        CamChange(2);
+                    });
+                });
+                break;
+
+            case 4:
+                for (int i = 0; i < _size.x; i++)
+                {
+                    for (int j = 0; j < _size.y; j++)
+                    {
+                        _grid[i, j]._heroType = Hero.HeroType.Wizard;
+                        _grid[i, j]._level = 2;
+
+                    }
+                }
+
+                _puzzleState = PuzzleState.ArmySpawn;
+                this.TaskDelay(1f, () =>
+                {
+                    Managers._gameUI.ChangePanel(2);
+                    FIghtMode();
+                    this.TaskDelay(1f, () =>
+                    {
+                        CamChange(2);
+                    });
+                });
+                break;
+
+        }
+    }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             _changeCount++;
             Managers._gameUI.MoveCountText.text = $"{_changeCount}";
             _puzzleState = PuzzleState.WaitInput;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             _changeCount--;
+            Managers._gameUI.MoveCountText.text = $"{_changeCount}";
+            if (_changeCount < 1)
+            {
+                _puzzleState = PuzzleState.ArmySpawn;
+                this.TaskDelay(1f, () =>
+                        {
+                            Managers._gameUI.ChangePanel(2);
+                            FIghtMode();
+                            this.TaskDelay(1f, () =>
+                                      {
+                                          CamChange(2);
+                                      });
+                        });
+
+
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            //_changeCount = 0;
-            //CheckBlock();
-            _puzzleState = PuzzleState.ArmySpawn;
-
-            CamChange(2);
-            Managers._gameUI.ChangePanel(2);
-            this.TaskDelay(1.5f, FIghtMode);
+            Managers._gameUI.Card_Panel.SetActive(!Managers._gameUI.Card_Panel.activeSelf);
 
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+
+        if (Input.GetKeyDown(KeyCode.R))
         {
             for (int i = 0; i < _size.x; i++)
             {
                 for (int j = 0; j < _size.y; j++)
                 {
                     //_grid[i, j]._heroType = Hero.HeroType.Wizard;
-                    _grid[i, j]._level = 1;
-
-
+                    //_grid[i, j]._level += 1;
+                    _grid[i, j].isPromotion = true;
+                    _grid[i, j].OnMatchBlock();
                 }
             }
 
-            _puzzleState = PuzzleState.ArmySpawn;
-            this.TaskDelay(1f, () =>
-               {
-                   Managers._gameUI.ChangePanel(2);
-                   FIghtMode();
-                   this.TaskDelay(1f, () =>
-                   {
-                       CamChange(2);
-                   });
-               });
-
-
-
         }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+
+        if (Input.GetKeyDown(KeyCode.T))
         {
             for (int i = 0; i < _size.x; i++)
             {
                 for (int j = 0; j < _size.y; j++)
                 {
-                    _grid[i, j]._heroType = Hero.HeroType.Wizard;
-                    _grid[i, j]._level = 1;
-
+                    //_grid[i, j]._heroType = Hero.HeroType.Wizard;
+                    if (_grid[i, j]._level > 1) _grid[i, j]._level -= 1;
+                    _grid[i, j].isPromotion = true;
+                    _grid[i, j].OnMatchBlock();
                 }
             }
+
 
             _puzzleState = PuzzleState.ArmySpawn;
             this.TaskDelay(1f, () =>
@@ -294,17 +419,50 @@ public class PuzzleManager : MonoBehaviour
                 });
             });
 
-
-
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            CheatKey(0);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            CheatKey(1);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            CheatKey(2);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            CheatKey(3);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            _currentStage = Resources.Load<StageData>("StageDatas/StageData_1");
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            _currentStage = Resources.Load<StageData>("StageDatas/StageData_CPI");
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _stageLevel++;
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            _stageLevel--;
+            if (_stageLevel < 1) _stageLevel = 0;
+        }
+
 
 
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             StartStage();
-            //UnityEngine.SceneManagement.SceneManager.LoadScene(
-            //    UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+
         }
 
 
@@ -318,6 +476,10 @@ public class PuzzleManager : MonoBehaviour
                 RaycastHit hit;
 
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (EventSystem.current.IsPointerOverGameObject())// 
+                {
+                    return;
+                }
 
                 if (Physics.Raycast(ray, out hit, 1000))
                 {
@@ -852,19 +1014,7 @@ public class PuzzleManager : MonoBehaviour
     public void FIghtMode()
     {
 
-        //SpawnEnemy();
-        //_gridObj.transform.DOLocalMoveY(-1f, 0.5f).SetEase(Ease.Linear);
 
-        //for (int i = 0; i < _size.x; i++)
-        //{
-        //    for (int j = 0; j < _size.y; j++)
-        //    {
-        //        _grid[i, j].SpawnHero();
-        //    }
-        //}
-        //SpawnEnemy();
-        //_puzzleState = PuzzleState.Fight;
-        // //////////
         DOTween.Sequence().
             AppendCallback(() =>
             {

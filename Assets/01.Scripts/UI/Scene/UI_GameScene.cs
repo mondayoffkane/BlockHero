@@ -14,6 +14,9 @@ public class UI_GameScene : UI_Scene
         Clear_Button,
         Home_Button,
         Retry_Button,
+        Card_Button_1,
+        Card_Button_2,
+        Card_Button_3,
     }
     enum Texts
     {
@@ -37,6 +40,7 @@ public class UI_GameScene : UI_Scene
         Pos_R,
         Clear_Panel,
         Defeat_Panel,
+        Card_Panel,
     }
     // ========= val =====================
 
@@ -49,6 +53,7 @@ public class UI_GameScene : UI_Scene
         , Sword_R
         , Pos_L
         , Pos_R
+        , Card_Panel
         ;
 
     public Text MoveCountText
@@ -61,6 +66,9 @@ public class UI_GameScene : UI_Scene
         , Clear_Button
         , Retry_Button
         , Home_Button
+        , Card_Button_1
+         , Card_Button_2
+          , Card_Button_3
         ;
 
     // ============================
@@ -89,12 +97,19 @@ public class UI_GameScene : UI_Scene
 
         Sword_L = GetObject(GameObjects.Sword_L);
         Sword_R = GetObject(GameObjects.Sword_R);
+        Card_Panel = GetObject(GameObjects.Card_Panel);
+
 
 
         Start_Button = GetButton(Buttons.Start_Button);
         Clear_Button = GetButton(Buttons.Clear_Button);
         Retry_Button = GetButton(Buttons.Retry_Button);
         Home_Button = GetButton(Buttons.Home_Button);
+
+        Card_Button_1 = GetButton(Buttons.Card_Button_1);
+        Card_Button_2 = GetButton(Buttons.Card_Button_2);
+        Card_Button_3 = GetButton(Buttons.Card_Button_3);
+
 
 
         //ChangeCountText = GetText(Texts.ChangeCountText);
@@ -116,6 +131,26 @@ public class UI_GameScene : UI_Scene
             Managers._puzzleManager.CamChange(0, 0f);
             Managers._puzzleManager.InitStage();
             //Managers._puzzleManager.LoadStage();
+        });
+
+
+        Card_Button_1.AddButtonEvent(() =>
+        {
+            Managers._puzzleManager.CheatKey(1);
+            Card_Panel.SetActive(false);
+
+        });
+        Card_Button_2.AddButtonEvent(() =>
+        {
+            Managers._puzzleManager.CheatKey(0);
+            Card_Panel.SetActive(false);
+
+        });
+        Card_Button_3.AddButtonEvent(() =>
+        {
+            Managers._puzzleManager.CheatKey(4);
+            Card_Panel.SetActive(false);
+
         });
 
 

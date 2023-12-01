@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bc416c1d8d1548278dd7f474640ce93, type: 3}
-  m_Name: StageData_CPI_1
+  m_Name: StageData_CPI
   m_EditorClassIdentifier: 
   isCPI: 1
   _stageLevel: 0

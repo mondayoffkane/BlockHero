@@ -11,11 +11,20 @@ public class EnemyCastle : Enemy
 
     public bool isEffectReady = true;
 
-
     private void OnEnable()
     {
         isEffectReady = true;
     }
+
+
+    public override void InitStatus(EnemyStatus EnemyStatus, int Level)
+    {
+        base.InitStatus(EnemyStatus, Level);
+
+        _maxHP = 200f + Managers._puzzleManager._stageLevel * 50f;
+        _currentHP = _maxHP;
+    }
+
 
     public override void OnDamage(float _tempDamage)
     {

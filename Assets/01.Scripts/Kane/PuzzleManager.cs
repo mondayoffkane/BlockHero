@@ -122,6 +122,8 @@ public class PuzzleManager : MonoBehaviour
     UiEffectManager _uiEffecter;
     bool isEnd = false;
 
+
+
     //public bool isCPI = false;
     // =========================================================
     //public void SetBlockMeshes()

@@ -6096,7 +6096,7 @@ MonoBehaviour:
   - {fileID: 668219270}
   - {fileID: 1363321837}
   _blockTypeRange: 4
-  _mouseDis: 100
+  _mouseDis: 40
 --- !u!4 &480360082
 Transform:
   m_ObjectHideFlags: 0

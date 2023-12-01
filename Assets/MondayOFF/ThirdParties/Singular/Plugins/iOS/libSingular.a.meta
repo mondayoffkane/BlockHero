@@ -14,7 +14,11 @@ PluginImporter:
   - first:
       Any: 
     second:
+<<<<<<< HEAD
       enabled: 1
+=======
+      enabled: 0
+>>>>>>> Kane
       settings: {}
   - first:
       Editor: Editor
@@ -22,6 +26,15 @@ PluginImporter:
       enabled: 0
       settings:
         DefaultValueInitialized: true
+<<<<<<< HEAD
+=======
+  - first:
+      iPhone: iOS
+    second:
+      enabled: 1
+      settings:
+        AddToEmbeddedBinaries: false
+>>>>>>> Kane
   userData: 
   assetBundleName: 
   assetBundleVariant: 

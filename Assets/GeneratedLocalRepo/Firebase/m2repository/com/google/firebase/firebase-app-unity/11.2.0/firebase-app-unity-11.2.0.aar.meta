@@ -1,5 +1,10 @@
 fileFormatVersion: 2
 guid: 851f92645bd464c7f9e3f2a518f68348
+<<<<<<< HEAD
+=======
+labels:
+- gpsr
+>>>>>>> Kane
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -14,7 +19,11 @@ PluginImporter:
   - first:
       Android: Android
     second:
+<<<<<<< HEAD
       enabled: 1
+=======
+      enabled: 0
+>>>>>>> Kane
       settings: {}
   - first:
       Any: 

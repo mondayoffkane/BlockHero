@@ -97,7 +97,7 @@ public class PuzzleManager : MonoBehaviour
     Vector3 _startMousePos;
     Vector3 _endMousePos;
     float _testDis;
-    float _mouseDis = 100;
+    public float _mouseDis = 40;
 
 
     bool isMove = false;
@@ -904,7 +904,7 @@ public class PuzzleManager : MonoBehaviour
             _enemyPref = Resources.Load<GameObject>($"Enemy_Prefs/{_typeString}_Pref");
             System.Type _enemyClassType = System.Type.GetType(_typeString);
             Enemy _newEnemy = (Enemy)Managers.Pool.Pop(_enemyPref).GetComponent(_enemyClassType);
-
+            _newEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
             //_newEnemy.transform.position = transform.position;
 
             EnemyStatus _enemyStatus = Resources.Load<EnemyStatus>($"EnemyStatus/{_enemyType.ToString()}");

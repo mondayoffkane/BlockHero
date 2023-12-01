@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossDragon : MonoBehaviour
+public class BossDragon : Enemy
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void InitStatus(EnemyStatus EnemyStatus, int Level)
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        base.InitStatus(EnemyStatus, Level);
+        //Fight();
     }
 }

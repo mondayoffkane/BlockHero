@@ -111,6 +111,8 @@ public class PuzzleManager : MonoBehaviour
     GameObject _floating_Pref;
     UiEffectManager _uiEffecter;
     bool isEnd = false;
+
+    //public bool isCPI = false;
     // =========================================================
     //public void SetBlockMeshes()
     //{
@@ -893,39 +895,50 @@ public class PuzzleManager : MonoBehaviour
 
         _enemyList = new List<Enemy>();
 
-        for (int i = 0; i < _currentStage._maxEnemyCount + _stageLevel * 1; i++) // Chagne -  _stageData. monster count
+        if (!_currentStage.isCPI)
         {
-            Enemy.EnemyType _enemyType = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)]._enemyType;
+            for (int i = 0; i < _currentStage._maxEnemyCount + _stageLevel * 1; i++) // Chagne -  _stageData. monster count
+            {
+                Enemy.EnemyType _enemyType = _currentStage._enemyStatusList[Random.Range(0, _currentStage._enemyStatusList.Length)]._enemyType;
+
+                GameObject _enemyPref;
+                string _typeString = _enemyType.ToString();
+
+                _enemyPref = Resources.Load<GameObject>($"Enemy_Prefs/{_typeString}_Pref");
+                System.Type _enemyClassType = System.Type.GetType(_typeString);
+                Enemy _newEnemy = (Enemy)Managers.Pool.Pop(_enemyPref).GetComponent(_enemyClassType);
+                _newEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
+
+                EnemyStatus _enemyStatus = Resources.Load<EnemyStatus>($"EnemyStatus/{_enemyType.ToString()}");
+
+                _enemyList.Add(_newEnemy);
+                _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
+
+                _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), -0.5f, 13f + Random.Range(0f, 2f));
 
 
-            GameObject _enemyPref;
-            string _typeString = _enemyType.ToString();
+            }
 
-            _enemyPref = Resources.Load<GameObject>($"Enemy_Prefs/{_typeString}_Pref");
-            System.Type _enemyClassType = System.Type.GetType(_typeString);
-            Enemy _newEnemy = (Enemy)Managers.Pool.Pop(_enemyPref).GetComponent(_enemyClassType);
-            _newEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
-            //_newEnemy.transform.position = transform.position;
+            EnemyCastle _enemyCastle;
 
-            EnemyStatus _enemyStatus = Resources.Load<EnemyStatus>($"EnemyStatus/{_enemyType.ToString()}");
+            _enemyCastle = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<EnemyCastle>();
+            _enemyCastle.transform.position = new Vector3(0f, -0.5f, 17f);
+            _enemyList.Add(_enemyCastle);
 
-            _enemyList.Add(_newEnemy);
-            _newEnemy.InitStatus(_enemyStatus, Random.Range(_currentStage._enemyLevelRange.x, _currentStage._enemyLevelRange.y));
-
-            _newEnemy.transform.position = new Vector3(0f + Random.Range(-3f, 3f), -0.5f, 13f + Random.Range(0f, 2f));
-
+            _enemyCastle.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/EnemyCastle"), 0);
 
         }
+        else
+        {
+            BossDragon _bossDragon;
 
-        EnemyCastle _enemyCastle;
+            _bossDragon = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<BossDragon>();
+            _bossDragon.transform.position = new Vector3(0f, 0f, 17f);
+            _bossDragon.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
+            _enemyList.Add(_bossDragon);
 
-        _enemyCastle = Managers.Pool.Pop(_currentStage._enemyCastlePref).GetComponent<EnemyCastle>();
-        _enemyCastle.transform.position = new Vector3(0f, -0.5f, 17f);
-        _enemyList.Add(_enemyCastle);
-
-        _enemyCastle.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/EnemyCastle"), 0);
-
-
+            _bossDragon.InitStatus(Resources.Load<EnemyStatus>($"EnemyStatus/BossDragon"), 0);
+        }
 
 
 

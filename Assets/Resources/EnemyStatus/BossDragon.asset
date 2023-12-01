@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e30d30147349c4c378e2a5dd5f513c35, type: 3}
-  m_Name: Mushroom 1
+  m_Name: BossDragon
   m_EditorClassIdentifier: 
   _enemyType: 2
   _maxHP:
@@ -34,6 +34,6 @@ MonoBehaviour:
   - 2
   - 2
   _meshes:
-  - {fileID: -7104418448196588392, guid: fc6f0f324476f4f6fbc6e83026d63f4b, type: 3}
-  - {fileID: -2529942423637171548, guid: 31bc0521c6cad48438d883605714213e, type: 3}
-  - {fileID: 26286054255238137, guid: 55432505d903644df89a7ede543dfc5c, type: 3}
+  - {fileID: -3058403384187691314, guid: 5d09bcd0bae7a41898a49cc79c2f46d2, type: 3}
+  - {fileID: -3058403384187691314, guid: 5d09bcd0bae7a41898a49cc79c2f46d2, type: 3}
+  - {fileID: -3058403384187691314, guid: 5d09bcd0bae7a41898a49cc79c2f46d2, type: 3}

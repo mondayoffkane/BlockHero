@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StageData_", menuName = "ScriptableObj/StageData", order = int.MaxValue)]
 public class StageData : ScriptableObject
 {
-
+    public bool isCPI = false;
     public int _stageLevel;
     public Vector2Int _enemyLevelRange = new Vector2Int(0, 1);
     public int _maxEnemyCount;

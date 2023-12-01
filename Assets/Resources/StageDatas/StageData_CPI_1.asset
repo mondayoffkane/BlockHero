@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc416c1d8d1548278dd7f474640ce93, type: 3}
   m_Name: StageData_CPI_1
   m_EditorClassIdentifier: 
+  isCPI: 1
   _stageLevel: 0
   _enemyLevelRange: {x: 0, y: 2}
   _maxEnemyCount: 0

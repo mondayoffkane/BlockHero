@@ -434,7 +434,7 @@ Animator:
   m_Controller: {fileID: 22100000, guid: 6acae551c9e9f444c8fa4de21847480e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -463,8 +463,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7835735899071343509}
   serializedVersion: 2
-  m_Mass: 10
-  m_Drag: 20
+  m_Mass: 1
+  m_Drag: 1
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0

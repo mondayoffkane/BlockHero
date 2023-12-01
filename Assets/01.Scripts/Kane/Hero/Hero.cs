@@ -178,7 +178,7 @@ public class Hero : MonoBehaviour
         _currentHP -= _enemyDamage;
         _hpGuage.fillAmount = (_currentHP / _maxHP);
 
-        if (_hpGuage.fillAmount >= 0.95f)
+        if (_hpGuage.fillAmount >= 1f)
         {
             _hpGuage.transform.parent.gameObject.SetActive(false);
         }

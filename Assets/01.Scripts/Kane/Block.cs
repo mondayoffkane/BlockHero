@@ -50,7 +50,7 @@ public class Block : MonoBehaviour
         if (isNew == false)
         {
             _level++;
-
+            if (_level > 2) _level = 2;
 
         }
         else

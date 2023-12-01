@@ -60,6 +60,10 @@ public class PuzzleManager : MonoBehaviour
     [TabGroup("Puzzle")] public float _camz = 10f;
     [TabGroup("Puzzle")] public GameObject _gridObj;
 
+
+
+
+
     // ======== Hero Type
     //[TabGroup("Hero")] public Mesh[] _Hero_0_Meshes;
     //[TabGroup("Hero")] public Mesh[] _Hero_1_Meshes;
@@ -93,6 +97,11 @@ public class PuzzleManager : MonoBehaviour
     [TabGroup("Direction")] public float _floatingY = 2f;
     [TabGroup("Direction")] public float _floatingTime = 1f;
     [TabGroup("Direction")] public Vector3 _floatingPos = new Vector3(0f, 0.5f, 5.5f);
+
+    // ============ CPI ==============
+    [TabGroup("CPI")] public GameObject[] _maps;
+    [TabGroup("CPI")] public int _blockTypeRange = 4;
+
 
     // ====== Private ==========================================
     Vector3 _startMousePos;
@@ -456,6 +465,21 @@ public class PuzzleManager : MonoBehaviour
             if (_stageLevel < 1) _stageLevel = 0;
         }
 
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            _maps[0].SetActive(!_maps[0].activeSelf);
+            _maps[1].SetActive(!_maps[0].activeSelf);
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            _blockTypeRange--;
+            if (_blockTypeRange < 2) _blockTypeRange = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            _blockTypeRange++;
+            if (_blockTypeRange > 4) _blockTypeRange = 4;
+        }
 
 
 
@@ -618,6 +642,7 @@ public class PuzzleManager : MonoBehaviour
                         && (_grid[i, j]._heroType == _grid[i + 2, j]._heroType)
                         && (_grid[i, j]._level == _grid[i + 1, j]._level)
                         && (_grid[i, j]._level == _grid[i + 2, j]._level)
+                        && _grid[i, j]._level < 2
                         )
                     {
                         _grid[i, j].isMatch = true;
@@ -625,6 +650,7 @@ public class PuzzleManager : MonoBehaviour
                         _grid[i + 1, j].isPromotion = true;
                         _grid[i + 2, j].isMatch = true;
                         ExistMatch = true;
+
                     }
                 }
             }
@@ -638,6 +664,7 @@ public class PuzzleManager : MonoBehaviour
                         && (_grid[i, j]._heroType == _grid[i, j + 2]._heroType)
                         && (_grid[i, j]._level == _grid[i, j + 1]._level)
                         && (_grid[i, j]._level == _grid[i, j + 2]._level)
+                        && _grid[i, j]._level < 2
                         )
                     {
                         _grid[i, j].isMatch = true;
@@ -788,7 +815,7 @@ public class PuzzleManager : MonoBehaviour
                         _block.name = $"({i},{j})";
                         _block.transform.localScale = Vector3.one;
 
-                        int _num = Random.Range(0, 4);
+                        int _num = Random.Range(0, _blockTypeRange);
                         //int _num = Random.Range(0, _selectHeroes.Length);
 
                         _block._level = 0;
@@ -958,6 +985,8 @@ public class PuzzleManager : MonoBehaviour
         _floating.transform.position = _pos;
         _floating.transform.DOMoveY(transform.position.y + _floatingY, _floatingTime).SetEase(Ease.Linear)
             .OnComplete(() => Managers.Pool.Push(_floating.transform.GetComponent<Poolable>()));
+        //_floating.transform.DOMoveZ(transform.position.z + _floatingY, _floatingTime).SetEase(Ease.Linear)
+        //    .OnComplete(() => Managers.Pool.Push(_floating.transform.GetComponent<Poolable>()));
 
 
     }

@@ -33,14 +33,25 @@ MonoBehaviour:
     - ACTk.Examples.Genuine.Runtime
     - ACTk.Examples.Runtime
     - ACTk.Runtime
+    - AdvertyPlatformSpecific
+    - Amazon.Scripts
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
     - Coffee.UIParticle
+    - Everyday
+    - Everyday.Events
+    - Everyday.IAP
+    - Google.Play.Common
+    - Google.Play.Core
+    - Google.Play.Review
     - LeTai.TrueShadow
     - Lofelt.NiceVibrations
+    - MaxSdk.Scripts
     - Nementic.SelectionUtility.Runtime
+    - PlayOn
     - Purchasing.Common
+    - SingularSDK
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1

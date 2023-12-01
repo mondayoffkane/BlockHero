@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedAppIndex: 0
   clientTokens:
-  - 
+  - 3b39d2ad155680feacf2faf28351b882
   appIds:
-  - 0
+  - 777510067514422
   appLabels:
-  - App Name
+  - BlockMatchHero
   cookie: 1
   logging: 1
   status: 1

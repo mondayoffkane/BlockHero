@@ -356,6 +356,8 @@ public class PuzzleManager : MonoBehaviour
 
     void Update()
     {
+
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Q))
         {
             _changeCount++;
@@ -488,7 +490,7 @@ public class PuzzleManager : MonoBehaviour
             StartStage();
 
         }
-
+#endif
 
 
         if (Input.GetMouseButtonDown(0))

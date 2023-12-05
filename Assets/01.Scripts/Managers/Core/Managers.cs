@@ -25,7 +25,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI => Instance._ui;
 
     public static GameManager Game => Instance._game;
-
+    public static StageManager _stageManager;
 
 
     ///<summary>가장 처음 매니저 만들때 한번 Init</summary>

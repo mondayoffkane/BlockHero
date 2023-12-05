@@ -22,6 +22,6 @@ public class UI_GameScene : UI_Scene
     }
     private void JerryFighting()
     {
-        Debug.Log("Test");
+        //Debug.Log("Test");
     }
 }

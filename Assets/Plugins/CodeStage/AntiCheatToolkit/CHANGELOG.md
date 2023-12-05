@@ -11,12 +11,6 @@ Changelog format is based on [Keep a Changelog](https://keepachangelog.com/en/1.
 
 _Please, always remove previous plugin version before updating!_
 
-## [2023.2.3] - 2023-09-12
-
-### Fixed
-- Fix harmless errors in console while using Prefs Editor (thx Rono)
-- Fix rare RuntimeInitializeOnLoadMethodAttribute errors (thx Silent)
-
 ## [2023.2.2] - 2023-07-08
 
 ### Changed

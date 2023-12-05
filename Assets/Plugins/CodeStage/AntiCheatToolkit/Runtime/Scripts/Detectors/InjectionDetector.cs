@@ -145,13 +145,6 @@ namespace CodeStage.AntiCheat.Detectors
 		}
 		#endregion
 
-		// making sure it will reset statics even if domain reload is disabled
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-		private static void SubsystemRegistration()
-		{
-			Instance = null;
-		}
-		
 		/// <summary>
 		/// Manually triggers cheating detection and invokes assigned events.
 		/// </summary>

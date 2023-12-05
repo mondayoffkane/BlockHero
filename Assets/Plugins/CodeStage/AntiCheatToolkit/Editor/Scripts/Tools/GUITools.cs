@@ -271,16 +271,16 @@ namespace CodeStage.AntiCheat.EditorCode
 			};
 			toolbarLabel.padding.top--;
 
-			toolbarSearchTextField = GetBuiltinStyle("ToolbarSeachTextField", true) ?? 
+			toolbarSearchTextField = GetBuiltinStyle("ToolbarSeachTextField") ?? 
 									 GetBuiltinStyle("ToolbarSearchTextField");
 
-			toolbarSearchTextFieldPopup = GetBuiltinStyle("ToolbarSeachTextFieldPopup", true) ?? 
+			toolbarSearchTextFieldPopup = GetBuiltinStyle("ToolbarSeachTextFieldPopup") ?? 
 										  GetBuiltinStyle("ToolbarSearchTextFieldPopup");
 
-			toolbarSearchCancelButton = GetBuiltinStyle("ToolbarSeachCancelButton", true) ?? 
+			toolbarSearchCancelButton = GetBuiltinStyle("ToolbarSeachCancelButton") ?? 
 										GetBuiltinStyle("ToolbarSearchCancelButton");
 
-			toolbarSearchCancelButtonEmpty = GetBuiltinStyle("ToolbarSeachCancelButtonEmpty", true) ?? 
+			toolbarSearchCancelButtonEmpty = GetBuiltinStyle("ToolbarSeachCancelButtonEmpty") ?? 
 											 GetBuiltinStyle("ToolbarSearchCancelButtonEmpty");
 
 			inited = true;
@@ -391,12 +391,12 @@ namespace CodeStage.AntiCheat.EditorCode
 			return result;
 		}
 
-		private static GUIStyle GetBuiltinStyle(string name, bool silent = false)
+		private static GUIStyle GetBuiltinStyle(string name)
 		{
 			var style = GUI.skin.FindStyle(name) ?? 
 						EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).FindStyle(name);
 
-			if (!silent && style == null)
+			if (style == null)
 			{
 				style = GUIStyle.none;
 				Debug.LogError(ACTk.LogPrefix + "Can't find builtin style " + name);

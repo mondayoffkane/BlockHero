@@ -58,7 +58,7 @@ public class CursorManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            //OnClickNum(9);
+            OnClickNum(9);
         }
         if (isNumClicked)
         {

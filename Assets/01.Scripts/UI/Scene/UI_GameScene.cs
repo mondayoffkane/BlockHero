@@ -1,29 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
-
 
 public class UI_GameScene : UI_Scene
 {
-    enum Buttons
-    {
-        Start_Button,
-        Clear_Button,
-        Home_Button,
-        Retry_Button,
-        Card_Button_1,
-        Card_Button_2,
-        Card_Button_3,
-    }
-    enum Texts
-    {
-        MoveCountText,
-        Clear_Stage_Text,
-        Fail_Stage_Text,
-    }
     enum Images
     {
         BackGround,
@@ -31,188 +11,17 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         Jerry,
-        Lobby_Panel,
-        Puzzle_Panel,
-        Battle_Panel,
-        Sword_L,
-        Sword_R,
-        Pos_L,
-        Pos_R,
-        Clear_Panel,
-        Defeat_Panel,
-        Card_Panel,
     }
-    // ========= val =====================
-
-    public GameObject Lobby_Panel,
-        Puzzle_Panel,
-        Battle_Panel,
-        Clear_Panel
-        , Defeat_Panel
-        , Sword_L
-        , Sword_R
-        , Pos_L
-        , Pos_R
-        , Card_Panel
-        ;
-
-    public Text MoveCountText
-        , Clear_Stage_Text
-        , Fail_Stage_Text
-        ;
-
-    public Button
-        Start_Button
-        , Clear_Button
-        , Retry_Button
-        , Home_Button
-        , Card_Button_1
-         , Card_Button_2
-          , Card_Button_3
-        ;
-
-    // ============================
-
-
     private void Awake()
     {
-        Bind<UnityEngine.UI.Text>(typeof(Texts));
-        Bind<UnityEngine.UI.Button>(typeof(Buttons));
         Bind<UnityEngine.UI.Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
-        Managers._gameUI = this;
-
-        // =====  Bind  ===================================
-
-        MoveCountText = GetText(Texts.MoveCountText);
-        Clear_Stage_Text = GetText(Texts.Clear_Stage_Text);
-        Fail_Stage_Text = GetText(Texts.Fail_Stage_Text);
-
-
-        Lobby_Panel = GetObject(GameObjects.Lobby_Panel);
-        Puzzle_Panel = GetObject(GameObjects.Puzzle_Panel);
-        Battle_Panel = GetObject(GameObjects.Battle_Panel);
-        Clear_Panel = GetObject(GameObjects.Clear_Panel);
-        Defeat_Panel = GetObject(GameObjects.Defeat_Panel);
-
-        Sword_L = GetObject(GameObjects.Sword_L);
-        Sword_R = GetObject(GameObjects.Sword_R);
-        Card_Panel = GetObject(GameObjects.Card_Panel);
-
-
-
-        Start_Button = GetButton(Buttons.Start_Button);
-        Clear_Button = GetButton(Buttons.Clear_Button);
-        Retry_Button = GetButton(Buttons.Retry_Button);
-        Home_Button = GetButton(Buttons.Home_Button);
-
-        Card_Button_1 = GetButton(Buttons.Card_Button_1);
-        Card_Button_2 = GetButton(Buttons.Card_Button_2);
-        Card_Button_3 = GetButton(Buttons.Card_Button_3);
-
-
-
-        //ChangeCountText = GetText(Texts.ChangeCountText);
-
-        // =====Button Event==============
-        Start_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
-        Clear_Button.AddButtonEvent(() =>
-        {
-            //ChangePanel(0);
-            //Managers._puzzleManager.InitStage();
-            ////Managers._puzzleManager.LoadStage();
-
-            Managers._puzzleManager.StartStage();
-        });
-        Retry_Button.AddButtonEvent(() => Managers._puzzleManager.StartStage());
-        Home_Button.AddButtonEvent(() =>
-        {
-            ChangePanel(0);
-            Managers._puzzleManager.CamChange(0, 0f);
-            Managers._puzzleManager.InitStage();
-            //Managers._puzzleManager.LoadStage();
-        });
-
-
-        Card_Button_1.AddButtonEvent(() =>
-        {
-            Managers._puzzleManager.CheatKey(1);
-            Card_Panel.SetActive(false);
-
-        });
-        Card_Button_2.AddButtonEvent(() =>
-        {
-            Managers._puzzleManager.CheatKey(0);
-            Card_Panel.SetActive(false);
-
-        });
-        Card_Button_3.AddButtonEvent(() =>
-        {
-            Managers._puzzleManager.CheatKey(4);
-            Card_Panel.SetActive(false);
-
-        });
-
-
-
-        // ========================
 
         base.Init();
-
-
-
 
     }
     private void JerryFighting()
     {
         Debug.Log("Test");
-    }
-
-
-    public void ChangePanel(int _num)
-    {
-
-        Lobby_Panel.SetActive(false);
-        Puzzle_Panel.SetActive(false);
-        Battle_Panel.SetActive(false);
-        Clear_Panel.SetActive(false);
-        Defeat_Panel.SetActive(false);
-
-        switch (_num)
-        {
-            case 0:
-                Lobby_Panel.SetActive(true);
-
-                break;
-
-            case 1:
-                Puzzle_Panel.SetActive(true);
-
-                break;
-
-            case 2:
-                Battle_Panel.SetActive(true);
-                Sword_L.SetActive(true);
-                Sword_R.SetActive(true);
-
-                DOTween.Sequence()
-                    .AppendCallback(() =>
-                    {
-                        Battle_Panel.GetComponent<Animator>().Play("BattlePanel");
-                    })
-                    .AppendInterval(1f)
-                    .AppendCallback(() =>
-                    {
-                        Sword_L.SetActive(false);
-                        Sword_R.SetActive(false);
-                    });
-
-
-                break;
-
-            default:
-                break;
-        }
-
     }
 }

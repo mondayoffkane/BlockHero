@@ -168,13 +168,6 @@ namespace CodeStage.AntiCheat.Detectors
 			if (Instance != null) Instance.DisposeInternal();
 		}
 		#endregion
-		
-		// making sure it will reset statics even if domain reload is disabled
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-		private static void SubsystemRegistration()
-		{
-			Instance = null;
-		}
 
 		internal static bool ExistsAndIsRunning => (object)Instance != null && Instance.IsRunning;
 

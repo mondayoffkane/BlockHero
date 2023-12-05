@@ -51,6 +51,13 @@ namespace CodeStage.AntiCheat.Common
 		#endregion
 
 		#region unity messages
+		
+		// making sure it will reset statics even if domain reload is disabled
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void SubsystemRegistration()
+		{
+			Instance = null;
+		}
 
 #if ACTK_EXCLUDE_OBFUSCATION
 		[System.Reflection.Obfuscation(Exclude = true)]

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Block
   - Enemy
+  - StageManager
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - Walkable
   - Water
   - UI
-  - WaitBlock
-  - SelectBlock
+  - RenderTexture_Obj
+  - 
   - 
   - 
   - 

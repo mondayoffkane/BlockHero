@@ -27,6 +27,7 @@ public class Managers : MonoBehaviour
     public static GameManager Game => Instance._game;
     public static StageManager _stageManager;
 
+    public static UI_GameScene _gameUi;
 
     ///<summary>가장 처음 매니저 만들때 한번 Init</summary>
     static void Init()
@@ -53,6 +54,9 @@ public class Managers : MonoBehaviour
             _instance._resource.Init();
 
             _instance._game = go.AddComponent<GameManager>();
+
+            if (_stageManager == null) _stageManager = GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
+
         }
     }
 

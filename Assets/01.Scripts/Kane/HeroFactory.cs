@@ -17,7 +17,7 @@ public class HeroFactory : MonoBehaviour
 
         Managers.Pool.Push(_block.GetComponent<Poolable>());
 
-
+        Managers._stageManager.FactoryCheckButtons();
 
     }
 

@@ -14,6 +14,9 @@ public class UI_GameScene : UI_Scene
         HeroFactory_Button,
         Battle_Button,
         HeroFactory_Close_Button,
+        Reset_Button,
+        Make_Hero_Button,
+        Undo_Button,
     }
     enum Images
     {
@@ -40,12 +43,15 @@ public class UI_GameScene : UI_Scene
 
     public Button HeroFactory_Button,
         Battle_Button,
-        HeroFactory_Close_Button;
+        HeroFactory_Close_Button,
+        Reset_Button,
+        Make_Hero_Button
+        , Undo_Button;
 
 
 
     public Button[] _recipeListBttons = new Button[3];
-    public Button[] _colorButtons = new Button[4];
+    public Button[] _colorButtons = new Button[3];
     public RawImage Recipe_RawImage;
 
     public Text Status_Text
@@ -88,6 +94,11 @@ public class UI_GameScene : UI_Scene
         }
 
 
+        Reset_Button = GetButton(Buttons.Reset_Button);
+        Make_Hero_Button = GetButton(Buttons.Make_Hero_Button);
+        Undo_Button = GetButton(Buttons.Undo_Button);
+
+
         // ========= Img
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
 
@@ -105,14 +116,22 @@ public class UI_GameScene : UI_Scene
         for (int i = 0; i < _recipeListBttons.Length; i++)
         {
             int _num = i;
-            Debug.Log(_num);
             _recipeListBttons[i].AddButtonEvent(() => Managers._stageManager.SelectRecipe(_num));
         }
 
+        for (int i = 0; i < _colorButtons.Length; i++)
+        {
+            int _num = i;
+            _colorButtons[i].AddButtonEvent(() =>
+            {
+                Managers._stageManager.SelectModelSetColor(_num);
+            });
+        }
 
-
-
-
+        Undo_Button.AddButtonEvent(() => Managers._stageManager.SelectModelUndoColor());
+        Reset_Button.AddButtonEvent(() => Managers._stageManager.SelectModelReset());
+        Make_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero());
+        Battle_Button.AddButtonEvent(() => Managers._stageManager.ToBattle());
 
     }
 
@@ -126,7 +145,7 @@ public class UI_GameScene : UI_Scene
 
         Recipe_RawImage.texture = _newRecipe._rendTexture;
 
-        Status_Text.text = $"ATK : 1    DEF : 1    HP : 1";
+        Status_Text.text = $"ATK : 1    SPD : 1    HP : 1";
 
     }
 

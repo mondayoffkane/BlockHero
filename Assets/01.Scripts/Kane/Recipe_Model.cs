@@ -6,14 +6,11 @@ using UnityEngine.UI;
 
 public class Recipe_Model : MonoBehaviour
 {
-    public enum HeroType
-    {
-        Human,
-        Tank1,
-        Tank2
 
-    }
-    public HeroType _heroType;
+
+    public Hero.HeroType _heroType;
+
+    public Mesh[] _partsMeshes;
 
 
 
@@ -26,7 +23,7 @@ public class Recipe_Model : MonoBehaviour
 
     public Texture _rendTexture;
 
-    public Material[] _colorMats = new Material[3];
+    public Material[] _colorMats = new Material[4];
 
     public List<Block.BlockType> _tempBlockList = new List<Block.BlockType>();
 
@@ -34,14 +31,22 @@ public class Recipe_Model : MonoBehaviour
 
     private void Start()
     {
-
-        _partsCount = _partsGroup.childCount;
-
-        _renderers = new Renderer[_partsCount];
-        for (int i = 0; i < _partsCount; i++)
+        if (_heroType != Hero.HeroType.Human)
         {
-            _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
-            _renderers[i].material = Instantiate(_renderers[i].material);
+
+            _partsCount = _partsGroup.childCount;
+
+            _renderers = new Renderer[_partsCount];
+            for (int i = 0; i < _partsCount; i++)
+            {
+                _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
+                _renderers[i].material = Instantiate(_renderers[i].material);
+            }
+        }
+        else
+        {
+            //_renderers = new Renderer[1];
+            _renderers[0].material = Instantiate(_renderers[0].material);
         }
 
     }
@@ -50,7 +55,7 @@ public class Recipe_Model : MonoBehaviour
 
     public void SetColor(int _num)
     {
-        if (_currentParts_Num < 3)
+        if (_currentParts_Num < _renderers.Length)
         {
             _renderers[_currentParts_Num].material.color = _colorMats[_num].color;
             _currentParts_Num++;
@@ -99,6 +104,41 @@ public class Recipe_Model : MonoBehaviour
         }
         Managers._stageManager.FactoryCheckButtons();
 
+    }
+
+
+
+
+    public int[,] ConvertTo2DArray(int[] oneDArray, int rows, int cols)
+    {
+        int[,] twoDArray = new int[rows, cols];
+        int index = 0;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                twoDArray[i, j] = oneDArray[index];
+                index++;
+            }
+        }
+        return twoDArray;
+    }
+
+    public int[] ConvertTo1DArray(int[,] twoDArray)
+    {
+        int rows = twoDArray.GetLength(0);
+        int cols = twoDArray.GetLength(1);
+        int[] oneDArray = new int[rows * cols];
+        int index = 0;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                oneDArray[index] = twoDArray[i, j];
+                index++;
+            }
+        }
+        return oneDArray;
     }
 
 

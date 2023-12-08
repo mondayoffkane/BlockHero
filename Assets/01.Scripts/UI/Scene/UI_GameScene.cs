@@ -51,7 +51,7 @@ public class UI_GameScene : UI_Scene
 
 
     public Button[] _recipeListBttons = new Button[3];
-    public Button[] _colorButtons = new Button[3];
+    public Button[] _colorButtons = new Button[4];
     public RawImage Recipe_RawImage;
 
     public Text Status_Text
@@ -88,6 +88,7 @@ public class UI_GameScene : UI_Scene
             _recipeListBttons[i] = Recipe_Content.transform.GetChild(i).GetComponent<Button>();
         }
 
+        _colorButtons = new Button[Color_Buttons_Group.transform.childCount];
         for (int i = 0; i < Color_Buttons_Group.transform.childCount; i++)
         {
             _colorButtons[i] = Color_Buttons_Group.transform.GetChild(i).GetComponent<Button>();

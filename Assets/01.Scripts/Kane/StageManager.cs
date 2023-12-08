@@ -20,7 +20,8 @@ public class StageManager : MonoBehaviour
     public List<Hero> _spawnHeroList = new List<Hero>();
     public Transform _heroSpawnPoint;
 
-    public List<Enemy> _spawnEnemyList = new List<Enemy>();
+    //public List<Enemy> _spawnEnemyList = new List<Enemy>();
+    public Enemy _bossEnemy;
     public Transform _enemySpawnPoint;
 
     public StageData _currentStage;
@@ -44,7 +45,14 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ToBattle();
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ToFactory();
+        }
 
 
 
@@ -96,13 +104,15 @@ public class StageManager : MonoBehaviour
 
     public void FactoryCheckButtons()
     {
-
-        Managers._gameUi.Make_Hero_Button.interactable = _selectModel._currentParts_Num > 2 ? true : false;
-
-
-        for (int i = 0; i < Managers._gameUi._colorButtons.Length; i++)
+        if (_selectModel != null)
         {
-            Managers._gameUi._colorButtons[i].interactable = _heroFactory._blockCountArray[i] > 0 ? true : false;
+            Managers._gameUi.Make_Hero_Button.interactable = _selectModel._currentParts_Num > _selectModel._renderers.Length - 1 ? true : false;
+
+
+            for (int i = 0; i < Managers._gameUi._colorButtons.Length; i++)
+            {
+                Managers._gameUi._colorButtons[i].interactable = _heroFactory._blockCountArray[i] > 0 ? true : false;
+            }
         }
 
 
@@ -116,11 +126,11 @@ public class StageManager : MonoBehaviour
 
 
 
-        for (int i = 0; i < 1; i++)
-        {
-            Enemy _newBoss = Managers.Pool.Pop(_currentStage._bossPref).GetComponent<Boss>();
-            _newBoss.SetInit(_currentStage._stageLevel);
-        }
+        //for (int i = 0; i < 1; i++)
+        //{
+        _bossEnemy = Managers.Pool.Pop(_currentStage._bossPref).GetComponent<Boss>();
+        _bossEnemy.SetInit(_currentStage._stageLevel);
+        //}
 
 
         for (int i = 0; i < _spawnHeroList.Count; i++)
@@ -137,14 +147,17 @@ public class StageManager : MonoBehaviour
     {
         _battleCam.SetActive(false);
 
-        if (_spawnEnemyList.Count > 0)
-            for (int i = 0; i < _spawnEnemyList.Count; i++)
-            {
-                var _obj = _spawnEnemyList[0];
-                _spawnEnemyList.Remove(_obj);
-                Managers.Pool.Push(_obj.GetComponent<Poolable>());
-            }
-        _spawnEnemyList.Clear();
+        //if (_spawnEnemyList.Count > 0)
+        //    for (int i = 0; i < _spawnEnemyList.Count; i++)
+        //    {
+        //        var _obj = _spawnEnemyList[0];
+        //        _spawnEnemyList.Remove(_obj);
+        //        Managers.Pool.Push(_obj.GetComponent<Poolable>());
+        //    }
+        //_spawnEnemyList.Clear();
+
+        if (_bossEnemy != null) Managers.Pool.Push(_bossEnemy.GetComponent<Poolable>());
+
 
         if (_spawnHeroList.Count > 0)
             for (int i = 0; i < _spawnHeroList.Count; i++)

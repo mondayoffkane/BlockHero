@@ -19,14 +19,14 @@ public class Tank : Hero
     }
 
 
-    public void Fight()
+    public override void Fight()
     {
         StartCoroutine(Cor_Update());
     }
 
     IEnumerator Cor_Update()
     {
-        yield return null;
+        yield return new WaitForSeconds(2f);
 
         while (true)
         {
@@ -39,13 +39,21 @@ public class Tank : Hero
                     break;
 
                 case HeroState.Move:
+                    transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, Time.deltaTime * 5f);
 
                     if (_target == null) _heroState = HeroState.Wait;
                     else if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                     {
-                        Attack();
+                        _heroState = HeroState.Attack;
                     }
-                    yield return new WaitForSeconds(_attackInterval);
+
+                    yield return null;
+                    break;
+
+                case HeroState.Attack:
+                    Attack();
+                    float _interval = 1.1f - (0.25f * _attackInterval) < 0 ? 0.1f : 1.1f - (0.25f * _attackInterval);
+                    yield return new WaitForSeconds(_interval);
                     break;
 
 
@@ -65,8 +73,9 @@ public class Tank : Hero
     protected override void Attack()
     {
         Transform _newBullet = Managers.Pool.Pop(_bullet_Pref).transform;
+        _newBullet.transform.position = transform.position;
         //_newBullet.GetComponent<Rigidbody>().AddF
-        _newBullet.DOMove(_target.transform.position, Vector3.Distance(transform.position, _target.transform.position) / _bulletSpeed)
+        _newBullet.DOMove(_target.transform.position, /*Vector3.Distance(transform.position, _target.transform.position) / _bulletSpeed*/ 1f)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {

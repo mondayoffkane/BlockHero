@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2560395936721951918}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.41, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -162,15 +162,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae7a3be02e3f4ad9a9eb3df950b791d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _heroType: 0
   _heroState: 0
-  _renderers: []
+  _partsGroup: {fileID: 0}
+  _meshfilters: []
   _damage: 10
   _attackInterval: 2
   _maxHP: 11
   _currentHP: 11
-  _attackRange: 3
+  _attackRange: 13
   _target: {fileID: 0}
-  _bullet_Pref: {fileID: 0}
+  _bullet_Pref: {fileID: 5125617038916957196, guid: 28829d7d0f5a140fc932760f0914dec2,
+    type: 3}
   _bulletSpeed: 1
 --- !u!1 &7149333576153860739
 GameObject:
@@ -198,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7149333576153860739}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4099998, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -281,7 +284,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8701706029109577717}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4099998, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

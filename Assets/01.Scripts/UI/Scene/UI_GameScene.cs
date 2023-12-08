@@ -17,6 +17,8 @@ public class UI_GameScene : UI_Scene
         Reset_Button,
         Make_Hero_Button,
         Undo_Button,
+        Clear_Claim_Button,
+        Fail_ToFactory_Button,
     }
     enum Images
     {
@@ -25,11 +27,15 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         Jerry,
+        FactoryBase_Panel,
         BlockFactory_Panel,
         HeroFactory_Panel,
         Recipe_Content,
         Recipe_RawImage,
         Color_Buttons_Group,
+        Battle_Panel,
+        Clear_Panel,
+        Fail_Panel,
     }
     // ======================================================
 
@@ -37,7 +43,11 @@ public class UI_GameScene : UI_Scene
         HeroFactory_Panel,
         //Recipe_Scroll,
         Recipe_Content,
-        Color_Buttons_Group;
+        Color_Buttons_Group
+        , FactoryBase_Panel
+        , Battle_Panel
+        , Clear_Panel,
+        Fail_Panel;
     //Recipe_RawImage;
 
 
@@ -46,7 +56,9 @@ public class UI_GameScene : UI_Scene
         HeroFactory_Close_Button,
         Reset_Button,
         Make_Hero_Button
-        , Undo_Button;
+        , Undo_Button,
+        Clear_Claim_Button,
+        Fail_ToFactory_Button;
 
 
 
@@ -76,13 +88,15 @@ public class UI_GameScene : UI_Scene
         Recipe_Content = GetObject(GameObjects.Recipe_Content);
         Color_Buttons_Group = GetObject(GameObjects.Color_Buttons_Group);
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
+        FactoryBase_Panel = GetObject(GameObjects.FactoryBase_Panel);
+        Battle_Panel = GetObject(GameObjects.Battle_Panel);
+        Clear_Panel = GetObject(GameObjects.Clear_Panel);
+        Fail_Panel = GetObject(GameObjects.Fail_Panel);
 
         // ========= Buttons
         HeroFactory_Button = GetButton(Buttons.HeroFactory_Button);
         Battle_Button = GetButton(Buttons.Battle_Button);
         HeroFactory_Close_Button = GetButton(Buttons.HeroFactory_Close_Button);
-
-
         for (int i = 0; i < Recipe_Content.transform.childCount; i++)
         {
             _recipeListBttons[i] = Recipe_Content.transform.GetChild(i).GetComponent<Button>();
@@ -94,11 +108,12 @@ public class UI_GameScene : UI_Scene
             _colorButtons[i] = Color_Buttons_Group.transform.GetChild(i).GetComponent<Button>();
         }
 
-
         Reset_Button = GetButton(Buttons.Reset_Button);
         Make_Hero_Button = GetButton(Buttons.Make_Hero_Button);
         Undo_Button = GetButton(Buttons.Undo_Button);
 
+        Clear_Claim_Button = GetButton(Buttons.Clear_Claim_Button);
+        Fail_ToFactory_Button = GetButton(Buttons.Fail_ToFactory_Button);
 
         // ========= Img
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
@@ -134,7 +149,11 @@ public class UI_GameScene : UI_Scene
         Make_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero());
         Battle_Button.AddButtonEvent(() => Managers._stageManager.ToBattle());
 
+        Clear_Claim_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
+        Fail_ToFactory_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
     }
+
+    // ====================================================
 
     public void ChangeRecipe(int _num, Recipe_Model _newRecipe)
     {
@@ -146,9 +165,50 @@ public class UI_GameScene : UI_Scene
 
         Recipe_RawImage.texture = _newRecipe._rendTexture;
 
-        Status_Text.text = $"ATK : 1    SPD : 1    HP : 1";
+        Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
 
     }
+
+    public void ChangePanel(int _num)
+    {
+        FactoryBase_Panel.SetActive(false);
+        BlockFactory_Panel.SetActive(false);
+        HeroFactory_Panel.SetActive(false);
+        Battle_Panel.SetActive(false);
+        Clear_Panel.SetActive(false);
+        Fail_Panel.SetActive(false);
+
+        switch (_num)
+        {
+            case 0:
+                FactoryBase_Panel.SetActive(true);
+                break;
+
+            case 1:
+                BlockFactory_Panel.SetActive(true);
+                break;
+
+            case 2:
+                HeroFactory_Panel.SetActive(true);
+                break;
+
+            case 3:
+                Battle_Panel.SetActive(true);
+                break;
+
+            case 4:
+                Clear_Panel.SetActive(true);
+                break;
+
+            case 5:
+                Fail_Panel.SetActive(true);
+                break;
+        }
+
+    }
+
+
+
 
 
     private void JerryFighting()

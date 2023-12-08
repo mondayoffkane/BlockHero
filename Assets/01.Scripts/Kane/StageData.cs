@@ -13,7 +13,7 @@ public class StageData : ScriptableObject
 
     public GameObject _bossPref;
 
-
+    public float _rewards = 100f;
 
 
 

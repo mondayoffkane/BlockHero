@@ -31,10 +31,10 @@ public class Hero : MonoBehaviour
 
     public Transform _partsGroup;
 
-    public Renderer[] _renderers;
+    public MeshFilter[] _meshfilters;
 
     public float _damage = 10f;
-    public float _attackInterval = 2f;
+    public float _attackInterval = 1f;
     public float _maxHP = 11f;
     public float _currentHP = 11f;
 
@@ -50,21 +50,16 @@ public class Hero : MonoBehaviour
         {
             if (_partsGroup == null) _partsGroup = transform.Find("PartsGroup");
             int _count = _partsGroup.childCount;
-            _renderers = new Renderer[_count];
+            _meshfilters = new MeshFilter[_count];
             for (int i = 0; i < _count; i++)
             {
-                _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
+                _meshfilters[i] = _partsGroup.GetChild(i).GetComponent<MeshFilter>();
+                _meshfilters[i].sharedMesh = _recipe._selectMeshes[i];
             }
         }
         else
         {
-            //_renderers = new Renderer[0];
-            //_renderers[0] = _partsGroup.GetChild(0).GetComponent<Renderer>();
-        }
-
-        for (int i = 0; i < _renderers.Length; i++)
-        {
-            _renderers[i].material = Instantiate(_recipe._renderers[i].material);
+            _meshfilters[0].sharedMesh = _recipe._selectMeshes[0];
         }
 
         for (int i = 0; i < _recipe._tempBlockList.Count; i++)
@@ -76,7 +71,7 @@ public class Hero : MonoBehaviour
                     break;
 
                 case Block.BlockType.Green:
-                    _attackInterval += 2f;
+                    _attackInterval += 1f;
                     break;
 
                 case Block.BlockType.Blue:
@@ -95,6 +90,10 @@ public class Hero : MonoBehaviour
 
     }
 
+    public virtual void Fight()
+    {
+
+    }
 
     protected virtual void Attack()
     {
@@ -118,6 +117,7 @@ public class Hero : MonoBehaviour
 
     protected virtual void Dead()
     {
+
 
     }
 

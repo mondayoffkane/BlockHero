@@ -6,26 +6,24 @@ using Sirenix.OdinInspector;
 
 public class StageManager : MonoBehaviour
 {
-    public GameObject _battleCam;
+    [FoldoutGroup("BlockFactory")] public List<BlockFactory> _blockfactoryList = new List<BlockFactory>();
 
 
-    public List<BlockFactory> _blockfactoryList = new List<BlockFactory>();
-    public HeroFactory _heroFactory;
-
-    public Transform _recipeModelGroup;
-    public Recipe_Model[] _recipeModels;
-    public Recipe_Model _selectModel;
+    [FoldoutGroup("HeroFactory")] public HeroFactory _heroFactory;
+    [FoldoutGroup("HeroFactory")] public Transform _recipeModelGroup;
+    [FoldoutGroup("HeroFactory")] public Recipe_Model[] _recipeModels;
+    [FoldoutGroup("HeroFactory")] public Recipe_Model _selectModel;
 
 
-    public List<Hero> _spawnHeroList = new List<Hero>();
-    public Transform _heroSpawnPoint;
+    [FoldoutGroup("Battle")]
+    [FoldoutGroup("Battle")] public GameObject _battleCam;
+    [FoldoutGroup("Battle")] public List<Hero> _spawnHeroList = new List<Hero>();
+    [FoldoutGroup("Battle")] public Transform _heroSpawnPoint;
+    [FoldoutGroup("Battle")] public Enemy _bossEnemy;
+    [FoldoutGroup("Battle")] public Transform _enemySpawnPoint;
 
-    //public List<Enemy> _spawnEnemyList = new List<Enemy>();
-    public Enemy _bossEnemy;
-    public Transform _enemySpawnPoint;
-
-    public StageData _currentStage;
-
+    [FoldoutGroup("Stage")] public StageData _currentStage;
+    [FoldoutGroup("Stage")] public float _money;
 
     // =================================================
     private void Awake()
@@ -39,6 +37,7 @@ public class StageManager : MonoBehaviour
             _recipeModels[i] = _recipeModelGroup.GetChild(i).GetComponent<Recipe_Model>();
         }
 
+        Managers._gameUi.ChangePanel(0);
     }
 
 
@@ -94,7 +93,7 @@ public class StageManager : MonoBehaviour
         Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
         _newHero.SetInit(_selectModel);
 
-        _newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0.5f, Random.Range(-8f, -15f));
+        _newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
         _selectModel.Reset();
 
         _spawnHeroList.Add(_newHero);
@@ -122,21 +121,21 @@ public class StageManager : MonoBehaviour
 
     public void ToBattle()
     {
+        Managers._gameUi.ChangePanel(3);
         _battleCam.SetActive(true);
 
-
-
-        //for (int i = 0; i < 1; i++)
-        //{
         _bossEnemy = Managers.Pool.Pop(_currentStage._bossPref).GetComponent<Boss>();
         _bossEnemy.SetInit(_currentStage._stageLevel);
-        //}
+        _bossEnemy.transform.position = _enemySpawnPoint.position;
+
+        _bossEnemy.Fight();
+
 
 
         for (int i = 0; i < _spawnHeroList.Count; i++)
         {
-            _spawnHeroList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0.5f, Random.Range(-8f, -15f));
-
+            _spawnHeroList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
+            _spawnHeroList[i].Fight();
             //_spawnHeroList
         }
 
@@ -145,6 +144,9 @@ public class StageManager : MonoBehaviour
 
     public void ToFactory()
     {
+        Managers._gameUi.ChangePanel(0);
+
+
         _battleCam.SetActive(false);
 
         //if (_spawnEnemyList.Count > 0)
@@ -169,8 +171,22 @@ public class StageManager : MonoBehaviour
         _spawnHeroList.Clear();
 
 
+    }
+
+
+    public void Battle_Clear()
+    {
+
+
+        this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(4));
 
     }
+    public void Battle_Fail()
+    {
+        this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(5));
+    }
+
+
 
 
 

@@ -11,11 +11,13 @@ public class Recipe_Model : MonoBehaviour
     public Hero.HeroType _heroType;
 
     public Mesh[] _partsMeshes;
+    public Mesh[,] _2arrayMeshes;
 
 
 
     public Transform _partsGroup;
     public Renderer[] _renderers;
+    public Mesh[] _selectMeshes;
 
     public int _partsCount = 0;
 
@@ -33,10 +35,14 @@ public class Recipe_Model : MonoBehaviour
     {
         if (_heroType != Hero.HeroType.Human)
         {
+            int _count = _partsMeshes.Length / 4;
+            _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
 
             _partsCount = _partsGroup.childCount;
 
             _renderers = new Renderer[_partsCount];
+            _selectMeshes = new Mesh[_partsCount];
+
             for (int i = 0; i < _partsCount; i++)
             {
                 _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
@@ -46,7 +52,13 @@ public class Recipe_Model : MonoBehaviour
         else
         {
             //_renderers = new Renderer[1];
+
             _renderers[0].material = Instantiate(_renderers[0].material);
+
+            int _count = _partsMeshes.Length / 4;
+            _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
+
+            _selectMeshes = new Mesh[1];
         }
 
     }
@@ -57,7 +69,10 @@ public class Recipe_Model : MonoBehaviour
     {
         if (_currentParts_Num < _renderers.Length)
         {
-            _renderers[_currentParts_Num].material.color = _colorMats[_num].color;
+            //_renderers[_currentParts_Num].material.color = _colorMats[_num].color;
+            //_renderers[_currentParts_Num].GetComponent<MeshFilter>().sharedMesh = _2arrayMeshes[_currentParts_Num, _num];
+            _selectMeshes[_currentParts_Num] = _2arrayMeshes[_currentParts_Num, _num];
+
             _currentParts_Num++;
             Managers._stageManager._heroFactory._blockCountArray[_num]--;
             _tempBlockList.Add((Block.BlockType)_num);
@@ -65,6 +80,8 @@ public class Recipe_Model : MonoBehaviour
         }
 
     }
+
+
 
     public void UndoColor()
     {
@@ -89,7 +106,7 @@ public class Recipe_Model : MonoBehaviour
     {
         for (int i = 0; i < _renderers.Length; i++)
         {
-            Color _color = Color.gray;
+            Color _color = Color.white;
             _color.a = 0.6f;
             _renderers[i].material.color = _color;
         }
@@ -109,9 +126,9 @@ public class Recipe_Model : MonoBehaviour
 
 
 
-    public int[,] ConvertTo2DArray(int[] oneDArray, int rows, int cols)
+    public Mesh[,] ConvertTo2DArray(Mesh[] oneDArray, int rows, int cols)
     {
-        int[,] twoDArray = new int[rows, cols];
+        Mesh[,] twoDArray = new Mesh[rows, cols];
         int index = 0;
         for (int i = 0; i < rows; i++)
         {
@@ -124,22 +141,22 @@ public class Recipe_Model : MonoBehaviour
         return twoDArray;
     }
 
-    public int[] ConvertTo1DArray(int[,] twoDArray)
-    {
-        int rows = twoDArray.GetLength(0);
-        int cols = twoDArray.GetLength(1);
-        int[] oneDArray = new int[rows * cols];
-        int index = 0;
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                oneDArray[index] = twoDArray[i, j];
-                index++;
-            }
-        }
-        return oneDArray;
-    }
+    //public int[] ConvertTo1DArray(int[,] twoDArray)
+    //{
+    //    int rows = twoDArray.GetLength(0);
+    //    int cols = twoDArray.GetLength(1);
+    //    int[] oneDArray = new int[rows * cols];
+    //    int index = 0;
+    //    for (int i = 0; i < rows; i++)
+    //    {
+    //        for (int j = 0; j < cols; j++)
+    //        {
+    //            oneDArray[index] = twoDArray[i, j];
+    //            index++;
+    //        }
+    //    }
+    //    return oneDArray;
+    //}
 
 
 }

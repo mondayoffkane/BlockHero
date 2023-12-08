@@ -25,10 +25,10 @@ public class BlockFactory : MonoBehaviour
         if (_blockPref == null) Resources.Load<GameObject>("Block_Pref");
         if (_heroFactory == null) _heroFactory = Managers._stageManager._heroFactory;
 
-
         StartCoroutine(Cor_Update());
 
     }
+
 
 
     IEnumerator Cor_Update()

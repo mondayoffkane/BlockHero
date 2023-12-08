@@ -8,13 +8,13 @@ public class Enemy : MonoBehaviour
     public float _attackInterval = 1f;
     public float _maxHP = 10f;
     public float _currentHP = 10f;
+    public float _attackRange = 5f;
 
 
     public enum EnemyState
     {
         Init,
         Wait,
-        Find,
         Attack,
         Dead,
         Victory
@@ -36,11 +36,22 @@ public class Enemy : MonoBehaviour
 
     }
 
+    public virtual void Fight()
+    {
+
+    }
+
+
     protected virtual void FindTarget()
     {
         if (_target == null)
         {
-            if (Managers._stageManager._spawnHeroList.Count < 1) _enemyState = EnemyState.Victory;
+            if (Managers._stageManager._spawnHeroList.Count < 1)
+            {
+                _enemyState = EnemyState.Victory;
+                Managers._stageManager.Battle_Fail();
+            }
+
             else
             {
                 _target = Managers._stageManager._spawnHeroList[0];
@@ -62,19 +73,20 @@ public class Enemy : MonoBehaviour
         if (_enemyState != EnemyState.Dead)
         {
             _currentHP -= _Damage;
-            if (_currentHP <= 0)
-            {
-                _currentHP = 0;
-                _enemyState = EnemyState.Dead;
+            //if (_currentHP <= 0)
+            //{
+            //    _currentHP = 0;
+            //    _enemyState = EnemyState.Dead;
 
-                this.TaskDelay(2f, () => Managers.Pool.Push(GetComponent<Poolable>()));
-            }
+            //    this.TaskDelay(2f, () => Managers.Pool.Push(GetComponent<Poolable>()));
+            //}
         }
     }
 
-    protected virtual void Dead()
+    protected void Dead()
     {
 
+        Managers._stageManager.Battle_Clear();
     }
 
     protected virtual void Attack()

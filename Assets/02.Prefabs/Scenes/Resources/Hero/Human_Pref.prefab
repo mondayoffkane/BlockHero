@@ -896,9 +896,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129c17f8174f245afa8d6c75d90ce87a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _heroType: 0
   _heroState: 0
-  _renderers:
-  - {fileID: 709986649541077645}
+  _partsGroup: {fileID: 0}
+  _meshfilters:
+  - {fileID: 5646710523868048387}
   _damage: 10
   _attackInterval: 2
   _maxHP: 11

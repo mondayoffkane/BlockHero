@@ -22,7 +22,7 @@ public class Boss : Enemy
     {
         while (true)
         {
-
+            yield return null;
             switch (_enemyState)
             {
                 case EnemyState.Wait:
@@ -51,9 +51,9 @@ public class Boss : Enemy
 
 
 
-                default:
-                    yield return null;
-                    break;
+                //default:
+                //    yield return null;
+                //    break;
 
             }
 
@@ -63,22 +63,19 @@ public class Boss : Enemy
     }
 
 
-
-
-
-
-
-
     public override void OnDamage(float _Damage)
     {
-        base.OnDamage(_Damage);
-
-        if (_currentHP <= 0)
+        if (_enemyState != EnemyState.Dead)
         {
-            _currentHP = 0;
-            _enemyState = EnemyState.Dead;
-            Dead();
-            //this.TaskDelay(2f, () => Managers.Pool.Push(GetComponent<Poolable>()));
+            base.OnDamage(_Damage);
+
+            if (_currentHP <= 0)
+            {
+                _currentHP = 0;
+                _enemyState = EnemyState.Dead;
+                Dead();
+                //this.TaskDelay(2f, () => Managers.Pool.Push(GetComponent<Poolable>()));
+            }
         }
 
     }

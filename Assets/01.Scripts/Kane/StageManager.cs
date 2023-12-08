@@ -162,13 +162,17 @@ public class StageManager : MonoBehaviour
 
 
         if (_spawnHeroList.Count > 0)
-            for (int i = 0; i < _spawnHeroList.Count; i++)
+        {
+
+            int _count = _spawnHeroList.Count;
+            for (int i = 0; i < _count; i++)
             {
                 var _obj = _spawnHeroList[0];
                 _spawnHeroList.Remove(_obj);
                 Managers.Pool.Push(_obj.GetComponent<Poolable>());
             }
-        _spawnHeroList.Clear();
+            //_spawnHeroList.Clear();
+        }
 
 
     }
@@ -176,13 +180,14 @@ public class StageManager : MonoBehaviour
 
     public void Battle_Clear()
     {
-
+        Debug.Log("Clear");
 
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(4));
 
     }
     public void Battle_Fail()
     {
+        Debug.Log("Fail");
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(5));
     }
 

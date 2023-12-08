@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void SetInit(int _level)
     {
+        _target = null;
         _enemyState = EnemyState.Init;
 
         _damage = 5 + 2 * _level;

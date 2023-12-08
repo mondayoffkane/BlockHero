@@ -30,7 +30,7 @@ public class Tank : Hero
 
         while (true)
         {
-
+            yield return null;
             switch (_heroState)
             {
                 case HeroState.Wait:
@@ -59,9 +59,9 @@ public class Tank : Hero
 
 
 
-                default:
-                    yield return null;
-                    break;
+                    //default:
+                    //    yield return null;
+                    //    break;
             }
 
 

@@ -45,6 +45,7 @@ public class Hero : MonoBehaviour
     public virtual void SetInit(Recipe_Model _recipe)
     {
         _heroType = _recipe._heroType;
+        _heroState = HeroState.Init;
 
         if (_heroType != HeroType.Human)
         {

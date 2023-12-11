@@ -34,6 +34,7 @@ public class UI_GameScene : UI_Scene
         BlockFactory_Panel,
         HeroFactory_Panel,
         Recipe_Content,
+        BlockImg_Group,
         Recipe_RawImage,
         Color_Buttons_Group,
         Battle_Panel,
@@ -50,7 +51,9 @@ public class UI_GameScene : UI_Scene
         , FactoryBase_Panel
         , Battle_Panel
         , Clear_Panel,
-        Fail_Panel;
+        Fail_Panel
+        , BlockImg_Group
+        ;
     //Recipe_RawImage;
 
 
@@ -68,6 +71,7 @@ public class UI_GameScene : UI_Scene
     public Button[] _recipeListBttons = new Button[3];
     public Button[] _colorButtons = new Button[4];
     public RawImage Recipe_RawImage;
+    public Sprite[] _colorImgs = new Sprite[4];
 
     public Text Status_Text
         , Recipe_Name_Text
@@ -76,6 +80,7 @@ public class UI_GameScene : UI_Scene
 
     public Image BluePrint_Img
         ;
+    public Image[] _colorButtonImgs;
 
     // =======================================================
     private void Awake()
@@ -100,6 +105,7 @@ public class UI_GameScene : UI_Scene
         Battle_Panel = GetObject(GameObjects.Battle_Panel);
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
         Fail_Panel = GetObject(GameObjects.Fail_Panel);
+        BlockImg_Group = GetObject(GameObjects.BlockImg_Group);
 
         // ========= Buttons
         HeroFactory_Button = GetButton(Buttons.HeroFactory_Button);
@@ -127,10 +133,25 @@ public class UI_GameScene : UI_Scene
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
         BluePrint_Img = GetImage(Images.BluePrint_Img);
 
+        for (int i = 0; i < _colorImgs.Length; i++)
+        {
+            //Debug.Log($"BlockImg_Group/Block_{i}");
+            _colorImgs[i] = Resources.Load<Sprite>($"BlockImg_Group/Block_{i}");
+        }
+
+        int _count = BlockImg_Group.transform.childCount;
+        _colorButtonImgs = new Image[_count];
+        for (int i = 0; i < _count; i++)
+        {
+            _colorButtonImgs[i] = BlockImg_Group.transform.GetChild(i).GetComponent<Image>();
+            _colorButtonImgs[i].gameObject.SetActive(false);
+        }
+
+
         // ========= Text
 
         Status_Text = GetText(Texts.Status_Text);
-        Recipe_Name_Text = GetText(Texts.Recipe_Block_Count_Text);
+        Recipe_Name_Text = GetText(Texts.Recipe_Name_Text);
         Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
 
         // ================ Add Button Listner========================================
@@ -178,7 +199,8 @@ public class UI_GameScene : UI_Scene
         Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
 
         Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
-        Recipe_Block_Count_Text.text = $"{_newRecipe._currentParts_Num} / {_newRecipe._partsCount}";
+        //Recipe_Block_Count_Text.text = $"{_newRecipe._currentParts_Num} / {_newRecipe._partsCount}";
+        Recipe_Block_Count_Text.text = $"X {_newRecipe._partsCount}";
         BluePrint_Img.sprite = _newRecipe._bluePrint_Sprite;
 
         Managers._stageManager.FactoryCheckButtons();
@@ -225,6 +247,7 @@ public class UI_GameScene : UI_Scene
 
     public void MakeButtonOnOff(bool isBool)
     {
+
         if (isBool)
         {
             Color_Buttons_Group.SetActive(false);
@@ -240,6 +263,46 @@ public class UI_GameScene : UI_Scene
 
 
     }
+
+
+    //public void SetColorImg(int _orderNum, int _colorNum = 0, bool isOn = true)
+    //{
+
+    //    if (isOn)
+    //    {
+    //        BlockImg_Group.transform.GetChild(_orderNum).GetComponent<Image>().sprite = _colorImgs[_colorNum];
+    //        BlockImg_Group.transform.GetChild(_orderNum).gameObject.SetActive(true);
+    //        //Vector3 _pos = BlockImg_Group.transform.GetChild(_orderNum).position;
+
+    //        //BlockImg_Group.transform.
+    //    }
+    //    else
+    //    {
+    //        //BlockImg_Group.transform.GetChild(_orderNum).GetComponent<Image>().sprite = _colorImgs[_colorNum];
+    //        BlockImg_Group.transform.GetChild(_orderNum).gameObject.SetActive(false);
+
+    //    }
+
+    //}
+
+    public void SetColorImg(Recipe_Model _newRecipe)
+    {
+        for (int i = 0; i < BlockImg_Group.transform.childCount; i++)
+        {
+            if (i < _newRecipe._currentParts_Num)
+            {
+                _colorButtonImgs[i].gameObject.SetActive(true);
+                _colorButtonImgs[i].sprite = _colorImgs[(int)_newRecipe._tempBlockList[i]];
+            }
+            else
+            {
+                _colorButtonImgs[i].gameObject.SetActive(false);
+            }
+
+        }
+    }
+
+
 
 
 

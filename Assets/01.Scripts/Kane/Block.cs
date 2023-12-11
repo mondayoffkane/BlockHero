@@ -8,9 +8,9 @@ public class Block : MonoBehaviour
     public enum BlockType
     {
         Red,
+        Yellow,
         Green,
         Blue,
-        Yellow,
         Black,
         White,
         //Purple,

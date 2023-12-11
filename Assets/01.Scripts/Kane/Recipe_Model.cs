@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class Recipe_Model : MonoBehaviour
 {
@@ -90,13 +91,20 @@ public class Recipe_Model : MonoBehaviour
 
             //_renderers[_currentParts_Num].gameObject.SetActive(true);
             //_renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num, 0.25f).SetEase(Ease.Linear);
+            //Managers._gameUi.SetColorImg(_currentParts_Num, _num);
 
             _currentParts_Num++;
+
             Managers._stageManager._heroFactory._blockCountArray[_num]--;
             _tempBlockList.Add((Block.BlockType)_num);
             Managers._stageManager.FactoryCheckButtons();
 
-            Managers._gameUi.Recipe_Block_Count_Text.text = $"{_currentParts_Num} / {_partsCount}";
+            //Managers._gameUi.Recipe_Block_Count_Text.text = $"{_currentParts_Num} / {_partsCount}";
+            Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_partsCount}";
+
+            Managers._gameUi.SetColorImg(this);
+
+
 
         }
 
@@ -115,7 +123,8 @@ public class Recipe_Model : MonoBehaviour
 
             //_renderers[_currentParts_Num].material.color = _color;
             //_renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num + 4f, 0.25f).SetEase(Ease.Linear);
-
+            //Managers._gameUi.SetColorImg(_currentParts_Num, 0, false);
+            Managers._gameUi.SetColorImg(this);
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
             Managers._stageManager._heroFactory._blockCountArray[_tempblocknum]++;
@@ -147,7 +156,9 @@ public class Recipe_Model : MonoBehaviour
             int _tempblocknum = (int)_tempBlockList[i];
             _tempBlockList.RemoveAt(i);
             Managers._stageManager._heroFactory._blockCountArray[_tempblocknum]++;
+            //Managers._gameUi.SetColorImg(i, 0, false);
         }
+        Managers._gameUi.SetColorImg(this);
         Managers._stageManager.FactoryCheckButtons();
 
     }

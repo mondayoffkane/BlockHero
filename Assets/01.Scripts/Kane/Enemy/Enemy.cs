@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
         _damage = 5 + 2 * _level;
         _attackInterval = 2f - 0.1f * (float)_level < 0 ? 0.1f : 2f - 0.1f * (float)_level;
-        _maxHP = 10 + 10 * _level;
+        _maxHP = 10 + 100 * _level;
         _currentHP = _maxHP;
 
 
@@ -87,7 +87,14 @@ public class Enemy : MonoBehaviour
     protected void Dead()
     {
 
+        Managers._stageManager._bossEnemy = null;
+        Managers.Pool.Push(transform.GetComponent<Poolable>());
+
+
         Managers._stageManager.Battle_Clear();
+
+
+
     }
 
     protected virtual void Attack()

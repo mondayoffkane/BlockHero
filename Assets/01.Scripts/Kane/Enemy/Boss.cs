@@ -51,9 +51,9 @@ public class Boss : Enemy
 
 
 
-                //default:
-                //    yield return null;
-                //    break;
+                    //default:
+                    //    yield return null;
+                    //    break;
 
             }
 
@@ -65,6 +65,7 @@ public class Boss : Enemy
 
     public override void OnDamage(float _Damage)
     {
+        //Debug.Log("Boss OnDamaged");
         if (_enemyState != EnemyState.Dead)
         {
             base.OnDamage(_Damage);

@@ -21,6 +21,7 @@ public class Tank : Hero
 
     public override void Fight()
     {
+        //Debug.Log("Hero Fight");
         StartCoroutine(Cor_Update());
     }
 
@@ -72,19 +73,29 @@ public class Tank : Hero
 
     protected override void Attack()
     {
-        Transform _newBullet = Managers.Pool.Pop(_bullet_Pref).transform;
-        _newBullet.transform.position = transform.position;
-        //_newBullet.GetComponent<Rigidbody>().AddF
-        _newBullet.DOMove(_target.transform.position, /*Vector3.Distance(transform.position, _target.transform.position) / _bulletSpeed*/ 1f)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                base.Attack();
-                Managers.Pool.Push(_newBullet.GetComponent<Poolable>());
-            });
+        if (_target._currentHP > 0)
+        {
 
 
-        base.Attack();
+            Transform _newBullet = Managers.Pool.Pop(_bullet_Pref).transform;
+            _newBullet.transform.position = transform.position;
+            //_newBullet.GetComponent<Rigidbody>().AddF
+            _newBullet.DOMove(_target.transform.position, /*Vector3.Distance(transform.position, _target.transform.position) / _bulletSpeed*/ 1f)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    base.Attack();
+                    Managers.Pool.Push(_newBullet.GetComponent<Poolable>());
+                });
+
+
+            //base.Attack();
+        }
+        else
+        {
+            _target = null;
+            _heroState = HeroState.Wait;
+        }
     }
 
 

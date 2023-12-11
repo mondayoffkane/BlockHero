@@ -37,6 +37,7 @@ public class Hero : MonoBehaviour
     public float _attackInterval = 1f;
     public float _maxHP = 11f;
     public float _currentHP = 11f;
+    public float _defense = 1f;
 
     public float _attackRange = 3f;
 
@@ -71,15 +72,21 @@ public class Hero : MonoBehaviour
                     _damage += 5f;
                     break;
 
-                case Block.BlockType.Green:
+                case Block.BlockType.Yellow:
                     _attackInterval += 1f;
                     break;
 
-                case Block.BlockType.Blue:
+                case Block.BlockType.Green:
                     _maxHP += 10f;
                     break;
 
-                default: 
+
+                case Block.BlockType.Blue:
+                    _defense += 1f;
+
+                    break;
+
+                default:
 
                     break;
             }

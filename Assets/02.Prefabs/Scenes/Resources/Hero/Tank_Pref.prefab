@@ -167,9 +167,10 @@ MonoBehaviour:
   _partsGroup: {fileID: 0}
   _meshfilters: []
   _damage: 10
-  _attackInterval: 2
+  _attackInterval: 1
   _maxHP: 11
   _currentHP: 11
+  _defense: 10
   _attackRange: 13
   _target: {fileID: 0}
   _bullet_Pref: {fileID: 5125617038916957196, guid: 28829d7d0f5a140fc932760f0914dec2,

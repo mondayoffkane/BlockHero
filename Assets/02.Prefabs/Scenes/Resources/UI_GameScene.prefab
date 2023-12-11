@@ -493,7 +493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7439655743782780549
 RectTransform:
   m_ObjectHideFlags: 0
@@ -512,7 +512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1048}
+  m_AnchoredPosition: {x: 0, y: -554}
   m_SizeDelta: {x: 378.5994, y: 132.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2719156049749097817
@@ -1284,7 +1284,7 @@ GameObject:
   - component: {fileID: 6280103147650321489}
   - component: {fileID: 4315738542346317380}
   m_Layer: 5
-  m_Name: Recipt-Name (1)
+  m_Name: Recipe_Block_Count_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1303,11 +1303,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 373768579517073896}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -247.8, y: -190}
+  m_AnchoredPosition: {x: -285, y: -198}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6280103147650321489
@@ -1339,7 +1339,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 21609c303c9bd46fbb4c96f9378a4f02, type: 3}
     m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
@@ -1351,7 +1351,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: x3
+  m_Text: 1 / 1
 --- !u!1 &1590630247848312094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1440,7 @@ GameObject:
   - component: {fileID: 6398008768876540127}
   - component: {fileID: 7257751154276668205}
   m_Layer: 5
-  m_Name: BP
+  m_Name: BluePrint_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1459,7 +1459,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 373768579517073896}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2158,7 +2158,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 373768579517073896}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2293,7 +2293,7 @@ GameObject:
   - component: {fileID: 4965629106678821413}
   - component: {fileID: 6860430134874107354}
   m_Layer: 5
-  m_Name: Recipe_Text
+  m_Name: Recipe_Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2316,7 +2316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: 1062.1238}
+  m_AnchoredPosition: {x: 6, y: 816}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2195942539310257629
@@ -2388,7 +2388,7 @@ GameObject:
   - component: {fileID: 851185365092320992}
   - component: {fileID: 6939724014894409148}
   m_Layer: 5
-  m_Name: Recipt-Name
+  m_Name: Recipe_Name_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2407,11 +2407,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 373768579517073896}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -269, y: 227}
+  m_AnchoredPosition: {x: -229, y: 219}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &851185365092320992
@@ -2443,19 +2443,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: 21609c303c9bd46fbb4c96f9378a4f02, type: 3}
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 0
+    m_MinSize: 0
+    m_MaxSize: 50
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: ' Block Man'
 --- !u!1 &3102361568279213412
 GameObject:
   m_ObjectHideFlags: 0
@@ -3309,7 +3309,7 @@ RectTransform:
   - {fileID: 3807370991609418090}
   - {fileID: 1619376438230294733}
   m_Father: {fileID: 373768579517073896}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3615,12 +3615,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 280551700290689162}
   - {fileID: 1273919653885319880}
   - {fileID: 4503984969731734037}
   - {fileID: 2567065441990980103}
   - {fileID: 6717740990398941613}
   - {fileID: 6097727407961503782}
-  - {fileID: 280551700290689162}
   m_Father: {fileID: 2910258086945170595}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3891,6 +3891,9 @@ MonoBehaviour:
   _colorButtons: []
   Recipe_RawImage: {fileID: 0}
   Status_Text: {fileID: 0}
+  Recipe_Name_Text: {fileID: 0}
+  Recipe_Block_Count_Text: {fileID: 0}
+  BluePrint_Img: {fileID: 0}
 --- !u!1 &6764009724412099463
 GameObject:
   m_ObjectHideFlags: 0
@@ -4447,11 +4450,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 373768579517073896}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -448}
+  m_AnchoredPosition: {x: 0, y: -422}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7389521629007045891
@@ -4495,7 +4498,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'ATK : 1     DEF : 1     HP : 1'
+  m_Text: 'ATK : 1 SPD : 1 HP : 1 DEF : 1'
 --- !u!1 &7723989701573025683
 GameObject:
   m_ObjectHideFlags: 0
@@ -4714,7 +4717,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3700084235307113871
 RectTransform:
   m_ObjectHideFlags: 0

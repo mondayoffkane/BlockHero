@@ -105,15 +105,19 @@ public class StageManager : MonoBehaviour
     {
         if (_selectModel != null)
         {
-            Managers._gameUi.Make_Hero_Button.interactable = _selectModel._currentParts_Num > _selectModel._renderers.Length - 1 ? true : false;
 
+            Managers._gameUi.MakeButtonOnOff(
+                _selectModel._currentParts_Num > _selectModel._renderers.Length - 1 ? true : false);
 
-            for (int i = 0; i < Managers._gameUi._colorButtons.Length; i++)
-            {
-                Managers._gameUi._colorButtons[i].interactable = _heroFactory._blockCountArray[i] > 0 ? true : false;
-            }
+            Managers._gameUi.Recipe_Block_Count_Text.text = $"{_selectModel._currentParts_Num} / {_selectModel._partsCount}";
+
+            //Managers._gameUi.Make_Hero_Button.interactable = _selectModel._currentParts_Num > _selectModel._renderers.Length - 1 ? true : false;
+
+            //for (int i = 0; i < Managers._gameUi._colorButtons.Length; i++)
+            //{
+            //    Managers._gameUi._colorButtons[i].interactable = _heroFactory._blockCountArray[i] > 0 ? true : false;
+            //}
         }
-
 
 
     }

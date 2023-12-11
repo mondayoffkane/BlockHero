@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Recipe_Model : MonoBehaviour
 {
 
-
+    public string _recipeName;
     public Hero.HeroType _heroType;
+    public Sprite _bluePrint_Sprite;
 
     public Mesh[] _partsMeshes;
     public Mesh[,] _2arrayMeshes;
@@ -25,7 +27,7 @@ public class Recipe_Model : MonoBehaviour
 
     public Texture _rendTexture;
 
-    public Material[] _colorMats = new Material[4];
+    //public Material[] _colorMats = new Material[4];
 
     public List<Block.BlockType> _tempBlockList = new List<Block.BlockType>();
 
@@ -46,14 +48,22 @@ public class Recipe_Model : MonoBehaviour
             for (int i = 0; i < _partsCount; i++)
             {
                 _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
-                _renderers[i].material = Instantiate(_renderers[i].material);
+                //_renderers[i].material = Instantiate(_renderers[i].material);
+                _renderers[i].gameObject.SetActive(false);
+                Vector3 _pos = _renderers[i].transform.position;
+                _pos.y = i + 4f;
+                _renderers[i].transform.position = _pos;
             }
         }
         else
         {
             //_renderers = new Renderer[1];
-
-            _renderers[0].material = Instantiate(_renderers[0].material);
+            _partsCount = 1;
+            //_renderers[0].material = Instantiate(_renderers[0].material);
+            _renderers[0].gameObject.SetActive(false);
+            Vector3 _pos = _renderers[0].transform.position;
+            _pos.y = 4f;
+            _renderers[0].transform.position = _pos;
 
             int _count = _partsMeshes.Length / 4;
             _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
@@ -73,10 +83,16 @@ public class Recipe_Model : MonoBehaviour
             //_renderers[_currentParts_Num].GetComponent<MeshFilter>().sharedMesh = _2arrayMeshes[_currentParts_Num, _num];
             _selectMeshes[_currentParts_Num] = _2arrayMeshes[_currentParts_Num, _num];
 
+            _renderers[_currentParts_Num].gameObject.SetActive(true);
+            _renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num, 0.25f).SetEase(Ease.Linear);
+
             _currentParts_Num++;
             Managers._stageManager._heroFactory._blockCountArray[_num]--;
             _tempBlockList.Add((Block.BlockType)_num);
             Managers._stageManager.FactoryCheckButtons();
+
+            Managers._gameUi.Recipe_Block_Count_Text.text = $"{_currentParts_Num} / {_partsCount}";
+
         }
 
     }
@@ -88,16 +104,19 @@ public class Recipe_Model : MonoBehaviour
         if (_currentParts_Num > 0)
         {
             _currentParts_Num--;
+            _renderers[_currentParts_Num].gameObject.SetActive(false);
+            //Color _color = Color.white;
+            //_color.a = 0.6f;
 
-            Color _color = Color.gray;
-            _color.a = 0.6f;
-
-            _renderers[_currentParts_Num].material.color = _color;
+            //_renderers[_currentParts_Num].material.color = _color;
+            _renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num + 4f, 0.25f).SetEase(Ease.Linear);
 
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
             Managers._stageManager._heroFactory._blockCountArray[_tempblocknum]++;
             Managers._stageManager.FactoryCheckButtons();
+
+
 
         }
     }
@@ -109,6 +128,11 @@ public class Recipe_Model : MonoBehaviour
             Color _color = Color.white;
             _color.a = 0.6f;
             _renderers[i].material.color = _color;
+            _renderers[i].gameObject.SetActive(false);
+            Vector3 _pos = _renderers[i].transform.position;
+            _pos.y = i + 4f;
+            _renderers[i].transform.position = _pos;
+
         }
         _currentParts_Num = 0;
 

@@ -95,7 +95,7 @@ public class UI_GameScene : UI_Scene
         HeroFactory_Panel = GetObject(GameObjects.HeroFactory_Panel);
         Recipe_Content = GetObject(GameObjects.Recipe_Content);
         Color_Buttons_Group = GetObject(GameObjects.Color_Buttons_Group);
-        Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
+        //Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
         FactoryBase_Panel = GetObject(GameObjects.FactoryBase_Panel);
         Battle_Panel = GetObject(GameObjects.Battle_Panel);
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
@@ -172,7 +172,7 @@ public class UI_GameScene : UI_Scene
         }
         _recipeListBttons[_num].transform.GetChild(0).gameObject.SetActive(true);
 
-        Recipe_RawImage.texture = _newRecipe._rendTexture;
+        //Recipe_RawImage.texture = _newRecipe._rendTexture;
 
         Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
         Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";

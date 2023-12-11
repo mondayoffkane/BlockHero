@@ -17,15 +17,15 @@ public class Recipe_Model : MonoBehaviour
 
 
 
-    public Transform _partsGroup;
-    public Renderer[] _renderers;
+    //public Transform _partsGroup;
+    //public Renderer[] _renderers;
     public Mesh[] _selectMeshes;
 
     public int _partsCount = 0;
 
     public int _currentParts_Num = 0;
 
-    public Texture _rendTexture;
+    //public Texture _rendTexture;
 
     //public Material[] _colorMats = new Material[4];
 
@@ -35,41 +35,46 @@ public class Recipe_Model : MonoBehaviour
 
     private void Start()
     {
-        if (_heroType != Hero.HeroType.Human)
-        {
-            int _count = _partsMeshes.Length / 4;
-            _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
 
-            _partsCount = _partsGroup.childCount;
+        int _count = _partsMeshes.Length / 4;
+        _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
+        _selectMeshes = new Mesh[_partsCount];
 
-            _renderers = new Renderer[_partsCount];
-            _selectMeshes = new Mesh[_partsCount];
+        //if (_heroType != Hero.HeroType.Human)
+        //{
+        //    int _count = _partsMeshes.Length / 4;
+        //    _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
+        //    _selectMeshes = new Mesh[_partsCount];
 
-            for (int i = 0; i < _partsCount; i++)
-            {
-                _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
-                //_renderers[i].material = Instantiate(_renderers[i].material);
-                _renderers[i].gameObject.SetActive(false);
-                Vector3 _pos = _renderers[i].transform.position;
-                _pos.y = i + 4f;
-                _renderers[i].transform.position = _pos;
-            }
-        }
-        else
-        {
-            //_renderers = new Renderer[1];
-            _partsCount = 1;
-            //_renderers[0].material = Instantiate(_renderers[0].material);
-            _renderers[0].gameObject.SetActive(false);
-            Vector3 _pos = _renderers[0].transform.position;
-            _pos.y = 4f;
-            _renderers[0].transform.position = _pos;
+        //_partsCount = _partsGroup.childCount;
 
-            int _count = _partsMeshes.Length / 4;
-            _2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
+        //_renderers = new Renderer[_partsCount];
 
-            _selectMeshes = new Mesh[1];
-        }
+        //for (int i = 0; i < _partsCount; i++)
+        //{
+        //    _renderers[i] = _partsGroup.GetChild(i).GetComponent<Renderer>();
+        //    //_renderers[i].material = Instantiate(_renderers[i].material);
+        //    _renderers[i].gameObject.SetActive(false);
+        //    Vector3 _pos = _renderers[i].transform.position;
+        //    _pos.y = i + 4f;
+        //    _renderers[i].transform.position = _pos;
+        //}
+        //}
+        //else
+        //{
+        //_renderers = new Renderer[1];
+        //_partsCount = 1;
+        //_renderers[0].material = Instantiate(_renderers[0].material);
+        //_renderers[0].gameObject.SetActive(false);
+        //Vector3 _pos = _renderers[0].transform.position;
+        //_pos.y = 4f;
+        //_renderers[0].transform.position = _pos;
+
+        //int _count = _partsMeshes.Length / 4;
+        //_2arrayMeshes = ConvertTo2DArray(_partsMeshes, _count, 4);
+
+        //_selectMeshes = new Mesh[1];
+        //}
 
     }
 
@@ -77,14 +82,14 @@ public class Recipe_Model : MonoBehaviour
 
     public void SetColor(int _num)
     {
-        if (_currentParts_Num < _renderers.Length)
+        if (_currentParts_Num < _partsCount)
         {
             //_renderers[_currentParts_Num].material.color = _colorMats[_num].color;
             //_renderers[_currentParts_Num].GetComponent<MeshFilter>().sharedMesh = _2arrayMeshes[_currentParts_Num, _num];
             _selectMeshes[_currentParts_Num] = _2arrayMeshes[_currentParts_Num, _num];
 
-            _renderers[_currentParts_Num].gameObject.SetActive(true);
-            _renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num, 0.25f).SetEase(Ease.Linear);
+            //_renderers[_currentParts_Num].gameObject.SetActive(true);
+            //_renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num, 0.25f).SetEase(Ease.Linear);
 
             _currentParts_Num++;
             Managers._stageManager._heroFactory._blockCountArray[_num]--;
@@ -104,12 +109,12 @@ public class Recipe_Model : MonoBehaviour
         if (_currentParts_Num > 0)
         {
             _currentParts_Num--;
-            _renderers[_currentParts_Num].gameObject.SetActive(false);
+            //_renderers[_currentParts_Num].gameObject.SetActive(false);
             //Color _color = Color.white;
             //_color.a = 0.6f;
 
             //_renderers[_currentParts_Num].material.color = _color;
-            _renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num + 4f, 0.25f).SetEase(Ease.Linear);
+            //_renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num + 4f, 0.25f).SetEase(Ease.Linear);
 
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
@@ -123,17 +128,17 @@ public class Recipe_Model : MonoBehaviour
 
     public void Reset()
     {
-        for (int i = 0; i < _renderers.Length; i++)
-        {
-            Color _color = Color.white;
-            _color.a = 0.6f;
-            _renderers[i].material.color = _color;
-            _renderers[i].gameObject.SetActive(false);
-            Vector3 _pos = _renderers[i].transform.position;
-            _pos.y = i + 4f;
-            _renderers[i].transform.position = _pos;
+        //for (int i = 0; i < _renderers.Length; i++)
+        //{
+        //    Color _color = Color.white;
+        //    _color.a = 0.6f;
+        //    _renderers[i].material.color = _color;
+        //    _renderers[i].gameObject.SetActive(false);
+        //    Vector3 _pos = _renderers[i].transform.position;
+        //    _pos.y = i + 4f;
+        //    _renderers[i].transform.position = _pos;
 
-        }
+        //}
         _currentParts_Num = 0;
 
 

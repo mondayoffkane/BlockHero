@@ -79,7 +79,7 @@ public class Hero : MonoBehaviour
                     _maxHP += 10f;
                     break;
 
-                default:
+                default: 
 
                     break;
             }

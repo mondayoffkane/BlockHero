@@ -107,7 +107,7 @@ public class StageManager : MonoBehaviour
         {
 
             Managers._gameUi.MakeButtonOnOff(
-                _selectModel._currentParts_Num > _selectModel._renderers.Length - 1 ? true : false);
+                _selectModel._currentParts_Num > _selectModel._partsCount - 1 ? true : false);
 
             Managers._gameUi.Recipe_Block_Count_Text.text = $"{_selectModel._currentParts_Num} / {_selectModel._partsCount}";
 

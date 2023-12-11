@@ -1336,7 +1336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &773798626
 Transform:
   m_ObjectHideFlags: 0
@@ -2369,7 +2369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1246673475
 Transform:
   m_ObjectHideFlags: 0
@@ -2991,23 +2991,20 @@ MonoBehaviour:
   _bluePrint_Sprite: {fileID: 21300000, guid: a865d630b92ad4de0b739eb5367ad3d1, type: 3}
   _partsMeshes:
   - {fileID: 8828490096685889678, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
+  - {fileID: 4995301393851788515, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -100018404430557633, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 1790171004399136506, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  - {fileID: 4995301393851788515, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -719703669056577923, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
+  - {fileID: -2659931768982584321, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 4681876895421998091, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -8982789716647196049, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  - {fileID: -2659931768982584321, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -7600278352931193628, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
+  - {fileID: 707507931133240039, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 4089694640267763409, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 6584375982265632667, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  - {fileID: 707507931133240039, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  _partsGroup: {fileID: 536329220}
-  _renderers: []
   _selectMeshes: []
-  _partsCount: 0
+  _partsCount: 3
   _currentParts_Num: 0
-  _rendTexture: {fileID: 8400000, guid: 8abc982b4f10c40cc8ad61e3bb4b982d, type: 2}
   _tempBlockList: 
 --- !u!1 &1702482051
 GameObject:
@@ -3142,23 +3139,20 @@ MonoBehaviour:
   _bluePrint_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
   _partsMeshes:
   - {fileID: 8828490096685889678, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
+  - {fileID: 4995301393851788515, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -100018404430557633, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 1790171004399136506, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  - {fileID: 4995301393851788515, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -719703669056577923, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
+  - {fileID: -2659931768982584321, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 4681876895421998091, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -8982789716647196049, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  - {fileID: -2659931768982584321, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: -7600278352931193628, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
+  - {fileID: 707507931133240039, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 4089694640267763409, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
   - {fileID: 6584375982265632667, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  - {fileID: 707507931133240039, guid: e5d4805266b254fbb8f752e2033f53d9, type: 3}
-  _partsGroup: {fileID: 761307106}
-  _renderers: []
   _selectMeshes: []
-  _partsCount: 0
+  _partsCount: 3
   _currentParts_Num: 0
-  _rendTexture: {fileID: 8400000, guid: e3cb17bfb19c0402ea9522da3c70bca7, type: 2}
   _tempBlockList: 
 --- !u!1 &1907615817
 GameObject:
@@ -3362,7 +3356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2043802224
 Transform:
   m_ObjectHideFlags: 0
@@ -3504,16 +3498,12 @@ MonoBehaviour:
   _bluePrint_Sprite: {fileID: 21300000, guid: 5549edbe9a1d84ae68768c6543586ac8, type: 3}
   _partsMeshes:
   - {fileID: -4623247679890240919, guid: fa0b620ca092a47f99c49ae3be39ed41, type: 3}
+  - {fileID: 4168865360628915878, guid: f0b12d7abf6624830b2309d8b7653012, type: 3}
   - {fileID: 2454505630515052355, guid: 41774a3ef56824eb38508cb146d443b2, type: 3}
   - {fileID: 8271744385629103020, guid: 0006ba1b5d675493daf98f759b585c3c, type: 3}
-  - {fileID: 4168865360628915878, guid: f0b12d7abf6624830b2309d8b7653012, type: 3}
-  _partsGroup: {fileID: 0}
-  _renderers:
-  - {fileID: 7270352864576528885}
   _selectMeshes: []
-  _partsCount: 0
+  _partsCount: 1
   _currentParts_Num: 0
-  _rendTexture: {fileID: 8400000, guid: 2fbe120a71c734a02bed2572edfa1295, type: 2}
   _tempBlockList: 
 --- !u!1 &2062349338
 GameObject:

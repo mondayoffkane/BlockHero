@@ -8,6 +8,8 @@ public class UI_GameScene : UI_Scene
     enum Texts
     {
         Status_Text,
+        Recipe_Name_Text,
+        Recipe_Block_Count_Text,
     }
     enum Buttons
     {
@@ -23,6 +25,7 @@ public class UI_GameScene : UI_Scene
     enum Images
     {
         BackGround,
+        BluePrint_Img,
     }
     enum GameObjects
     {
@@ -67,6 +70,11 @@ public class UI_GameScene : UI_Scene
     public RawImage Recipe_RawImage;
 
     public Text Status_Text
+        , Recipe_Name_Text
+        , Recipe_Block_Count_Text
+        ;
+
+    public Image BluePrint_Img
         ;
 
     // =======================================================
@@ -87,7 +95,7 @@ public class UI_GameScene : UI_Scene
         HeroFactory_Panel = GetObject(GameObjects.HeroFactory_Panel);
         Recipe_Content = GetObject(GameObjects.Recipe_Content);
         Color_Buttons_Group = GetObject(GameObjects.Color_Buttons_Group);
-        Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
+        //Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
         FactoryBase_Panel = GetObject(GameObjects.FactoryBase_Panel);
         Battle_Panel = GetObject(GameObjects.Battle_Panel);
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
@@ -117,17 +125,18 @@ public class UI_GameScene : UI_Scene
 
         // ========= Img
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
-
+        BluePrint_Img = GetImage(Images.BluePrint_Img);
 
         // ========= Text
 
         Status_Text = GetText(Texts.Status_Text);
+        Recipe_Name_Text = GetText(Texts.Recipe_Block_Count_Text);
+        Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
 
         // ================ Add Button Listner========================================
 
-        HeroFactory_Button.AddButtonEvent(() => HeroFactory_Panel.SetActive(true));
-        Battle_Button.AddButtonEvent(() => { });
-        HeroFactory_Close_Button.AddButtonEvent(() => HeroFactory_Panel.SetActive(false));
+        HeroFactory_Button.AddButtonEvent(() => ChangePanel(2));
+        HeroFactory_Close_Button.AddButtonEvent(() => ChangePanel(0));
 
         for (int i = 0; i < _recipeListBttons.Length; i++)
         {
@@ -163,9 +172,16 @@ public class UI_GameScene : UI_Scene
         }
         _recipeListBttons[_num].transform.GetChild(0).gameObject.SetActive(true);
 
-        Recipe_RawImage.texture = _newRecipe._rendTexture;
+        //Recipe_RawImage.texture = _newRecipe._rendTexture;
 
+        Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
         Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
+
+        Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
+        Recipe_Block_Count_Text.text = $"{_newRecipe._currentParts_Num} / {_newRecipe._partsCount}";
+        BluePrint_Img.sprite = _newRecipe._bluePrint_Sprite;
+
+        Managers._stageManager.FactoryCheckButtons();
 
     }
 
@@ -207,6 +223,23 @@ public class UI_GameScene : UI_Scene
 
     }
 
+    public void MakeButtonOnOff(bool isBool)
+    {
+        if (isBool)
+        {
+            Color_Buttons_Group.SetActive(false);
+            Make_Hero_Button.gameObject.SetActive(true);
+            Make_Hero_Button.interactable = true;
+        }
+        else
+        {
+            Color_Buttons_Group.SetActive(true);
+            Make_Hero_Button.gameObject.SetActive(false);
+            Make_Hero_Button.interactable = false;
+        }
+
+
+    }
 
 
 

@@ -8,7 +8,7 @@ TagManager:
   - Enemy
   - StageManager
   - HeroFactory
-  - BlockFactory
+  - BlockMachine
   layers:
   - Default
   - TransparentFX

@@ -26,13 +26,13 @@ public class Rail : MonoBehaviour
 
         if (_nextNode.GetComponent<Rail>())
         {
-            _Block.DOMove(_nextNode.transform.position, _stageManager._railSpeed).SetEase(Ease.Linear)
+            _Block.DOMove(_nextNode.transform.position + Vector3.up, _stageManager._railSpeed).SetEase(Ease.Linear)
                 .OnComplete(() => _nextNode.GetComponent<Rail>().MoveNextNode(_Block));
 
         }
         else
         {
-            _Block.DOMove(_nextNode.transform.position, _stageManager._railSpeed).SetEase(Ease.Linear)
+            _Block.DOMove(_nextNode.transform.position + Vector3.up, _stageManager._railSpeed).SetEase(Ease.Linear)
                 .OnComplete(() => _stageManager._heroFactory.PushBlock(_Block.GetComponent<Block>()));
         }
 

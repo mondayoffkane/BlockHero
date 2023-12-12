@@ -40,6 +40,7 @@ public class Tank : Hero
                     break;
 
                 case HeroState.Move:
+                    transform.LookAt(_target.transform);
                     transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, Time.deltaTime * 5f);
 
                     if (_target == null) _heroState = HeroState.Wait;

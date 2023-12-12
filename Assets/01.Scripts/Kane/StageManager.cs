@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
 public class StageManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("BlockMachine")] public float _railSpeed = 0.5f;
     [FoldoutGroup("BlockMachine")] public int _blockMachineCount;
     [FoldoutGroup("BlockMachine")] public BlockMachine _selectBlockMachine;
+    [FoldoutGroup("BlockMachine")] public SkinnedMeshRenderer[] _skinnedBlock;
 
 
 
@@ -84,6 +86,44 @@ public class StageManager : MonoBehaviour
         {
             AddBlockFactory();
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+
+
+            Ray ray;
+            RaycastHit hit;
+
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //if (EventSystem.current.IsPointerOverGameObject())// 
+            //{
+            //    return;
+            //}
+
+            if (Physics.Raycast(ray, out hit, 1000))
+            {
+                Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+
+
+                switch (hit.collider.tag)
+                {
+                    case "BlockMachine":
+
+                        _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+                        Managers._gameUi.ChangePanel(1);
+                        break;
+
+                    case "HeroFactory":
+                        Managers._gameUi.ChangePanel(2);
+                        break;
+                }
+
+            }
+
+        }
+
+
+
 
 
     }
@@ -231,6 +271,22 @@ public class StageManager : MonoBehaviour
         _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
         _blockMachineCount++;
         //ES3.Save<int>("BlockFactoryCount", _blockFactoryCount);
+
+
+        switch (_blockMachineCount)
+        {
+            case 2:
+                _skinnedBlock[0].SetBlendShapeWeight(0, 100);
+                break;
+
+            case 4:
+                _skinnedBlock[0].SetBlendShapeWeight(1, 100);
+                break;
+
+            case 6:
+                _skinnedBlock[1].SetBlendShapeWeight(0, 100);
+                break;
+        }
 
 
     }

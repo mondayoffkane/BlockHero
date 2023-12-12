@@ -93,7 +93,7 @@ public class BlockMachine : MonoBehaviour
         Block _block = Managers.Pool.Pop(_blockPref, transform).GetComponent<Block>();
         _block.SetInit(_spawnBlockType);
 
-        _block.transform.position = transform.position;
+        _block.transform.position = transform.position + Vector3.up;
 
         DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1.3f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
         DOTween.Sequence().AppendInterval(0.25f)

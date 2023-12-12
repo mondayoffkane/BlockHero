@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Brown 3
+  m_Name: Blue 2
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords:
   - _EMISSION
@@ -120,8 +120,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.4433962, g: 0.25169253, b: 0.11084905, a: 1}
-    - _Color: {r: 0.44339618, g: 0.2516925, b: 0.11084903, a: 1}
-    - _EmissionColor: {r: 0.38679248, g: 0.15294531, b: 0.03831435, a: 1}
+    - _BaseColor: {r: 0.09251513, g: 0.1692648, b: 0.5943396, a: 1}
+    - _Color: {r: 0.0925151, g: 0.16926476, b: 0.5943396, a: 1}
+    - _EmissionColor: {r: 0, g: 0.025787184, b: 0.2924528, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

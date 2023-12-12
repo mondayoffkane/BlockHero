@@ -6,7 +6,11 @@ using Sirenix.OdinInspector;
 
 public class StageManager : MonoBehaviour
 {
-    [FoldoutGroup("BlockFactory")] public List<BlockFactory> _blockfactoryList = new List<BlockFactory>();
+    [FoldoutGroup("BlockMachine")] public List<BlockMachine> _blockMachineList = new List<BlockMachine>();
+    [FoldoutGroup("BlockMachine")] public float _railSpeed = 0.5f;
+    [FoldoutGroup("BlockMachine")] public int _blockMachineCount;
+    [FoldoutGroup("BlockMachine")] public BlockMachine _selectBlockMachine;
+
 
 
     [FoldoutGroup("HeroFactory")] public HeroFactory _heroFactory;
@@ -23,10 +27,14 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Battle")] public Transform _enemySpawnPoint;
 
     [FoldoutGroup("Stage")] public StageData _currentStage;
-    [FoldoutGroup("Stage")] public float _money;
+    [FoldoutGroup("Stage")] public double _money = 1000d;
 
     // =================================================
-    private void Awake()
+
+
+
+
+    private void OnEnable()
     {
         Managers._stageManager = this;
 
@@ -38,8 +46,27 @@ public class StageManager : MonoBehaviour
         }
 
         Managers._gameUi.ChangePanel(0);
+
+        LoadData();
+
+
+
     }
 
+
+    public void LoadData()
+    {
+        //_blockFactoryCount = ES3.Load<int>("BlockFactoryCount", 0);
+        //_money = ES3.Load<double>("Money", 1000d);
+
+        CalcMoney(0);
+
+        for (int i = 0; i < _blockMachineCount; i++)
+        {
+            AddBlockFactory();
+        }
+
+    }
 
 
     private void Update()
@@ -53,6 +80,10 @@ public class StageManager : MonoBehaviour
             ToFactory();
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AddBlockFactory();
+        }
 
 
     }
@@ -109,15 +140,10 @@ public class StageManager : MonoBehaviour
             Managers._gameUi.MakeButtonOnOff(
                 _selectModel._currentParts_Num > _selectModel._partsCount - 1 ? true : false);
 
-            //Managers._gameUi.Recipe_Block_Count_Text.text = $"{_selectModel._currentParts_Num} / {_selectModel._partsCount}";
+
             Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectModel._partsCount}";
 
-            //Managers._gameUi.Make_Hero_Button.interactable = _selectModel._currentParts_Num > _selectModel._renderers.Length - 1 ? true : false;
 
-            //for (int i = 0; i < Managers._gameUi._colorButtons.Length; i++)
-            //{
-            //    Managers._gameUi._colorButtons[i].interactable = _heroFactory._blockCountArray[i] > 0 ? true : false;
-            //}
         }
 
 
@@ -197,6 +223,24 @@ public class StageManager : MonoBehaviour
     }
 
 
+    public void AddBlockFactory()
+    {
+        CalcMoney(-100);
+
+
+        _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
+        _blockMachineCount++;
+        //ES3.Save<int>("BlockFactoryCount", _blockFactoryCount);
+
+
+    }
+
+    public void CalcMoney(double _value)
+    {
+        _money += _value;
+
+        Managers._gameUi.Money_Text.text = $"{_money:F0}";
+    }
 
 
 

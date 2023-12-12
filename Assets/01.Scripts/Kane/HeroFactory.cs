@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class HeroFactory : MonoBehaviour
 {
     public int[] _blockCountArray
         = new int[System.Enum.GetValues(typeof(Block.BlockType)).Length];
 
+    public Image _guageBar;
 
 
 
@@ -19,6 +22,20 @@ public class HeroFactory : MonoBehaviour
 
         Managers._stageManager.FactoryCheckButtons();
 
+    }
+
+
+
+    public void MakeHeroOnOff(bool isOn)
+    {
+        if (isOn)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 
 

@@ -25,7 +25,22 @@ public class Managers : MonoBehaviour
     public static UIManager UI => Instance._ui;
 
     public static GameManager Game => Instance._game;
-    public static StageManager _stageManager;
+    static StageManager StageManager;
+    public static StageManager _stageManager
+    {
+        get
+        {
+            if (StageManager == null)
+            {
+                StageManager = GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
+            }
+            return StageManager;
+        }
+        set
+        {
+            StageManager = value;
+        }
+    }
 
     public static UI_GameScene _gameUi;
 

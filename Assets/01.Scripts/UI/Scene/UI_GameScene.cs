@@ -7,6 +7,7 @@ public class UI_GameScene : UI_Scene
 {
     enum Texts
     {
+        Money_Text,
         Status_Text,
         Recipe_Name_Text,
         Recipe_Block_Count_Text,
@@ -31,7 +32,7 @@ public class UI_GameScene : UI_Scene
     {
         Jerry,
         FactoryBase_Panel,
-        BlockFactory_Panel,
+        BlockMachine_Panel,
         HeroFactory_Panel,
         Recipe_Content,
         BlockImg_Group,
@@ -43,7 +44,7 @@ public class UI_GameScene : UI_Scene
     }
     // ======================================================
 
-    public GameObject BlockFactory_Panel,
+    public GameObject BlockMachine_Panel,
         HeroFactory_Panel,
         //Recipe_Scroll,
         Recipe_Content,
@@ -76,6 +77,7 @@ public class UI_GameScene : UI_Scene
     public Text Status_Text
         , Recipe_Name_Text
         , Recipe_Block_Count_Text
+        , Money_Text
         ;
 
     public Image BluePrint_Img
@@ -96,7 +98,7 @@ public class UI_GameScene : UI_Scene
         base.Init();
 
         // ========= GameObjects
-        BlockFactory_Panel = GetObject(GameObjects.BlockFactory_Panel);
+        BlockMachine_Panel = GetObject(GameObjects.BlockMachine_Panel);
         HeroFactory_Panel = GetObject(GameObjects.HeroFactory_Panel);
         Recipe_Content = GetObject(GameObjects.Recipe_Content);
         Color_Buttons_Group = GetObject(GameObjects.Color_Buttons_Group);
@@ -153,6 +155,7 @@ public class UI_GameScene : UI_Scene
         Status_Text = GetText(Texts.Status_Text);
         Recipe_Name_Text = GetText(Texts.Recipe_Name_Text);
         Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
+        Money_Text = GetText(Texts.Money_Text);
 
         // ================ Add Button Listner========================================
 
@@ -210,7 +213,7 @@ public class UI_GameScene : UI_Scene
     public void ChangePanel(int _num)
     {
         FactoryBase_Panel.SetActive(false);
-        BlockFactory_Panel.SetActive(false);
+        BlockMachine_Panel.SetActive(false);
         HeroFactory_Panel.SetActive(false);
         Battle_Panel.SetActive(false);
         Clear_Panel.SetActive(false);
@@ -223,7 +226,7 @@ public class UI_GameScene : UI_Scene
                 break;
 
             case 1:
-                BlockFactory_Panel.SetActive(true);
+                BlockMachine_Panel.SetActive(true);
                 break;
 
             case 2:

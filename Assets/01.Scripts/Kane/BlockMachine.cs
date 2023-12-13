@@ -54,6 +54,10 @@ public class BlockMachine : MonoBehaviour
     public void SetBlockType(int _num)
     {
         _spawnBlockType = (Block.BlockType)_num;
+
+        _factoryTop_Obj.GetComponent<Renderer>().sharedMaterial = _colorMats[_num];
+        // add material change
+
     }
 
     public void UpgradeFactory()

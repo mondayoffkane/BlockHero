@@ -2601,6 +2601,7 @@ MonoBehaviour:
   _heroSpawnPoint: {fileID: 1907615818}
   _bossEnemy: {fileID: 0}
   _enemySpawnPoint: {fileID: 1513407596}
+  _bossLevel: 0
   _currentStage: {fileID: 11400000, guid: 5a22c46a10f294d63be94408f4642354, type: 2}
   _money: 1000
 --- !u!1 &1157808322

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UI_GameScene : UI_Scene
 {
@@ -219,41 +220,66 @@ public class UI_GameScene : UI_Scene
 
     public void ChangePanel(int _num)
     {
-        FactoryBase_Panel.SetActive(false);
-        BlockMachine_Panel.SetActive(false);
-        HeroFactory_Panel.SetActive(false);
-        Battle_Panel.SetActive(false);
-        Clear_Panel.SetActive(false);
-        Fail_Panel.SetActive(false);
+
+        PanelOnOff(FactoryBase_Panel, false);
+        PanelOnOff(BlockMachine_Panel, false);
+        PanelOnOff(HeroFactory_Panel, false);
+        PanelOnOff(Battle_Panel, false);
+        PanelOnOff(Clear_Panel, false);
+        PanelOnOff(Fail_Panel, false);
+
 
         switch (_num)
         {
             case 0:
-                FactoryBase_Panel.SetActive(true);
+
+                PanelOnOff(FactoryBase_Panel, true, 0);
                 break;
 
             case 1:
-                BlockMachine_Panel.SetActive(true);
+                PanelOnOff(BlockMachine_Panel, true);
                 break;
 
             case 2:
-                HeroFactory_Panel.SetActive(true);
+                PanelOnOff(HeroFactory_Panel, true);
                 break;
 
             case 3:
-                Battle_Panel.SetActive(true);
+                PanelOnOff(Battle_Panel, true);
                 break;
 
             case 4:
-                Clear_Panel.SetActive(true);
+                PanelOnOff(Clear_Panel, true);
                 break;
 
             case 5:
-                Fail_Panel.SetActive(true);
+                PanelOnOff(Fail_Panel, true);
                 break;
         }
 
     }
+
+    public void PanelOnOff(GameObject _obj, bool isOn, float _time = 0.3f)
+    {
+        if (isOn)
+        {
+            Debug.Log("On");
+            _obj.SetActive(true);
+            _obj.transform.localScale = Vector3.zero;
+            _obj.transform.DOScale(Vector3.one, _time).SetEase(Ease.OutBack);
+
+        }
+        else
+        {
+            Debug.Log("Off");
+            //_obj.transform.DOScale(Vector3.zero, _time).SetEase(Ease.InBack).OnComplete(() => _obj.SetActive(false));
+            _obj.SetActive(false);
+        }
+
+
+    }
+
+
 
     public void MakeButtonOnOff(bool isBool)
     {
@@ -319,13 +345,16 @@ public class UI_GameScene : UI_Scene
 
     }
 
-   
+
 
 
 
 
     private void JerryFighting()
     {
+
+
+
         //Debug.Log("Test");
     }
 }

@@ -101,13 +101,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b31ece79b413440bb5193ea4f091f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 0
+  _damage: 1
   _attackInterval: 1
   _maxHP: 10
   _currentHP: 10
-  _attackRange: 5
+  _attackRange: 20
   _enemyState: 0
   _target: {fileID: 0}
+  _bullet_Pref: {fileID: 5125617038916957196, guid: 28829d7d0f5a140fc932760f0914dec2,
+    type: 3}
 --- !u!65 &5106934017031017479
 BoxCollider:
   m_ObjectHideFlags: 0

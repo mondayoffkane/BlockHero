@@ -79,9 +79,11 @@ public class UI_GameScene : UI_Scene
         , Recipe_Name_Text
         , Recipe_Block_Count_Text
         , Money_Text
+        , Boss_HP_Text
         ;
 
     public Image BluePrint_Img
+        , Boss_HP_Guage
         ;
     public Image[] _colorButtonImgs;
 
@@ -150,6 +152,7 @@ public class UI_GameScene : UI_Scene
             _colorButtonImgs[i].gameObject.SetActive(false);
         }
 
+        Boss_HP_Guage = GetImage(Images.Boss_HP_Guage);
 
         // ========= Text
 
@@ -157,6 +160,8 @@ public class UI_GameScene : UI_Scene
         Recipe_Name_Text = GetText(Texts.Recipe_Name_Text);
         Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
         Money_Text = GetText(Texts.Money_Text);
+        Boss_HP_Text = GetText(Texts.Boss_HP_Text);
+
 
         // ================ Add Button Listner========================================
 
@@ -200,9 +205,10 @@ public class UI_GameScene : UI_Scene
         //Recipe_RawImage.texture = _newRecipe._rendTexture;
 
         Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
-        Recipe_Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
+        //Recipe_Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
+        Recipe_Status_Text.text = $"ATK : {_newRecipe._damage} Speed : {_newRecipe._speed} HP : {_newRecipe._maxHP} DEF : {_newRecipe._defense}";
 
-        Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
+
         //Recipe_Block_Count_Text.text = $"{_newRecipe._currentParts_Num} / {_newRecipe._partsCount}";
         Recipe_Block_Count_Text.text = $"X {_newRecipe._partsCount}";
         BluePrint_Img.sprite = _newRecipe._bluePrint_Sprite;
@@ -309,11 +315,11 @@ public class UI_GameScene : UI_Scene
         }
 
 
-        //Recipe_Status_Text.text = $"ATK : {10f :";
+        //Recipe_Status_Text.text = $"ATK : {_newRecipe._damage} Speed : {_newRecipe._speed} HP : {_newRecipe._maxHP} DEF : {_newRecipe._defense}";
 
     }
 
-
+   
 
 
 

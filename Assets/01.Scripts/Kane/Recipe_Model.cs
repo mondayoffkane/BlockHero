@@ -25,17 +25,17 @@ public class Recipe_Model : MonoBehaviour
 
 
     // =======================================
-    [FoldoutGroup("Status")] public float _baseDamage = 10f;
-    [FoldoutGroup("Status")] public float _baseAttackInterval = 1f;
-    [FoldoutGroup("Status")] public float _baseSpeed = 5f;
-    [FoldoutGroup("Status")] public float _baseHP = 10f;
-    [FoldoutGroup("Status")] public float _baseDefense = 5f;
+    [FoldoutGroup("Status_Base")] public float _baseDamage = 10f;
+    [FoldoutGroup("Status_Base")] public float _baseAttackInterval = 1f;
+    [FoldoutGroup("Status_Base")] public float _baseSpeed = 5f;
+    [FoldoutGroup("Status_Base")] public float _baseHP = 10f;
+    [FoldoutGroup("Status_Base")] public float _baseDefense = 5f;
 
-    [FoldoutGroup("Status")] public float _damageValue = 5f;
-    [FoldoutGroup("Status")] public float _attackIntervalValue = 0.1f;
-    [FoldoutGroup("Status")] public float _speedValue = 2f;
-    [FoldoutGroup("Status")] public float _HPValue = 10f;
-    [FoldoutGroup("Status")] public float _defenseValue = 1f;
+    [FoldoutGroup("Status_addValue")] public float _damageValue = 5f;
+    [FoldoutGroup("Status_addValue")] public float _attackIntervalValue = 0.1f;
+    [FoldoutGroup("Status_addValue")] public float _speedValue = 2f;
+    [FoldoutGroup("Status_addValue")] public float _HPValue = 10f;
+    [FoldoutGroup("Status_addValue")] public float _defenseValue = 1f;
 
     [FoldoutGroup("Status")] public float _damage = 10f;
     [FoldoutGroup("Status")] public float _attackInterval = 1f;
@@ -80,7 +80,7 @@ public class Recipe_Model : MonoBehaviour
                     break;
 
                 case 2:
-                    _maxHP = _HPValue;
+                    _maxHP += _HPValue;
                     break;
 
                 case 3:
@@ -97,7 +97,7 @@ public class Recipe_Model : MonoBehaviour
             Managers._gameUi.SetColorImg(this);
 
 
-
+            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} Speed : {_speed} HP : {_maxHP} DEF : {_defense}";
 
 
 
@@ -112,17 +112,32 @@ public class Recipe_Model : MonoBehaviour
         if (_currentParts_Num > 0)
         {
             _currentParts_Num--;
-            //_renderers[_currentParts_Num].gameObject.SetActive(false);
-            //Color _color = Color.white;
-            //_color.a = 0.6f;
 
-            //_renderers[_currentParts_Num].material.color = _color;
-            //_renderers[_currentParts_Num].transform.DOMoveY(_currentParts_Num + 4f, 0.25f).SetEase(Ease.Linear);
-            //Managers._gameUi.SetColorImg(_currentParts_Num, 0, false);
             Managers._gameUi.SetColorImg(this);
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
             Managers._stageManager._heroFactory._blockCountArray[_tempblocknum]++;
+
+            switch (_tempblocknum)
+            {
+                case 0:
+                    _damage -= _damageValue;
+                    break;
+                case 1:
+                    _speed -= _speedValue;
+                    break;
+
+                case 2:
+                    _maxHP -= _HPValue;
+                    break;
+
+                case 3:
+                    _defense -= _defenseValue;
+                    break;
+            }
+
+
+            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} Speed : {_speed} HP : {_maxHP} DEF : {_defense}";
             Managers._stageManager.FactoryCheckButtons();
 
 
@@ -154,6 +169,14 @@ public class Recipe_Model : MonoBehaviour
             //Managers._gameUi.SetColorImg(i, 0, false);
         }
         Managers._gameUi.SetColorImg(this);
+
+        _damage = _baseDamage;
+        _attackInterval = _baseAttackInterval;
+        _speed = _baseSpeed;
+        _maxHP = _baseHP;
+        _defense = _baseDefense;
+
+        Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} Speed : {_speed} HP : {_maxHP} DEF : {_defense}";
         Managers._stageManager.FactoryCheckButtons();
 
     }

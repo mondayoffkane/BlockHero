@@ -22,6 +22,7 @@ public class Tank : Hero
     public override void Fight()
     {
         //Debug.Log("Hero Fight");
+        _heroState = HeroState.Wait;
         StartCoroutine(Cor_Update());
     }
 
@@ -98,6 +99,23 @@ public class Tank : Hero
         }
     }
 
+    public override void OnDamage(float _Damage)
+    {
+        //Debug.Log("Boss OnDamaged");
+        if (_heroState != HeroState.Dead)
+        {
+            base.OnDamage(_Damage);
+
+            if (_currentHP <= 0)
+            {
+                _currentHP = 0;
+                _heroState = HeroState.Dead;
+                Dead();
+                //this.TaskDelay(2f, () => Managers.Pool.Push(GetComponent<Poolable>()));
+            }
+        }
+
+    }
 
 
 

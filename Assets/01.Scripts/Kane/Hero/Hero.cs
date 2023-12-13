@@ -71,38 +71,11 @@ public class Hero : MonoBehaviour
         _currentHP = _maxHP;
         _defense = _recipe._defense;
 
-        //for (int i = 0; i < _recipe._tempBlockList.Count; i++)
-        //{
-        //    switch (_recipe._tempBlockList[i])
-        //    {
-        //        case Block.BlockType.Red:
-        //            _damage += 5f;
-        //            break;
 
-        //        case Block.BlockType.Yellow:
-        //            _attackInterval += 1f;
-        //            _speed += 2f;
-        //            break;
-
-        //        case Block.BlockType.Green:
-        //            _maxHP += 10f;
-        //            break;
-
-
-        //        case Block.BlockType.Blue:
-        //            _defense += 1f;
-
-        //            break;
-
-        //        default:
-
-        //            break;
-        //    }
-        //}
 
         _currentHP = _maxHP;
 
-        _heroState = HeroState.Wait;
+        //_heroState = HeroState.Wait;
 
     }
 
@@ -133,7 +106,13 @@ public class Hero : MonoBehaviour
 
     protected virtual void Dead()
     {
+        Managers._stageManager._spawnHeroList.Remove(this);
+        Managers.Pool.Push(GetComponent<Poolable>());
 
+        if (Managers._stageManager._spawnHeroList.Count < 1)
+        {
+            Managers._stageManager.Battle_Fail();
+        }
 
     }
 

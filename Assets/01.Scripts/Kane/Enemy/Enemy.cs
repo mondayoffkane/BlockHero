@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public float _attackInterval = 1f;
     public float _maxHP = 10f;
     public float _currentHP = 10f;
-    public float _attackRange = 5f;
+    public float _attackRange = 10f;
 
 
     public enum EnemyState
@@ -35,7 +35,8 @@ public class Enemy : MonoBehaviour
         _maxHP = 100 + 50 * _level;
         _currentHP = _maxHP;
 
-
+        Managers._gameUi.Boss_HP_Text.text = $"{_currentHP} / {_maxHP}";
+        Managers._gameUi.Boss_HP_Guage.fillAmount = _currentHP / _maxHP;
     }
 
     public virtual void Fight()
@@ -76,6 +77,9 @@ public class Enemy : MonoBehaviour
         if (_enemyState != EnemyState.Dead)
         {
             _currentHP -= _Damage;
+            Managers._gameUi.Boss_HP_Text.text = $"{_currentHP} / {_maxHP}";
+            Managers._gameUi.Boss_HP_Guage.fillAmount = _currentHP / _maxHP;
+
             //if (_currentHP <= 0)
             //{
             //    _currentHP = 0;

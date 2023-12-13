@@ -15,6 +15,7 @@ public class Boss : Enemy
 
     public override void Fight()
     {
+        _enemyState = EnemyState.Wait;
         StartCoroutine(Cor_Update());
     }
 
@@ -44,6 +45,7 @@ public class Boss : Enemy
 
                     Attack();
 
+                    yield return new WaitForSeconds(_attackInterval);
 
                     break;
 

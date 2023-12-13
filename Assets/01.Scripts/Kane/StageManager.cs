@@ -27,6 +27,7 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Battle")] public Transform _heroSpawnPoint;
     [FoldoutGroup("Battle")] public Enemy _bossEnemy;
     [FoldoutGroup("Battle")] public Transform _enemySpawnPoint;
+    [FoldoutGroup("Battle")] public int _bossLevel;
 
     [FoldoutGroup("Stage")] public StageData _currentStage;
     [FoldoutGroup("Stage")] public double _money = 1000d;
@@ -196,7 +197,8 @@ public class StageManager : MonoBehaviour
         _battleCam.SetActive(true);
 
         _bossEnemy = Managers.Pool.Pop(_currentStage._bossPref).GetComponent<Boss>();
-        _bossEnemy.SetInit(_currentStage._stageLevel);
+        //_bossEnemy.SetInit(_currentStage._stageLevel);
+        _bossEnemy.SetInit(_bossLevel);
         _bossEnemy.transform.position = _enemySpawnPoint.position;
         _bossEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
         _bossEnemy.Fight();
@@ -205,7 +207,7 @@ public class StageManager : MonoBehaviour
 
         for (int i = 0; i < _spawnHeroList.Count; i++)
         {
-            _spawnHeroList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
+            _spawnHeroList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-2f, -5f));
             _spawnHeroList[i].Fight();
             //_spawnHeroList
         }
@@ -251,14 +253,14 @@ public class StageManager : MonoBehaviour
 
     public void Battle_Clear()
     {
-        
+
 
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(4));
 
     }
     public void Battle_Fail()
     {
-        
+
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(5));
     }
 

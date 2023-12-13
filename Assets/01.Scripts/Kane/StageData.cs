@@ -6,7 +6,7 @@ using UnityEngine;
 public class StageData : ScriptableObject
 {
 
-    public int _stageLevel;
+    //public int _stageLevel;
 
     public int _maxEnemyCount = 1;
     public float _rewardCoin = 100f; // example

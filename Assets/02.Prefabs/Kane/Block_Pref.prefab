@@ -99,6 +99,6 @@ MonoBehaviour:
   _blockType: 0
   _colorMats:
   - {fileID: 2100000, guid: 064239963e4d04d2783eb775a44217c0, type: 2}
+  - {fileID: 2100000, guid: 6b32d42175cd649a48aa43833564fffa, type: 2}
   - {fileID: 2100000, guid: e6e318125c8b54c5bb36ed188dee80b6, type: 2}
   - {fileID: 2100000, guid: 208800a7581954bc6bf2f0fc91cce72d, type: 2}
-  - {fileID: 2100000, guid: 6b32d42175cd649a48aa43833564fffa, type: 2}

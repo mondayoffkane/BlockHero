@@ -10,8 +10,6 @@ public class BlockMachine : MonoBehaviour
     [FoldoutGroup("Upgrade")] public int _level;
 
 
-
-    //[FoldoutGroup("BlockFactory")] public List<Block.BlockType> _spawnBlockList;
     [FoldoutGroup("BlockMachine")] public Block.BlockType _spawnBlockType;
     [FoldoutGroup("BlockMachine")] public GameObject _blockPref;
     [FoldoutGroup("BlockMachine")] public Material[] _colorMats = new Material[4];
@@ -21,9 +19,6 @@ public class BlockMachine : MonoBehaviour
     [FoldoutGroup("BlockMachine")] public MeshFilter _connectMeshfilter;
     [FoldoutGroup("BlockMachine")] public Mesh _connectMesh;
     MeshRenderer _cubeObj;
-
-
-
 
 
 
@@ -90,19 +85,20 @@ public class BlockMachine : MonoBehaviour
     [Button]
     public void Spawnblock()
     {
-        Block _block = Managers.Pool.Pop(_blockPref, transform).GetComponent<Block>();
-        _block.SetInit(_spawnBlockType);
+        if (_nextNode._currentBlock == null)
+        {
 
-        _block.transform.position = transform.position + Vector3.up;
 
-        DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1.3f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
-        DOTween.Sequence().AppendInterval(0.25f)
-            .AppendCallback(() => _nextNode.MoveNextNode(_block.transform));
-        //.Append(_block.transform.DOMove(_heroFactory.transform.position, 2f).SetEase(Ease.Linear))
-        //.OnComplete(() => _heroFactory.PushBlock(_block));
+            Block _block = Managers.Pool.Pop(_blockPref, transform).GetComponent<Block>();
+            _block.SetInit(_spawnBlockType);
 
-        //DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1.3f, _spawnInterval * 0.5f)).SetEase(Ease.Linear)
-        //    .Append(_factoryTop_Obj.DOLocalMoveY(2.7f, _spawnInterval * 0.5f)).SetEase(Ease.Linear);
+            _block.transform.position = transform.position + Vector3.up;
+
+            DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1.3f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
+            DOTween.Sequence().AppendInterval(0.25f)
+                .AppendCallback(() => _nextNode.PushBlock(_block.transform));
+
+        }
 
     }
 

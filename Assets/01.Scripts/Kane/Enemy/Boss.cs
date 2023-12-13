@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Boss : Enemy
 {
-
+    public GameObject _bullet_Pref;
 
     public override void SetInit(int _level)
     {
@@ -29,37 +30,56 @@ public class Boss : Enemy
                     if (_target == null) FindTarget();
                     break;
 
-                case EnemyState.Attack:
-                    if (_target == null)
-                    {
-                        _enemyState = EnemyState.Wait;
-                        yield return null;
-                    }
+                case EnemyState.Move:
+                    transform.LookAt(_target.transform);
+                    if (_target == null) _enemyState = EnemyState.Wait;
                     else if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                     {
-                        Attack();
+                        _enemyState = EnemyState.Attack;
+                    }
 
-                        yield return new WaitForSeconds(_attackInterval);
-                    }
-                    else
-                    {
-                        _target = null;
-                        _enemyState = EnemyState.Wait;
-                        yield return null;
-                    }
                     break;
 
+                case EnemyState.Attack:
+
+                    Attack();
 
 
-                    //default:
-                    //    yield return null;
-                    //    break;
+                    break;
+
 
             }
 
 
         }
 
+    }
+
+    protected override void Attack()
+    {
+
+        if (_target._currentHP > 0)
+        {
+
+            Transform _newBullet = Managers.Pool.Pop(_bullet_Pref).transform;
+            _newBullet.transform.position = transform.position;
+
+            _newBullet.DOMove(_target.transform.position, 1f)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    base.Attack();
+                    Managers.Pool.Push(_newBullet.GetComponent<Poolable>());
+                });
+
+
+            //base.Attack();
+        }
+        else
+        {
+            _target = null;
+            _enemyState = EnemyState.Wait;
+        }
     }
 
 

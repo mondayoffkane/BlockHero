@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 465170376054342294}
   - component: {fileID: 2869459458855761876}
   - component: {fileID: 2072384291619201588}
-  - component: {fileID: 3538122486383766407}
   - component: {fileID: 6649372773097539248}
+  - component: {fileID: 5106934017031017479}
   m_Layer: 0
   m_Name: Boss_Pref
   m_TagString: Enemy
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 465623765374268815}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465623765374268815}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 2989813427458839486, guid: 1cd5ec2e60aa342b19b5fa36cffd6493, type: 3}
 --- !u!23 &2072384291619201588
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,11 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 064239963e4d04d2783eb775a44217c0, type: 2}
+  - {fileID: 2100000, guid: 30e34865f5be14837bfd02935eec1fe6, type: 2}
+  - {fileID: 2100000, guid: 0e1a247e4a4db459492fc62e114abdc7, type: 2}
+  - {fileID: 2100000, guid: b5e197467b2bf404c893e408653092af, type: 2}
+  - {fileID: 2100000, guid: 54cdf956bdf6440d8abc9f1fefec6456, type: 2}
+  - {fileID: 2100000, guid: ca66d06889096452f8a8012bac3badce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,19 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3538122486383766407
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465623765374268815}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6649372773097539248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +105,19 @@ MonoBehaviour:
   _attackInterval: 1
   _maxHP: 10
   _currentHP: 10
+  _attackRange: 5
+  _enemyState: 0
+  _target: {fileID: 0}
+--- !u!65 &5106934017031017479
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465623765374268815}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.614355, y: 7.714497, z: 5.9518166}
+  m_Center: {x: 0, y: 3.8604834, z: 0.84241664}

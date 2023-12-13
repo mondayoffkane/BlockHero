@@ -41,7 +41,7 @@ public class Tank : Hero
 
                 case HeroState.Move:
                     transform.LookAt(_target.transform);
-                    transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, Time.deltaTime * 5f);
+                    transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, Time.deltaTime * _speed);
 
                     if (_target == null) _heroState = HeroState.Wait;
                     else if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
@@ -76,7 +76,6 @@ public class Tank : Hero
     {
         if (_target._currentHP > 0)
         {
-
 
             Transform _newBullet = Managers.Pool.Pop(_bullet_Pref).transform;
             _newBullet.transform.position = transform.position;

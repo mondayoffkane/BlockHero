@@ -95,10 +95,10 @@ public class StageManager : MonoBehaviour
             RaycastHit hit;
 
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //if (EventSystem.current.IsPointerOverGameObject())// 
-            //{
-            //    return;
-            //}
+            if (EventSystem.current.IsPointerOverGameObject())// 
+            {
+                return;
+            }
 
             if (Physics.Raycast(ray, out hit, 1000))
             {
@@ -198,7 +198,7 @@ public class StageManager : MonoBehaviour
         _bossEnemy = Managers.Pool.Pop(_currentStage._bossPref).GetComponent<Boss>();
         _bossEnemy.SetInit(_currentStage._stageLevel);
         _bossEnemy.transform.position = _enemySpawnPoint.position;
-
+        _bossEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
         _bossEnemy.Fight();
 
 
@@ -251,14 +251,14 @@ public class StageManager : MonoBehaviour
 
     public void Battle_Clear()
     {
-        Debug.Log("Clear");
+        
 
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(4));
 
     }
     public void Battle_Fail()
     {
-        Debug.Log("Fail");
+        
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(5));
     }
 

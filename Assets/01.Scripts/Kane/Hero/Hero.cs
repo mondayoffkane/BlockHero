@@ -35,6 +35,7 @@ public class Hero : MonoBehaviour
 
     public float _damage = 10f;
     public float _attackInterval = 1f;
+    public float _speed = 5f;
     public float _maxHP = 11f;
     public float _currentHP = 11f;
     public float _defense = 1f;
@@ -64,33 +65,40 @@ public class Hero : MonoBehaviour
             _meshfilters[0].sharedMesh = _recipe._selectMeshes[0];
         }
 
-        for (int i = 0; i < _recipe._tempBlockList.Count; i++)
-        {
-            switch (_recipe._tempBlockList[i])
-            {
-                case Block.BlockType.Red:
-                    _damage += 5f;
-                    break;
+        _damage = _recipe._damage;
+        _speed = _recipe._speed;
+        _maxHP = _recipe._maxHP;
+        _currentHP = _maxHP;
+        _defense = _recipe._defense;
 
-                case Block.BlockType.Yellow:
-                    _attackInterval += 1f;
-                    break;
+        //for (int i = 0; i < _recipe._tempBlockList.Count; i++)
+        //{
+        //    switch (_recipe._tempBlockList[i])
+        //    {
+        //        case Block.BlockType.Red:
+        //            _damage += 5f;
+        //            break;
 
-                case Block.BlockType.Green:
-                    _maxHP += 10f;
-                    break;
+        //        case Block.BlockType.Yellow:
+        //            _attackInterval += 1f;
+        //            _speed += 2f;
+        //            break;
+
+        //        case Block.BlockType.Green:
+        //            _maxHP += 10f;
+        //            break;
 
 
-                case Block.BlockType.Blue:
-                    _defense += 1f;
+        //        case Block.BlockType.Blue:
+        //            _defense += 1f;
 
-                    break;
+        //            break;
 
-                default:
+        //        default:
 
-                    break;
-            }
-        }
+        //            break;
+        //    }
+        //}
 
         _currentHP = _maxHP;
 

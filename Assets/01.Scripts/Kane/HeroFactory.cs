@@ -16,11 +16,15 @@ public class HeroFactory : MonoBehaviour
 
     public void PushBlock(Block _block)
     {
-        _blockCountArray[(int)_block._blockType]++;
+        DOTween.Sequence()
+            .Append(_block.transform.DOMove(transform.position + Vector3.up, Managers._stageManager._railSpeed))
+            .OnComplete(() =>
+            {
+                _blockCountArray[(int)_block._blockType]++;
+                Managers.Pool.Push(_block.GetComponent<Poolable>());
+                Managers._stageManager.FactoryCheckButtons();
+            });
 
-        Managers.Pool.Push(_block.GetComponent<Poolable>());
-
-        Managers._stageManager.FactoryCheckButtons();
 
     }
 

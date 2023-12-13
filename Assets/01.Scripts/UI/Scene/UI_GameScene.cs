@@ -8,9 +8,11 @@ public class UI_GameScene : UI_Scene
     enum Texts
     {
         Money_Text,
-        Status_Text,
+        BlockMachine_Status_Text,
+        Recipe_Status_Text,
         Recipe_Name_Text,
         Recipe_Block_Count_Text,
+        Boss_HP_Text,
     }
     enum Buttons
     {
@@ -25,12 +27,11 @@ public class UI_GameScene : UI_Scene
     }
     enum Images
     {
-        BackGround,
         BluePrint_Img,
+        Boss_HP_Guage,
     }
     enum GameObjects
     {
-        Jerry,
         FactoryBase_Panel,
         BlockMachine_Panel,
         HeroFactory_Panel,
@@ -74,7 +75,7 @@ public class UI_GameScene : UI_Scene
     public RawImage Recipe_RawImage;
     public Sprite[] _colorImgs = new Sprite[4];
 
-    public Text Status_Text
+    public Text Recipe_Status_Text
         , Recipe_Name_Text
         , Recipe_Block_Count_Text
         , Money_Text
@@ -152,7 +153,7 @@ public class UI_GameScene : UI_Scene
 
         // ========= Text
 
-        Status_Text = GetText(Texts.Status_Text);
+        Recipe_Status_Text = GetText(Texts.Recipe_Status_Text);
         Recipe_Name_Text = GetText(Texts.Recipe_Name_Text);
         Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
         Money_Text = GetText(Texts.Money_Text);
@@ -199,7 +200,7 @@ public class UI_GameScene : UI_Scene
         //Recipe_RawImage.texture = _newRecipe._rendTexture;
 
         Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
-        Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
+        Recipe_Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
 
         Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
         //Recipe_Block_Count_Text.text = $"{_newRecipe._currentParts_Num} / {_newRecipe._partsCount}";
@@ -290,12 +291,15 @@ public class UI_GameScene : UI_Scene
 
     public void SetColorImg(Recipe_Model _newRecipe)
     {
+        float[] _values = new float[4];
+
         for (int i = 0; i < BlockImg_Group.transform.childCount; i++)
         {
             if (i < _newRecipe._currentParts_Num)
             {
                 _colorButtonImgs[i].gameObject.SetActive(true);
                 _colorButtonImgs[i].sprite = _colorImgs[(int)_newRecipe._tempBlockList[i]];
+                _values[(int)_newRecipe._tempBlockList[i]]++;
             }
             else
             {
@@ -303,6 +307,10 @@ public class UI_GameScene : UI_Scene
             }
 
         }
+
+        
+        Recipe_Status_Text.text = $"ATK : {10f :";
+
     }
 
 

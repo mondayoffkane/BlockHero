@@ -112,6 +112,7 @@ public class StageManager : MonoBehaviour
 
                         _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
                         Managers._gameUi.ChangePanel(1);
+                        Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
                         break;
 
                     case "HeroFactory":

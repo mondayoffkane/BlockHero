@@ -308,8 +308,8 @@ public class UI_GameScene : UI_Scene
 
         }
 
-        
-        Recipe_Status_Text.text = $"ATK : {10f :";
+
+        //Recipe_Status_Text.text = $"ATK : {10f :";
 
     }
 

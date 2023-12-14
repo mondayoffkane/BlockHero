@@ -21,6 +21,9 @@ public class UI_GameScene : UI_Scene
     {
         HeroFactory_Button,
         Battle_Button,
+        AddBlockMachine_Button,
+        AddHeroFactory_Button,
+        ViewChange_Button,
         BlockMachine_Close_Button,
         BlockMachine_Upgrade_Button,
         HeroFactory_Close_Button,
@@ -75,7 +78,12 @@ public class UI_GameScene : UI_Scene
         Clear_Claim_Button,
         Fail_ToFactory_Button
         , BlockMachine_Close_Button,
-        BlockMachine_Upgrade_Button;
+        BlockMachine_Upgrade_Button
+        , ViewChange_Button
+        , AddBlockMachine_Button,
+        AddHeroFactory_Button
+
+        ;
 
 
 
@@ -158,6 +166,10 @@ public class UI_GameScene : UI_Scene
 
         BlockMachine_Close_Button = GetButton(Buttons.BlockMachine_Close_Button);
         BlockMachine_Upgrade_Button = GetButton(Buttons.BlockMachine_Upgrade_Button);
+        ViewChange_Button = GetButton(Buttons.ViewChange_Button);
+
+        AddBlockMachine_Button = GetButton(Buttons.AddBlockMachine_Button);
+        AddHeroFactory_Button = GetButton(Buttons.AddHeroFactory_Button);
 
 
         // ========= Img
@@ -222,9 +234,6 @@ public class UI_GameScene : UI_Scene
             });
         }
 
-
-
-
         Undo_Button.AddButtonEvent(() => Managers._stageManager.SelectModelUndoColor());
         Reset_Button.AddButtonEvent(() => Managers._stageManager.SelectModelReset());
         Make_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero());
@@ -239,6 +248,17 @@ public class UI_GameScene : UI_Scene
         {
             Managers._stageManager.SelectBlockMachine_Upgrade();
         });
+
+        ViewChange_Button.AddButtonEvent(() =>
+        {
+            if (Managers._stageManager._cams[0].activeSelf) Managers._stageManager.ChangeCam(1, 1f);
+            else Managers._stageManager.ChangeCam(0, 1f);
+        });
+
+
+        AddBlockMachine_Button.AddButtonEvent(() => Managers._stageManager.AddBlockMachine());
+        AddHeroFactory_Button.AddButtonEvent(() => Managers._stageManager.AddHeroFactory());
+
     }
 
     // ====================================================

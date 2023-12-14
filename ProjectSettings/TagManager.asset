@@ -9,6 +9,7 @@ TagManager:
   - StageManager
   - HeroFactory
   - BlockMachine
+  - BlockStorage
   layers:
   - Default
   - TransparentFX

@@ -6,40 +6,70 @@ using DG.Tweening;
 
 public class HeroFactory : MonoBehaviour
 {
-    public int[] _blockCountArray
-        = new int[System.Enum.GetValues(typeof(Block.BlockType)).Length];
-
-    public Image _guageBar;
 
 
+    public SkinnedMeshRenderer _guage_Obj;
+    public Image _bluePrint_Img;
 
 
-    public void PushBlock(Block _block)
+
+    public float _currentTime = 0f;
+    public float _maxTime = 1f;
+
+    public bool isProduction = false;
+
+    // ===============================================
+
+    private void OnEnable()
     {
-        DOTween.Sequence()
-            .Append(_block.transform.DOMove(transform.position + Vector3.up, Managers._stageManager._railSpeed))
-            .OnComplete(() =>
-            {
-                _blockCountArray[(int)_block._blockType]++;
-                Managers.Pool.Push(_block.GetComponent<Poolable>());
-                Managers._stageManager.FactoryCheckButtons();
-            });
+        if (_guage_Obj == null) _guage_Obj = transform.Find("Guage_Obj").GetComponent<SkinnedMeshRenderer>();
+        if (_bluePrint_Img == null) _bluePrint_Img = transform.Find("Canvas").GetChild(0).GetComponent<Image>();
 
-
+        StartCoroutine(Cor_Update());
     }
 
+
+    IEnumerator Cor_Update()
+    {
+        while (true)
+        {
+            yield return null;
+
+            if (isProduction)
+            {
+                _currentTime += Time.deltaTime;
+                _guage_Obj.SetBlendShapeWeight(0, _currentTime / _maxTime);
+
+                if (_currentTime >= _maxTime)
+                {
+                    _currentTime = 0f;
+                }
+            }
+
+        }
+    }
 
 
     public void MakeHeroOnOff(bool isOn)
     {
-        if (isOn)
+        isProduction = isOn;
+
+        if (isProduction)
         {
+
+
 
         }
         else
         {
 
         }
+    }
+
+    public void SetRecipe(Recipe_Model _newRecipe)
+    {
+        _bluePrint_Img.sprite = _newRecipe._bluePrint_Sprite;
+
     }
 
 

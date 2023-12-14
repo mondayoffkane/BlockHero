@@ -90,7 +90,7 @@ public class Recipe_Model : MonoBehaviour
 
 
             _currentParts_Num++;
-            Managers._stageManager._heroFactory._blockCountArray[_num]--;
+            Managers._stageManager._blockStorage._blockCountArray[_num]--;
             _tempBlockList.Add((Block.BlockType)_num);
             Managers._stageManager.FactoryCheckButtons();
             Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_partsCount}";
@@ -116,7 +116,7 @@ public class Recipe_Model : MonoBehaviour
             Managers._gameUi.SetColorImg(this);
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
-            Managers._stageManager._heroFactory._blockCountArray[_tempblocknum]++;
+            Managers._stageManager._blockStorage._blockCountArray[_tempblocknum]++;
 
             switch (_tempblocknum)
             {
@@ -165,7 +165,7 @@ public class Recipe_Model : MonoBehaviour
         {
             int _tempblocknum = (int)_tempBlockList[i];
             _tempBlockList.RemoveAt(i);
-            Managers._stageManager._heroFactory._blockCountArray[_tempblocknum]++;
+            Managers._stageManager._blockStorage._blockCountArray[_tempblocknum]++;
             //Managers._gameUi.SetColorImg(i, 0, false);
         }
         Managers._gameUi.SetColorImg(this);

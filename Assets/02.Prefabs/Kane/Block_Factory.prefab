@@ -96,9 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 5354652529375969301}
+  _prevNodes:
+  - {fileID: 1450985984718208199}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &2270516417252353733
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,9 +245,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 7078445105139670259}
+  _prevNodes:
+  - {fileID: 5308292869678427611}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &3054294967662642786
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,9 +347,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 7911360560521737958}
+  _prevNodes:
+  - {fileID: 5105535967734652743}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &3209911767530660561
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,9 +449,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 5478384080431962739}
+  _prevNodes:
+  - {fileID: 4697524119506168963}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &3646309227458528725
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,9 +551,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 0}
+  _prevNodes:
+  - {fileID: 3386712286018097190}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &3957107679014018122
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,9 +653,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 5308292869678427611}
+  _prevNodes:
+  - {fileID: 57364982133091081}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &4303938126132921108
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,9 +755,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 1450985984718208199}
+  _prevNodes:
+  - {fileID: 5478384080431962739}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &4518359103259158706
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,9 +815,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 8131702111486249607}
+  _prevNodes:
+  - {fileID: 5354652529375969301}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!137 &5855710177965421343
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -948,9 +972,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 6998286482661080717}
+  _prevNodes:
+  - {fileID: 3224658510961773192}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &5810589218725959427
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,9 +1074,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 4697524119506168963}
+  _prevNodes:
+  - {fileID: 6681994305210761938}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &5939245996888840758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,9 +1176,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 2395797659718860364}
+  _prevNodes:
+  - {fileID: 7078445105139670259}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &6028184199280843969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,6 +1295,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _level: 0
+  _upgradePrices:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   _spawnBlockType: 0
   _blockPref: {fileID: 7286330375840144761, guid: ae8e5515a34184c6b9e126baffd4e417,
     type: 3}
@@ -1272,7 +1311,7 @@ MonoBehaviour:
   - {fileID: 0}
   _spawnInterval: 1
   _factoryTop_Obj: {fileID: 0}
-  _nextNode: {fileID: 1320953765657541643}
+  _currentBlock: {fileID: 0}
   _connectMeshfilter: {fileID: 0}
   _connectMesh: {fileID: 0}
 --- !u!1 &6028184200592270168
@@ -1454,9 +1493,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 3224658510961773192}
+  _prevNodes:
+  - {fileID: 8131702111486249607}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &6829061541853038018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,9 +1595,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 6681994305210761938}
+  _prevNodes:
+  - {fileID: 6028184199280843968}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &7126778236058985960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,9 +1697,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 3386712286018097190}
+  _prevNodes:
+  - {fileID: 6843905481932126698}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &7174293166322456813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,9 +1799,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 6843905481932126698}
+  _prevNodes:
+  - {fileID: 7911360560521737958}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1
 --- !u!1 &7457834396774325185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,6 +1901,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf868f71fd947c1a5900ea39ab8c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextNode: {fileID: 5105535967734652743}
+  _prevNodes:
+  - {fileID: 2395797659718860364}
   _currentBlock: {fileID: 0}
   _stageManager: {fileID: 0}
+  _waitTime: 0
+  _isReady: 1

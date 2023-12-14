@@ -9,20 +9,24 @@ public class StageManager : MonoBehaviour
 {
     [FoldoutGroup("BlockMachine")] public List<BlockMachine> _blockMachineList = new List<BlockMachine>();
     [FoldoutGroup("BlockMachine")] public float _railSpeed = 0.5f;
-    [FoldoutGroup("BlockMachine")] public int _blockMachineCount;
     [FoldoutGroup("BlockMachine")] public BlockMachine _selectBlockMachine;
     [FoldoutGroup("BlockMachine")] public SkinnedMeshRenderer[] _skinnedBlock;
+    [FoldoutGroup("BlockMachine")] public int _blockMachineCount;
+    [FoldoutGroup("BlockMachine")] public double[] _blockMachine_Prices = new double[8];
 
 
-
-    [FoldoutGroup("HeroFactory")] public HeroFactory _heroFactory;
+    [FoldoutGroup("HeroFactory")] public BlockStorage _blockStorage;
+    [FoldoutGroup("HeroFactory")] public List<HeroFactory> _heroFactoryList = new List<HeroFactory>();
+    [FoldoutGroup("HeroFactory")] public HeroFactory _selectHeroFactory;
     [FoldoutGroup("HeroFactory")] public Transform _recipeModelGroup;
     [FoldoutGroup("HeroFactory")] public Recipe_Model[] _recipeModels;
     [FoldoutGroup("HeroFactory")] public Recipe_Model _selectModel;
+    [FoldoutGroup("HeroFactory")] public int _heroFactoryCount;
+    [FoldoutGroup("HeroFactory")] public double[] _heroFactory_Prices = new double[9];
 
 
-    [FoldoutGroup("Battle")]
-    [FoldoutGroup("Battle")] public GameObject _battleCam;
+
+    //[FoldoutGroup("Battle")] public GameObject _battleCam;
     [FoldoutGroup("Battle")] public List<Hero> _spawnHeroList = new List<Hero>();
     [FoldoutGroup("Battle")] public Transform _heroSpawnPoint;
     [FoldoutGroup("Battle")] public Enemy _bossEnemy;
@@ -32,6 +36,8 @@ public class StageManager : MonoBehaviour
     //[FoldoutGroup("Stage")] public StageData _currentStage;
     [FoldoutGroup("Stage")] public GameObject[] _bossList;
     [FoldoutGroup("Stage")] public double _money = 1000d;
+
+    public GameObject[] _cams;
 
     // =================================================
 
@@ -67,7 +73,7 @@ public class StageManager : MonoBehaviour
 
         for (int i = 0; i < _blockMachineCount; i++)
         {
-            AddBlockFactory();
+            AddBlockMachine();
         }
 
     }
@@ -86,7 +92,7 @@ public class StageManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            AddBlockFactory();
+            AddBlockMachine();
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -143,6 +149,7 @@ public class StageManager : MonoBehaviour
 
         Managers._gameUi.ChangeRecipe(_num, _selectModel);
         Managers._gameUi.SetColorImg(_selectModel);
+        _selectHeroFactory.SetRecipe(_selectModel);
 
     }
 
@@ -159,10 +166,13 @@ public class StageManager : MonoBehaviour
     public void SelectModelReset()
     {
         _selectModel.Reset();
+        _selectHeroFactory.SetRecipe(_selectModel);
     }
 
     public void MakeHero()
     {
+        _selectHeroFactory.MakeHeroOnOff(true);
+
 
         Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
         _newHero.SetInit(_selectModel);
@@ -196,8 +206,8 @@ public class StageManager : MonoBehaviour
     public void ToBattle()
     {
         Managers._gameUi.ChangePanel(3);
-        _battleCam.SetActive(true);
-
+        //_battleCam.SetActive(true);
+        ChangeCam(2, 0);
         _bossEnemy = Managers.Pool.Pop(_bossList[_bossLevel % 3]).GetComponent<Boss>();
         //_bossEnemy.SetInit(_currentStage._stageLevel);
         _bossEnemy.SetInit(_bossLevel);
@@ -222,8 +232,8 @@ public class StageManager : MonoBehaviour
         Managers._gameUi.ChangePanel(0);
 
 
-        _battleCam.SetActive(false);
-
+        //_battleCam.SetActive(false);
+        ChangeCam(0, 0);
 
         if (_bossEnemy != null) Managers.Pool.Push(_bossEnemy.GetComponent<Poolable>());
 
@@ -259,15 +269,13 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void AddBlockFactory()
+    public void AddBlockMachine()
     {
         CalcMoney(-100);
-
 
         _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
         _blockMachineCount++;
         //ES3.Save<int>("BlockFactoryCount", _blockFactoryCount);
-
 
         switch (_blockMachineCount)
         {
@@ -284,8 +292,16 @@ public class StageManager : MonoBehaviour
                 break;
         }
 
-
     }
+
+    public void AddHeroFactory()
+    {
+        CalcMoney(0);
+
+        _heroFactoryList[_heroFactoryCount].gameObject.SetActive(true);
+        _heroFactoryCount++;
+    }
+
 
     public void CalcMoney(double _value)
     {
@@ -299,8 +315,24 @@ public class StageManager : MonoBehaviour
         _selectBlockMachine.UpgradeMachine();
 
 
-        
+
     }
 
+    public void ChangeCam(int _num, float _time = 1f)
+    {
+        for (int i = 0; i < _cams.Length; i++)
+        {
+            if (_num == i) _cams[i].SetActive(true);
+            else _cams[i].SetActive(false);
+
+            Camera.main.transform.GetComponent<Cinemachine.CinemachineBrain>()
+                .m_DefaultBlend.m_Time = _time;
+
+            //_cams[i].SetActive(false);
+        }
+
+
+
+    }
 
 }

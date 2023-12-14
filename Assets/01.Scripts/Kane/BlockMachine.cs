@@ -15,11 +15,14 @@ public class BlockMachine : MonoBehaviour
     [FoldoutGroup("BlockMachine")] public Material[] _colorMats = new Material[4];
     [FoldoutGroup("BlockMachine")] public float _spawnInterval = 1f;
     [FoldoutGroup("BlockMachine")] public Transform _factoryTop_Obj;
-    [FoldoutGroup("BlockMachine")] public Rail _nextNode;
+    //[FoldoutGroup("BlockMachine")] public Rail _nextNode;
+    [FoldoutGroup("BlockMachine")] public Transform _currentBlock;
     [FoldoutGroup("BlockMachine")] public MeshFilter _connectMeshfilter;
     [FoldoutGroup("BlockMachine")] public Mesh _connectMesh;
     MeshRenderer _cubeObj;
 
+    Renderer _renderer;
+    //Material _selfMat;
 
 
 
@@ -31,10 +34,12 @@ public class BlockMachine : MonoBehaviour
     private void OnEnable()
     {
         if (_blockPref == null) Resources.Load<GameObject>("Block_Pref");
-        if (_heroFactory == null) _heroFactory = Managers._stageManager._heroFactory;
+        //if (_heroFactory == null) _heroFactory = Managers._stageManager._blockStorage;
         if (_factoryTop_Obj == null) _factoryTop_Obj = transform.GetChild(0);
         if (_cubeObj == null) _cubeObj = transform.Find("Cube_Obj").GetComponent<MeshRenderer>();
-
+        _renderer = GetComponent<Renderer>();
+        _renderer.sharedMaterial = Instantiate(_renderer.sharedMaterial);
+        _renderer.sharedMaterial.SetTextureOffset("_BaseMap", new Vector2(0f, 0.025f * (float)_spawnBlockType));
 
         if (_connectMeshfilter != null)
             _connectMeshfilter.sharedMesh = _connectMesh;
@@ -54,7 +59,8 @@ public class BlockMachine : MonoBehaviour
     public void SetBlockType(int _num)
     {
         _spawnBlockType = (Block.BlockType)_num;
-
+        _renderer.sharedMaterial.SetTextureOffset("_BaseMap", new Vector2(0f, 0.025f * (float)_spawnBlockType));
+        //_selfMat.SetTextureOffset("_MainTex", new Vector2(0f, 0.025f * _num));
         _factoryTop_Obj.GetComponent<Renderer>().sharedMaterial = _colorMats[_num];
         // add material change
 
@@ -91,18 +97,22 @@ public class BlockMachine : MonoBehaviour
     [Button]
     public void Spawnblock()
     {
-        if (_nextNode._currentBlock == null)
+        if (_currentBlock == null)
         {
-
-
             Block _block = Managers.Pool.Pop(_blockPref, transform).GetComponent<Block>();
             _block.SetInit(_spawnBlockType);
 
             _block.transform.position = transform.position + Vector3.up;
 
             DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1.3f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
-            DOTween.Sequence().AppendInterval(0.25f)
-                .AppendCallback(() => _nextNode.PushBlock(_block.transform));
+
+            _currentBlock = _block.transform;
+
+
+
+
+            //DOTween.Sequence().AppendInterval(0.25f)
+            //    .AppendCallback(() => _nextNode.PushBlock(_block.transform));
 
         }
 

@@ -187,6 +187,9 @@ public class UI_GameScene : UI_Scene
         Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
         Money_Text = GetText(Texts.Money_Text);
         Boss_HP_Text = GetText(Texts.Boss_HP_Text);
+        BlockMachine_Upgrade_Price_Text = GetText(Texts.BlockMachine_Upgrade_Price_Text);
+        BlockMachine_Status_Text = GetText(Texts.BlockMachine_Status_Text);
+        BlockMachine_UpgradeValue_Text = GetText(Texts.BlockMachine_UpgradeValue_Text);
 
 
         // ================ Add Button Listner========================================
@@ -232,7 +235,10 @@ public class UI_GameScene : UI_Scene
 
         BlockMachine_Close_Button.AddButtonEvent(() => ChangePanel(0));
 
-
+        BlockMachine_Upgrade_Button.AddButtonEvent(() =>
+        {
+            Managers._stageManager.SelectBlockMachine_Upgrade();
+        });
     }
 
     // ====================================================
@@ -280,6 +286,9 @@ public class UI_GameScene : UI_Scene
 
             case 1:
                 PanelOnOff(BlockMachine_Panel, true);
+                //BlockMachine_Upgrade_Button.interactable =
+                Managers._stageManager._selectBlockMachine.CheckPrice();
+
                 break;
 
             case 2:
@@ -305,7 +314,7 @@ public class UI_GameScene : UI_Scene
     {
         if (isOn)
         {
-            Debug.Log("On");
+            //Debug.Log("On");
             _obj.SetActive(true);
             _obj.transform.localScale = Vector3.zero;
             _obj.transform.DOScale(Vector3.one, _time).SetEase(Ease.OutBack);
@@ -313,7 +322,7 @@ public class UI_GameScene : UI_Scene
         }
         else
         {
-            Debug.Log("Off");
+            //Debug.Log("Off");
             //_obj.transform.DOScale(Vector3.zero, _time).SetEase(Ease.InBack).OnComplete(() => _obj.SetActive(false));
             _obj.SetActive(false);
         }
@@ -367,9 +376,12 @@ public class UI_GameScene : UI_Scene
     {
         for (int i = 0; i < 4; i++)
         {
-            BlockMachine_Color_Buttons_Group.transform.GetChild(i).GetChild(0).gameObject.SetActive(false);
+            BlockMachine_Color_Buttons_Group.transform
+                .GetChild(i).GetChild(0).gameObject.SetActive(false);
         }
-        BlockMachine_Color_Buttons_Group.transform.GetChild(_num).GetChild(0).gameObject.SetActive(true);
+        BlockMachine_Color_Buttons_Group.transform
+            .GetChild(_num).GetChild(0).gameObject.SetActive(true);
+
     }
 
 

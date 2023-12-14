@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 public class BlockMachine : MonoBehaviour
 {
     [FoldoutGroup("Upgrade")] public int _level;
-
+    [FoldoutGroup("Upgrade")] public double[] _upgradePrices = new double[5];
 
     [FoldoutGroup("BlockMachine")] public Block.BlockType _spawnBlockType;
     [FoldoutGroup("BlockMachine")] public GameObject _blockPref;
@@ -48,7 +48,7 @@ public class BlockMachine : MonoBehaviour
 
     public void LoadData()
     {
-        _spawnInterval = 5.5f - 0.5f * _level;
+        _spawnInterval = 6f - 1f * _level;
     }
 
     public void SetBlockType(int _num)
@@ -60,10 +60,12 @@ public class BlockMachine : MonoBehaviour
 
     }
 
-    public void UpgradeFactory()
+    public void UpgradeMachine()
     {
+        Managers._stageManager.CalcMoney(_upgradePrices[_level]);
         _level++;
-        _spawnInterval = 5.5f - 0.5f * _level;
+        _spawnInterval = 6f - 1f * _level;
+        CheckPrice();
     }
 
 
@@ -105,6 +107,39 @@ public class BlockMachine : MonoBehaviour
         }
 
     }
+
+
+    public void CheckPrice()
+    {
+
+
+        if (_level < _upgradePrices.Length)
+        {
+            Managers._gameUi.BlockMachine_Upgrade_Price_Text.text = $"{_upgradePrices[_level]}";
+            Managers._gameUi.BlockMachine_Status_Text.text = $"{_spawnInterval}s";
+
+            Managers._gameUi.BlockMachine_UpgradeValue_Text.text = $"-1s";
+
+            if (Managers._stageManager._money >= _upgradePrices[_level])
+            {
+                Managers._gameUi.BlockMachine_Upgrade_Button.interactable = true;
+
+            }
+            else
+            {
+                Managers._gameUi.BlockMachine_Upgrade_Button.interactable = false;
+            }
+        }
+        else
+        {
+            Managers._gameUi.BlockMachine_Upgrade_Price_Text.text = $"Max";
+            Managers._gameUi.BlockMachine_Status_Text.text = $"{_spawnInterval}s";
+            Managers._gameUi.BlockMachine_UpgradeValue_Text.text = $"";
+            Managers._gameUi.BlockMachine_Upgrade_Button.interactable = false;
+        }
+    }
+
+
 
 
 

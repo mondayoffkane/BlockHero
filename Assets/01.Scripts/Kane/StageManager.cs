@@ -29,7 +29,8 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Battle")] public Transform _enemySpawnPoint;
     [FoldoutGroup("Battle")] public int _bossLevel;
 
-    [FoldoutGroup("Stage")] public StageData _currentStage;
+    //[FoldoutGroup("Stage")] public StageData _currentStage;
+    [FoldoutGroup("Stage")] public GameObject[] _bossList;
     [FoldoutGroup("Stage")] public double _money = 1000d;
 
     // =================================================
@@ -197,7 +198,7 @@ public class StageManager : MonoBehaviour
         Managers._gameUi.ChangePanel(3);
         _battleCam.SetActive(true);
 
-        _bossEnemy = Managers.Pool.Pop(_currentStage._bossPref).GetComponent<Boss>();
+        _bossEnemy = Managers.Pool.Pop(_bossList[_bossLevel % 3]).GetComponent<Boss>();
         //_bossEnemy.SetInit(_currentStage._stageLevel);
         _bossEnemy.SetInit(_bossLevel);
         _bossEnemy.transform.position = _enemySpawnPoint.position;
@@ -223,14 +224,6 @@ public class StageManager : MonoBehaviour
 
         _battleCam.SetActive(false);
 
-        //if (_spawnEnemyList.Count > 0)
-        //    for (int i = 0; i < _spawnEnemyList.Count; i++)
-        //    {
-        //        var _obj = _spawnEnemyList[0];
-        //        _spawnEnemyList.Remove(_obj);
-        //        Managers.Pool.Push(_obj.GetComponent<Poolable>());
-        //    }
-        //_spawnEnemyList.Clear();
 
         if (_bossEnemy != null) Managers.Pool.Push(_bossEnemy.GetComponent<Poolable>());
 
@@ -301,6 +294,13 @@ public class StageManager : MonoBehaviour
         Managers._gameUi.Money_Text.text = $"{_money:F0}";
     }
 
+    public void SelectBlockMachine_Upgrade()
+    {
+        _selectBlockMachine.UpgradeMachine();
+
+
+        
+    }
 
 
 }

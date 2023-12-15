@@ -2341,22 +2341,22 @@ PrefabInstance:
     - target: {fileID: 5209070554344930508, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5209070554344930508, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5209070554344930508, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 379.19595
       objectReference: {fileID: 0}
     - target: {fileID: 5209070554344930508, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -91.243774
       objectReference: {fileID: 0}
     - target: {fileID: 5239905975635623078, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
@@ -2381,22 +2381,22 @@ PrefabInstance:
     - target: {fileID: 6010528619410877599, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6010528619410877599, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6010528619410877599, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 824.6572
       objectReference: {fileID: 0}
     - target: {fileID: 6010528619410877599, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -91.243774
       objectReference: {fileID: 0}
     - target: {fileID: 6087892369592099129, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
@@ -2486,42 +2486,42 @@ PrefabInstance:
     - target: {fileID: 7060591266517131469, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7060591266517131469, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7060591266517131469, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 601.9266
       objectReference: {fileID: 0}
     - target: {fileID: 7060591266517131469, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -91.243774
       objectReference: {fileID: 0}
     - target: {fileID: 7111623157346220205, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7111623157346220205, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7111623157346220205, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 156.46532
       objectReference: {fileID: 0}
     - target: {fileID: 7111623157346220205, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -91.243774
       objectReference: {fileID: 0}
     - target: {fileID: 7802267381790802862, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
@@ -3099,9 +3099,8 @@ MonoBehaviour:
   - {fileID: 1083842167}
   - {fileID: 1706324452}
   - {fileID: 528330589}
+  _selectHeroFactory: {fileID: 0}
   _recipeModelGroup: {fileID: 1532465168}
-  _recipeModels: []
-  _selectModel: {fileID: 2050917434}
   _heroFactoryCount: 0
   _heroFactory_Prices:
   - 0
@@ -3719,7 +3718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1555003058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3893,41 +3892,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09224221035a41d394bd78b305c1454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recipeName: Tank
-  _heroType: 1
-  _bluePrint_Sprite: {fileID: 21300000, guid: a865d630b92ad4de0b739eb5367ad3d1, type: 3}
-  _partsMeshes:
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  _selectMeshes: []
-  _partsCount: 3
-  _currentParts_Num: 0
-  _tempBlockList: 
-  _baseDamage: 10
-  _baseAttackInterval: 1
-  _baseSpeed: 5
-  _baseHP: 10
-  _baseDefense: 5
-  _damageValue: 5
-  _attackIntervalValue: 0.1
-  _speedValue: 2
-  _HPValue: 10
-  _defenseValue: 1
-  _damage: 10
-  _attackInterval: 1
-  _speed: 5
-  _maxHP: 10
-  _defense: 5
 --- !u!4 &1658281146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6998286482661080717, guid: 64918c5ed35ab4c829c7ed73cf50bf46,
@@ -4758,41 +4722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09224221035a41d394bd78b305c1454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recipeName: Test
-  _heroType: 1
-  _bluePrint_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
-  _partsMeshes:
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  - {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-  _selectMeshes: []
-  _partsCount: 3
-  _currentParts_Num: 0
-  _tempBlockList: 
-  _baseDamage: 10
-  _baseAttackInterval: 1
-  _baseSpeed: 5
-  _baseHP: 10
-  _baseDefense: 5
-  _damageValue: 5
-  _attackIntervalValue: 0.1
-  _speedValue: 2
-  _HPValue: 10
-  _defenseValue: 1
-  _damage: 10
-  _attackInterval: 1
-  _speed: 5
-  _maxHP: 10
-  _defense: 5
 --- !u!1001 &1869066597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5614,33 +5543,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09224221035a41d394bd78b305c1454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recipeName: Block Man
-  _heroType: 0
-  _bluePrint_Sprite: {fileID: 21300000, guid: 5549edbe9a1d84ae68768c6543586ac8, type: 3}
-  _partsMeshes:
-  - {fileID: -4623247679890240919, guid: fa0b620ca092a47f99c49ae3be39ed41, type: 3}
-  - {fileID: 4168865360628915878, guid: f0b12d7abf6624830b2309d8b7653012, type: 3}
-  - {fileID: 2454505630515052355, guid: 41774a3ef56824eb38508cb146d443b2, type: 3}
-  - {fileID: 8271744385629103020, guid: 0006ba1b5d675493daf98f759b585c3c, type: 3}
-  _selectMeshes: []
-  _partsCount: 1
-  _currentParts_Num: 0
-  _tempBlockList: 
-  _baseDamage: 10
-  _baseAttackInterval: 1
-  _baseSpeed: 5
-  _baseHP: 10
-  _baseDefense: 5
-  _damageValue: 5
-  _attackIntervalValue: 0.1
-  _speedValue: 2
-  _HPValue: 10
-  _defenseValue: 1
-  _damage: 10
-  _attackInterval: 1
-  _speed: 5
-  _maxHP: 10
-  _defense: 5
 --- !u!1 &2062349338
 GameObject:
   m_ObjectHideFlags: 0

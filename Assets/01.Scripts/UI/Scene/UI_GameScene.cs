@@ -263,7 +263,7 @@ public class UI_GameScene : UI_Scene
 
     // ====================================================
 
-    public void ChangeRecipe(int _num, Recipe_Model _newRecipe)
+    public void ChangeRecipe(int _num, HeroFactory _selectHeroFactory)
     {
         for (int i = 0; i < _recipeListBttons.Length; i++)
         {
@@ -271,16 +271,16 @@ public class UI_GameScene : UI_Scene
         }
         _recipeListBttons[_num].transform.GetChild(0).gameObject.SetActive(true);
 
-        //Recipe_RawImage.texture = _newRecipe._rendTexture;
-
-        Recipe_Name_Text.text = $"{_newRecipe._recipeName}";
-        //Recipe_Status_Text.text = $"ATK : 1   SPD : 1   HP : 1";
-        Recipe_Status_Text.text = $"ATK : {_newRecipe._damage} Speed : {_newRecipe._speed} HP : {_newRecipe._maxHP} DEF : {_newRecipe._defense}";
 
 
-        //Recipe_Block_Count_Text.text = $"{_newRecipe._currentParts_Num} / {_newRecipe._partsCount}";
-        Recipe_Block_Count_Text.text = $"X {_newRecipe._partsCount}";
-        BluePrint_Img.sprite = _newRecipe._bluePrint_Sprite;
+        Recipe_Name_Text.text = $"{_selectHeroFactory._currentRecipe._recipeName}";
+
+        Recipe_Status_Text.text = $"ATK : {_selectHeroFactory._damage} Speed : {_selectHeroFactory._speed} HP : {_selectHeroFactory._maxHP} DEF : {_selectHeroFactory._defense}";
+
+
+
+        Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
+        BluePrint_Img.sprite = _selectHeroFactory._currentRecipe._bluePrint_Sprite;
 
         Managers._stageManager.FactoryCheckButtons();
 
@@ -373,17 +373,17 @@ public class UI_GameScene : UI_Scene
 
 
 
-    public void SetColorImg(Recipe_Model _newRecipe)
+    public void SetColorImg(HeroFactory _selectHeroFactory)
     {
         float[] _values = new float[4];
 
         for (int i = 0; i < BlockImg_Group.transform.childCount; i++)
         {
-            if (i < _newRecipe._currentParts_Num)
+            if (i < _selectHeroFactory._currentParts_Num)
             {
                 _colorButtonImgs[i].gameObject.SetActive(true);
-                _colorButtonImgs[i].sprite = _colorImgs[(int)_newRecipe._tempBlockList[i]];
-                _values[(int)_newRecipe._tempBlockList[i]]++;
+                _colorButtonImgs[i].sprite = _colorImgs[(int)_selectHeroFactory._tempBlockList[i]];
+                _values[(int)_selectHeroFactory._tempBlockList[i]]++;
             }
             else
             {

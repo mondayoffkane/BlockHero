@@ -19,8 +19,8 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("HeroFactory")] public List<HeroFactory> _heroFactoryList = new List<HeroFactory>();
     [FoldoutGroup("HeroFactory")] public HeroFactory _selectHeroFactory;
     [FoldoutGroup("HeroFactory")] public Transform _recipeModelGroup;
-    [FoldoutGroup("HeroFactory")] public Recipe_Model[] _recipeModels;
-    [FoldoutGroup("HeroFactory")] public Recipe_Model _selectModel;
+    //[FoldoutGroup("HeroFactory")] public Recipe_Model[] _recipeModels;
+    //[FoldoutGroup("HeroFactory")] public Recipe_Model _selectModel;
     [FoldoutGroup("HeroFactory")] public int _heroFactoryCount;
     [FoldoutGroup("HeroFactory")] public double[] _heroFactory_Prices = new double[9];
 
@@ -49,11 +49,11 @@ public class StageManager : MonoBehaviour
         Managers._stageManager = this;
 
         int _count = _recipeModelGroup.childCount;
-        _recipeModels = new Recipe_Model[_count];
-        for (int i = 0; i < _count; i++)
-        {
-            _recipeModels[i] = _recipeModelGroup.GetChild(i).GetComponent<Recipe_Model>();
-        }
+        //_recipeModels = new Recipe_Model[_count];
+        //for (int i = 0; i < _count; i++)
+        //{
+        //    _recipeModels[i] = _recipeModelGroup.GetChild(i).GetComponent<Recipe_Model>();
+        //}
 
         Managers._gameUi.ChangePanel(0);
 
@@ -123,6 +123,7 @@ public class StageManager : MonoBehaviour
                         break;
 
                     case "HeroFactory":
+                        _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
                         Managers._gameUi.ChangePanel(2);
                         break;
                 }
@@ -130,10 +131,6 @@ public class StageManager : MonoBehaviour
             }
 
         }
-
-
-
-
 
     }
 
@@ -145,28 +142,30 @@ public class StageManager : MonoBehaviour
 
     public void SelectRecipe(int _num)
     {
-        _selectModel = _recipeModels[_num];
+        //_selectModel = _recipeModels[_num];
 
-        Managers._gameUi.ChangeRecipe(_num, _selectModel);
-        Managers._gameUi.SetColorImg(_selectModel);
-        _selectHeroFactory.SetRecipe(_selectModel);
+        //Managers._gameUi.ChangeRecipe(_num, _selectModel);
+        //Managers._gameUi.SetColorImg(_selectModel);
+        _selectHeroFactory.SetRecipe(_num);
 
     }
 
     public void SelectModelSetColor(int _num)
     {
-        _selectModel.SetColor(_num);
+        //_selectModel.SetColor(_num);
+        _selectHeroFactory.SetColor(_num);
     }
 
     public void SelectModelUndoColor()
     {
-        _selectModel.UndoColor();
+        //_selectModel.UndoColor();
+        _selectHeroFactory.UndoColor();
     }
 
     public void SelectModelReset()
     {
-        _selectModel.Reset();
-        _selectHeroFactory.SetRecipe(_selectModel);
+        //_selectModel.Reset();
+        //_selectHeroFactory.SetRecipe(_selectModel);
     }
 
     public void MakeHero()
@@ -174,27 +173,27 @@ public class StageManager : MonoBehaviour
         _selectHeroFactory.MakeHeroOnOff(true);
 
 
-        Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
-        _newHero.SetInit(_selectModel);
+        //Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
+        //_newHero.SetInit(_selectModel);
 
-        _newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
-        _selectModel.Reset();
+        //_newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
+        //_selectModel.Reset();
 
-        _spawnHeroList.Add(_newHero);
+        //_spawnHeroList.Add(_newHero);
 
 
     }
 
     public void FactoryCheckButtons()
     {
-        if (_selectModel != null)
+        if (_selectHeroFactory != null)
         {
 
             Managers._gameUi.MakeButtonOnOff(
-                _selectModel._currentParts_Num > _selectModel._partsCount - 1 ? true : false);
+                _selectHeroFactory._currentParts_Num > _selectHeroFactory._partsCount - 1 ? true : false);
 
 
-            Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectModel._partsCount}";
+            Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
 
 
         }

@@ -44,7 +44,7 @@ public class Hero : MonoBehaviour
 
     public Enemy _target;
 
-    public virtual void SetInit(Recipe_Model _recipe)
+    public virtual void SetInit(RecipeData _recipe, HeroFactory _herofactory)
     {
         _heroType = _recipe._heroType;
         _heroState = HeroState.Init;
@@ -57,19 +57,19 @@ public class Hero : MonoBehaviour
             for (int i = 0; i < _count; i++)
             {
                 _meshfilters[i] = _partsGroup.GetChild(i).GetComponent<MeshFilter>();
-                _meshfilters[i].sharedMesh = _recipe._selectMeshes[i];
+                _meshfilters[i].sharedMesh = _herofactory._selectMeshes[i];
             }
         }
         else
         {
-            _meshfilters[0].sharedMesh = _recipe._selectMeshes[0];
+            _meshfilters[0].sharedMesh = _herofactory._selectMeshes[0];
         }
 
-        _damage = _recipe._damage;
-        _speed = _recipe._speed;
-        _maxHP = _recipe._maxHP;
+        _damage = _herofactory._damage;
+        _speed = _herofactory._speed;
+        _maxHP = _herofactory._maxHP;
         _currentHP = _maxHP;
-        _defense = _recipe._defense;
+        _defense = _herofactory._defense;
 
 
 

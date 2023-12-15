@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a940bbc76b346429da342c9b8971540f, type: 3}
+  m_Name: Recipe_Data_0
+  m_EditorClassIdentifier: 
+  _recipeName: Block Man
+  _heroType: 0
+  _thumbnail_Sprite: {fileID: 21300000, guid: 5549edbe9a1d84ae68768c6543586ac8, type: 3}
+  _bluePrint_Sprite: {fileID: 21300000, guid: 5549edbe9a1d84ae68768c6543586ac8, type: 3}
+  _partsCount: 1
+  _partsSprites:
+  - {fileID: 21300000, guid: f1299017afc9649658ecd47e08c1586b, type: 3}
+  _partsMeshes:
+  - {fileID: 2349533452566661653, guid: 2773d48f9d2db443e92f33259e57b412, type: 3}
+  _baseDamage: 10
+  _baseAttackInterval: 1
+  _baseSpeed: 5
+  _baseHP: 10
+  _baseDefense: 5
+  _damageValue: 5
+  _attackIntervalValue: 0.1
+  _speedValue: 2
+  _HPValue: 10
+  _defenseValue: 1

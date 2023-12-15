@@ -9,9 +9,9 @@ public class Tank : Hero
 
     public float _bulletSpeed = 1f;
     // ============================
-    public override void SetInit(Recipe_Model _recipe)
+    public override void SetInit(RecipeData _recipe, HeroFactory _herofactory)
     {
-        base.SetInit(_recipe);
+        base.SetInit(_recipe, _herofactory);
 
 
 

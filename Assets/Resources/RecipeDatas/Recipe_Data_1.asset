@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a940bbc76b346429da342c9b8971540f, type: 3}
+  m_Name: Recipe_Data_1
+  m_EditorClassIdentifier: 
+  _recipeName: Block Man 2
+  _heroType: 1
+  _thumbnail_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
+  _bluePrint_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
+  _partsCount: 3
+  _partsSprites:
+  - {fileID: 21300000, guid: 070606a04b4404408b4cd36280a163da, type: 3}
+  - {fileID: 21300000, guid: 070606a04b4404408b4cd36280a163da, type: 3}
+  - {fileID: 21300000, guid: 070606a04b4404408b4cd36280a163da, type: 3}
+  _partsMeshes:
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  _baseDamage: 10
+  _baseAttackInterval: 1
+  _baseSpeed: 5
+  _baseHP: 10
+  _baseDefense: 5
+  _damageValue: 5
+  _attackIntervalValue: 0.1
+  _speedValue: 2
+  _HPValue: 10
+  _defenseValue: 1

@@ -868,8 +868,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.6851015, y: 4.8, z: 2.8850627}
-  m_Center: {x: 0, y: 2.27, z: -0.09998077}
+  m_Size: {x: 2.1480818, y: 3.57, z: 2.3325157}
+  m_Center: {x: 0, y: 1.69, z: -0.092217386}
 --- !u!114 &6028184199280843971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,11 +892,6 @@ MonoBehaviour:
   _spawnBlockType: 0
   _blockPref: {fileID: 7286330375840144761, guid: ae8e5515a34184c6b9e126baffd4e417,
     type: 3}
-  _colorMats:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   _spawnInterval: 1
   _currentBlock: {fileID: 0}
   _connectMeshfilter: {fileID: 0}

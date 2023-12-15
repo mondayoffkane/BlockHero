@@ -112,7 +112,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1125926709684601356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 46.19422}
+  m_LocalPosition: {x: 0, y: 0, z: 81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,7 +121,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -47, y: 264.1707}
+  m_AnchoredPosition: {x: -47, y: 264}
   m_SizeDelta: {x: 278, y: 209}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1125926709684601353
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -377,6 +377,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guage_Obj: {fileID: 0}
   _bluePrint_Img: {fileID: 0}
+  _recipeDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _currentRecipe: {fileID: 0}
+  _selectMeshes: []
+  _partsCount: 0
+  _currentParts_Num: 0
+  _tempBlockList: 
+  _damage: 10
+  _attackInterval: 1
+  _speed: 5
+  _maxHP: 10
+  _defense: 5
   _currentTime: 0
   _maxTime: 1
   isProduction: 0

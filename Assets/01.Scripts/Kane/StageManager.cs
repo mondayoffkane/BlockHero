@@ -289,6 +289,22 @@ public class StageManager : MonoBehaviour
             case 6:
                 _skinnedBlock[1].SetBlendShapeWeight(0, 100);
                 break;
+
+            case 8:
+                _skinnedBlock[1].SetBlendShapeWeight(1, 100);
+                break;
+            case 10:
+                _skinnedBlock[2].SetBlendShapeWeight(0, 100);
+                break;
+
+            case 12:
+                _skinnedBlock[2].SetBlendShapeWeight(1, 100);
+                break;
+            case 14:
+                _skinnedBlock[3].SetBlendShapeWeight(0, 100);
+                break;
+
+
         }
 
     }

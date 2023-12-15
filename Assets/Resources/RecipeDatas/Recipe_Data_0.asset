@@ -20,7 +20,18 @@ MonoBehaviour:
   _partsSprites:
   - {fileID: 21300000, guid: f1299017afc9649658ecd47e08c1586b, type: 3}
   _partsMeshes:
-  - {fileID: 2349533452566661653, guid: 2773d48f9d2db443e92f33259e57b412, type: 3}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
+  - {fileID: 4300000, guid: c7e6c2512454f44e88841be99bb751a4, type: 2}
   _baseDamage: 10
   _baseAttackInterval: 1
   _baseSpeed: 5

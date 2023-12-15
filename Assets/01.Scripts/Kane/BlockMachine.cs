@@ -12,16 +12,24 @@ public class BlockMachine : MonoBehaviour
 
     [FoldoutGroup("BlockMachine")] public Block.BlockType _spawnBlockType;
     [FoldoutGroup("BlockMachine")] public GameObject _blockPref;
-    [FoldoutGroup("BlockMachine")] public Material[] _colorMats = new Material[4];
+    //[FoldoutGroup("BlockMachine")] public Material[] _colorMats = new Material[4];
     [FoldoutGroup("BlockMachine")] public float _spawnInterval = 1f;
-    [FoldoutGroup("BlockMachine")] public Transform _factoryTop_Obj;
+    //[FoldoutGroup("BlockMachine")] public Transform _factoryTop_Obj;
     //[FoldoutGroup("BlockMachine")] public Rail _nextNode;
     [FoldoutGroup("BlockMachine")] public Transform _currentBlock;
     [FoldoutGroup("BlockMachine")] public MeshFilter _connectMeshfilter;
     [FoldoutGroup("BlockMachine")] public Mesh _connectMesh;
-    MeshRenderer _cubeObj;
+    //MeshRenderer _cubeObj;
 
-    Renderer _renderer;
+
+    [FoldoutGroup("Setting")] public Mesh[] _topMeshes;
+    [FoldoutGroup("Setting")] public Mesh[] _bodyMeshes;
+
+    Transform _factoryTop_Obj;
+    MeshFilter _topMeshfilter;
+    MeshFilter _bodyMeshfilter;
+
+    //Renderer _renderer;
     //Material _selfMat;
 
 
@@ -35,14 +43,21 @@ public class BlockMachine : MonoBehaviour
     {
         if (_blockPref == null) Resources.Load<GameObject>("Block_Pref");
         //if (_heroFactory == null) _heroFactory = Managers._stageManager._blockStorage;
-        if (_factoryTop_Obj == null) _factoryTop_Obj = transform.GetChild(0);
-        if (_cubeObj == null) _cubeObj = transform.Find("Cube_Obj").GetComponent<MeshRenderer>();
-        _renderer = GetComponent<Renderer>();
-        _renderer.sharedMaterial = Instantiate(_renderer.sharedMaterial);
-        _renderer.sharedMaterial.SetTextureOffset("_BaseMap", new Vector2(0f, 0.025f * (float)_spawnBlockType));
+        //if (_factoryTop_Obj == null) _factoryTop_Obj = transform.GetChild(0);
+        //if (_cubeObj == null) _cubeObj = transform.Find("Cube_Obj").GetComponent<MeshRenderer>();
+        //_renderer = GetComponent<Renderer>();
+        //_renderer.sharedMaterial = Instantiate(_renderer.sharedMaterial);
+        //_renderer.sharedMaterial.SetTextureOffset("_BaseMap", new Vector2(0f, 0.025f * (float)_spawnBlockType));
+
+        _factoryTop_Obj = transform.Find("Top_Obj");
+        _topMeshfilter = _factoryTop_Obj.GetComponent<MeshFilter>();
+        _bodyMeshfilter = transform.GetComponent<MeshFilter>();
+
 
         if (_connectMeshfilter != null)
             _connectMeshfilter.sharedMesh = _connectMesh;
+
+        SetBlockType((int)_spawnBlockType);
 
         LoadData();
 
@@ -59,9 +74,15 @@ public class BlockMachine : MonoBehaviour
     public void SetBlockType(int _num)
     {
         _spawnBlockType = (Block.BlockType)_num;
-        _renderer.sharedMaterial.SetTextureOffset("_BaseMap", new Vector2(0f, 0.025f * (float)_spawnBlockType));
+
+        //_renderer.sharedMaterial.SetTextureOffset("_BaseMap", new Vector2(0f, 0.025f * (float)_spawnBlockType));
         //_selfMat.SetTextureOffset("_MainTex", new Vector2(0f, 0.025f * _num));
-        _factoryTop_Obj.GetComponent<Renderer>().sharedMaterial = _colorMats[_num];
+        //_factoryTop_Obj.GetComponent<Renderer>().sharedMaterial = _colorMats[_num];
+
+        _topMeshfilter.sharedMesh = _topMeshes[_num];
+        _bodyMeshfilter.sharedMesh = _bodyMeshes[_num];
+
+
         // add material change
 
     }
@@ -104,7 +125,7 @@ public class BlockMachine : MonoBehaviour
 
             _block.transform.position = transform.position + Vector3.up;
 
-            DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1.3f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
+            DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
 
             _currentBlock = _block.transform;
 

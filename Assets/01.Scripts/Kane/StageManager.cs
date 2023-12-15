@@ -105,10 +105,11 @@ public class StageManager : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (EventSystem.current.IsPointerOverGameObject())// 
             {
+                //Managers._gameUi.ChangePanel(0);
                 return;
             }
 
-            if (Physics.Raycast(ray, out hit, 1000))
+            if (Physics.Raycast(ray, out hit))
             {
                 Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
 

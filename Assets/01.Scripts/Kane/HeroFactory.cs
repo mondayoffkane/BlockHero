@@ -15,7 +15,7 @@ public class HeroFactory : MonoBehaviour
     [SerializeField] RecipeData[] _recipeDatas = new RecipeData[3];
     public RecipeData _currentRecipe;
 
-
+    public Sprite[,] _2arraySprites;
     public Mesh[,] _2arrayMeshes;
     public Mesh[] _selectMeshes;
     public int _partsCount = 0;
@@ -109,9 +109,10 @@ public class HeroFactory : MonoBehaviour
         _partsCount = _currentRecipe._partsCount;
 
         int _count = _currentRecipe._partsMeshes.Length / 4;
-        _2arrayMeshes = ConvertTo2DArray(_currentRecipe._partsMeshes, _count, 4);
+        _2arrayMeshes = ConvertTo2DArrayMesh(_currentRecipe._partsMeshes, _count, 4);
         _selectMeshes = new Mesh[_partsCount];
 
+        _2arraySprites = ConvertTo2DArraySprite(_currentRecipe._partsSprites, _count, 4);
 
         _damage = _currentRecipe._baseDamage;
         _attackInterval = _currentRecipe._baseAttackInterval;
@@ -121,7 +122,7 @@ public class HeroFactory : MonoBehaviour
 
 
         Managers._gameUi.ChangeRecipe(_num, this);
-        Managers._gameUi.SetColorImg(this);
+
 
     }
 
@@ -208,7 +209,7 @@ public class HeroFactory : MonoBehaviour
 
 
 
-    public Mesh[,] ConvertTo2DArray(Mesh[] oneDArray, int rows, int cols)
+    public Mesh[,] ConvertTo2DArrayMesh(Mesh[] oneDArray, int rows, int cols)
     {
         Mesh[,] twoDArray = new Mesh[rows, cols];
         int index = 0;
@@ -222,4 +223,20 @@ public class HeroFactory : MonoBehaviour
         }
         return twoDArray;
     }
+
+    public Sprite[,] ConvertTo2DArraySprite(Sprite[] oneDArray, int rows, int cols)
+    {
+        Sprite[,] twoDArray = new Sprite[rows, cols];
+        int index = 0;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                twoDArray[i, j] = oneDArray[index];
+                index++;
+            }
+        }
+        return twoDArray;
+    }
+
 }

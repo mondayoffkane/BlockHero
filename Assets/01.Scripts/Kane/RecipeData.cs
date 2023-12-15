@@ -10,7 +10,7 @@ public class RecipeData : ScriptableObject
     public string _recipeName;
     public Hero.HeroType _heroType;
     public Sprite _thumbnail_Sprite;
-    public Sprite _bluePrint_Sprite;
+    public Sprite[] _bluePrint_Sprites;
 
 
 

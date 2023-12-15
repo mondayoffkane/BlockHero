@@ -15,6 +15,7 @@ public class UI_GameScene : UI_Scene
         Recipe_Status_Text,
         Recipe_Name_Text,
         Recipe_Block_Count_Text,
+        Guage_Text,
         Boss_HP_Text,
     }
     enum Buttons
@@ -35,7 +36,7 @@ public class UI_GameScene : UI_Scene
     }
     enum Images
     {
-        BluePrint_Img,
+        Guage_Fill,
         Boss_HP_Guage,
     }
     enum GameObjects
@@ -45,9 +46,11 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Color_Buttons_Group,
         HeroFactory_Panel,
         Recipe_Content,
+        BluePrint_Img_Group,
         BlockImg_Group,
         Recipe_RawImage,
         Color_Buttons_Group,
+        Guage_Empty,
         Battle_Panel,
         Clear_Panel,
         Fail_Panel,
@@ -63,8 +66,10 @@ public class UI_GameScene : UI_Scene
         , Battle_Panel
         , Clear_Panel,
         Fail_Panel
-        , BlockImg_Group
+        //, BlockImg_Group
         , BlockMachine_Color_Buttons_Group
+        , Guage_Empty
+        , BluePrint_Img_Group
         ;
     //Recipe_RawImage;
 
@@ -103,13 +108,15 @@ public class UI_GameScene : UI_Scene
         , BlockMachine_Upgrade_Price_Text,
         BlockMachine_Status_Text,
         BlockMachine_UpgradeValue_Text
+        , Guage_Text
         ;
 
-    public Image BluePrint_Img
-        , Boss_HP_Guage
+    public Image //BluePrint_Img
+         Boss_HP_Guage
+        , Guage_Fill
         ;
-    public Image[] _colorButtonImgs;
-
+    //public Image[] _colorButtonImgs;
+    public Image[] _bluePrint_Imgs;
     // =======================================================
     private void Awake()
     {
@@ -133,8 +140,10 @@ public class UI_GameScene : UI_Scene
         Battle_Panel = GetObject(GameObjects.Battle_Panel);
         Clear_Panel = GetObject(GameObjects.Clear_Panel);
         Fail_Panel = GetObject(GameObjects.Fail_Panel);
-        BlockImg_Group = GetObject(GameObjects.BlockImg_Group);
+        //BlockImg_Group = GetObject(GameObjects.BlockImg_Group);
         BlockMachine_Color_Buttons_Group = GetObject(GameObjects.BlockMachine_Color_Buttons_Group);
+        Guage_Empty = GetObject(GameObjects.Guage_Empty);
+        BluePrint_Img_Group = GetObject(GameObjects.BluePrint_Img_Group);
 
         // ========= Buttons
         HeroFactory_Button = GetButton(Buttons.HeroFactory_Button);
@@ -174,7 +183,8 @@ public class UI_GameScene : UI_Scene
 
         // ========= Img
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
-        BluePrint_Img = GetImage(Images.BluePrint_Img);
+        //BluePrint_Img = GetImage(Images.BluePrint_Img);
+
 
         for (int i = 0; i < _colorImgs.Length; i++)
         {
@@ -182,16 +192,22 @@ public class UI_GameScene : UI_Scene
             _colorImgs[i] = Resources.Load<Sprite>($"BlockImg_Group/Block_{i}");
         }
 
-        int _count = BlockImg_Group.transform.childCount;
-        _colorButtonImgs = new Image[_count];
-        for (int i = 0; i < _count; i++)
+        //int _count = BlockImg_Group.transform.childCount;
+        //_colorButtonImgs = new Image[_count];
+        //for (int i = 0; i < _count; i++)
+        //{
+        //    _colorButtonImgs[i] = BlockImg_Group.transform.GetChild(i).GetComponent<Image>();
+        //    _colorButtonImgs[i].gameObject.SetActive(false);
+        //}
+
+        for (int i = 0; i < 5; i++)
         {
-            _colorButtonImgs[i] = BlockImg_Group.transform.GetChild(i).GetComponent<Image>();
-            _colorButtonImgs[i].gameObject.SetActive(false);
+            _bluePrint_Imgs[i] = BluePrint_Img_Group.transform.GetChild(i).GetComponent<Image>();
         }
 
-        Boss_HP_Guage = GetImage(Images.Boss_HP_Guage);
 
+        Boss_HP_Guage = GetImage(Images.Boss_HP_Guage);
+        Guage_Fill = GetImage(Images.Guage_Fill);
         // ========= Text
 
         Recipe_Status_Text = GetText(Texts.Recipe_Status_Text);
@@ -202,7 +218,7 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Upgrade_Price_Text = GetText(Texts.BlockMachine_Upgrade_Price_Text);
         BlockMachine_Status_Text = GetText(Texts.BlockMachine_Status_Text);
         BlockMachine_UpgradeValue_Text = GetText(Texts.BlockMachine_UpgradeValue_Text);
-
+        Guage_Text = GetText(Texts.Guage_Text);
 
         // ================ Add Button Listner========================================
 
@@ -265,6 +281,8 @@ public class UI_GameScene : UI_Scene
 
     public void ChangeRecipe(int _num, HeroFactory _selectHeroFactory)
     {
+        _selectHeroFactory._currentParts_Num = 0;
+        //_selectHeroFactory._selectMeshes
         for (int i = 0; i < _recipeListBttons.Length; i++)
         {
             _recipeListBttons[i].transform.GetChild(0).gameObject.SetActive(false);
@@ -280,9 +298,20 @@ public class UI_GameScene : UI_Scene
 
 
         Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
-        BluePrint_Img.sprite = _selectHeroFactory._currentRecipe._bluePrint_Sprite;
+        //BluePrint_Img.sprite = _selectHeroFactory._currentRecipe._bluePrint_Sprite;
+        for (int i = 0; i < 5; i++)
+        {
+            _bluePrint_Imgs[i].gameObject.SetActive(false);
+            _bluePrint_Imgs[i].sprite = _selectHeroFactory._currentRecipe._partsSprites[i];
+        }
+        for (int i = 0; i < _selectHeroFactory._partsCount; i++)
+        {
+            _bluePrint_Imgs[i].gameObject.SetActive(true);
+        }
 
         Managers._stageManager.FactoryCheckButtons();
+
+        SetColorImg(_selectHeroFactory);
 
     }
 
@@ -360,12 +389,14 @@ public class UI_GameScene : UI_Scene
             Color_Buttons_Group.SetActive(false);
             Make_Hero_Button.gameObject.SetActive(true);
             Make_Hero_Button.interactable = true;
+            Guage_Empty.SetActive(true);
         }
         else
         {
             Color_Buttons_Group.SetActive(true);
             Make_Hero_Button.gameObject.SetActive(false);
             Make_Hero_Button.interactable = false;
+            Guage_Empty.SetActive(false);
         }
 
 
@@ -377,20 +408,24 @@ public class UI_GameScene : UI_Scene
     {
         float[] _values = new float[4];
 
-        for (int i = 0; i < BlockImg_Group.transform.childCount; i++)
+        for (int i = 0; i < BluePrint_Img_Group.transform.childCount; i++)
         {
             if (i < _selectHeroFactory._currentParts_Num)
             {
-                _colorButtonImgs[i].gameObject.SetActive(true);
-                _colorButtonImgs[i].sprite = _colorImgs[(int)_selectHeroFactory._tempBlockList[i]];
+                _bluePrint_Imgs[i].gameObject.SetActive(true);
+                _bluePrint_Imgs[i].sprite = _colorImgs[(int)_selectHeroFactory._tempBlockList[i]];
                 _values[(int)_selectHeroFactory._tempBlockList[i]]++;
+
             }
             else
             {
-                _colorButtonImgs[i].gameObject.SetActive(false);
+                _bluePrint_Imgs[i].gameObject.SetActive(false);
             }
         }
     }
+
+
+
 
     public void BlockMachine_SetColor(int _num)
     {
@@ -398,10 +433,13 @@ public class UI_GameScene : UI_Scene
         {
             BlockMachine_Color_Buttons_Group.transform
                 .GetChild(i).GetChild(0).gameObject.SetActive(false);
+            BlockMachine_Color_Buttons_Group.transform
+            .GetChild(i).GetComponent<Button>().interactable = true;
         }
         BlockMachine_Color_Buttons_Group.transform
             .GetChild(_num).GetChild(0).gameObject.SetActive(true);
-
+        BlockMachine_Color_Buttons_Group.transform
+            .GetChild(_num).GetComponent<Button>().interactable = false;
     }
 
 

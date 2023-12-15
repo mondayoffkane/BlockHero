@@ -102,7 +102,7 @@ public class Rail : MonoBehaviour
         _isReady = false;
 
 
-        _currentBlock.DOMove(transform.position + Vector3.up, _stageManager._railSpeed)
+        _currentBlock.DOMove(transform.position + Vector3.up*0.5f, _stageManager._railSpeed)
             .OnComplete(() => { _isReady = true; });
 
     }

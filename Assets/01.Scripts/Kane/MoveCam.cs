@@ -8,7 +8,8 @@ public class MoveCam : MonoBehaviour
 
 
     //public Vector3 _camOffset;
-    public float _startPos, _endPos;
+    public float _startY, _endY;
+    public Vector3 _startPos;
 
     public Vector2 _limitZ = new Vector2();
 
@@ -26,14 +27,31 @@ public class MoveCam : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            _startPos = Input.mousePosition.y;
-            _endPos = Input.mousePosition.y;
+            _startY = Input.mousePosition.y;
+            _endY = Input.mousePosition.y;
+            _startPos = transform.position;
         }
         else if (Input.GetMouseButton(0))
         {
-            _endPos = Input.mousePosition.y;
+            _endY = Input.mousePosition.y;
 
-            transform.position = new Vector3(0f, transform.position.y, (_endPos - _startPos) * _mouseSense);
+            //var _posZ = (_startPos.z + (_startY - _endY) * _mouseSense);
+            //if (_posZ >= _limitZ.y && _posZ <= _limitZ.x)
+            //{
+            //    transform.position = _startPos + new Vector3(0f, 0f, (_startY - _endY) * _mouseSense);
+
+            //}
+
+            transform.position = _startPos + new Vector3(0f, 0f, (_startY - _endY) * _mouseSense);
+
+            if (transform.position.z > _limitZ.x)
+            {
+                transform.position = new Vector3(0f, transform.position.y, _limitZ.x);
+            }
+            else if (transform.position.z < _limitZ.y)
+            {
+                transform.position = new Vector3(0f, transform.position.y, _limitZ.y);
+            }
 
 
         }

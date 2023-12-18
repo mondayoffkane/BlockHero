@@ -906,6 +906,9 @@ MonoBehaviour:
   - {fileID: -5872687459511750891, guid: e76f3b82cff2545309cebc1ed97e6c04, type: 3}
   - {fileID: -7361870942182509178, guid: 799b255b3d77b415994cd47cbf0ecd54, type: 3}
   - {fileID: 4148745804372935311, guid: b21035d351dea4d09bb056259476ebb9, type: 3}
+  _scale_1: {x: 1.05, y: 0.6, z: 1.05}
+  _scale_2: {x: 1.1, y: 0.9, z: 1.1}
+  _scaleTime: 0.5
 --- !u!1 &6028184200592270168
 GameObject:
   m_ObjectHideFlags: 0

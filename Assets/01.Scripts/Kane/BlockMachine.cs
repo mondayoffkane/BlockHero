@@ -33,7 +33,9 @@ public class BlockMachine : MonoBehaviour
     //Material _selfMat;
 
 
-
+    public Vector3 _scale_1 = new Vector3(0.9f, 1.1f, 0.9f);
+    //public Vector3 _scale_2 = new Vector3(1.1f, 0.9f, 1.1f);
+    public float _scaleTime = 0.25f;
 
     // =======private ============
     HeroFactory _heroFactory;
@@ -63,8 +65,29 @@ public class BlockMachine : MonoBehaviour
 
         StartCoroutine(Cor_Update());
 
+        transform.GetChild(1).SetParent(null);
+        //transform.DOScale(0.9f, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+
+        //StartCoroutine(Cor_Tween());
+
+        //IEnumerator Cor_Tween()
+        //{
+        //    yield return null;
+
+        //    while (true)
+        //    {
+        //        DOTween.Sequence()
+        //    .Append(transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear))
+        //    .Append(transform.DOScale(_scale_2, _scaleTime).SetEase(Ease.Linear));
+        //        yield return new WaitForSeconds(_scaleTime * 2f);
+        //    }
+        //}
+
 
     }
+
+
+
 
     public void LoadData()
     {
@@ -120,12 +143,13 @@ public class BlockMachine : MonoBehaviour
     {
         if (_currentBlock == null)
         {
-            Block _block = Managers.Pool.Pop(_blockPref, transform).GetComponent<Block>();
+            Block _block = Managers.Pool.Pop(_blockPref).GetComponent<Block>();
             _block.SetInit(_spawnBlockType);
 
             _block.transform.position = transform.position + Vector3.up * 0.5f;
 
             DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
+            DOTween.Sequence().Append(transform.DOScale(_scale_1, _scaleTime)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
 
             _currentBlock = _block.transform;
 

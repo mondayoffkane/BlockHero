@@ -7,6 +7,6 @@ public class CheckOnOff : MonoBehaviour
     private void OnDisable()
     {
 
-        Debug.Log("Off");
+        //Debug.Log("Off");
     }
 }

@@ -15,7 +15,7 @@ public class HeroFactory : MonoBehaviour
     [SerializeField] RecipeData[] _recipeDatas = new RecipeData[3];
     public RecipeData _currentRecipe;
 
-    public Sprite[,] _2arraySprites;
+    [ShowInInspector] public Sprite[,] _2arraySprites;
     public Mesh[,] _2arrayMeshes;
     public Mesh[] _selectMeshes;
     public int _partsCount = 0;
@@ -159,7 +159,7 @@ public class HeroFactory : MonoBehaviour
             Managers._gameUi.SetColorImg(this);
 
 
-            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} Speed : {_speed} HP : {_maxHP} DEF : {_defense}";
+            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
         }
     }
 
@@ -193,7 +193,7 @@ public class HeroFactory : MonoBehaviour
             }
 
 
-            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} Speed : {_speed} HP : {_maxHP} DEF : {_defense}";
+            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
             Managers._stageManager.FactoryCheckButtons();
 
 

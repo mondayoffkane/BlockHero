@@ -30,6 +30,7 @@ public class UI_GameScene : UI_Scene
         HeroFactory_Close_Button,
         Reset_Button,
         Make_Hero_Button,
+        Stop_Hero_Button,
         Undo_Button,
         Clear_Claim_Button,
         Fail_ToFactory_Button,
@@ -87,6 +88,7 @@ public class UI_GameScene : UI_Scene
         , ViewChange_Button
         , AddBlockMachine_Button,
         AddHeroFactory_Button
+        , Stop_Hero_Button
 
         ;
 
@@ -95,7 +97,7 @@ public class UI_GameScene : UI_Scene
     public Button[] _recipeListBttons = new Button[3];
     public Button[] _heroFactoryColorButtons = new Button[4];
     public RawImage Recipe_RawImage;
-    public Sprite[] _colorImgs = new Sprite[4];
+    //public Sprite[] _colorImgs = new Sprite[4];
     public Button[] _blockMachineColorButtons = new Button[4];
 
 
@@ -179,18 +181,18 @@ public class UI_GameScene : UI_Scene
 
         AddBlockMachine_Button = GetButton(Buttons.AddBlockMachine_Button);
         AddHeroFactory_Button = GetButton(Buttons.AddHeroFactory_Button);
-
+        Stop_Hero_Button = GetButton(Buttons.Stop_Hero_Button);
 
         // ========= Img
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
         //BluePrint_Img = GetImage(Images.BluePrint_Img);
 
 
-        for (int i = 0; i < _colorImgs.Length; i++)
-        {
-            //Debug.Log($"BlockImg_Group/Block_{i}");
-            _colorImgs[i] = Resources.Load<Sprite>($"BlockImg_Group/Block_{i}");
-        }
+        //for (int i = 0; i < _colorImgs.Length; i++)
+        //{
+        //    //Debug.Log($"BlockImg_Group/Block_{i}");
+        //    _colorImgs[i] = Resources.Load<Sprite>($"BlockImg_Group/Block_{i}");
+        //}
 
         //int _count = BlockImg_Group.transform.childCount;
         //_colorButtonImgs = new Image[_count];
@@ -252,7 +254,7 @@ public class UI_GameScene : UI_Scene
 
         Undo_Button.AddButtonEvent(() => Managers._stageManager.SelectModelUndoColor());
         Reset_Button.AddButtonEvent(() => Managers._stageManager.SelectModelReset());
-        Make_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero());
+        Make_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero(true));
         Battle_Button.AddButtonEvent(() => Managers._stageManager.ToBattle());
 
         Clear_Claim_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
@@ -274,14 +276,38 @@ public class UI_GameScene : UI_Scene
 
         AddBlockMachine_Button.AddButtonEvent(() => Managers._stageManager.AddBlockMachine());
         AddHeroFactory_Button.AddButtonEvent(() => Managers._stageManager.AddHeroFactory());
+        Stop_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero(false));
 
     }
 
     // ====================================================
 
+    public HeroFactory _currentHeroFactory;
+
+    private void Start()
+    {
+        StartCoroutine(Cor_Update());
+    }
+
+    IEnumerator Cor_Update()
+    {
+        while (true)
+        {
+            yield return null;
+
+
+
+        }
+    }
+
+
+
     public void ChangeRecipe(int _num, HeroFactory _selectHeroFactory)
     {
-        _selectHeroFactory._currentParts_Num = 0;
+        _currentHeroFactory = _selectHeroFactory;
+        _currentHeroFactory._currentParts_Num = 0;
+        _currentHeroFactory._tempBlockList.Clear();
+
         //_selectHeroFactory._selectMeshes
         for (int i = 0; i < _recipeListBttons.Length; i++)
         {
@@ -291,27 +317,27 @@ public class UI_GameScene : UI_Scene
 
 
 
-        Recipe_Name_Text.text = $"{_selectHeroFactory._currentRecipe._recipeName}";
+        Recipe_Name_Text.text = $"{_currentHeroFactory._currentRecipe._recipeName}";
 
-        Recipe_Status_Text.text = $"ATK : {_selectHeroFactory._damage} Speed : {_selectHeroFactory._speed} HP : {_selectHeroFactory._maxHP} DEF : {_selectHeroFactory._defense}";
+        Recipe_Status_Text.text = $"ATK : {_currentHeroFactory._damage} SPD : {_currentHeroFactory._speed} HP : {_currentHeroFactory._maxHP} DEF : {_currentHeroFactory._defense}";
 
 
 
-        Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
+        Recipe_Block_Count_Text.text = $"X {_currentHeroFactory._partsCount}";
         //BluePrint_Img.sprite = _selectHeroFactory._currentRecipe._bluePrint_Sprite;
         for (int i = 0; i < 5; i++)
         {
             _bluePrint_Imgs[i].gameObject.SetActive(false);
-            _bluePrint_Imgs[i].sprite = _selectHeroFactory._currentRecipe._partsSprites[i];
         }
-        for (int i = 0; i < _selectHeroFactory._partsCount; i++)
+        for (int i = 0; i < _currentHeroFactory._partsCount; i++)
         {
             _bluePrint_Imgs[i].gameObject.SetActive(true);
+            _bluePrint_Imgs[i].sprite = _currentHeroFactory._currentRecipe._bluePrint_Sprites[i];
         }
 
         Managers._stageManager.FactoryCheckButtons();
 
-        SetColorImg(_selectHeroFactory);
+        SetColorImg(_currentHeroFactory);
 
     }
 
@@ -406,20 +432,22 @@ public class UI_GameScene : UI_Scene
 
     public void SetColorImg(HeroFactory _selectHeroFactory)
     {
-        float[] _values = new float[4];
+        //float[] _values = new float[4];
 
-        for (int i = 0; i < BluePrint_Img_Group.transform.childCount; i++)
+        _currentHeroFactory = _selectHeroFactory;
+
+        for (int i = 0; i < _currentHeroFactory._partsCount; i++)
         {
-            if (i < _selectHeroFactory._currentParts_Num)
+            if (i < _currentHeroFactory._currentParts_Num)
             {
                 _bluePrint_Imgs[i].gameObject.SetActive(true);
-                _bluePrint_Imgs[i].sprite = _colorImgs[(int)_selectHeroFactory._tempBlockList[i]];
-                _values[(int)_selectHeroFactory._tempBlockList[i]]++;
+                _bluePrint_Imgs[i].sprite = _currentHeroFactory._2arraySprites[i, (int)_currentHeroFactory._tempBlockList[i]];
 
             }
             else
             {
-                _bluePrint_Imgs[i].gameObject.SetActive(false);
+                //_bluePrint_Imgs[i].gameObject.SetActive(false);
+                _bluePrint_Imgs[i].sprite = _currentHeroFactory._currentRecipe._bluePrint_Sprites[i];
             }
         }
     }

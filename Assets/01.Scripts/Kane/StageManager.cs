@@ -169,18 +169,10 @@ public class StageManager : MonoBehaviour
         //_selectHeroFactory.SetRecipe(_selectModel);
     }
 
-    public void MakeHero()
+    public void MakeHero(bool isBool)
     {
-        _selectHeroFactory.MakeHeroOnOff(true);
+        _selectHeroFactory.MakeHeroOnOff(isBool);
 
-
-        //Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
-        //_newHero.SetInit(_selectModel);
-
-        //_newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
-        //_selectModel.Reset();
-
-        //_spawnHeroList.Add(_newHero);
 
 
     }
@@ -192,6 +184,7 @@ public class StageManager : MonoBehaviour
 
             Managers._gameUi.MakeButtonOnOff(
                 _selectHeroFactory._currentParts_Num > _selectHeroFactory._partsCount - 1 ? true : false);
+
 
 
             Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";

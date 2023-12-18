@@ -44,6 +44,7 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         FactoryBase_Panel,
+        BlockCount_Group,
         BlockMachine_Panel,
         BlockMachine_Color_Buttons_Group,
         HeroFactory_Panel,
@@ -72,6 +73,7 @@ public class UI_GameScene : UI_Scene
         , BlockMachine_Color_Buttons_Group
         , Guage_Empty
         , BluePrint_Img_Group
+        , BlockCount_Group
         ;
     //Recipe_RawImage;
 
@@ -114,6 +116,9 @@ public class UI_GameScene : UI_Scene
         , Guage_Text
         ;
 
+    public Text[] _blockCountTexts = new Text[4];
+
+
     public Image //BluePrint_Img
          Boss_HP_Guage
         , Guage_Fill
@@ -147,6 +152,9 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Color_Buttons_Group = GetObject(GameObjects.BlockMachine_Color_Buttons_Group);
         Guage_Empty = GetObject(GameObjects.Guage_Empty);
         BluePrint_Img_Group = GetObject(GameObjects.BluePrint_Img_Group);
+        BlockCount_Group = GetObject(GameObjects.BlockCount_Group);
+
+
 
         // ========= Buttons
         HeroFactory_Button = GetButton(Buttons.HeroFactory_Button);
@@ -223,6 +231,12 @@ public class UI_GameScene : UI_Scene
         BlockMachine_UpgradeValue_Text = GetText(Texts.BlockMachine_UpgradeValue_Text);
         Guage_Text = GetText(Texts.Guage_Text);
 
+        for (int i = 0; i < 4; i++)
+        {
+            _blockCountTexts[i] = BlockCount_Group.transform.GetChild(i).GetChild(0).GetComponent<Text>();
+        }
+
+
         // ================ Add Button Listner========================================
 
         HeroFactory_Button.AddButtonEvent(() => ChangePanel(2));
@@ -297,6 +311,13 @@ public class UI_GameScene : UI_Scene
             yield return null;
 
 
+            if (_currentHeroFactory != null)
+            {
+
+                Guage_Text.text =
+                    $"{(int)((_currentHeroFactory._currentRecipe._makingTime - _currentHeroFactory._currentTime) / 60)} : {((int)(_currentHeroFactory._currentRecipe._makingTime - _currentHeroFactory._currentTime) % 60)}";
+                Guage_Fill.fillAmount = (_currentHeroFactory._currentTime / _currentHeroFactory._maxTime);
+            }
 
         }
     }
@@ -441,6 +462,8 @@ public class UI_GameScene : UI_Scene
                 _recipeListBttons[i].interactable = false;
             }
 
+
+
         }
         else
         {
@@ -566,8 +589,9 @@ public class UI_GameScene : UI_Scene
     private void JerryFighting()
     {
 
-
-
         //Debug.Log("Test");
     }
+
+
+
 }

@@ -173,6 +173,8 @@ public class StageManager : MonoBehaviour
     {
         _selectHeroFactory.MakeHeroOnOff(isBool);
 
+        Managers._gameUi.Make_Hero_Button.gameObject.SetActive(isBool);
+        Managers._gameUi.Stop_Hero_Button.gameObject.SetActive(!isBool);
 
 
     }

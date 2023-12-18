@@ -11,7 +11,7 @@ public class RecipeData : ScriptableObject
     public Hero.HeroType _heroType;
     public Sprite _thumbnail_Sprite;
     public Sprite[] _bluePrint_Sprites;
-
+    public float _makingTime = 5f;
 
 
     [FoldoutGroup("Parts Img&Mesh")] public int _partsCount = 1;

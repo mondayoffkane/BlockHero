@@ -9,8 +9,10 @@ public class Hero : MonoBehaviour
 {
     public enum HeroType
     {
-        Human,
-        Tank
+        BlockMan_0,
+        BlockMan_1,
+        BlockMan_2
+
 
 
     }
@@ -49,7 +51,7 @@ public class Hero : MonoBehaviour
         _heroType = _recipe._heroType;
         _heroState = HeroState.Init;
 
-        if (_heroType != HeroType.Human)
+        if (_heroType != HeroType.BlockMan_0)
         {
             if (_partsGroup == null) _partsGroup = transform.Find("PartsGroup");
             int _count = _partsGroup.childCount;

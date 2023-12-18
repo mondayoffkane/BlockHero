@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 098a6818b2d5748049fcc006558770da, type: 3}
   - {fileID: 21300000, guid: 5b68fcb1f73d840fdaf0d9cf502855d4, type: 3}
   - {fileID: 21300000, guid: c14c73621ff9e41afbb7b7c9e20881bf, type: 3}
+  _makingTime: 15
   _partsCount: 5
   _partsSprites:
   - {fileID: 21300000, guid: 4dcaa019453d042d3b437c1f1d768f1c, type: 3}

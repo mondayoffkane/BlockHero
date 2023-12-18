@@ -87,6 +87,7 @@ public class HeroFactory : MonoBehaviour
     public void MakeHeroOnOff(bool isOn)
     {
         isProduction = isOn;
+        _currentTime = 0f;
 
         if (isProduction)
         {
@@ -120,6 +121,7 @@ public class HeroFactory : MonoBehaviour
         _maxHP = _currentRecipe._baseHP;
         _defense = _currentRecipe._baseDefense;
 
+        _maxTime = _currentRecipe._makingTime;
 
         Managers._gameUi.ChangeRecipe(_num, this);
 
@@ -205,8 +207,25 @@ public class HeroFactory : MonoBehaviour
     public void SpawnHero()
     {
 
-    }
+        Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_currentRecipe._heroType.ToString()}_Pref")).GetComponent<Hero>();
+        _newHero.SetInit(_currentRecipe, this);
 
+        _newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-25f, -30f));
+        _newHero.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
+        //_selectModel.Reset();
+
+        Managers._stageManager._spawnHeroList.Add(_newHero);
+
+
+
+    }
+    //Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
+    //_newHero.SetInit(_selectModel);
+
+    //_newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
+    //_selectModel.Reset();
+
+    //_spawnHeroList.Add(_newHero);
 
 
     public Mesh[,] ConvertTo2DArrayMesh(Mesh[] oneDArray, int rows, int cols)

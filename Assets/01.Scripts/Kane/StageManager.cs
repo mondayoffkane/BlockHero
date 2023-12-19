@@ -119,12 +119,16 @@ public class StageManager : MonoBehaviour
                     case "BlockMachine":
 
                         _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+
                         Managers._gameUi.ChangePanel(1);
                         Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
                         break;
 
                     case "HeroFactory":
                         _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
+
+                        if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
+
                         Managers._gameUi.ChangePanel(2);
                         break;
                 }
@@ -173,29 +177,29 @@ public class StageManager : MonoBehaviour
     {
         _selectHeroFactory.MakeHeroOnOff(isBool);
 
-        Managers._gameUi.Make_Hero_Button.gameObject.SetActive(isBool);
-        Managers._gameUi.Stop_Hero_Button.gameObject.SetActive(!isBool);
+        //Managers._gameUi.Make_Hero_Button.gameObject.SetActive(isBool);
+        //Managers._gameUi.Stop_Hero_Button.gameObject.SetActive(!isBool);
 
 
     }
 
-    public void FactoryCheckButtons()
-    {
-        if (_selectHeroFactory != null)
-        {
+    //public void FactoryCheckButtons()
+    //{
+    //    if (_selectHeroFactory != null)
+    //    {
 
-            Managers._gameUi.MakeButtonOnOff(
-                _selectHeroFactory._currentParts_Num > _selectHeroFactory._partsCount - 1 ? true : false);
-
-
-
-            Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
+    //        Managers._gameUi.MakeButtonOnOff(
+    //            _selectHeroFactory._currentParts_Num > _selectHeroFactory._partsCount - 1 ? true : false);
 
 
-        }
+
+    //        Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
 
 
-    }
+    //    }
+
+
+    //}
 
 
     public void ToBattle()

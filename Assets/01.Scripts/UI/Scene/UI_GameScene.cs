@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+//using System.Drawing;
 
 public class UI_GameScene : UI_Scene
 {
@@ -125,9 +126,18 @@ public class UI_GameScene : UI_Scene
         ;
     //public Image[] _colorButtonImgs;
     public Image[] _bluePrint_Imgs;
+
+    public Color _color;
+
+
+
+
+
     // =======================================================
     private void Awake()
     {
+        ColorUtility.TryParseHtmlString("#4F9BCD", out _color);
+
         Bind<UnityEngine.UI.Text>(typeof(Texts));
         Bind<UnityEngine.UI.Button>(typeof(Buttons));
         Bind<UnityEngine.UI.Image>(typeof(Images));
@@ -269,7 +279,11 @@ public class UI_GameScene : UI_Scene
 
         Undo_Button.AddButtonEvent(() => Managers._stageManager.SelectModelUndoColor());
         Reset_Button.AddButtonEvent(() => Managers._stageManager.SelectModelReset());
-        Make_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero(true));
+        Make_Hero_Button.AddButtonEvent(() =>
+        {
+            Managers._stageManager.MakeHero(true);
+            MakeButtonOnOff();
+        });
         Battle_Button.AddButtonEvent(() => Managers._stageManager.ToBattle());
 
         Clear_Claim_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
@@ -291,17 +305,23 @@ public class UI_GameScene : UI_Scene
 
         AddBlockMachine_Button.AddButtonEvent(() => Managers._stageManager.AddBlockMachine());
         AddHeroFactory_Button.AddButtonEvent(() => Managers._stageManager.AddHeroFactory());
-        Stop_Hero_Button.AddButtonEvent(() => Managers._stageManager.MakeHero(false));
+        Stop_Hero_Button.AddButtonEvent(() =>
+        {
+            Managers._stageManager.MakeHero(false);
+            MakeButtonOnOff();
+        });
 
     }
 
     // ====================================================
 
-    public HeroFactory _currentHeroFactory;
+    //public HeroFactory _currentHeroFactory;
+    StageManager _stageManager;
 
     private void Start()
     {
         StartCoroutine(Cor_Update());
+        _stageManager = Managers._stageManager;
     }
 
     IEnumerator Cor_Update()
@@ -311,12 +331,12 @@ public class UI_GameScene : UI_Scene
             yield return null;
 
 
-            if (_currentHeroFactory != null)
+            if (_stageManager._selectHeroFactory != null)
             {
 
                 Guage_Text.text =
-                    $"{(int)((_currentHeroFactory._currentRecipe._makingTime - _currentHeroFactory._currentTime) / 60)} : {((int)(_currentHeroFactory._currentRecipe._makingTime - _currentHeroFactory._currentTime) % 60)}";
-                Guage_Fill.fillAmount = (_currentHeroFactory._currentTime / _currentHeroFactory._maxTime);
+                    $"{(int)((_stageManager._selectHeroFactory._currentRecipe._makingTime - _stageManager._selectHeroFactory._currentTime) / 60)} : {((int)(_stageManager._selectHeroFactory._currentRecipe._makingTime - _stageManager._selectHeroFactory._currentTime) % 60)}";
+                Guage_Fill.fillAmount = (_stageManager._selectHeroFactory._currentTime / _stageManager._selectHeroFactory._maxTime);
             }
 
         }
@@ -324,11 +344,13 @@ public class UI_GameScene : UI_Scene
 
 
 
-    public void ChangeRecipe(int _num, HeroFactory _selectHeroFactory)
+    public void ChangeRecipe(int _num)
     {
-        _currentHeroFactory = _selectHeroFactory;
-        _currentHeroFactory._currentParts_Num = 0;
-        _currentHeroFactory._tempBlockList.Clear();
+        if (!_stageManager._selectHeroFactory.isProduction)
+        {
+            _stageManager._selectHeroFactory._currentParts_Num = 0;
+            _stageManager._selectHeroFactory._tempBlockList.Clear();
+        }
 
         //_selectHeroFactory._selectMeshes
         for (int i = 0; i < _recipeListBttons.Length; i++)
@@ -336,49 +358,65 @@ public class UI_GameScene : UI_Scene
             _recipeListBttons[i].transform.GetChild(0).gameObject.SetActive(false);
         }
         _recipeListBttons[_num].transform.GetChild(0).gameObject.SetActive(true);
-        PartsAlpha(0);
+        //PartsAlpha(0);
 
 
 
-        Recipe_Name_Text.text = $"{_currentHeroFactory._currentRecipe._recipeName}";
+        Recipe_Name_Text.text = $"{_stageManager._selectHeroFactory._currentRecipe._recipeName}";
 
-        Recipe_Status_Text.text = $"ATK : {_currentHeroFactory._damage} SPD : {_currentHeroFactory._speed} HP : {_currentHeroFactory._maxHP} DEF : {_currentHeroFactory._defense}";
+        Recipe_Status_Text.text = $"ATK : {_stageManager._selectHeroFactory._damage} SPD : {_stageManager._selectHeroFactory._speed} HP : {_stageManager._selectHeroFactory._maxHP} DEF : {_stageManager._selectHeroFactory._defense}";
 
 
 
-        Recipe_Block_Count_Text.text = $"X {_currentHeroFactory._partsCount}";
-        //BluePrint_Img.sprite = _selectHeroFactory._currentRecipe._bluePrint_Sprite;
+        Recipe_Block_Count_Text.text = $"X {_stageManager._selectHeroFactory._partsCount}";
+
         for (int i = 0; i < 5; i++)
         {
             _bluePrint_Imgs[i].gameObject.SetActive(false);
         }
-        for (int i = 0; i < _currentHeroFactory._partsCount; i++)
+        for (int i = 0; i < _stageManager._selectHeroFactory._partsCount; i++)
         {
+
             _bluePrint_Imgs[i].gameObject.SetActive(true);
-            _bluePrint_Imgs[i].sprite = _currentHeroFactory._currentRecipe._bluePrint_Sprites[i];
-            Color _color = Color.white;
-            _color.a = 0.3f;
+            _bluePrint_Imgs[i].sprite = _stageManager._selectHeroFactory._currentRecipe._bluePrint_Sprites[i];
+
             _bluePrint_Imgs[i].color = _color;
+
         }
 
-        Managers._stageManager.FactoryCheckButtons();
+        if (_stageManager._selectHeroFactory.isProduction)
+        {
 
+            for (int i = 0; i < _stageManager._selectHeroFactory._currentParts_Num; i++)
+            {
+
+                _bluePrint_Imgs[i].sprite = _stageManager._selectHeroFactory._2arraySprites[i, (int)_stageManager._selectHeroFactory._tempBlockList[i]];
+
+                _bluePrint_Imgs[i].color = Color.white;
+
+            }
+        }
+
+        PartsAlpha(0);
+
+        //Managers._stageManager.FactoryCheckButtons();
+        MakeButtonOnOff();
 
         //SetColorImg(_currentHeroFactory);
 
         // set blueprint Img;
-        for (int i = 0; i < 5; i++)
-        {
-            if (i < _currentHeroFactory._partsCount)
-            {
-                _bluePrint_Imgs[i].sprite = _currentHeroFactory._currentRecipe._bluePrint_Sprites[i];
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    if (i < _stageManager._selectHeroFactory._partsCount)
+        //    {
+        //        //_bluePrint_Imgs[i].sprite = _stageManager._selectHeroFactory._currentRecipe._bluePrint_Sprites[i];
 
-            }
-            else
-            {
-                _bluePrint_Imgs[i].gameObject.SetActive(false);
-            }
-        }
+        //    }
+        //    else
+        //    {
+        //        _bluePrint_Imgs[i].gameObject.SetActive(false);
+        //    }
+        //}
     }
 
     public void ChangePanel(int _num)
@@ -408,6 +446,26 @@ public class UI_GameScene : UI_Scene
 
             case 2:
                 PanelOnOff(HeroFactory_Panel, true);
+                //Managers._stageManager.FactoryCheckButtons();
+                MakeButtonOnOff();
+                ChangeRecipe(_stageManager._selectHeroFactory._recipeNum);
+                //if (_stageManager._selectHeroFactory._currentParts_Num == _stageManager._selectHeroFactory._partsCount)
+                //{
+
+                //}
+
+
+                //if (_stageManager._selectHeroFactory.isProduction)
+                //{
+                //    MakeButtonOnOff(true);
+                //}
+                //else
+                //{
+                //    MakeButtonOnOff(false);
+                //}
+
+
+
                 break;
 
             case 3:
@@ -447,74 +505,108 @@ public class UI_GameScene : UI_Scene
 
 
 
-    public void MakeButtonOnOff(bool isBool)
+    public void MakeButtonOnOff()
     {
-
-        if (isBool)
+        if (_stageManager._selectHeroFactory.isProduction)
         {
             Color_Buttons_Group.SetActive(false);
-            Make_Hero_Button.gameObject.SetActive(true);
-            Make_Hero_Button.interactable = true;
+            Make_Hero_Button.gameObject.SetActive(false);
+            Make_Hero_Button.interactable = false;
+            Stop_Hero_Button.gameObject.SetActive(true);
+            Undo_Button.gameObject.SetActive(false);
             Guage_Empty.SetActive(true);
 
             for (int i = 0; i < _recipeListBttons.Length; i++)
             {
                 _recipeListBttons[i].interactable = false;
             }
-
-
-
         }
         else
         {
-            Color_Buttons_Group.SetActive(true);
-            Make_Hero_Button.gameObject.SetActive(false);
-            Make_Hero_Button.interactable = false;
-            Guage_Empty.SetActive(false);
-            for (int i = 0; i < _recipeListBttons.Length; i++)
+            if (_stageManager._selectHeroFactory._currentParts_Num > _stageManager._selectHeroFactory._partsCount - 1)
             {
-                _recipeListBttons[i].interactable = true;
+                Color_Buttons_Group.SetActive(false);
+                Make_Hero_Button.gameObject.SetActive(true);
+                Make_Hero_Button.interactable = true;
+                Stop_Hero_Button.gameObject.SetActive(false);
+                Undo_Button.gameObject.SetActive(true);
+                Guage_Empty.SetActive(true);
+
+                for (int i = 0; i < _recipeListBttons.Length; i++)
+                {
+                    _recipeListBttons[i].interactable = true;
+                }
+            }
+            else
+            {
+                Color_Buttons_Group.SetActive(true);
+                Make_Hero_Button.gameObject.SetActive(false);
+                Make_Hero_Button.interactable = false;
+                Stop_Hero_Button.gameObject.SetActive(false);
+                Undo_Button.gameObject.SetActive(true);
+                Guage_Empty.SetActive(false);
+
+                for (int i = 0; i < _recipeListBttons.Length; i++)
+                {
+                    _recipeListBttons[i].interactable = true;
+                }
             }
         }
 
+
+
+
+
+        //if (_stageManager._selectHeroFactory.isProduction)
+        //{
+        //    Make_Hero_Button.gameObject.SetActive(false);
+        //    Stop_Hero_Button.gameObject.SetActive(true);
+
+        //}
+        //else
+        //{
+        //    Stop_Hero_Button.gameObject.SetActive(false);
+        //    for (int i = 0; i < _recipeListBttons.Length; i++)
+        //    {
+        //        _recipeListBttons[i].interactable = true;
+        //    }
+        //}
 
     }
 
 
 
-    public void SetColorImg(HeroFactory _selectHeroFactory, bool isBool = true)
+
+
+
+    public void SetColorImg(bool isBool = true)
     {
         //float[] _values = new float[4];
-
-
-        _currentHeroFactory = _selectHeroFactory;
 
         if (isBool)
         {
 
+            _bluePrint_Imgs[_stageManager._selectHeroFactory._currentParts_Num].gameObject.SetActive(true);
+            _bluePrint_Imgs[_stageManager._selectHeroFactory._currentParts_Num].transform.localScale = Vector3.zero;
+            _bluePrint_Imgs[_stageManager._selectHeroFactory._currentParts_Num].transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
+            _bluePrint_Imgs[_stageManager._selectHeroFactory._currentParts_Num].sprite = _stageManager._selectHeroFactory._2arraySprites[_stageManager._selectHeroFactory._currentParts_Num, (int)_stageManager._selectHeroFactory._tempBlockList[_stageManager._selectHeroFactory._currentParts_Num]];
+            _bluePrint_Imgs[_stageManager._selectHeroFactory._currentParts_Num].color = Color.white;
 
-            _bluePrint_Imgs[_currentHeroFactory._currentParts_Num].gameObject.SetActive(true);
-            _bluePrint_Imgs[_currentHeroFactory._currentParts_Num].transform.localScale = Vector3.zero;
-            _bluePrint_Imgs[_currentHeroFactory._currentParts_Num].transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
-            _bluePrint_Imgs[_currentHeroFactory._currentParts_Num].sprite = _currentHeroFactory._2arraySprites[_currentHeroFactory._currentParts_Num, (int)_currentHeroFactory._tempBlockList[_currentHeroFactory._currentParts_Num]];
-            _bluePrint_Imgs[_currentHeroFactory._currentParts_Num].color = Color.white;
-
-            PartsAlpha(_currentHeroFactory._currentParts_Num + 1);
+            PartsAlpha(_stageManager._selectHeroFactory._currentParts_Num + 1);
         }
         else
         {
 
-            for (int i = _currentHeroFactory._partsCount - 1; i >= _currentHeroFactory._currentParts_Num; i--)
+            for (int i = _stageManager._selectHeroFactory._partsCount - 1; i >= _stageManager._selectHeroFactory._currentParts_Num; i--)
             {
-                //_bluePrint_Imgs[_currentHeroFactory._currentParts_Num].sprite = _currentHeroFactory._2arraySprites[_currentHeroFactory._currentParts_Num, (int)_currentHeroFactory._tempBlockList[_currentHeroFactory._currentParts_Num]];
 
-                _bluePrint_Imgs[i].sprite = _currentHeroFactory._currentRecipe._bluePrint_Sprites[i];
-                Color _color = Color.white;
-                _color.a = 0.3f;
+                _bluePrint_Imgs[i].sprite = _stageManager._selectHeroFactory._currentRecipe._bluePrint_Sprites[i];
+
                 _bluePrint_Imgs[i].color = _color;
+
             }
 
-            PartsAlpha(_currentHeroFactory._currentParts_Num);
+            PartsAlpha(_stageManager._selectHeroFactory._currentParts_Num);
         }
 
 
@@ -562,22 +654,22 @@ public class UI_GameScene : UI_Scene
 
     public void PartsAlpha(int _num)
     {
-        Debug.Log("Alpha Func : " + _num);
+        //Debug.Log("Alpha Func : " + _num);
 
         for (int i = 0; i < 5; i++)
         {
             //DOTween.kill
-            Debug.Log(DOTween.Kill(_bluePrint_Imgs[i]));
+            //Debug.Log(DOTween.Kill(_bluePrint_Imgs[i]));
+            DOTween.Kill(_bluePrint_Imgs[i]);
         }
 
         if (_num < 5)
         {
 
-            Color _color = Color.white;
-            _color.a = 0.3f;
+            _bluePrint_Imgs[_num].sprite = _stageManager._selectHeroFactory._currentRecipe._bluePrintFillSprites[_num];
+
             _bluePrint_Imgs[_num].color = _color;
-            _color.a = 1f;
-            _bluePrint_Imgs[_num].DOColor(_color, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+            _bluePrint_Imgs[_num].DOColor(Color.white, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
         }
 
 
@@ -585,12 +677,6 @@ public class UI_GameScene : UI_Scene
 
 
 
-
-    private void JerryFighting()
-    {
-
-        //Debug.Log("Test");
-    }
 
 
 

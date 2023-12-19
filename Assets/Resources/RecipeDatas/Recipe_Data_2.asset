@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Recipe_Data_2
   m_EditorClassIdentifier: 
   _recipeName: Block Man 3
-  _heroType: 1
+  _heroType: 2
   _thumbnail_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
   _bluePrint_Sprites:
   - {fileID: 21300000, guid: 5531e9a4f8fac4291aec94ac088dafe4, type: 3}
@@ -56,7 +56,7 @@ MonoBehaviour:
   - {fileID: 5192826069960521353, guid: c8bc206f8c89040ffb6c90ef2b6f02c9, type: 3}
   - {fileID: 2798828923442622392, guid: 12e254510e06244de8c8e5de802d3af3, type: 3}
   - {fileID: 8081100854174934482, guid: aa421778ddb424d35903f10a0ff01fd7, type: 3}
-  - {fileID: 1215590259298716632, guid: 1a509e189edd44e4192220dba3082e29, type: 3}
+  - {fileID: -7358848408662881257, guid: 1a509e189edd44e4192220dba3082e29, type: 3}
   - {fileID: -7728130522698982559, guid: c8bc206f8c89040ffb6c90ef2b6f02c9, type: 3}
   - {fileID: 6938687020530842577, guid: 12e254510e06244de8c8e5de802d3af3, type: 3}
   - {fileID: 7193092491986355355, guid: aa421778ddb424d35903f10a0ff01fd7, type: 3}

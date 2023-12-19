@@ -11,6 +11,7 @@ public class RecipeData : ScriptableObject
     public Hero.HeroType _heroType;
     public Sprite _thumbnail_Sprite;
     public Sprite[] _bluePrint_Sprites;
+    public Sprite[] _bluePrintFillSprites;
     public float _makingTime = 5f;
 
 

@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 
 public class HeroFactory : MonoBehaviour
 {
-
+    public int _recipeNum = 0;
 
     public SkinnedMeshRenderer _guage_Obj;
     public Image _bluePrint_Img;
@@ -69,7 +69,7 @@ public class HeroFactory : MonoBehaviour
             if (isProduction)
             {
                 _currentTime += Time.deltaTime;
-                _guage_Obj.SetBlendShapeWeight(0, _currentTime / _maxTime);
+                _guage_Obj.SetBlendShapeWeight(0, (_currentTime / _maxTime) * 100f);
 
                 if (_currentTime >= _maxTime)
                 {
@@ -103,9 +103,10 @@ public class HeroFactory : MonoBehaviour
 
     public void SetRecipe(int _num)
     {
+        _recipeNum = _num;
         //_bluePrint_Img.sprite = _newRecipe._bluePrint_Sprite;
 
-        _currentRecipe = Instantiate(_recipeDatas[_num]);
+        _currentRecipe = Instantiate(_recipeDatas[_recipeNum]);
 
         _partsCount = _currentRecipe._partsCount;
 
@@ -123,7 +124,7 @@ public class HeroFactory : MonoBehaviour
 
         _maxTime = _currentRecipe._makingTime;
 
-        Managers._gameUi.ChangeRecipe(_num, this);
+        Managers._gameUi.ChangeRecipe(_recipeNum);
 
 
     }
@@ -159,7 +160,8 @@ public class HeroFactory : MonoBehaviour
             Managers._gameUi.SetColorImg(this);
 
             _currentParts_Num++;
-            Managers._stageManager.FactoryCheckButtons();
+            //Managers._stageManager.FactoryCheckButtons();
+            Managers._gameUi.MakeButtonOnOff();
 
             Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
         }
@@ -171,7 +173,7 @@ public class HeroFactory : MonoBehaviour
         {
             _currentParts_Num--;
 
-            Managers._gameUi.SetColorImg(this, false);
+            Managers._gameUi.SetColorImg(false);
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
             Managers._stageManager._blockStorage._blockCountArray[_tempblocknum]++;
@@ -196,7 +198,8 @@ public class HeroFactory : MonoBehaviour
 
 
             Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
-            Managers._stageManager.FactoryCheckButtons();
+            //Managers._stageManager.FactoryCheckButtons();
+            Managers._gameUi.MakeButtonOnOff();
 
 
 
@@ -208,7 +211,7 @@ public class HeroFactory : MonoBehaviour
     {
 
         Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_currentRecipe._heroType.ToString()}_Pref")).GetComponent<Hero>();
-        _newHero.SetInit(_currentRecipe, this);
+        _newHero.SetInit(this);
 
         _newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-25f, -30f));
         _newHero.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
@@ -219,13 +222,7 @@ public class HeroFactory : MonoBehaviour
 
 
     }
-    //Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_selectModel._heroType.ToString()}_Pref")).GetComponent<Hero>();
-    //_newHero.SetInit(_selectModel);
 
-    //_newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-8f, -15f));
-    //_selectModel.Reset();
-
-    //_spawnHeroList.Add(_newHero);
 
 
     public Mesh[,] ConvertTo2DArrayMesh(Mesh[] oneDArray, int rows, int cols)

@@ -43,7 +43,8 @@ public class BlockStorage : MonoBehaviour
              {
                  _blockCountArray[(int)_block.GetComponent<Block>()._blockType]++;
                  Managers.Pool.Push(_block.GetComponent<Poolable>());
-                 Managers._stageManager.FactoryCheckButtons();
+                 //Managers._stageManager.FactoryCheckButtons();
+                 Managers._gameUi.MakeButtonOnOff();
 
                  for (int i = 0; i < 4; i++)
                  {

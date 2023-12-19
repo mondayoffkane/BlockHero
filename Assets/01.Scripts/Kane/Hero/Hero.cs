@@ -31,9 +31,11 @@ public class Hero : MonoBehaviour
     }
     public HeroState _heroState;
 
-    public Transform _partsGroup;
+    //public Transform _partsGroup;
 
-    public MeshFilter[] _meshfilters;
+
+
+    public SkinnedMeshRenderer[] _meshfilters;
 
     public float _damage = 10f;
     public float _attackInterval = 1f;
@@ -46,26 +48,33 @@ public class Hero : MonoBehaviour
 
     public Enemy _target;
 
-    public virtual void SetInit(RecipeData _recipe, HeroFactory _herofactory)
+    public virtual void SetInit(HeroFactory _herofactory)
     {
-        _heroType = _recipe._heroType;
+        //_heroType = _recipe._heroType;
         _heroState = HeroState.Init;
 
-        if (_heroType != HeroType.BlockMan_0)
+        //if (_heroType != HeroType.BlockMan_0)
+        //{
+        //    if (_partsGroup == null) _partsGroup = transform.Find("PartsGroup");
+        //    int _count = _partsGroup.childCount;
+        //    _meshfilters = new MeshFilter[_count];
+        //    for (int i = 0; i < _count; i++)
+        //    {
+        //        _meshfilters[i] = _partsGroup.GetChild(i).GetComponent<MeshFilter>();
+        //        _meshfilters[i].sharedMesh = _herofactory._selectMeshes[i];
+        //    }
+        //}
+        //else
+        //{
+        //    _meshfilters[0].sharedMesh = _herofactory._selectMeshes[0];
+        //}
+
+
+        for (int i = 0; i < _meshfilters.Length; i++)
         {
-            if (_partsGroup == null) _partsGroup = transform.Find("PartsGroup");
-            int _count = _partsGroup.childCount;
-            _meshfilters = new MeshFilter[_count];
-            for (int i = 0; i < _count; i++)
-            {
-                _meshfilters[i] = _partsGroup.GetChild(i).GetComponent<MeshFilter>();
-                _meshfilters[i].sharedMesh = _herofactory._selectMeshes[i];
-            }
+            _meshfilters[i].sharedMesh = _herofactory._selectMeshes[i];
         }
-        else
-        {
-            _meshfilters[0].sharedMesh = _herofactory._selectMeshes[0];
-        }
+
 
         _damage = _herofactory._damage;
         _speed = _herofactory._speed;

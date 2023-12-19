@@ -36,6 +36,10 @@ public class HeroFactory : MonoBehaviour
 
     public bool isProduction = false;
 
+
+    //public Vector3 _scale_1 = new Vector3(1f, 1.1f, 1f);
+    public Vector3 _scale_1 = new Vector3(1.05f, 0.9f, 1.05f);
+    public float _scaleTime = 0.5f;
     // ===============================================
 
 
@@ -92,12 +96,14 @@ public class HeroFactory : MonoBehaviour
         if (isProduction)
         {
 
+            DOTween.Sequence()
+                .Append(transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo));
 
 
         }
         else
         {
-
+            DOTween.Kill(this);
         }
     }
 
@@ -126,6 +132,7 @@ public class HeroFactory : MonoBehaviour
 
         Managers._gameUi.ChangeRecipe(_recipeNum);
 
+        _bluePrint_Img.sprite = _currentRecipe._thumbnail_Sprite;
 
     }
 

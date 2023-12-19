@@ -666,10 +666,12 @@ public class UI_GameScene : UI_Scene
         if (_num < 5)
         {
 
-            _bluePrint_Imgs[_num].sprite = _stageManager._selectHeroFactory._currentRecipe._bluePrintFillSprites[_num];
+            //_bluePrint_Imgs[_num].sprite = _stageManager._selectHeroFactory._currentRecipe._bluePrintFillSprites[_num];
+            Color _color2 = Color.white;
 
-            _bluePrint_Imgs[_num].color = _color;
-            _bluePrint_Imgs[_num].DOColor(Color.white, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+            _bluePrint_Imgs[_num].color = _color2;
+
+            //_bluePrint_Imgs[_num].DOColor(Color.white, 0.4f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
         }
 
 

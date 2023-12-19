@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _recipeName: Block Man
   _heroType: 0
-  _thumbnail_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
+  _thumbnail_Sprite: {fileID: 21300000, guid: fa411618c46594249b8d44663aa04ffc, type: 3}
   _bluePrint_Sprites:
   - {fileID: 21300000, guid: 7e6caf7d11f92455eb15a85fe4187e97, type: 3}
+  _bluePrintFillSprites:
+  - {fileID: 21300000, guid: 22bb4c0613ad54fb2b1a154dcf3f2be8, type: 3}
+  _makingTime: 5
   _partsCount: 1
   _partsSprites:
   - {fileID: 21300000, guid: 1120f6ef2f5a447d2877be9d8f1300dc, type: 3}

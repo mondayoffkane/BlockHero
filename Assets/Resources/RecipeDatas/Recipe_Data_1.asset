@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _recipeName: Block Man 2
   _heroType: 1
-  _thumbnail_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
+  _thumbnail_Sprite: {fileID: 21300000, guid: fd17f2ccb28ce422daa68f005a95ed03, type: 3}
   _bluePrint_Sprites:
   - {fileID: 21300000, guid: 9e36d0e406e4142b99cc52d81e432a3b, type: 3}
   - {fileID: 21300000, guid: 4b2de02a6b2984034a33460ca058d5aa, type: 3}
   - {fileID: 21300000, guid: 25c0112799197408c8f61e369ca7217f, type: 3}
+  _bluePrintFillSprites:
+  - {fileID: 21300000, guid: e09b3f82a6f784142946a27896cae20d, type: 3}
+  - {fileID: 21300000, guid: 2004e998236094212ad8f0a8714db79e, type: 3}
+  - {fileID: 21300000, guid: a6263bb55478442fca0cfb89ed70f1c8, type: 3}
   _makingTime: 10
   _partsCount: 3
   _partsSprites:

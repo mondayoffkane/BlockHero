@@ -14,13 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _recipeName: Block Man 3
   _heroType: 2
-  _thumbnail_Sprite: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
+  _thumbnail_Sprite: {fileID: 21300000, guid: 1f50bdb891ced42338a498765f60763e, type: 3}
   _bluePrint_Sprites:
   - {fileID: 21300000, guid: 5531e9a4f8fac4291aec94ac088dafe4, type: 3}
   - {fileID: 21300000, guid: 26303466328134bee9128e0e54fba08b, type: 3}
   - {fileID: 21300000, guid: 098a6818b2d5748049fcc006558770da, type: 3}
   - {fileID: 21300000, guid: 5b68fcb1f73d840fdaf0d9cf502855d4, type: 3}
   - {fileID: 21300000, guid: c14c73621ff9e41afbb7b7c9e20881bf, type: 3}
+  _bluePrintFillSprites:
+  - {fileID: 21300000, guid: d48a5563bbccb419dab9da82fa0caaaf, type: 3}
+  - {fileID: 21300000, guid: 1cec12d1575e34c149414ccb7a49f2fd, type: 3}
+  - {fileID: 21300000, guid: 2ecd4883732f1480fa9f87fc15e5f928, type: 3}
+  - {fileID: 21300000, guid: af817f71ebe8540dfb6b9136ded6b5de, type: 3}
+  - {fileID: 21300000, guid: 964a2d417327844eeb55713ad0348508, type: 3}
   _makingTime: 15
   _partsCount: 5
   _partsSprites:

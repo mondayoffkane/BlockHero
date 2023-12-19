@@ -6,12 +6,19 @@ using UnityEngine;
 public class BlockStorage : MonoBehaviour
 {
 
+    public Vector3 _scale_1 = new Vector3(1f, 1.1f, 1f);
+    public Vector3 _scale_2 = new Vector3(1.05f, 0.9f, 1.05f);
+    public float _scaleTime = 0.25f;
+
+    // ====================================
+
     public int[] _blockCountArray
         = new int[System.Enum.GetValues(typeof(Block.BlockType)).Length];
 
 
     public Rail _prevNode;
 
+    // ===================================
 
     private void Start()
     {
@@ -37,6 +44,10 @@ public class BlockStorage : MonoBehaviour
 
     public void PullBlock(Transform _block)
     {
+        DOTween.Sequence()
+                  .Append(transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear))
+                  .Append(transform.DOScale(_scale_2, _scaleTime).SetEase(Ease.Linear));
+
         DOTween.Sequence()
              .Append(_block.transform.DOMove(transform.position + Vector3.up, Managers._stageManager._railSpeed))
              .OnComplete(() =>

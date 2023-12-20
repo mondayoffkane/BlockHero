@@ -95,15 +95,18 @@ public class HeroFactory : MonoBehaviour
 
         if (isProduction)
         {
+            transform.transform.localScale = Vector3.one;
+            //DOTween.Sequence()
+            //    .Append(transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo));
 
-            DOTween.Sequence()
-                .Append(transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo));
-
+            transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
 
         }
         else
         {
-            DOTween.Kill(this);
+
+            DOTween.Kill(transform);
+            transform.transform.localScale = Vector3.one;
         }
     }
 

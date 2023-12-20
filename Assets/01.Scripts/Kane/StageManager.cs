@@ -104,7 +104,7 @@ public class StageManager : MonoBehaviour
             AddBlockMachine();
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
 
 

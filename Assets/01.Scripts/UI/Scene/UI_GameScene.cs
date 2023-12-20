@@ -567,24 +567,6 @@ public class UI_GameScene : UI_Scene
         }
 
 
-
-
-
-        //if (_stageManager._selectHeroFactory.isProduction)
-        //{
-        //    Make_Hero_Button.gameObject.SetActive(false);
-        //    Stop_Hero_Button.gameObject.SetActive(true);
-
-        //}
-        //else
-        //{
-        //    Stop_Hero_Button.gameObject.SetActive(false);
-        //    for (int i = 0; i < _recipeListBttons.Length; i++)
-        //    {
-        //        _recipeListBttons[i].interactable = true;
-        //    }
-        //}
-
     }
 
 

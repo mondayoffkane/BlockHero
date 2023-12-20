@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlockStorage : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class BlockStorage : MonoBehaviour
     public Vector3 _scale_1 = new Vector3(1f, 1.1f, 1f);
     public Vector3 _scale_2 = new Vector3(1.05f, 0.9f, 1.05f);
     public float _scaleTime = 0.25f;
+
+
+    public GameObject _floating_Pref;
+    public Transform _floating_Group;
 
     // ====================================
 
@@ -22,6 +27,10 @@ public class BlockStorage : MonoBehaviour
 
     private void Start()
     {
+        if (_floating_Pref == null) _floating_Pref = Resources.Load<GameObject>("Floating_Pref");
+        if (_floating_Group == null) _floating_Group = Instantiate(new GameObject("Floating_Group")).transform;
+        _floating_Group.transform.SetParent(transform);
+        _floating_Group.SetAsLastSibling();
 
         StartCoroutine(Cor_Update());
     }
@@ -52,10 +61,12 @@ public class BlockStorage : MonoBehaviour
              .Append(_block.transform.DOMove(transform.position + Vector3.up, Managers._stageManager._railSpeed))
              .OnComplete(() =>
              {
-                 _blockCountArray[(int)_block.GetComponent<Block>()._blockType]++;
+                 int _typeNum = (int)_block.GetComponent<Block>()._blockType;
+                 _blockCountArray[_typeNum]++;
                  Managers.Pool.Push(_block.GetComponent<Poolable>());
-                 //Managers._stageManager.FactoryCheckButtons();
-                 Managers._gameUi.MakeButtonOnOff();
+
+                 //Managers._gameUi.MakeButtonOnOff();
+                 Floating_Text(_typeNum);
 
                  for (int i = 0; i < 4; i++)
                  {
@@ -65,6 +76,31 @@ public class BlockStorage : MonoBehaviour
              });
 
     }
+
+
+    public void Floating_Text(int _num)
+    {
+        Transform _floatingTrans = Managers.Pool.Pop(_floating_Pref, _floating_Group).GetComponent<Transform>();
+        _floatingTrans.SetAsFirstSibling();
+
+        //Debug.Log("Spawn Floating");
+        //UnityEditor.EditorApplication.isPaused = true;
+        for (int i = 0; i < 4; i++)
+        {
+            _floatingTrans.GetChild(i).gameObject.SetActive(false);
+        }
+        _floatingTrans.GetChild(_num).gameObject.SetActive(true);
+
+
+        _floatingTrans.localPosition = new Vector3(0f, 4f, 0f);
+
+        _floatingTrans.DOLocalMoveZ(1f, 1f).SetEase(Ease.OutCirc)
+            .OnComplete(() => Managers.Pool.Push(_floatingTrans.GetComponent<Poolable>()));
+
+
+
+    }
+
 
 
 

@@ -50,24 +50,8 @@ public class Hero : MonoBehaviour
 
     public virtual void SetInit(HeroFactory _herofactory)
     {
-        //_heroType = _recipe._heroType;
+        
         _heroState = HeroState.Init;
-
-        //if (_heroType != HeroType.BlockMan_0)
-        //{
-        //    if (_partsGroup == null) _partsGroup = transform.Find("PartsGroup");
-        //    int _count = _partsGroup.childCount;
-        //    _meshfilters = new MeshFilter[_count];
-        //    for (int i = 0; i < _count; i++)
-        //    {
-        //        _meshfilters[i] = _partsGroup.GetChild(i).GetComponent<MeshFilter>();
-        //        _meshfilters[i].sharedMesh = _herofactory._selectMeshes[i];
-        //    }
-        //}
-        //else
-        //{
-        //    _meshfilters[0].sharedMesh = _herofactory._selectMeshes[0];
-        //}
 
 
         for (int i = 0; i < _meshfilters.Length; i++)
@@ -86,7 +70,7 @@ public class Hero : MonoBehaviour
 
         _currentHP = _maxHP;
 
-        //_heroState = HeroState.Wait;
+        
 
     }
 

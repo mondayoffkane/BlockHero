@@ -226,6 +226,12 @@ public class UI_GameScene : UI_Scene
             _bluePrint_Imgs[i] = BluePrint_Img_Group.transform.GetChild(i).GetComponent<Image>();
         }
 
+        for (int i = 0; i < 5; i++)
+        {
+            _bluePrint_Imgs[i].transform.SetSiblingIndex(0);
+        }
+
+
 
         Boss_HP_Guage = GetImage(Images.Boss_HP_Guage);
         Guage_Fill = GetImage(Images.Guage_Fill);
@@ -356,8 +362,10 @@ public class UI_GameScene : UI_Scene
         for (int i = 0; i < _recipeListBttons.Length; i++)
         {
             _recipeListBttons[i].transform.GetChild(0).gameObject.SetActive(false);
+            _recipeListBttons[i].interactable = true;
         }
         _recipeListBttons[_num].transform.GetChild(0).gameObject.SetActive(true);
+        _recipeListBttons[_num].interactable = false;
         //PartsAlpha(0);
 
 
@@ -368,7 +376,7 @@ public class UI_GameScene : UI_Scene
 
 
 
-        Recipe_Block_Count_Text.text = $"X {_stageManager._selectHeroFactory._partsCount}";
+        Recipe_Block_Count_Text.text = $"{_stageManager._selectHeroFactory._currentParts_Num}/{_stageManager._selectHeroFactory._partsCount}";
 
         for (int i = 0; i < 5; i++)
         {
@@ -532,10 +540,10 @@ public class UI_GameScene : UI_Scene
                 Undo_Button.gameObject.SetActive(true);
                 Guage_Empty.SetActive(true);
 
-                for (int i = 0; i < _recipeListBttons.Length; i++)
-                {
-                    _recipeListBttons[i].interactable = true;
-                }
+                //for (int i = 0; i < _recipeListBttons.Length; i++)
+                //{
+                //    _recipeListBttons[i].interactable = true;
+                //}
             }
             else
             {
@@ -546,11 +554,16 @@ public class UI_GameScene : UI_Scene
                 Undo_Button.gameObject.SetActive(true);
                 Guage_Empty.SetActive(false);
 
-                for (int i = 0; i < _recipeListBttons.Length; i++)
-                {
-                    _recipeListBttons[i].interactable = true;
-                }
+                //for (int i = 0; i < _recipeListBttons.Length; i++)
+                //{
+                //    _recipeListBttons[i].interactable = true;
+                //}
             }
+            for (int i = 0; i < _recipeListBttons.Length; i++)
+            {
+                _recipeListBttons[i].interactable = true;
+            }
+            _recipeListBttons[_stageManager._selectHeroFactory._recipeNum].interactable = false;
         }
 
 

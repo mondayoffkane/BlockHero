@@ -163,10 +163,10 @@ public class HeroFactory : MonoBehaviour
 
             Managers._stageManager._blockStorage._blockCountArray[_num]--;
             _tempBlockList.Add((Block.BlockType)_num);
-            Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_partsCount}";
             Managers._gameUi.SetColorImg(this);
 
             _currentParts_Num++;
+            Managers._gameUi.Recipe_Block_Count_Text.text = $"{_currentParts_Num}/{_partsCount}";
             //Managers._stageManager.FactoryCheckButtons();
             Managers._gameUi.MakeButtonOnOff();
 
@@ -179,7 +179,7 @@ public class HeroFactory : MonoBehaviour
         if (_currentParts_Num > 0)
         {
             _currentParts_Num--;
-
+            Managers._gameUi.Recipe_Block_Count_Text.text = $"{_currentParts_Num}/{_partsCount}";
             Managers._gameUi.SetColorImg(false);
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);

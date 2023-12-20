@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
@@ -38,6 +39,13 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Stage")] public double _money = 1000d;
 
     public GameObject[] _cams;
+    public GameObject _machineCanvas;
+    Button _machineBuyButton;
+    Text _machinePriceText;
+
+    public GameObject _factoryCanvas;
+    Button _factoryBuyButton;
+    Text _factoryPriceText;
 
     // =================================================
 
@@ -59,7 +67,8 @@ public class StageManager : MonoBehaviour
 
         LoadData();
 
-
+        _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
+        _factoryBuyButton.AddButtonEvent(() => AddHeroFactory());
 
     }
 
@@ -268,9 +277,12 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void AddBlockMachine()
+    public void AddBlockMachine(bool isPay = true)
     {
-        CalcMoney(-100);
+        if (isPay)
+        {
+            CalcMoney(-_blockMachine_Prices[_blockMachineCount]);
+        }
 
         _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
         _blockMachineCount++;
@@ -306,15 +318,20 @@ public class StageManager : MonoBehaviour
 
 
         }
-
+        CheckMoney();
     }
 
-    public void AddHeroFactory()
+    public void AddHeroFactory(bool isPay = true)
     {
-        CalcMoney(0);
+
+        if (isPay)
+        {
+            CalcMoney(-_heroFactory_Prices[_heroFactoryCount]);
+        }
 
         _heroFactoryList[_heroFactoryCount].gameObject.SetActive(true);
         _heroFactoryCount++;
+        CheckMoney();
     }
 
 
@@ -323,7 +340,75 @@ public class StageManager : MonoBehaviour
         _money += _value;
 
         Managers._gameUi.Money_Text.text = $"{_money:F0}";
+
+
+        CheckMoney();
     }
+
+    public void CheckMoney()
+    {
+        // ==== Machine Check ============== 
+        if (_machinePriceText == null)
+        {
+            _machineBuyButton = _machineCanvas.transform.GetChild(1).GetComponent<Button>();
+            _machinePriceText = _machineBuyButton.transform.Find("MachinePriceText").GetComponent<Text>();
+        }
+
+        if (_blockMachineCount < _blockMachineList.Count)
+        {
+            _machineCanvas.SetActive(true);
+            _machineCanvas.transform.position = _blockMachineList[_blockMachineCount].transform.position + Vector3.up * 0.05f;
+            if (_money >= _blockMachine_Prices[_blockMachineCount])
+            {
+                _machineBuyButton.interactable = true;
+                _machinePriceText.text = $"{_blockMachine_Prices[_blockMachineCount]}";
+                _machinePriceText.color = Color.white;
+            }
+            else
+            {
+                _machineBuyButton.interactable = false;
+                _machinePriceText.text = $"{_blockMachine_Prices[_blockMachineCount]}";
+                _machinePriceText.color = _machineBuyButton.colors.disabledColor;
+            }
+        }
+        else
+        {
+            _machineCanvas.SetActive(false);
+        }
+
+        // ==== Factory Check ============== 
+        if (_factoryPriceText == null)
+        {
+            _factoryBuyButton = _factoryCanvas.transform.GetChild(1).GetComponent<Button>();
+            _factoryPriceText = _factoryBuyButton.transform.Find("FactoryPriceText").GetComponent<Text>();
+        }
+
+        if (_heroFactoryCount < _heroFactoryList.Count)
+        {
+            _factoryCanvas.SetActive(true);
+            _factoryCanvas.transform.position = _heroFactoryList[_heroFactoryCount].transform.position + Vector3.up * 0.05f;
+            if (_money >= _heroFactory_Prices[_heroFactoryCount])
+            {
+                _factoryBuyButton.interactable = true;
+                _factoryPriceText.text = $"{_heroFactory_Prices[_heroFactoryCount]}";
+                _factoryPriceText.color = Color.white;
+            }
+            else
+            {
+                _factoryBuyButton.interactable = false;
+                _factoryPriceText.text = $"{_heroFactory_Prices[_heroFactoryCount]}";
+                _factoryPriceText.color = _factoryBuyButton.colors.disabledColor;
+            }
+        }
+        else
+        {
+            _factoryCanvas.SetActive(false);
+        }
+
+
+
+    }
+
 
     public void SelectBlockMachine_Upgrade()
     {

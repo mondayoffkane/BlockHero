@@ -882,13 +882,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec9f127127624a90b0b0ea4a90235bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _machineNum: 0
   _level: 0
   _upgradePrices:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 100
+  - 200
+  - 300
+  - 400
+  - 500
   _spawnBlockType: 0
   _blockPref: {fileID: 7286330375840144761, guid: ae8e5515a34184c6b9e126baffd4e417,
     type: 3}
@@ -907,7 +908,6 @@ MonoBehaviour:
   - {fileID: -7361870942182509178, guid: 799b255b3d77b415994cd47cbf0ecd54, type: 3}
   - {fileID: 4148745804372935311, guid: b21035d351dea4d09bb056259476ebb9, type: 3}
   _scale_1: {x: 1.05, y: 0.6, z: 1.05}
-  _scale_2: {x: 1.1, y: 0.9, z: 1.1}
   _scaleTime: 0.5
 --- !u!1 &6028184200592270168
 GameObject:

@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 
 public class BlockMachine : MonoBehaviour
 {
+    [FoldoutGroup("Upgrade")] public int _machineNum = 0;
     [FoldoutGroup("Upgrade")] public int _level;
     [FoldoutGroup("Upgrade")] public double[] _upgradePrices = new double[5];
 
@@ -93,6 +94,7 @@ public class BlockMachine : MonoBehaviour
 
     public void LoadData()
     {
+        _level = ES3.Load<int>($"BlockMachine_{_machineNum}", 0);
         _spawnInterval = 6f - 1f * _level;
     }
 
@@ -116,6 +118,7 @@ public class BlockMachine : MonoBehaviour
     {
         Managers._stageManager.CalcMoney(_upgradePrices[_level]);
         _level++;
+        ES3.Save<int>($"BlockMachine_{_machineNum}", _level);
         _spawnInterval = 6f - 1f * _level;
         CheckPrice();
     }

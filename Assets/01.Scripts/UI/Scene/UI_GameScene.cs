@@ -18,7 +18,6 @@ public class UI_GameScene : UI_Scene
         Recipe_Status_Text_1,
         Recipe_Status_Text_2,
         Recipe_Status_Text_3,
-        //Recipe_Status_Text,
         Recipe_Name_Text,
         Recipe_Block_Count_Text,
         Guage_Text,
@@ -319,8 +318,10 @@ public class UI_GameScene : UI_Scene
             }).AppendInterval(2f)
             .AppendCallback(() =>
             {
+
                 Managers._stageManager.ToFactory();
                 Clear_Claim_Button.interactable = true;
+                Managers._stageManager.CalcMoney(/*(Managers._stageManager._bossLevel) */ 100d);
                 //Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(false);
             });
         });
@@ -582,6 +583,8 @@ public class UI_GameScene : UI_Scene
 
             case 4:
                 PanelOnOff(Clear_Panel, true);
+                Clear_Claim_Button.transform.GetChild(1).GetComponent<Text>().text
+                    = $"{/*(Managers._stageManager._bossLevel) **/ 100d}";
                 break;
 
             case 5:

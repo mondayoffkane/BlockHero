@@ -7,6 +7,9 @@ public class BlockMan_0 : Hero
 {
 
     // ============================
+
+
+
     public override void SetInit(HeroFactory _herofactory)
     {
         base.SetInit(_herofactory);

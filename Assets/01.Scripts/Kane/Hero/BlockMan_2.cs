@@ -17,6 +17,7 @@ public class BlockMan_2 : Hero
     {
         base.Fight();
         _heroState = HeroState.Wait;
+        
         StartCoroutine(Cor_Update());
     }
 

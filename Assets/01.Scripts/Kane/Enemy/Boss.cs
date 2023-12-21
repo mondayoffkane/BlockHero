@@ -15,6 +15,7 @@ public class Boss : Enemy
 
     public override void Fight()
     {
+        base.Fight();
         _enemyState = EnemyState.Wait;
         StartCoroutine(Cor_Update());
     }
@@ -37,6 +38,7 @@ public class Boss : Enemy
                     else if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                     {
                         _enemyState = EnemyState.Attack;
+                        _animator.SetBool("Attack", true);
                     }
 
                     break;
@@ -81,6 +83,7 @@ public class Boss : Enemy
         {
             _target = null;
             _enemyState = EnemyState.Wait;
+            _animator.SetBool("Attack", false);
         }
     }
 

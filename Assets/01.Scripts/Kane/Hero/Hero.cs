@@ -49,10 +49,12 @@ public class Hero : MonoBehaviour
     public Enemy _target;
 
     protected Animator _animator;
+    public GameObject _packageObj;
     /// ===========================
     public virtual void SetInit(HeroFactory _herofactory)
     {
         _animator = GetComponent<Animator>();
+        _packageObj.SetActive(true);
 
         _heroState = HeroState.Init;
 
@@ -82,6 +84,8 @@ public class Hero : MonoBehaviour
     public virtual void Fight()
     {
         _animator.SetBool("Pack", false);
+        _packageObj.SetActive(false);
+        _target = null;
     }
 
     protected virtual void Attack()

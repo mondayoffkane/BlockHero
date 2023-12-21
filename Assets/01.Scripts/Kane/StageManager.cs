@@ -48,6 +48,8 @@ public class StageManager : MonoBehaviour
     Button _factoryBuyButton;
     Text _factoryPriceText;
 
+    public Transform[] _PackPosGroups;
+
     // =================================================
 
 
@@ -76,14 +78,59 @@ public class StageManager : MonoBehaviour
 
     public void LoadData()
     {
-        //_blockFactoryCount = ES3.Load<int>("BlockFactoryCount", 0);
-        //_money = ES3.Load<double>("Money", 1000d);
+        _blockMachineCount = ES3.Load<int>("BlockMachineCount", 0);
+        //Debug.Log(_blockMachineCount);
+        _heroFactoryCount = ES3.Load<int>("HeroFactoryCount", 0);
+        _money = ES3.Load<double>("Money", 1000d);
+        _bossLevel = ES3.Load<int>("BossLevel", 0);
 
         CalcMoney(0);
 
         for (int i = 0; i < _blockMachineCount; i++)
         {
-            AddBlockMachine();
+            //AddBlockMachine(false);
+            _blockMachineList[i].gameObject.SetActive(true);
+
+            switch (i)
+            {
+                case 2:
+                    _skinnedBlock[0].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 4:
+                    _skinnedBlock[0].SetBlendShapeWeight(1, 100);
+                    break;
+
+                case 6:
+                    _skinnedBlock[1].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 8:
+                    _skinnedBlock[1].SetBlendShapeWeight(1, 100);
+                    break;
+                case 10:
+                    _skinnedBlock[2].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 12:
+                    _skinnedBlock[2].SetBlendShapeWeight(1, 100);
+                    break;
+                case 14:
+                    _skinnedBlock[3].SetBlendShapeWeight(0, 100);
+                    break;
+
+
+            }
+
+
+        }
+
+        for (int i = 0; i < _heroFactoryCount; i++)
+        {
+            //AddHeroFactory(false);
+
+            _heroFactoryList[i].gameObject.SetActive(true);
+
         }
 
     }
@@ -93,16 +140,21 @@ public class StageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            ToBattle();
+            //ToBattle();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            ToFactory();
+            //ToFactory();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             AddBlockMachine();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            CalcMoney(500d);
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -227,7 +279,7 @@ public class StageManager : MonoBehaviour
         Managers._gameUi.ChangePanel(3);
         //_battleCam.SetActive(true);
         ChangeCam(2, 0);
-        _bossEnemy = Managers.Pool.Pop(_bossList[_bossLevel % 3]).GetComponent<Boss>();
+        _bossEnemy = Managers.Pool.Pop(_bossList[_bossLevel % 2]).GetComponent<Boss>();
         //_bossEnemy.SetInit(_currentStage._stageLevel);
         _bossEnemy.SetInit(_bossLevel);
         _bossEnemy.transform.position = _enemySpawnPoint.position;
@@ -241,6 +293,7 @@ public class StageManager : MonoBehaviour
         {
             _heroBattleList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-2f, -5f));
             _heroBattleList[i].Fight();
+            _heroBattleList[i].transform.SetParent(null);
             //_spawnHeroList
         }
 
@@ -277,7 +330,8 @@ public class StageManager : MonoBehaviour
 
     public void Battle_Clear()
     {
-
+        _bossLevel++;
+        ES3.Save<int>("BossLevel", _bossLevel);
 
         this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(4));
 
@@ -295,10 +349,11 @@ public class StageManager : MonoBehaviour
         {
             CalcMoney(-_blockMachine_Prices[_blockMachineCount]);
         }
-
         _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
+
         _blockMachineCount++;
-        //ES3.Save<int>("BlockFactoryCount", _blockFactoryCount);
+        ES3.Save<int>("BlockMachineCount", _blockMachineCount);
+        //Debug.Log("Save BlockMachine Count :" + _blockMachineCount);
 
         switch (_blockMachineCount)
         {
@@ -340,10 +395,12 @@ public class StageManager : MonoBehaviour
         {
             CalcMoney(-_heroFactory_Prices[_heroFactoryCount]);
         }
-
         _heroFactoryList[_heroFactoryCount].gameObject.SetActive(true);
+
         _heroFactoryCount++;
         CheckMoney();
+        ES3.Save<int>("HeroFactoryCount", _heroFactoryCount);
+
     }
 
 
@@ -353,7 +410,7 @@ public class StageManager : MonoBehaviour
 
         Managers._gameUi.Money_Text.text = $"{_money:F0}";
 
-
+        ES3.Save<double>("Money", _money);
         CheckMoney();
     }
 
@@ -446,5 +503,18 @@ public class StageManager : MonoBehaviour
 
 
     }
+
+    public void SetPackPos(Hero _heroPack)
+    {
+        int _num = (int)_heroPack._heroType;
+
+        _heroPack.transform.SetParent(_PackPosGroups[_num]);
+        _heroPack.transform.localPosition = new Vector3(0f, 1f + (_PackPosGroups[_num].childCount - 1) * 2f, 0f);
+
+        //Debug.Log(_heroPack.transform.position);
+
+    }
+
+
 
 }

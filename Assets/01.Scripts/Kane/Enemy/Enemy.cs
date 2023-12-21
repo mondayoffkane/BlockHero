@@ -24,9 +24,12 @@ public class Enemy : MonoBehaviour
 
     public Hero _target;
 
+    protected Animator _animator;
 
     public virtual void SetInit(int _level)
     {
+        _animator = GetComponent<Animator>();
+
         _target = null;
         _enemyState = EnemyState.Init;
 
@@ -41,7 +44,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void Fight()
     {
-
+        _target = null;
     }
 
 
@@ -67,6 +70,7 @@ public class Enemy : MonoBehaviour
                     }
                 }
                 _enemyState = EnemyState.Move;
+                _animator.SetBool("Attack", false);
             }
         }
 
@@ -92,7 +96,7 @@ public class Enemy : MonoBehaviour
 
     protected void Dead()
     {
-
+        _animator.SetBool("Dead", true);
         Managers._stageManager._bossEnemy = null;
         Managers.Pool.Push(transform.GetComponent<Poolable>());
 

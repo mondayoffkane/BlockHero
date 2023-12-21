@@ -273,12 +273,15 @@ public class HeroFactory : MonoBehaviour
         Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_currentRecipe._heroType.ToString()}_Pref")).GetComponent<Hero>();
         _newHero.SetInit(this);
 
-        _newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-25f, -30f));
+        //_newHero.transform.position = new Vector3(Random.Range(-5f, 5f), 1f, Random.Range(-25f, -30f));
+        _newHero.transform.position = Vector3.zero;
+        //Debug.Log("Pos : " + transform.position);
         _newHero.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
         //_selectModel.Reset();
 
         Managers._stageManager._spawnHeroList.Add(_newHero);
 
+        Managers._stageManager.SetPackPos(_newHero);
 
 
     }

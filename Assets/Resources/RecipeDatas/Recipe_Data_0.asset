@@ -18,7 +18,7 @@ MonoBehaviour:
   _bluePrint_Sprites:
   - {fileID: 21300000, guid: 7e6caf7d11f92455eb15a85fe4187e97, type: 3}
   _bluePrintFillSprites:
-  - {fileID: 21300000, guid: 22bb4c0613ad54fb2b1a154dcf3f2be8, type: 3}
+  - {fileID: 21300000, guid: 7e6caf7d11f92455eb15a85fe4187e97, type: 3}
   _makingTime: 5
   _partsCount: 1
   _partsSprites:
@@ -27,10 +27,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1a5ee1d379aad4c3baf56e04a7e22633, type: 3}
   - {fileID: 21300000, guid: 9e13fb28e7d4d4d669f5e0612a45a029, type: 3}
   _partsMeshes:
-  - {fileID: 3994058465399038309, guid: 1c0241f62c32340049e7e91576b22f00, type: 3}
-  - {fileID: 3737786759347677526, guid: eb6775f70dd5943488bdae81feb1f1d1, type: 3}
-  - {fileID: 8904305681203665457, guid: 56951f48febaf4bdf9e2011e4bdcc0bd, type: 3}
-  - {fileID: -8896566031099363628, guid: 5f4c715460ce54c64bee97e8c5103050, type: 3}
+  - {fileID: -4623247679890240919, guid: 1c0241f62c32340049e7e91576b22f00, type: 3}
+  - {fileID: 4168865360628915878, guid: eb6775f70dd5943488bdae81feb1f1d1, type: 3}
+  - {fileID: 2454505630515052355, guid: 56951f48febaf4bdf9e2011e4bdcc0bd, type: 3}
+  - {fileID: 8271744385629103020, guid: 5f4c715460ce54c64bee97e8c5103050, type: 3}
   _baseDamage: 10
   _baseAttackInterval: 1
   _baseSpeed: 5

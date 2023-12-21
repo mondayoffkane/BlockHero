@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _recipeName: Block Man
   _heroType: 0
-  _thumbnail_Sprite: {fileID: 21300000, guid: fa411618c46594249b8d44663aa04ffc, type: 3}
+  _thumbnail_Sprite: {fileID: 21300000, guid: 7e6caf7d11f92455eb15a85fe4187e97, type: 3}
   _bluePrint_Sprites:
   - {fileID: 21300000, guid: 7e6caf7d11f92455eb15a85fe4187e97, type: 3}
   _bluePrintFillSprites:

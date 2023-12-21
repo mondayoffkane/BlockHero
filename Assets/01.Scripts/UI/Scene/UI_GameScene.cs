@@ -292,7 +292,22 @@ public class UI_GameScene : UI_Scene
         });
         Battle_Button.AddButtonEvent(() => Managers._stageManager.ToBattle());
 
-        Clear_Claim_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
+        Clear_Claim_Button.AddButtonEvent(() =>
+        {
+            DOTween.Sequence()
+            .AppendCallback(() =>
+            {
+                Clear_Claim_Button.interactable = false;
+                Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(true);
+
+            }).AppendInterval(1f)
+            .AppendCallback(() =>
+            {
+                Managers._stageManager.ToFactory();
+                Clear_Claim_Button.interactable = true;
+                Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(false);
+            });
+        });
         Fail_ToFactory_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
 
         BlockMachine_Close_Button.AddButtonEvent(() => ChangePanel(0));

@@ -14,7 +14,11 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Upgrade_Price_Text,
         BlockMachine_Status_Text,
         BlockMachine_UpgradeValue_Text,
-        Recipe_Status_Text,
+        Recipe_Status_Text_0,
+        Recipe_Status_Text_1,
+        Recipe_Status_Text_2,
+        Recipe_Status_Text_3,
+        //Recipe_Status_Text,
         Recipe_Name_Text,
         Recipe_Block_Count_Text,
         Guage_Text,
@@ -44,8 +48,8 @@ public class UI_GameScene : UI_Scene
     }
     enum GameObjects
     {
-        FactoryBase_Panel,
         BlockCount_Group,
+        FactoryBase_Panel,
         BlockMachine_Panel,
         BlockMachine_Color_Buttons_Group,
         HeroFactory_Panel,
@@ -106,8 +110,9 @@ public class UI_GameScene : UI_Scene
 
 
 
-    public Text Recipe_Status_Text
-        , Recipe_Name_Text
+    public Text
+         //Recipe_Status_Text
+         Recipe_Name_Text
         , Recipe_Block_Count_Text
         , Money_Text
         , Boss_HP_Text
@@ -115,6 +120,10 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Status_Text,
         BlockMachine_UpgradeValue_Text
         , Guage_Text
+        , Recipe_Status_Text_0,
+        Recipe_Status_Text_1,
+        Recipe_Status_Text_2,
+        Recipe_Status_Text_3
         ;
 
     public Text[] _blockCountTexts = new Text[4];
@@ -136,12 +145,12 @@ public class UI_GameScene : UI_Scene
     // =======================================================
     private void Awake()
     {
-        ColorUtility.TryParseHtmlString("#4F9BCD", out _color);
-
         Bind<UnityEngine.UI.Text>(typeof(Texts));
         Bind<UnityEngine.UI.Button>(typeof(Buttons));
         Bind<UnityEngine.UI.Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
+        ColorUtility.TryParseHtmlString("#4F9BCD", out _color);
+
 
         Managers._gameUi = this;
 
@@ -237,7 +246,7 @@ public class UI_GameScene : UI_Scene
         Guage_Fill = GetImage(Images.Guage_Fill);
         // ========= Text
 
-        Recipe_Status_Text = GetText(Texts.Recipe_Status_Text);
+        //Recipe_Status_Text = GetText(Texts.Recipe_Status_Text);
         Recipe_Name_Text = GetText(Texts.Recipe_Name_Text);
         Recipe_Block_Count_Text = GetText(Texts.Recipe_Block_Count_Text);
         Money_Text = GetText(Texts.Money_Text);
@@ -246,6 +255,12 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Status_Text = GetText(Texts.BlockMachine_Status_Text);
         BlockMachine_UpgradeValue_Text = GetText(Texts.BlockMachine_UpgradeValue_Text);
         Guage_Text = GetText(Texts.Guage_Text);
+
+        Recipe_Status_Text_0 = GetText(Texts.Recipe_Status_Text_0);
+        Recipe_Status_Text_1 = GetText(Texts.Recipe_Status_Text_1);
+        Recipe_Status_Text_2 = GetText(Texts.Recipe_Status_Text_2);
+        Recipe_Status_Text_3 = GetText(Texts.Recipe_Status_Text_3);
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -298,14 +313,15 @@ public class UI_GameScene : UI_Scene
             .AppendCallback(() =>
             {
                 Clear_Claim_Button.interactable = false;
-                Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(true);
+                //Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(true);
+                Clear_Claim_Button.transform.Find("UIAttractor").GetComponent<ParticleSystem>().Play(true);
 
-            }).AppendInterval(1f)
+            }).AppendInterval(2f)
             .AppendCallback(() =>
             {
                 Managers._stageManager.ToFactory();
                 Clear_Claim_Button.interactable = true;
-                Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(false);
+                //Clear_Claim_Button.transform.Find("UIAttractor").gameObject.SetActive(false);
             });
         });
         Fail_ToFactory_Button.AddButtonEvent(() => Managers._stageManager.ToFactory());
@@ -356,11 +372,66 @@ public class UI_GameScene : UI_Scene
             {
 
                 Guage_Text.text =
-                    $"{(int)((_stageManager._selectHeroFactory._currentRecipe._makingTime - _stageManager._selectHeroFactory._currentTime) / 60)} : {((int)(_stageManager._selectHeroFactory._currentRecipe._makingTime - _stageManager._selectHeroFactory._currentTime) % 60)}";
+                    $"{(int)((_stageManager._selectHeroFactory._currentRecipe._makingTime - _stageManager._selectHeroFactory._currentTime) / 60):00} : {((int)(_stageManager._selectHeroFactory._currentRecipe._makingTime - _stageManager._selectHeroFactory._currentTime) % 60):00}";
                 Guage_Fill.fillAmount = (_stageManager._selectHeroFactory._currentTime / _stageManager._selectHeroFactory._maxTime);
             }
 
         }
+    }
+
+    public void SetStatusText(float _damage, float _speed, float _hp, float _defense)
+    {
+        Recipe_Status_Text_0.text = $"{_damage}";
+        Recipe_Status_Text_1.text = $"{_speed}";
+        Recipe_Status_Text_2.text = $"{_hp}";
+        Recipe_Status_Text_3.text = $"{_defense}";
+    }
+
+    public void StatusFloating(int _num, float _value)
+    {
+        Floating _floating = Managers.Pool.Pop(Resources.Load<GameObject>("ValueText_Pref")).GetComponent<Floating>();
+        _floating.transform.SetParent(HeroFactory_Panel.transform);
+        //Vector3 _pos = Vector3.zero;
+        switch (_num)
+        {
+            case 0:
+                _floating.transform.SetParent(Recipe_Status_Text_0.transform);
+                //_pos = Recipe_Status_Text_0.rectTransform.position;
+                break;
+
+            case 1:
+                _floating.transform.SetParent(Recipe_Status_Text_1.transform);
+                //_pos = Recipe_Status_Text_1.rectTransform.position;
+                break;
+
+            case 2:
+                _floating.transform.SetParent(Recipe_Status_Text_2.transform);
+                //_pos = Recipe_Status_Text_2.rectTransform.position;
+                break;
+
+            case 3:
+                _floating.transform.SetParent(Recipe_Status_Text_3.transform);
+                //_pos = Recipe_Status_Text_3.rectTransform.position;
+                break;
+
+            default:
+
+                break;
+        }
+        //_floating.transform.GetComponent<RectTransform>().position = _pos;
+        _floating.SetInit(_value, 1f, 1f);
+        //if (_value > 0)
+        //{
+        //    _floating.SetInit(_value.ToString(), 1f, 1f);
+        //    _floating.GetComponent<Text>().color = Color.blue;
+        //}
+        //else
+        //{
+        //    _floating.SetInit(_value.ToString(), 1f, 1f);
+        //    _floating.GetComponent<Text>().color = Color.red;
+        //}
+
+
     }
 
 
@@ -378,16 +449,30 @@ public class UI_GameScene : UI_Scene
         {
             _recipeListBttons[i].transform.GetChild(0).gameObject.SetActive(false);
             _recipeListBttons[i].interactable = true;
+            _recipeListBttons[i].transform.Find("Level_Text").GetComponent<Text>().color = _recipeListBttons[i].colors.disabledColor;
         }
         _recipeListBttons[_num].transform.GetChild(0).gameObject.SetActive(true);
         _recipeListBttons[_num].interactable = false;
+        _recipeListBttons[_num].transform.Find("Level_Text").GetComponent<Text>().color = Color.white;
         //PartsAlpha(0);
 
 
 
         Recipe_Name_Text.text = $"{_stageManager._selectHeroFactory._currentRecipe._recipeName}";
 
-        Recipe_Status_Text.text = $"ATK : {_stageManager._selectHeroFactory._damage} SPD : {_stageManager._selectHeroFactory._speed} HP : {_stageManager._selectHeroFactory._maxHP} DEF : {_stageManager._selectHeroFactory._defense}";
+        //Recipe_Status_Text.text = $"ATK : {_stageManager._selectHeroFactory._damage} SPD : {_stageManager._selectHeroFactory._speed} HP : {_stageManager._selectHeroFactory._maxHP} DEF : {_stageManager._selectHeroFactory._defense}";
+
+        //Recipe_Status_Text_0.text = _stageManager._selectHeroFactory._damage.ToString();
+        //Recipe_Status_Text_1.text = _stageManager._selectHeroFactory._speed.ToString();
+        //Recipe_Status_Text_2.text = _stageManager._selectHeroFactory._maxHP.ToString();
+        //Recipe_Status_Text_3.text = _stageManager._selectHeroFactory._defense.ToString();
+
+        SetStatusText(
+            _stageManager._selectHeroFactory._damage
+            , _stageManager._selectHeroFactory._speed
+            , _stageManager._selectHeroFactory._maxHP
+            , _stageManager._selectHeroFactory._defense);
+
 
 
 
@@ -542,6 +627,7 @@ public class UI_GameScene : UI_Scene
             for (int i = 0; i < _recipeListBttons.Length; i++)
             {
                 _recipeListBttons[i].interactable = false;
+                _recipeListBttons[i].transform.Find("Level_Text").GetComponent<Text>().color = _recipeListBttons[i].colors.disabledColor;
             }
         }
         else
@@ -577,8 +663,10 @@ public class UI_GameScene : UI_Scene
             for (int i = 0; i < _recipeListBttons.Length; i++)
             {
                 _recipeListBttons[i].interactable = true;
+                _recipeListBttons[i].transform.Find("Level_Text").GetComponent<Text>().color = Color.white;
             }
             _recipeListBttons[_stageManager._selectHeroFactory._recipeNum].interactable = false;
+            _recipeListBttons[_stageManager._selectHeroFactory._recipeNum].transform.Find("Level_Text").GetComponent<Text>().color = _recipeListBttons[_stageManager._selectHeroFactory._recipeNum].colors.disabledColor;
         }
 
 

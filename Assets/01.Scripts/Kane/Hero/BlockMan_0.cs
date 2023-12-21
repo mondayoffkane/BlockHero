@@ -6,9 +6,6 @@ using UnityEngine;
 public class BlockMan_0 : Hero
 {
 
-    public GameObject _bullet_Pref;
-
-    public float _bulletSpeed = 1f;
     // ============================
     public override void SetInit(HeroFactory _herofactory)
     {
@@ -18,6 +15,7 @@ public class BlockMan_0 : Hero
 
     public override void Fight()
     {
+        base.Fight();
         _heroState = HeroState.Wait;
         StartCoroutine(Cor_Update());
     }
@@ -44,6 +42,8 @@ public class BlockMan_0 : Hero
                     else if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
                     {
                         _heroState = HeroState.Attack;
+                        _animator.SetBool("Attack", true);
+                        _animator.SetBool("Walk", false);
                     }
 
                     yield return null;
@@ -57,9 +57,6 @@ public class BlockMan_0 : Hero
 
             }
 
-
-
-
         }
     }
 
@@ -68,27 +65,20 @@ public class BlockMan_0 : Hero
         if (_target._currentHP > 0)
         {
 
-            Transform _newBullet = Managers.Pool.Pop(_bullet_Pref).transform;
-            _newBullet.transform.position = transform.position;
-
-            _newBullet.DOMove(_target.transform.position, /*Vector3.Distance(transform.position, _target.transform.position) / _bulletSpeed*/ 1f)
-                .SetEase(Ease.Linear)
-                .OnComplete(() =>
-                {
-                    base.Attack();
-                    Managers.Pool.Push(_newBullet.GetComponent<Poolable>());
-                });
+            base.Attack();
         }
         else
         {
             _target = null;
             _heroState = HeroState.Wait;
+            _animator.SetBool("Attack", false);
+            _animator.SetBool("Walk", false);
         }
     }
 
     public override void OnDamage(float _Damage)
     {
-        //Debug.Log("Boss OnDamaged");
+
         if (_heroState != HeroState.Dead)
         {
             base.OnDamage(_Damage);
@@ -98,12 +88,9 @@ public class BlockMan_0 : Hero
                 _currentHP = 0;
                 _heroState = HeroState.Dead;
                 Dead();
-                //this.TaskDelay(2f, () => Managers.Pool.Push(GetComponent<Poolable>()));
+
             }
         }
 
     }
-
-
-
 }

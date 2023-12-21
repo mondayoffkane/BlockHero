@@ -1038,11 +1038,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493071ed233b544d6819a9d56e5e7c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseSense: 0.01
+  _mouseSense: 0.013
   _startY: 0
   _endY: 0
   _startPos: {x: 0, y: 0, z: 0}
   _limitZ: {x: -27, y: -65}
+  isClick: 0
 --- !u!1 &94507500
 GameObject:
   m_ObjectHideFlags: 0
@@ -6031,7 +6032,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &550348553
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12505,6 +12506,7 @@ MonoBehaviour:
   - 0
   - 0
   _spawnHeroList: []
+  _heroBattleList: []
   _heroSpawnPoint: {fileID: 1907615818}
   _bossEnemy: {fileID: 0}
   _enemySpawnPoint: {fileID: 1513407596}
@@ -17557,7 +17559,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609919749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -44}
+  m_LocalPosition: {x: 0, y: -0.48, z: -30}
   m_LocalScale: {x: 13.475, y: 1, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children: []

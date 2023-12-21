@@ -68,13 +68,18 @@ public class BlockStorage : MonoBehaviour
                  //Managers._gameUi.MakeButtonOnOff();
                  Floating_Text(_typeNum);
 
-                 for (int i = 0; i < 4; i++)
-                 {
-                     Managers._gameUi._blockCountTexts[i].text = _blockCountArray[i].ToString();
-                 }
+                 UpdateBlockCount();
 
              });
 
+    }
+
+    public void UpdateBlockCount()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Managers._gameUi._blockCountTexts[i].text = _blockCountArray[i].ToString();
+        }
     }
 
 

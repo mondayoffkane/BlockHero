@@ -29,6 +29,7 @@ public class StageManager : MonoBehaviour
 
     //[FoldoutGroup("Battle")] public GameObject _battleCam;
     [FoldoutGroup("Battle")] public List<Hero> _spawnHeroList = new List<Hero>();
+    [FoldoutGroup("Battle")] public List<Hero> _heroBattleList = new List<Hero>();
     [FoldoutGroup("Battle")] public Transform _heroSpawnPoint;
     [FoldoutGroup("Battle")] public Enemy _bossEnemy;
     [FoldoutGroup("Battle")] public Transform _enemySpawnPoint;
@@ -104,6 +105,14 @@ public class StageManager : MonoBehaviour
             AddBlockMachine();
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())// 
+            {
+                Managers._gameUi.ChangePanel(0);
+            }
+        }
+
         if (Input.GetMouseButtonUp(0))
         {
 
@@ -112,38 +121,40 @@ public class StageManager : MonoBehaviour
             RaycastHit hit;
 
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (EventSystem.current.IsPointerOverGameObject())// 
+
+            //Managers._gameUi.ChangePanel(0);
+
+            if (!EventSystem.current.IsPointerOverGameObject())// 
             {
-                //Managers._gameUi.ChangePanel(0);
-                return;
-            }
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
 
 
-                switch (hit.collider.tag)
+                if (Physics.Raycast(ray, out hit))
                 {
-                    case "BlockMachine":
+                    Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
 
-                        _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
 
-                        Managers._gameUi.ChangePanel(1);
-                        Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
-                        break;
+                    switch (hit.collider.tag)
+                    {
+                        case "BlockMachine":
 
-                    case "HeroFactory":
-                        _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
+                            _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
 
-                        if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
+                            Managers._gameUi.ChangePanel(1);
+                            Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
+                            break;
 
-                        Managers._gameUi.ChangePanel(2);
-                        break;
+                        case "HeroFactory":
+                            _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
+
+                            if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
+
+                            Managers._gameUi.ChangePanel(2);
+                            break;
+                    }
+
+
                 }
-
             }
-
         }
 
     }
@@ -223,12 +234,13 @@ public class StageManager : MonoBehaviour
         _bossEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
         _bossEnemy.Fight();
 
+        _heroBattleList = new List<Hero>(_spawnHeroList);
+        _spawnHeroList.Clear();
 
-
-        for (int i = 0; i < _spawnHeroList.Count; i++)
+        for (int i = 0; i < _heroBattleList.Count; i++)
         {
-            _spawnHeroList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-2f, -5f));
-            _spawnHeroList[i].Fight();
+            _heroBattleList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-2f, -5f));
+            _heroBattleList[i].Fight();
             //_spawnHeroList
         }
 
@@ -246,14 +258,14 @@ public class StageManager : MonoBehaviour
         if (_bossEnemy != null) Managers.Pool.Push(_bossEnemy.GetComponent<Poolable>());
 
 
-        if (_spawnHeroList.Count > 0)
+        if (_heroBattleList.Count > 0)
         {
 
-            int _count = _spawnHeroList.Count;
+            int _count = _heroBattleList.Count;
             for (int i = 0; i < _count; i++)
             {
-                var _obj = _spawnHeroList[0];
-                _spawnHeroList.Remove(_obj);
+                var _obj = _heroBattleList[0];
+                _heroBattleList.Remove(_obj);
                 Managers.Pool.Push(_obj.GetComponent<Poolable>());
             }
             //_spawnHeroList.Clear();

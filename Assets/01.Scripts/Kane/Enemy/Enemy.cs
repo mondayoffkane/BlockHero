@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
     {
         if (_target == null)
         {
-            if (Managers._stageManager._spawnHeroList.Count < 1)
+            if (Managers._stageManager._heroBattleList.Count < 1)
             {
                 _enemyState = EnemyState.Victory;
                 Managers._stageManager.Battle_Fail();
@@ -57,13 +57,13 @@ public class Enemy : MonoBehaviour
 
             else
             {
-                _target = Managers._stageManager._spawnHeroList[0];
-                for (int i = 0; i < Managers._stageManager._spawnHeroList.Count; i++)
+                _target = Managers._stageManager._heroBattleList[0];
+                for (int i = 0; i < Managers._stageManager._heroBattleList.Count; i++)
                 {
                     if (Vector3.Distance(transform.position, _target.transform.position)
-                        > Vector3.Distance(transform.position, Managers._stageManager._spawnHeroList[i].transform.position))
+                        > Vector3.Distance(transform.position, Managers._stageManager._heroBattleList[i].transform.position))
                     {
-                        _target = Managers._stageManager._spawnHeroList[i];
+                        _target = Managers._stageManager._heroBattleList[i];
                     }
                 }
                 _enemyState = EnemyState.Move;

@@ -48,9 +48,12 @@ public class Hero : MonoBehaviour
 
     public Enemy _target;
 
+    protected Animator _animator;
+    /// ===========================
     public virtual void SetInit(HeroFactory _herofactory)
     {
-        
+        _animator = GetComponent<Animator>();
+
         _heroState = HeroState.Init;
 
 
@@ -70,13 +73,15 @@ public class Hero : MonoBehaviour
 
         _currentHP = _maxHP;
 
-        
+
+        _animator.SetBool("Pack", true);
+
 
     }
 
     public virtual void Fight()
     {
-
+        _animator.SetBool("Pack", false);
     }
 
     protected virtual void Attack()
@@ -101,10 +106,11 @@ public class Hero : MonoBehaviour
 
     protected virtual void Dead()
     {
-        Managers._stageManager._spawnHeroList.Remove(this);
+        _animator.SetBool("Dead", true);
+        Managers._stageManager._heroBattleList.Remove(this);
         Managers.Pool.Push(GetComponent<Poolable>());
 
-        if (Managers._stageManager._spawnHeroList.Count < 1)
+        if (Managers._stageManager._heroBattleList.Count < 1)
         {
             Managers._stageManager.Battle_Fail();
         }
@@ -121,6 +127,9 @@ public class Hero : MonoBehaviour
         {
             _target = Managers._stageManager._bossEnemy;
             _heroState = HeroState.Move;
+            _animator.SetBool("Walk", true);
+            _animator.SetBool("Attack", false);
+
         }
 
     }

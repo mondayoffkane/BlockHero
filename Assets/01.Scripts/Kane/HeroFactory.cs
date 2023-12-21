@@ -35,7 +35,7 @@ public class HeroFactory : MonoBehaviour
     public float _maxTime = 1f;
 
     public bool isProduction = false;
-
+    public bool isResourceOn = false;
 
     //public Vector3 _scale_1 = new Vector3(1f, 1.1f, 1f);
     public Vector3 _scale_1 = new Vector3(1.05f, 0.9f, 1.05f);
@@ -69,8 +69,8 @@ public class HeroFactory : MonoBehaviour
         while (true)
         {
             yield return null;
-
-            if (isProduction)
+            ResourceCheck();
+            if (isProduction && isResourceOn)
             {
                 _currentTime += Time.deltaTime;
                 _guage_Obj.SetBlendShapeWeight(0, (_currentTime / _maxTime) * 100f);
@@ -87,6 +87,21 @@ public class HeroFactory : MonoBehaviour
         }
     }
 
+    public void ResourceCheck()
+    {
+        for (int i = 0; i < _tempBlockList.Count; i++)
+        {
+            if (Managers._stageManager._blockStorage._blockCountArray[(int)_tempBlockList[i]] > 0)
+            {
+                isResourceOn = true;
+            }
+            else
+            {
+                isResourceOn = false;
+                break;
+            }
+        }
+    }
 
     public void MakeHeroOnOff(bool isOn)
     {
@@ -95,11 +110,15 @@ public class HeroFactory : MonoBehaviour
 
         if (isProduction)
         {
-            transform.transform.localScale = Vector3.one;
-            //DOTween.Sequence()
-            //    .Append(transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo));
+            //bool isbool = false;
+            ResourceCheck();
 
+
+            transform.transform.localScale = Vector3.one;
             transform.DOScale(_scale_1, _scaleTime).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+
+
+
 
         }
         else
@@ -107,6 +126,9 @@ public class HeroFactory : MonoBehaviour
 
             DOTween.Kill(transform);
             transform.transform.localScale = Vector3.one;
+
+            //Managers._stageManager._blockStorage._blockCountArray[_tempblocknum]++;
+
         }
     }
 
@@ -145,26 +167,37 @@ public class HeroFactory : MonoBehaviour
         {
             _selectMeshes[_currentParts_Num] = _2arrayMeshes[_currentParts_Num, _num];
 
+            var _value = 0f;
             switch (_num)
             {
                 case 0:
                     _damage += _currentRecipe._damageValue;
+                    _value = _currentRecipe._damageValue;
                     break;
                 case 1:
                     _speed += _currentRecipe._speedValue;
+                    _value = _currentRecipe._speedValue;
                     break;
 
                 case 2:
                     _maxHP += _currentRecipe._HPValue;
+                    _value = _currentRecipe._HPValue;
                     break;
 
                 case 3:
                     _defense += _currentRecipe._defenseValue;
+                    _value = _currentRecipe._defenseValue;
                     break;
+
+                default:
+                    _value = 0f;
+                    break;
+
             }
 
+            Managers._gameUi.StatusFloating(_num, _value);
 
-            Managers._stageManager._blockStorage._blockCountArray[_num]--;
+            //Managers._stageManager._blockStorage._blockCountArray[_num]--;
             _tempBlockList.Add((Block.BlockType)_num);
             Managers._gameUi.SetColorImg(this);
 
@@ -173,7 +206,10 @@ public class HeroFactory : MonoBehaviour
             //Managers._stageManager.FactoryCheckButtons();
             Managers._gameUi.MakeButtonOnOff();
 
-            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
+            //Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
+
+            Managers._gameUi.SetStatusText(_damage, _speed, _maxHP, _defense);
+
         }
     }
 
@@ -186,28 +222,35 @@ public class HeroFactory : MonoBehaviour
             Managers._gameUi.SetColorImg(false);
             int _tempblocknum = (int)_tempBlockList[_currentParts_Num];
             _tempBlockList.RemoveAt(_currentParts_Num);
-            Managers._stageManager._blockStorage._blockCountArray[_tempblocknum]++;
+            //Managers._stageManager._blockStorage._blockCountArray[_tempblocknum]++;
 
+
+            var _value = 0f;
             switch (_tempblocknum)
             {
                 case 0:
                     _damage -= _currentRecipe._damageValue;
+                    _value = -_currentRecipe._damageValue;
                     break;
                 case 1:
                     _speed -= _currentRecipe._speedValue;
+                    _value = -_currentRecipe._speedValue;
                     break;
 
                 case 2:
                     _maxHP -= _currentRecipe._HPValue;
+                    _value = -_currentRecipe._HPValue;
                     break;
 
                 case 3:
                     _defense -= _currentRecipe._defenseValue;
+                    _value = -_currentRecipe._defenseValue;
                     break;
             }
+            Managers._gameUi.StatusFloating(_tempblocknum, _value);
 
-
-            Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
+            //Managers._gameUi.Recipe_Status_Text.text = $"ATK : {_damage} SPD : {_speed} HP : {_maxHP} DEF : {_defense}";
+            Managers._gameUi.SetStatusText(_damage, _speed, _maxHP, _defense);
             //Managers._stageManager.FactoryCheckButtons();
             Managers._gameUi.MakeButtonOnOff();
 
@@ -219,6 +262,13 @@ public class HeroFactory : MonoBehaviour
 
     public void SpawnHero()
     {
+
+        for (int i = 0; i < _tempBlockList.Count; i++)
+        {
+            Managers._stageManager._blockStorage._blockCountArray[(int)_tempBlockList[i]]--;
+            Managers._stageManager._blockStorage.UpdateBlockCount();
+        }
+
 
         Hero _newHero = Managers.Pool.Pop(Resources.Load<GameObject>($"Hero/{_currentRecipe._heroType.ToString()}_Pref")).GetComponent<Hero>();
         _newHero.SetInit(this);

@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
         _enemyState = EnemyState.Init;
 
         _damage = 5 + 2 * _level;
-        _attackInterval = 2f - 0.1f * (float)_level < 0 ? 0.1f : 2f - 0.1f * (float)_level;
+        _attackInterval = 2f - 0.1f * (float)_level < 0.3 ? 0.3f : 2f - 0.1f * (float)_level;
         _maxHP = 100 + 50 * _level;
         _currentHP = _maxHP;
 

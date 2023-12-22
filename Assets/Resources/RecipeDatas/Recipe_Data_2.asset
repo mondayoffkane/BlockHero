@@ -75,7 +75,7 @@ MonoBehaviour:
   _baseAttackInterval: 1
   _baseSpeed: 5
   _baseHP: 10
-  _baseDefense: 5
+  _baseDefense: 1
   _damageValue: 5
   _attackIntervalValue: 0.1
   _speedValue: 2

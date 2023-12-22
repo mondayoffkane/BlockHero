@@ -116,7 +116,7 @@ public class BlockMachine : MonoBehaviour
 
     public void UpgradeMachine()
     {
-        Managers._stageManager.CalcMoney(_upgradePrices[_level]);
+        Managers._stageManager.CalcMoney(-_upgradePrices[_level]);
         _level++;
         ES3.Save<int>($"BlockMachine_{_machineNum}", _level);
         _spawnInterval = 6f - 1f * _level;
@@ -183,11 +183,14 @@ public class BlockMachine : MonoBehaviour
             if (Managers._stageManager._money >= _upgradePrices[_level])
             {
                 Managers._gameUi.BlockMachine_Upgrade_Button.interactable = true;
+                Managers._gameUi.BlockMachine_Upgrade_Price_Text.color = Color.white;
 
             }
             else
             {
                 Managers._gameUi.BlockMachine_Upgrade_Button.interactable = false;
+                Managers._gameUi.BlockMachine_Upgrade_Price_Text.color
+                    = Managers._gameUi.BlockMachine_Upgrade_Button.colors.disabledColor;
             }
         }
         else
@@ -196,6 +199,8 @@ public class BlockMachine : MonoBehaviour
             Managers._gameUi.BlockMachine_Status_Text.text = $"{_spawnInterval}s";
             Managers._gameUi.BlockMachine_UpgradeValue_Text.text = $"";
             Managers._gameUi.BlockMachine_Upgrade_Button.interactable = false;
+            Managers._gameUi.BlockMachine_Upgrade_Price_Text.color
+                    = Managers._gameUi.BlockMachine_Upgrade_Button.colors.disabledColor;
         }
     }
 

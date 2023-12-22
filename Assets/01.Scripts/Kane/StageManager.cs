@@ -50,6 +50,9 @@ public class StageManager : MonoBehaviour
 
     public Transform[] _PackPosGroups;
 
+    public Text _spawnCount_Text;
+
+    public int _maxSpawnCount = 10;
     // =================================================
 
 
@@ -73,6 +76,7 @@ public class StageManager : MonoBehaviour
         _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
         _factoryBuyButton.AddButtonEvent(() => AddHeroFactory());
 
+        _spawnCount_Text.text = $"{_spawnHeroList.Count}/{_maxSpawnCount}";
     }
 
 
@@ -138,14 +142,7 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            //ToBattle();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            //ToFactory();
-        }
+#if UNITY_EDITOR
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -156,59 +153,78 @@ public class StageManager : MonoBehaviour
         {
             CalcMoney(500d);
         }
-
+        // ================= Mouse ====================
         if (Input.GetMouseButtonDown(0))
         {
+            //Debug.Log("Mouse Down");
             if (!EventSystem.current.IsPointerOverGameObject())// 
             {
                 Managers._gameUi.ChangePanel(0);
-            }
-        }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-
-
-            Ray ray;
-            RaycastHit hit;
-
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            //Managers._gameUi.ChangePanel(0);
-
-            if (!EventSystem.current.IsPointerOverGameObject())// 
-            {
-
-
+                Ray ray;
+                RaycastHit hit;
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit))
                 {
                     Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
-
-
                     switch (hit.collider.tag)
                     {
                         case "BlockMachine":
-
                             _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
-
                             Managers._gameUi.ChangePanel(1);
                             Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
                             break;
-
                         case "HeroFactory":
                             _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
-
                             if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
-
                             Managers._gameUi.ChangePanel(2);
                             break;
                     }
-
-
                 }
+
             }
         }
+        //else if (Input.GetMouseButtonUp(0))
+        //{
+        //Debug.Log("Mouse Up");
+        //}
 
+
+#elif !UNITY_EDITOR
+
+        if (Input.touchCount > 0)
+        {
+            Touch _touch = Input.GetTouch(0);
+            if (_touch.phase == TouchPhase.Began)
+            {
+                if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
+                {
+                    Managers._gameUi.ChangePanel(0);
+                    Ray ray;
+                    RaycastHit hit;
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+                        switch (hit.collider.tag)
+                        {
+                            case "BlockMachine":
+                                _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+                                Managers._gameUi.ChangePanel(1);
+                                Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
+                                break;
+                            case "HeroFactory":
+                                _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
+                                if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
+                                Managers._gameUi.ChangePanel(2);
+                                break;
+                        }
+                    }
+                }
+
+            }
+        }
+#endif
     }
 
 
@@ -357,29 +373,29 @@ public class StageManager : MonoBehaviour
 
         switch (_blockMachineCount)
         {
-            case 2:
+            case 3:
                 _skinnedBlock[0].SetBlendShapeWeight(0, 100);
                 break;
 
-            case 4:
+            case 5:
                 _skinnedBlock[0].SetBlendShapeWeight(1, 100);
                 break;
 
-            case 6:
+            case 7:
                 _skinnedBlock[1].SetBlendShapeWeight(0, 100);
                 break;
 
-            case 8:
+            case 9:
                 _skinnedBlock[1].SetBlendShapeWeight(1, 100);
                 break;
-            case 10:
+            case 11:
                 _skinnedBlock[2].SetBlendShapeWeight(0, 100);
                 break;
 
-            case 12:
+            case 13:
                 _skinnedBlock[2].SetBlendShapeWeight(1, 100);
                 break;
-            case 14:
+            case 15:
                 _skinnedBlock[3].SetBlendShapeWeight(0, 100);
                 break;
 
@@ -513,8 +529,11 @@ public class StageManager : MonoBehaviour
 
         //Debug.Log(_heroPack.transform.position);
 
+        _spawnCount_Text.text = $"{_spawnHeroList.Count}/{_maxSpawnCount}";
+
+
     }
 
 
-
 }
+

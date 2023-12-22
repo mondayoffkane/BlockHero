@@ -23,6 +23,8 @@ public class UI_GameScene : UI_Scene
         Guage_Text,
         Boss_HP_Text,
         Boss_Level_Text,
+        Clear_Stage_Level_Text,
+        Fail_Stage_Level_Text,
     }
     enum Buttons
     {
@@ -124,6 +126,9 @@ public class UI_GameScene : UI_Scene
         Recipe_Status_Text_1,
         Recipe_Status_Text_2,
         Recipe_Status_Text_3
+         , Boss_Level_Text
+        , Clear_Stage_Level_Text,
+        Fail_Stage_Level_Text
         ;
 
     public Text[] _blockCountTexts = new Text[4];
@@ -260,6 +265,9 @@ public class UI_GameScene : UI_Scene
         Recipe_Status_Text_1 = GetText(Texts.Recipe_Status_Text_1);
         Recipe_Status_Text_2 = GetText(Texts.Recipe_Status_Text_2);
         Recipe_Status_Text_3 = GetText(Texts.Recipe_Status_Text_3);
+        Boss_Level_Text = GetText(Texts.Boss_Level_Text);
+        Clear_Stage_Level_Text = GetText(Texts.Clear_Stage_Level_Text);
+        Fail_Stage_Level_Text = GetText(Texts.Fail_Stage_Level_Text);
 
 
         for (int i = 0; i < 4; i++)
@@ -531,7 +539,7 @@ public class UI_GameScene : UI_Scene
 
     public void ChangePanel(int _num)
     {
-
+        //Debug.Log("Panel OnOff");
         PanelOnOff(FactoryBase_Panel, false);
         PanelOnOff(BlockMachine_Panel, false);
         PanelOnOff(HeroFactory_Panel, false);
@@ -580,16 +588,23 @@ public class UI_GameScene : UI_Scene
 
             case 3:
                 PanelOnOff(Battle_Panel, true);
+                Boss_Level_Text.text = $"Level {Managers._stageManager._bossLevel + 1}";
                 break;
 
             case 4:
                 PanelOnOff(Clear_Panel, true);
                 Clear_Claim_Button.transform.GetChild(1).GetComponent<Text>().text
                     = $"{/*(Managers._stageManager._bossLevel) **/ 100d}";
+
+                Clear_Stage_Level_Text.text = $"Stage{Managers._stageManager._bossLevel}";
+
+
+
                 break;
 
             case 5:
                 PanelOnOff(Fail_Panel, true);
+                Fail_Stage_Level_Text.text = $"Stage{Managers._stageManager._bossLevel}";
                 break;
         }
 

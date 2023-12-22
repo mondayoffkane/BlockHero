@@ -52,7 +52,7 @@ MonoBehaviour:
   _attackInterval: 1
   _maxHP: 10
   _currentHP: 10
-  _attackRange: 10
+  _attackRange: 20
   _enemyState: 0
   _target: {fileID: 0}
   _bullet_Pref: {fileID: 5125617038916957196, guid: 28829d7d0f5a140fc932760f0914dec2,

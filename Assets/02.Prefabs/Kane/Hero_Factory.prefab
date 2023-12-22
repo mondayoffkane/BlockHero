@@ -361,8 +361,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.1742244, y: 4.7476397, z: 4.644332}
-  m_Center: {x: 0, y: 2.2589817, z: 0}
+  m_Size: {x: 4.1879086, y: 3.4716256, z: 3.8161528}
+  m_Center: {x: 0.00000023841858, y: 1.6554259, z: 0.0027638674}
 --- !u!114 &1125926711530141149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,5 +395,6 @@ MonoBehaviour:
   _currentTime: 0
   _maxTime: 1
   isProduction: 0
-  _scale_1: {x: 1.05, y: 0.9, z: 1.05}
-  _scaleTime: 0.5
+  isResourceOn: 0
+  _scale_1: {x: 1.05, y: 0.9, z: 1}
+  _scaleTime: 0.4

@@ -77,9 +77,13 @@ public class HeroFactory : MonoBehaviour
 
                 if (_currentTime >= _maxTime)
                 {
-                    _currentTime = 0f;
+                    _currentTime = _maxTime;
+                    //_currentTime = 0f;
 
-                    SpawnHero();
+                    if (Managers._stageManager._spawnHeroList.Count < Managers._stageManager._maxSpawnCount)
+                    {
+                        SpawnHero();
+                    }
 
                 }
             }
@@ -262,7 +266,7 @@ public class HeroFactory : MonoBehaviour
 
     public void SpawnHero()
     {
-
+        _currentTime = 0f;
         for (int i = 0; i < _tempBlockList.Count; i++)
         {
             Managers._stageManager._blockStorage._blockCountArray[(int)_tempBlockList[i]]--;

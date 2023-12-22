@@ -97,7 +97,7 @@ public class Hero : MonoBehaviour
     {
         if (_heroState != HeroState.Dead)
         {
-            _currentHP -= _Damage;
+            _currentHP -= _Damage * (10f - _defense) * 0.1f;
             if (_currentHP <= 0)
             {
                 _currentHP = 0;

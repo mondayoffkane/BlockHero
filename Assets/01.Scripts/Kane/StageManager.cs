@@ -144,10 +144,40 @@ public class StageManager : MonoBehaviour
     {
         //#if UNITY_EDITOR
 
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    AddBlockMachine();
-        //}
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AddBlockMachine(false);
+        }
+
+        else if (Input.GetKeyDown(KeyCode.T))
+        {
+            for (int i = 0; i < _blockMachineList.Count; i++)
+            {
+                _blockMachineList[i]._level = 5;
+                _blockMachineList[i]._spawnInterval = 1f;
+
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            for (int i = 0; i < _blockMachineList.Count; i++)
+            {
+                _blockMachineList[i]._level = 5;
+                _blockMachineList[i]._spawnInterval = 1f;
+                _blockMachineList[i].gameObject.SetActive(false);
+                _blockMachineList[i].gameObject.SetActive(true);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            _railSpeed -= 0.05f;
+            if (_railSpeed < 0) _railSpeed = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            _railSpeed += 0.05f;
+        }
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {

@@ -64,11 +64,12 @@ public class BlockMachine : MonoBehaviour
 
         SetBlockType((int)_spawnBlockType);
 
-        LoadData();
+        //LoadData();
 
         StartCoroutine(Cor_Update());
 
-        transform.GetChild(1).SetParent(null);
+        if (transform.childCount > 1)
+            transform.GetChild(1).SetParent(null);
         //transform.DOScale(0.9f, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
 
         //StartCoroutine(Cor_Tween());

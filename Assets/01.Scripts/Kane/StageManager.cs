@@ -142,16 +142,21 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
+        //#if UNITY_EDITOR
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            AddBlockMachine();
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    AddBlockMachine();
+        //}
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CalcMoney(500d);
+            CalcMoney(1000d);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PlayerPrefs.DeleteAll();
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
         }
         // ================= Mouse ====================
         if (Input.GetMouseButtonDown(0))
@@ -189,7 +194,7 @@ public class StageManager : MonoBehaviour
         //Debug.Log("Mouse Up");
         //}
 
-
+#if UNITY_EDITOR
 #elif !UNITY_EDITOR
 
         if (Input.touchCount > 0)

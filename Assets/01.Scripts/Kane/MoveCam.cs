@@ -28,7 +28,7 @@ public class MoveCam : MonoBehaviour
 
     void Update()
     {
-#if UNITY_EDITOR
+        //#if UNITY_EDITOR
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -71,10 +71,10 @@ public class MoveCam : MonoBehaviour
         {
             transform.position -= new Vector3(0f, 0f, _moveSpeed * Time.deltaTime);
         }
+       
 
-
-
-#else
+#if UNITY_EDITOR
+#elif !UNITY_EDITOR
   if (Input.touchCount > 0)
         {
             Touch _touch = Input.GetTouch(0);

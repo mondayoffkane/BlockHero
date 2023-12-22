@@ -22,6 +22,7 @@ public class UI_GameScene : UI_Scene
         Recipe_Block_Count_Text,
         Guage_Text,
         Boss_HP_Text,
+        Boss_Level_Text,
     }
     enum Buttons
     {

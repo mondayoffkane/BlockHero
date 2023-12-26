@@ -30,14 +30,25 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
+    - AdvertyPlatformSpecific
+    - Amazon.Scripts
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
     - Coffee.UIParticle
+    - Everyday
+    - Everyday.Events
+    - Everyday.IAP
+    - Google.Play.Common
+    - Google.Play.Core
+    - Google.Play.Review
+    - JsonDotNet
     - LeTai.TrueShadow
     - Lofelt.NiceVibrations
+    - MaxSdk.Scripts
     - Nementic.SelectionUtility.Runtime
-    - Purchasing.Common
+    - PlayOn
+    - SingularSDK
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1

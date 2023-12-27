@@ -85,7 +85,7 @@ public class StageManager : MonoBehaviour
         _blockMachineCount = ES3.Load<int>("BlockMachineCount", 0);
         //Debug.Log(_blockMachineCount);
         _heroFactoryCount = ES3.Load<int>("HeroFactoryCount", 0);
-        _money = ES3.Load<double>("Money", 1000d);
+        _money = ES3.Load<double>("Money", 100d);
         _bossLevel = ES3.Load<int>("BossLevel", 0);
 
         CalcMoney(0);
@@ -142,7 +142,7 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        //#if UNITY_EDITOR
+#if UNITY_EDITOR
 
         //if (Input.GetKeyDown(KeyCode.E))
         //{
@@ -194,7 +194,7 @@ public class StageManager : MonoBehaviour
         //Debug.Log("Mouse Up");
         //}
 
-#if UNITY_EDITOR
+        //#if UNITY_EDITOR
 #elif !UNITY_EDITOR
 
         if (Input.touchCount > 0)

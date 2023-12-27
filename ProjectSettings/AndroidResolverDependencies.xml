@@ -15,20 +15,19 @@
     <package>com.android.support:support-v4:25.3.1</package>
     <package>com.applovin.mediation:adcolony-adapter:4.8.0.4</package>
     <package>com.applovin.mediation:amazon-tam-adapter:9.+@aar</package>
-    <package>com.applovin.mediation:bytedance-adapter:5.6.0.1.0</package>
+    <package>com.applovin.mediation:bytedance-adapter:5.5.0.7.0</package>
     <package>com.applovin.mediation:facebook-adapter:[6.16.0.2]</package>
     <package>com.applovin.mediation:fyber-adapter:8.2.4.0</package>
     <package>com.applovin.mediation:hyprmx-adapter:6.2.0.2</package>
-    <package>com.applovin.mediation:inmobi-adapter:10.6.2.0</package>
+    <package>com.applovin.mediation:inmobi-adapter:10.6.0.0</package>
     <package>com.applovin.mediation:ironsource-adapter:7.5.2.0.0</package>
-    <package>com.applovin.mediation:mintegral-adapter:16.5.61.0</package>
-    <package>com.applovin.mediation:mobilefuse-adapter:1.6.5.0</package>
-    <package>com.applovin.mediation:ogury-presage-adapter:5.6.2.0</package>
-    <package>com.applovin.mediation:smaato-adapter:22.5.0.0</package>
-    <package>com.applovin.mediation:unityads-adapter:4.9.2.0</package>
+    <package>com.applovin.mediation:mintegral-adapter:16.5.41.0</package>
+    <package>com.applovin.mediation:mobilefuse-adapter:1.6.4.0</package>
+    <package>com.applovin.mediation:ogury-presage-adapter:5.6.1.0</package>
+    <package>com.applovin.mediation:unityads-adapter:4.9.1.0</package>
     <package>com.applovin.mediation:verve-adapter:2.20.0.0</package>
-    <package>com.applovin.mediation:vungle-adapter:7.0.0.0</package>
-    <package>com.applovin:applovin-sdk:12.0.0</package>
+    <package>com.applovin.mediation:vungle-adapter:6.12.1.1</package>
+    <package>com.applovin:applovin-sdk:11.11.3</package>
     <package>com.facebook.android:facebook-applinks:[16.0.1,17)</package>
     <package>com.facebook.android:facebook-core:[16.0.1,17)</package>
     <package>com.facebook.android:facebook-gamingservices:[16.0.1,17)</package>
@@ -66,6 +65,6 @@
     <setting name="projectExportEnabled" value="False" />
     <setting name="useFullCustomMavenRepoPathWhenExport" value="True" />
     <setting name="useFullCustomMavenRepoPathWhenNotExport" value="False" />
-    <setting name="useJetifier" value="False" />
+    <setting name="useJetifier" value="True" />
   </settings>
 </dependencies>

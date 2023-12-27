@@ -28,7 +28,7 @@ public class MoveCam : MonoBehaviour
 
     void Update()
     {
-        //#if UNITY_EDITOR
+#if UNITY_EDITOR
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -73,7 +73,7 @@ public class MoveCam : MonoBehaviour
         }
        
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 #elif !UNITY_EDITOR
   if (Input.touchCount > 0)
         {

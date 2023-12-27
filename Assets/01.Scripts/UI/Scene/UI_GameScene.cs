@@ -64,6 +64,7 @@ public class UI_GameScene : UI_Scene
         Battle_Panel,
         Clear_Panel,
         Fail_Panel,
+        MaskImg,
     }
     // ======================================================
 
@@ -81,6 +82,7 @@ public class UI_GameScene : UI_Scene
         , Guage_Empty
         , BluePrint_Img_Group
         , BlockCount_Group
+        , MaskImg
         ;
     //Recipe_RawImage;
 
@@ -177,7 +179,7 @@ public class UI_GameScene : UI_Scene
         Guage_Empty = GetObject(GameObjects.Guage_Empty);
         BluePrint_Img_Group = GetObject(GameObjects.BluePrint_Img_Group);
         BlockCount_Group = GetObject(GameObjects.BlockCount_Group);
-
+        MaskImg = GetObject(GameObjects.MaskImg);
 
 
         // ========= Buttons

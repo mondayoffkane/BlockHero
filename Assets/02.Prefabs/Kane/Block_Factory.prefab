@@ -893,7 +893,7 @@ MonoBehaviour:
   _spawnBlockType: 0
   _blockPref: {fileID: 7286330375840144761, guid: ae8e5515a34184c6b9e126baffd4e417,
     type: 3}
-  _spawnInterval: 5
+  _spawnInterval: 1
   _currentBlock: {fileID: 0}
   _connectMeshfilter: {fileID: 0}
   _connectMesh: {fileID: 0}

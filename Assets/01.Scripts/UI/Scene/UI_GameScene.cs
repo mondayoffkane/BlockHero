@@ -42,7 +42,6 @@ public class UI_GameScene : UI_Scene
         Undo_Button,
         Clear_Claim_Button,
         Fail_ToFactory_Button,
-        Rail_Button,
     }
     enum Images
     {
@@ -100,8 +99,6 @@ public class UI_GameScene : UI_Scene
         , AddBlockMachine_Button,
         AddHeroFactory_Button
         , Stop_Hero_Button
-        , Rail_Button
-
 
         ;
 
@@ -218,9 +215,6 @@ public class UI_GameScene : UI_Scene
         AddBlockMachine_Button = GetButton(Buttons.AddBlockMachine_Button);
         AddHeroFactory_Button = GetButton(Buttons.AddHeroFactory_Button);
         Stop_Hero_Button = GetButton(Buttons.Stop_Hero_Button);
-        Rail_Button = GetButton(Buttons.Rail_Button);
-
-
 
         // ========= Img
         Recipe_RawImage = GetObject(GameObjects.Recipe_RawImage).GetComponent<RawImage>();
@@ -363,12 +357,7 @@ public class UI_GameScene : UI_Scene
             Managers._stageManager.MakeHero(false);
             MakeButtonOnOff();
         });
-        Rail_Button.AddButtonEvent(() =>
-        {
-            Managers._stageManager._railSpeed -= 0.05f;
-            if (Managers._stageManager._railSpeed < 0)
-                Managers._stageManager._railSpeed = 0f;
-        });
+
     }
 
     // ====================================================

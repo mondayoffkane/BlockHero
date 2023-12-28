@@ -16,27 +16,7 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("BlockMachine")] public double[] _blockMachine_Prices = new double[8];
 
 
-    [FoldoutGroup("HeroFactory")] public BlockStorage _blockStorage;
-    [FoldoutGroup("HeroFactory")] public List<HeroFactory> _heroFactoryList = new List<HeroFactory>();
-    [FoldoutGroup("HeroFactory")] public HeroFactory _selectHeroFactory;
-    [FoldoutGroup("HeroFactory")] public Transform _recipeModelGroup;
-    //[FoldoutGroup("HeroFactory")] public Recipe_Model[] _recipeModels;
-    //[FoldoutGroup("HeroFactory")] public Recipe_Model _selectModel;
-    [FoldoutGroup("HeroFactory")] public int _heroFactoryCount;
-    [FoldoutGroup("HeroFactory")] public double[] _heroFactory_Prices = new double[9];
 
-
-
-    //[FoldoutGroup("Battle")] public GameObject _battleCam;
-    [FoldoutGroup("Battle")] public List<Hero> _spawnHeroList = new List<Hero>();
-    [FoldoutGroup("Battle")] public List<Hero> _heroBattleList = new List<Hero>();
-    [FoldoutGroup("Battle")] public Transform _heroSpawnPoint;
-    [FoldoutGroup("Battle")] public Enemy _bossEnemy;
-    [FoldoutGroup("Battle")] public Transform _enemySpawnPoint;
-    [FoldoutGroup("Battle")] public int _bossLevel;
-
-    //[FoldoutGroup("Stage")] public StageData _currentStage;
-    [FoldoutGroup("Stage")] public GameObject[] _bossList;
     [FoldoutGroup("Stage")] public double _money = 1000d;
 
     public GameObject[] _cams;
@@ -44,15 +24,15 @@ public class StageManager : MonoBehaviour
     Button _machineBuyButton;
     Text _machinePriceText;
 
-    public GameObject _factoryCanvas;
-    Button _factoryBuyButton;
-    Text _factoryPriceText;
-
     public Transform[] _PackPosGroups;
 
-    public Text _spawnCount_Text;
+
 
     public int _maxSpawnCount = 10;
+
+    public BlockStorage _blockStorage;
+    public VillageManager _villageManager;
+
     // =================================================
 
 
@@ -62,37 +42,32 @@ public class StageManager : MonoBehaviour
     {
         Managers._stageManager = this;
 
-        int _count = _recipeModelGroup.childCount;
-        //_recipeModels = new Recipe_Model[_count];
-        //for (int i = 0; i < _count; i++)
-        //{
-        //    _recipeModels[i] = _recipeModelGroup.GetChild(i).GetComponent<Recipe_Model>();
-        //}
+
 
         Managers._gameUi.ChangePanel(0);
 
         LoadData();
 
         _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
-        _factoryBuyButton.AddButtonEvent(() => AddHeroFactory());
 
-        _spawnCount_Text.text = $"{_spawnHeroList.Count}/{_maxSpawnCount}";
+
+
     }
 
 
     public void LoadData()
     {
         _blockMachineCount = ES3.Load<int>("BlockMachineCount", 0);
-        //Debug.Log(_blockMachineCount);
-        _heroFactoryCount = ES3.Load<int>("HeroFactoryCount", 0);
+
+
         _money = ES3.Load<double>("Money", 100d);
-        _bossLevel = ES3.Load<int>("BossLevel", 0);
+
 
         CalcMoney(0);
 
         for (int i = 0; i < _blockMachineCount; i++)
         {
-            //AddBlockMachine(false);
+
             _blockMachineList[i].gameObject.SetActive(true);
 
             switch (i)
@@ -129,13 +104,7 @@ public class StageManager : MonoBehaviour
 
         }
 
-        for (int i = 0; i < _heroFactoryCount; i++)
-        {
-            //AddHeroFactory(false);
 
-            _heroFactoryList[i].gameObject.SetActive(true);
-
-        }
 
     }
 
@@ -164,7 +133,7 @@ public class StageManager : MonoBehaviour
             //Debug.Log("Mouse Down");
             if (!EventSystem.current.IsPointerOverGameObject())// 
             {
-                Managers._gameUi.ChangePanel(0);
+                //Managers._gameUi.ChangePanel(0);
 
                 Ray ray;
                 RaycastHit hit;
@@ -179,11 +148,7 @@ public class StageManager : MonoBehaviour
                             Managers._gameUi.ChangePanel(1);
                             Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
                             break;
-                        case "HeroFactory":
-                            _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
-                            if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
-                            Managers._gameUi.ChangePanel(2);
-                            break;
+
                     }
                 }
 
@@ -238,130 +203,10 @@ public class StageManager : MonoBehaviour
 
     // ==================================================================
 
-    public void SelectRecipe(int _num)
-    {
-        //_selectModel = _recipeModels[_num];
-
-        //Managers._gameUi.ChangeRecipe(_num, _selectModel);
-        //Managers._gameUi.SetColorImg(_selectModel);
-        _selectHeroFactory.SetRecipe(_num);
-
-    }
-
-    public void SelectModelSetColor(int _num)
-    {
-        //_selectModel.SetColor(_num);
-        _selectHeroFactory.SetColor(_num);
-    }
-
-    public void SelectModelUndoColor()
-    {
-        //_selectModel.UndoColor();
-        _selectHeroFactory.UndoColor();
-    }
-
-    public void SelectModelReset()
-    {
-        //_selectModel.Reset();
-        //_selectHeroFactory.SetRecipe(_selectModel);
-    }
-
-    public void MakeHero(bool isBool)
-    {
-        _selectHeroFactory.MakeHeroOnOff(isBool);
-
-        //Managers._gameUi.Make_Hero_Button.gameObject.SetActive(isBool);
-        //Managers._gameUi.Stop_Hero_Button.gameObject.SetActive(!isBool);
-
-
-    }
-
-    //public void FactoryCheckButtons()
-    //{
-    //    if (_selectHeroFactory != null)
-    //    {
-
-    //        Managers._gameUi.MakeButtonOnOff(
-    //            _selectHeroFactory._currentParts_Num > _selectHeroFactory._partsCount - 1 ? true : false);
 
 
 
-    //        Managers._gameUi.Recipe_Block_Count_Text.text = $"X {_selectHeroFactory._partsCount}";
 
-
-    //    }
-
-
-    //}
-
-
-    public void ToBattle()
-    {
-        Managers._gameUi.ChangePanel(3);
-        //_battleCam.SetActive(true);
-        ChangeCam(2, 0);
-        _bossEnemy = Managers.Pool.Pop(_bossList[_bossLevel % 2]).GetComponent<Boss>();
-        //_bossEnemy.SetInit(_currentStage._stageLevel);
-        _bossEnemy.SetInit(_bossLevel);
-        _bossEnemy.transform.position = _enemySpawnPoint.position;
-        _bossEnemy.transform.rotation = Quaternion.Euler(Vector3.up * 180f);
-        _bossEnemy.Fight();
-
-        _heroBattleList = new List<Hero>(_spawnHeroList);
-        _spawnHeroList.Clear();
-
-        for (int i = 0; i < _heroBattleList.Count; i++)
-        {
-            _heroBattleList[i].transform.position = _heroSpawnPoint.position + new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-2f, -5f));
-            _heroBattleList[i].Fight();
-            _heroBattleList[i].transform.SetParent(null);
-            //_spawnHeroList
-        }
-
-
-    }
-
-    public void ToFactory()
-    {
-        Managers._gameUi.ChangePanel(0);
-
-
-        //_battleCam.SetActive(false);
-        ChangeCam(0, 0);
-
-        if (_bossEnemy != null) Managers.Pool.Push(_bossEnemy.GetComponent<Poolable>());
-
-
-        if (_heroBattleList.Count > 0)
-        {
-
-            int _count = _heroBattleList.Count;
-            for (int i = 0; i < _count; i++)
-            {
-                var _obj = _heroBattleList[0];
-                _heroBattleList.Remove(_obj);
-                Managers.Pool.Push(_obj.GetComponent<Poolable>());
-            }
-            //_spawnHeroList.Clear();
-        }
-
-
-    }
-
-
-    public void Battle_Clear()
-    {
-        _bossLevel++;
-        ES3.Save<int>("BossLevel", _bossLevel);
-
-        this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(4));
-
-    }
-    public void Battle_Fail()
-    {
-
-        this.TaskDelay(2f, () => Managers._gameUi.ChangePanel(5));
-    }
 
 
     public void AddBlockMachine(bool isPay = true)
@@ -409,20 +254,6 @@ public class StageManager : MonoBehaviour
         CheckMoney();
     }
 
-    public void AddHeroFactory(bool isPay = true)
-    {
-
-        if (isPay)
-        {
-            CalcMoney(-_heroFactory_Prices[_heroFactoryCount]);
-        }
-        _heroFactoryList[_heroFactoryCount].gameObject.SetActive(true);
-
-        _heroFactoryCount++;
-        CheckMoney();
-        ES3.Save<int>("HeroFactoryCount", _heroFactoryCount);
-
-    }
 
 
     public void CalcMoney(double _value)
@@ -467,33 +298,9 @@ public class StageManager : MonoBehaviour
         }
 
         // ==== Factory Check ============== 
-        if (_factoryPriceText == null)
-        {
-            _factoryBuyButton = _factoryCanvas.transform.GetChild(1).GetComponent<Button>();
-            _factoryPriceText = _factoryBuyButton.transform.Find("FactoryPriceText").GetComponent<Text>();
-        }
 
-        if (_heroFactoryCount < _heroFactoryList.Count)
-        {
-            _factoryCanvas.SetActive(true);
-            _factoryCanvas.transform.position = _heroFactoryList[_heroFactoryCount].transform.position + Vector3.up * 0.05f;
-            if (_money >= _heroFactory_Prices[_heroFactoryCount])
-            {
-                _factoryBuyButton.interactable = true;
-                _factoryPriceText.text = $"{_heroFactory_Prices[_heroFactoryCount]}";
-                _factoryPriceText.color = Color.white;
-            }
-            else
-            {
-                _factoryBuyButton.interactable = false;
-                _factoryPriceText.text = $"{_heroFactory_Prices[_heroFactoryCount]}";
-                _factoryPriceText.color = _factoryBuyButton.colors.disabledColor;
-            }
-        }
-        else
-        {
-            _factoryCanvas.SetActive(false);
-        }
+
+
 
 
 
@@ -521,20 +328,6 @@ public class StageManager : MonoBehaviour
             //_cams[i].SetActive(false);
         }
 
-
-
-    }
-
-    public void SetPackPos(Hero _heroPack)
-    {
-        int _num = (int)_heroPack._heroType;
-
-        _heroPack.transform.SetParent(_PackPosGroups[_num]);
-        _heroPack.transform.localPosition = new Vector3(0f, 1f + (_PackPosGroups[_num].childCount - 1) * 2f, 0f);
-
-        //Debug.Log(_heroPack.transform.position);
-
-        _spawnCount_Text.text = $"{_spawnHeroList.Count}/{_maxSpawnCount}";
 
 
     }

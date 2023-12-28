@@ -86,6 +86,7 @@ public class BlockStorage : MonoBehaviour
     public void Floating_Text(int _num)
     {
         Transform _floatingTrans = Managers.Pool.Pop(_floating_Pref, _floating_Group).GetComponent<Transform>();
+        _floatingTrans.localScale = Vector3.one * 0.01f;
         _floatingTrans.SetAsFirstSibling();
 
         //Debug.Log("Spawn Floating");

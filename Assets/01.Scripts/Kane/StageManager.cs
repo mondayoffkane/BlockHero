@@ -5,6 +5,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class StageManager : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("BlockMachine")] public int _blockMachineCount;
     [FoldoutGroup("BlockMachine")] public double[] _blockMachine_Prices = new double[8];
 
+    [FoldoutGroup("Vehicle")] public int _vehicle_Spawn_Level = 0;
+    [FoldoutGroup("Vehicle")] public int _vehicle_Capacity_Level = 0;
+    [FoldoutGroup("Vehicle")] public int _vehicle_Speed_Level = 0;
+    [FoldoutGroup("Vehicle")] public List<Vehicle> _vehicleList = new List<Vehicle>();
 
 
     [FoldoutGroup("Stage")] public double _money = 1000d;
@@ -42,9 +47,10 @@ public class StageManager : MonoBehaviour
     {
         Managers._stageManager = this;
 
-
-
         Managers._gameUi.ChangePanel(0);
+
+
+        _vehicleList = new List<Vehicle>();
 
         LoadData();
 
@@ -67,7 +73,6 @@ public class StageManager : MonoBehaviour
 
         for (int i = 0; i < _blockMachineCount; i++)
         {
-
             _blockMachineList[i].gameObject.SetActive(true);
 
             switch (i)
@@ -98,25 +103,38 @@ public class StageManager : MonoBehaviour
                     _skinnedBlock[3].SetBlendShapeWeight(0, 100);
                     break;
 
-
             }
 
 
         }
 
+        // Vehicl
+        _vehicle_Spawn_Level = ES3.Load<int>("Vehicle_Spawn_Level", 0);
+        _vehicle_Speed_Level = ES3.Load<int>("Vehicle_Speed_Level", 0);
+        _vehicle_Capacity_Level = ES3.Load<int>("Vehicle_Capacity_Level", 0);
 
+        for (int i = 0; i < _vehicle_Spawn_Level; i++)
+        {
+            AddVehicle();
+        }
+        AllVehicleSetLevel();
 
     }
+    public void SaveData()
+    {
+        ES3.Save<int>("Vehicle_Spawn_Level", _vehicle_Spawn_Level);
+        ES3.Save<int>("Vehicle_Speed_Level", _vehicle_Speed_Level);
+        ES3.Save<int>("Vehicle_Capacity_Level", _vehicle_Capacity_Level);
+        ES3.Save<double>("Money", _money);
+        ES3.Save<int>("BlockMachineCount", _blockMachineCount);
+    }
+
 
 
     private void Update()
     {
 #if UNITY_EDITOR
 
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    AddBlockMachine();
-        //}
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -315,7 +333,7 @@ public class StageManager : MonoBehaviour
 
     }
 
-    public void ChangeCam(int _num, float _time = 1f)
+    public void ChangeCam(int _num, float _time = 0.5f)
     {
         for (int i = 0; i < _cams.Length; i++)
         {
@@ -330,6 +348,51 @@ public class StageManager : MonoBehaviour
 
 
 
+    }
+
+    public void AddVehicle()
+    {
+        NavMeshAgent _vehicle = Managers.Pool.Pop(_villageManager._vehicl_Pref).GetComponent<NavMeshAgent>();
+        _vehicle.Warp(_blockStorage.transform.position);
+
+        Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
+        _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
+
+        _vehicleList.Add(_newVehicle);
+
+        _vehicle_Spawn_Level++;
+
+
+    }
+
+    [Button]
+    public void AllVehicleSetLevel()
+    {
+        for (int i = 0; i < _vehicleList.Count; i++)
+        {
+            _vehicleList[i].SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
+        }
+    }
+
+
+    public void VehicleUpgarde(int _num)
+    {
+        switch (_num)
+        {
+            case 0:
+                _vehicle_Spawn_Level++;
+                break;
+
+            case 1:
+                _vehicle_Speed_Level++;
+                break;
+
+            case 2:
+                _vehicle_Capacity_Level++;
+                break;
+        }
+
+        SaveData();
     }
 
 

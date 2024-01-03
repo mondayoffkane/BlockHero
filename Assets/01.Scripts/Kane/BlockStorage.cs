@@ -87,7 +87,7 @@ public class BlockStorage : MonoBehaviour
     {
         Transform _floatingTrans = Managers.Pool.Pop(_floating_Pref, _floating_Group).GetComponent<Transform>();
         _floatingTrans.localScale = Vector3.one * 0.01f;
-        _floatingTrans.SetAsFirstSibling();
+        _floatingTrans.SetAsLastSibling();
 
         //Debug.Log("Spawn Floating");
         //UnityEditor.EditorApplication.isPaused = true;
@@ -102,8 +102,6 @@ public class BlockStorage : MonoBehaviour
 
         _floatingTrans.DOLocalMoveZ(1f, 1f).SetEase(Ease.OutCirc)
             .OnComplete(() => Managers.Pool.Push(_floatingTrans.GetComponent<Poolable>()));
-
-
 
     }
 

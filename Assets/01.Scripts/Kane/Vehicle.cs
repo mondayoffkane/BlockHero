@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using UnityEngine.UI;
 
 
 using Sirenix.OdinInspector;
 
 public class Vehicle : MonoBehaviour
 {
+
+
     public GameObject _blockPref;
 
     public enum State
@@ -22,6 +25,9 @@ public class Vehicle : MonoBehaviour
     public State _state;
     public Block.BlockType _blockType;
 
+    public int _speed_Level = 0;
+    public int _capacity_Level = 0;
+
     public int _maxCount = 10;
     public int _currentCount;
 
@@ -30,12 +36,19 @@ public class Vehicle : MonoBehaviour
     //
 
 
+    public GameObject _floating_Text_Pref;
+    public Transform _floating_Group;
+
+
     NavMeshAgent _agent;
     public Transform _target;
 
-    public BlockStorage _blockStorage;
-    public VillageManager _villagemanager;
+    public Mesh[] _meshes;
 
+
+    BlockStorage _blockStorage;
+    VillageManager _villagemanager;
+    MeshFilter _boxMeshFilter;
     // =====================================
 
 
@@ -47,6 +60,19 @@ public class Vehicle : MonoBehaviour
         StartCoroutine(Cor_Update());
 
         if (_agent == null) _agent = transform.GetComponent<NavMeshAgent>();
+        _boxMeshFilter = transform.GetChild(0).GetComponent<MeshFilter>();
+
+
+        if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
+
+        if (_floating_Group == null) _floating_Group = Instantiate(new GameObject("Floating_Text_Group")).transform;
+        _floating_Group.transform.SetParent(transform);
+        _floating_Group.transform.localPosition = Vector3.zero;
+        _floating_Group.rotation = Quaternion.Euler(Vector3.zero);
+        _floating_Group.SetAsLastSibling();
+
+
+
     }
 
     IEnumerator Cor_Update()
@@ -67,13 +93,16 @@ public class Vehicle : MonoBehaviour
                     {
                         if (_currentCount == 0)
                         {
-                            _target = _villagemanager.FindBuilding();
-
-                            PullBlock();
-                            if (_currentCount > 0)
-                                SetDest(_target);
-
                             yield return new WaitForSeconds(1f);
+                            _target = _villagemanager.FindBuilding();
+                            PullBlock();
+
+                            if (_currentCount > 0)
+                            {
+                                _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
+                                SetDest(_target);
+                            }
+
                         }
                         else
                         {
@@ -86,16 +115,15 @@ public class Vehicle : MonoBehaviour
                                 yield return new WaitForSeconds(0.2f);
 
                             }
+                            yield return new WaitForSeconds(1f);
 
-
-                            _target = _blockStorage.transform;
+                            _target = _blockStorage.transform.Find("In_Pos");
                             SetDest(_target);
 
                         }
                     }
                     break;
-                ////case State.PickUp:                    
-                //    break;
+
                 case State.PickDown:
                     break;
 
@@ -111,7 +139,7 @@ public class Vehicle : MonoBehaviour
 
     public void PullBlock()
     {
-        Debug.Log("Pull Block");
+
         Building _building = _target.GetComponent<Building>();
         int _blockTypeNum = -1;
         for (int i = 0; i < _building._blockArray.Length; i++)
@@ -126,6 +154,7 @@ public class Vehicle : MonoBehaviour
         if (_blockTypeNum == -1) _blockTypeNum = Random.Range(0, 4);
 
         _blockType = (Block.BlockType)_blockTypeNum;
+        _boxMeshFilter.sharedMesh = _meshes[(int)_blockType];
 
         if (_blockStorage._blockCountArray[_blockTypeNum] >= _maxCount)
         {
@@ -146,25 +175,58 @@ public class Vehicle : MonoBehaviour
     {
         Transform _block = Managers.Pool.Pop(_blockPref, transform).transform;
         _block.transform.localPosition = Vector3.zero;
+        _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
 
         _target.GetComponent<Building>()._blockArray[(int)_blockType]--;
         _currentCount--;
 
         _block.DOJump(_target.transform.position, 5f, 1, 0.3f).SetEase(Ease.Linear)
-            .Join(_block.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear));
+            .Join(_block.DOScale(Vector3.one * 0.5f, 0.5f).SetEase(Ease.Linear))
+            .OnComplete(() =>
+            {
+                Managers.Pool.Push(_block.GetComponent<Poolable>());
+
+                Floating_Text(1);
+                Managers._stageManager.CalcMoney(1);
+            });
         _target.GetComponent<Building>().CheckBuild();
     }
 
 
 
 
+    public void Floating_Text(double _num)
+    {
+        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, _floating_Group).GetComponent<Transform>();
+        _floatingTrans.localScale = Vector3.one * 0.015f;
+        _floatingTrans.SetAsLastSibling();
+        _floatingTrans.GetChild(0).GetComponent<Text>().text = $"${_num}";
+        _floatingTrans.rotation = Quaternion.Euler(new Vector3(10f, 0f, 0f));
 
 
 
+        _floatingTrans.localPosition = new Vector3(0f, 2f, 0f);
+
+        _floatingTrans.DOLocalMoveY(4f, 1f).SetEase(Ease.OutCirc)
+            .OnComplete(() => Managers.Pool.Push(_floatingTrans.GetComponent<Poolable>()));
+
+    }
 
 
 
+    public void SetLevel(int _SpdLevel, int _CapLevel)
+    {
+        if (_agent == null) _agent = transform.GetComponent<NavMeshAgent>();
 
+        _speed_Level = _SpdLevel;
+        _capacity_Level = _CapLevel;
+
+
+        _agent.speed = 2f + 0.5f * _speed_Level;
+        _maxCount = 2 + 2 * _capacity_Level;
+
+
+    }
 
 
 

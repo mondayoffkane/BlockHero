@@ -13,7 +13,7 @@ public class BlockMachine : MonoBehaviour
 
     [FoldoutGroup("BlockMachine")] public Block.BlockType _spawnBlockType;
     [FoldoutGroup("BlockMachine")] public GameObject _blockPref;
-  
+
     [FoldoutGroup("BlockMachine")] public float _spawnInterval = 1f;
 
     [FoldoutGroup("BlockMachine")] public Transform _currentBlock;
@@ -36,13 +36,13 @@ public class BlockMachine : MonoBehaviour
 
 
     // =======private ============
- 
+
 
     // =======================================
     private void OnEnable()
     {
         if (_blockPref == null) Resources.Load<GameObject>("Block_Pref");
-    
+
         _factoryTop_Obj = transform.Find("Top_Obj");
         _topMeshfilter = _factoryTop_Obj.GetComponent<MeshFilter>();
         _bodyMeshfilter = transform.GetComponent<MeshFilter>();
@@ -57,8 +57,8 @@ public class BlockMachine : MonoBehaviour
 
         StartCoroutine(Cor_Update());
 
-        transform.GetChild(1).SetParent(null);
- 
+        transform.GetChild(1).SetParent(Managers._stageManager.transform.Find("3.RailGroup"));
+
     }
 
 
@@ -74,7 +74,7 @@ public class BlockMachine : MonoBehaviour
     {
         _spawnBlockType = (Block.BlockType)_num;
 
-    
+
         _topMeshfilter.sharedMesh = _topMeshes[_num];
         _bodyMeshfilter.sharedMesh = _bodyMeshes[_num];
 
@@ -116,6 +116,7 @@ public class BlockMachine : MonoBehaviour
         {
             Block _block = Managers.Pool.Pop(_blockPref).GetComponent<Block>();
             _block.SetInit(_spawnBlockType);
+            _block.transform.SetParent(Managers._stageManager.transform.Find("2.BlockPool"));
 
             _block.transform.position = transform.position + Vector3.up * 0.5f;
 

@@ -6,6 +6,7 @@ public class VillageManager : MonoBehaviour
 {
 
     public int _villageLevel = 0;
+    public GameObject _vehicl_Pref;
 
 
     public List<Building> _buildingList = new List<Building>();

@@ -14,20 +14,13 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Upgrade_Price_Text,
         BlockMachine_Status_Text,
         BlockMachine_UpgradeValue_Text,
-
     }
     enum Buttons
     {
-        Battle_Button,
-        AddBlockMachine_Button,
         ViewChange_Button,
+        AddCar_Button,
         BlockMachine_Close_Button,
         BlockMachine_Upgrade_Button,
-
-    }
-    enum Images
-    {
-
     }
     enum GameObjects
     {
@@ -52,6 +45,7 @@ public class UI_GameScene : UI_Scene
          BlockMachine_Close_Button
         , BlockMachine_Upgrade_Button
         , ViewChange_Button
+        , AddCar_Button
 
         ;
 
@@ -86,7 +80,6 @@ public class UI_GameScene : UI_Scene
     {
         Bind<UnityEngine.UI.Text>(typeof(Texts));
         Bind<UnityEngine.UI.Button>(typeof(Buttons));
-        Bind<UnityEngine.UI.Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
         ColorUtility.TryParseHtmlString("#4F9BCD", out _color);
 
@@ -121,7 +114,7 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Close_Button = GetButton(Buttons.BlockMachine_Close_Button);
         BlockMachine_Upgrade_Button = GetButton(Buttons.BlockMachine_Upgrade_Button);
         ViewChange_Button = GetButton(Buttons.ViewChange_Button);
-
+        AddCar_Button = GetButton(Buttons.AddCar_Button);
 
 
 
@@ -179,11 +172,14 @@ public class UI_GameScene : UI_Scene
 
         ViewChange_Button.AddButtonEvent(() =>
         {
-            if (Managers._stageManager._cams[0].activeSelf) Managers._stageManager.ChangeCam(1, 1f);
-            else Managers._stageManager.ChangeCam(0, 1f);
+            if (Managers._stageManager._cams[0].activeSelf) Managers._stageManager.ChangeCam(1);
+            else Managers._stageManager.ChangeCam(0);
         });
 
-
+        AddCar_Button.AddButtonEvent(() =>
+        {
+            Managers._stageManager.AddVehicle();
+        });
 
 
 

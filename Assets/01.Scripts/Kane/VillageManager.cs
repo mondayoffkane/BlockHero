@@ -18,10 +18,30 @@ public class VillageManager : MonoBehaviour
     public bool _villageComplete = false;
 
 
+    public Transform[] AreaGroups;
+
+
+
+    // ==================================
+
+    private void OnEnable()
+    {
+        int _count = transform.Find("MapAreaGroup").childCount;
+        AreaGroups = new Transform[_count];
+
+        for (int i = 0; i < _count; i++)
+        {
+            AreaGroups[i] = transform.Find("MapAreaGroup").GetChild(i);
+        }
+    }
+
 
     public void CompleteBuild()
     {
         _completeCount++;
+        if (_completeCount < _buildingList.Count)
+            _buildingList[_completeCount].SetCanvas();
+
         if (_completeCount >= _buildingCount)
         {
             _villageComplete = true;

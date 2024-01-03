@@ -10,7 +10,8 @@ using Sirenix.OdinInspector;
 
 public class Vehicle : MonoBehaviour
 {
-
+    public Vector3 _scale = new Vector3(0.9f, 1.1f, 0.9f);
+    public float _scaleTime = 0.5f;
 
     public GameObject _blockPref;
 
@@ -72,6 +73,7 @@ public class Vehicle : MonoBehaviour
         _floating_Group.SetAsLastSibling();
 
 
+        DOTween.Sequence().Append(transform.DOScale(_scale, _scaleTime)).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
 
     }
 
@@ -142,16 +144,19 @@ public class Vehicle : MonoBehaviour
 
         Building _building = _target.GetComponent<Building>();
         int _blockTypeNum = -1;
-        for (int i = 0; i < _building._blockArray.Length; i++)
-        {
-            if (_building._blockArray[i] > 0)
-            {
-                _blockTypeNum = i;
-                break;
-            }
-        }
+        //for (int i = 0; i < _building._blockArray.Length; i++)
+        //{
+        //    if (_building._blockArray[i] > 0)
+        //    {
+        //        _blockTypeNum = i;
+        //        break;
+        //    }
+        //}
 
-        if (_blockTypeNum == -1) _blockTypeNum = Random.Range(0, 4);
+        //if (_blockTypeNum == -1) _blockTypeNum = Random.Range(0, 4);
+
+        _blockTypeNum = (int)_building._blockType;
+
 
         _blockType = (Block.BlockType)_blockTypeNum;
         _boxMeshFilter.sharedMesh = _meshes[(int)_blockType];
@@ -177,7 +182,8 @@ public class Vehicle : MonoBehaviour
         _block.transform.localPosition = Vector3.zero;
         _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
 
-        _target.GetComponent<Building>()._blockArray[(int)_blockType]--;
+        //_target.GetComponent<Building>()._blockArray[(int)_blockType]--;
+        _target.GetComponent<Building>().PushBlock();
         _currentCount--;
 
         _block.DOJump(_target.transform.position, 5f, 1, 0.3f).SetEase(Ease.Linear)

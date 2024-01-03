@@ -353,7 +353,7 @@ public class StageManager : MonoBehaviour
     public void AddVehicle()
     {
         NavMeshAgent _vehicle = Managers.Pool.Pop(_villageManager._vehicl_Pref).GetComponent<NavMeshAgent>();
-        _vehicle.Warp(_blockStorage.transform.position);
+        _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
 
         Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
         _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);

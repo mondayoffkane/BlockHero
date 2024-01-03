@@ -2543,6 +2543,7 @@ MonoBehaviour:
   BlockMachine_Close_Button: {fileID: 0}
   BlockMachine_Upgrade_Button: {fileID: 0}
   ViewChange_Button: {fileID: 0}
+  AddCar_Button: {fileID: 0}
   _blockMachineColorButtons:
   - {fileID: 0}
   - {fileID: 0}
@@ -3136,7 +3137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5284416459134043651
 RectTransform:
   m_ObjectHideFlags: 0

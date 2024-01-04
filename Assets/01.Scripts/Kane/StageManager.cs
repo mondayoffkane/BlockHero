@@ -51,6 +51,7 @@ public class StageManager : MonoBehaviour
 
 
     UI_GameScene _gameUi;
+    Color _redColor;
     // =================================================
 
 
@@ -58,6 +59,12 @@ public class StageManager : MonoBehaviour
 
     private void OnEnable()
     {
+
+        ColorUtility.TryParseHtmlString("#FF4D00", out _redColor);
+
+
+
+
         Managers._stageManager = this;
 
         Managers._gameUi.ChangePanel(0);
@@ -457,14 +464,20 @@ public class StageManager : MonoBehaviour
             {
                 _gameUi._scrollUpgButtons[0].interactable = false;
                 _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
-                _gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
-                    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
+                    = _redColor; //= _gameUi._scrollUpgButtons[0].colors.disabledColor;
+                //_gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
+                //    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
             }
         }
         else
         {
-            _gameUi._scrollUpgContent[0].SetActive(false);
+            //_gameUi._scrollUpgContent[0].SetActive(false);
+            _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[0].interactable = false;
+            //_gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+            //    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
+            //_gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
+            //    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
         }
         // ============
 
@@ -485,14 +498,20 @@ public class StageManager : MonoBehaviour
             {
                 _gameUi._scrollUpgButtons[1].interactable = false;
                 _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
-                _gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
-                    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
+                    = _redColor;//= _gameUi._scrollUpgButtons[1].colors.disabledColor;
+                //_gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
+                //    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
             }
         }
         else
         {
-            _gameUi._scrollUpgContent[1].SetActive(false);
+            //_gameUi._scrollUpgContent[1].SetActive(false);
+            _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[1].interactable = false;
+            //_gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+            //    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
+            //_gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
+            //    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
         }
         // ==
         if (_vehicle_Capacity_Level < _capacityLevel_Prices.Length)
@@ -512,14 +531,20 @@ public class StageManager : MonoBehaviour
             {
                 _gameUi._scrollUpgButtons[2].interactable = false;
                 _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
-                _gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
-                    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
+                   = _redColor;// = gameUi._scrollUpgButtons[2].colors.disabledColor;
+                //_gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
+                //    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
             }
         }
         else
         {
-            _gameUi._scrollUpgContent[2].SetActive(false);
+            //_gameUi._scrollUpgContent[2].SetActive(false);
+            _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[2].interactable = false;
+            //_gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+            //    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
+            //_gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
+            //    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
         }
         // ==
         if (_rail_Speed_Level < _railSpeedLevel_Prices.Length)
@@ -539,14 +564,20 @@ public class StageManager : MonoBehaviour
             {
                 _gameUi._scrollUpgButtons[3].interactable = false;
                 _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = _gameUi._scrollUpgButtons[3].colors.disabledColor;
-                _gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
-                    = _gameUi._scrollUpgButtons[3].colors.disabledColor;
+                    = _redColor; //_gameUi._scrollUpgButtons[3].colors.disabledColor;
+                //_gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
+                //    = _gameUi._scrollUpgButtons[3].colors.disabledColor;
             }
         }
         else
         {
-            _gameUi._scrollUpgContent[3].SetActive(false);
+            //_gameUi._scrollUpgContent[3].SetActive(false);
+            _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[3].interactable = false;
+            //_gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+            //= _gameUi._scrollUpgButtons[3].colors.disabledColor;
+            //_gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
+            //= _gameUi._scrollUpgButtons[3].colors.disabledColor;
         }
 
 

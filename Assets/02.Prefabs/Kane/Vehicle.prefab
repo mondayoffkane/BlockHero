@@ -109,7 +109,7 @@ MonoBehaviour:
   _capacity_Level: 0
   _maxCount: 2
   _currentCount: 0
-  _minDistance: 2
+  _minDistance: 0.5
   _currentDis: 0
   _floating_Text_Pref: {fileID: 0}
   _target: {fileID: 0}
@@ -203,32 +203,32 @@ PrefabInstance:
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 1.0884
       objectReference: {fileID: 0}
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 1.0884
       objectReference: {fileID: 0}
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 1.0884
       objectReference: {fileID: 0}
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0011
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.313
+      value: 0.509
       objectReference: {fileID: 0}
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.193
+      value: -0.322
       objectReference: {fileID: 0}
     - target: {fileID: 8096433483826264921, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}

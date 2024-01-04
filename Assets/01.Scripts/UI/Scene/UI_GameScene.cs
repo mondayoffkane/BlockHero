@@ -17,10 +17,13 @@ public class UI_GameScene : UI_Scene
     }
     enum Buttons
     {
+        Scroll_Button,
+        Speed_RV_Button,
         ViewChange_Button,
         AddCar_Button,
         BlockMachine_Close_Button,
         BlockMachine_Upgrade_Button,
+        Scroll_Close_Button,
     }
     enum GameObjects
     {
@@ -29,6 +32,8 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Panel,
         BlockMachine_Color_Buttons_Group,
         MaskImg,
+        Scroll_Panel,
+        Scroll_Content,
     }
     // ======================================================
 
@@ -37,6 +42,8 @@ public class UI_GameScene : UI_Scene
         , BlockMachine_Color_Buttons_Group
         , BlockCount_Group
         , MaskImg
+        , Scroll_Panel
+        , Scroll_Content
         ;
     //Recipe_RawImage;
 
@@ -46,7 +53,9 @@ public class UI_GameScene : UI_Scene
         , BlockMachine_Upgrade_Button
         , ViewChange_Button
         , AddCar_Button
-
+        , Scroll_Close_Button
+        , Scroll_Button
+        , Speed_RV_Button
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -71,6 +80,8 @@ public class UI_GameScene : UI_Scene
 
     public Color _color;
 
+    public GameObject[] _scrollUpgContent = new GameObject[4];
+    public Button[] _scrollUpgButtons = new Button[4];
 
 
 
@@ -98,7 +109,13 @@ public class UI_GameScene : UI_Scene
 
         BlockCount_Group = GetObject(GameObjects.BlockCount_Group);
         MaskImg = GetObject(GameObjects.MaskImg);
+        Scroll_Panel = GetObject(GameObjects.Scroll_Panel);
+        Scroll_Content = GetObject(GameObjects.Scroll_Content);
 
+        for (int i = 0; i < Scroll_Content.transform.childCount; i++)
+        {
+            _scrollUpgContent[i] = Scroll_Content.transform.GetChild(i).gameObject;
+        }
 
         // ========= Buttons
 
@@ -110,11 +127,20 @@ public class UI_GameScene : UI_Scene
 
 
 
-
         BlockMachine_Close_Button = GetButton(Buttons.BlockMachine_Close_Button);
         BlockMachine_Upgrade_Button = GetButton(Buttons.BlockMachine_Upgrade_Button);
         ViewChange_Button = GetButton(Buttons.ViewChange_Button);
         AddCar_Button = GetButton(Buttons.AddCar_Button);
+
+        Scroll_Close_Button = GetButton(Buttons.Scroll_Close_Button);
+        Scroll_Button = GetButton(Buttons.Scroll_Button);
+        Speed_RV_Button = GetButton(Buttons.Speed_RV_Button);
+
+        for (int i = 0; i < Scroll_Content.transform.childCount; i++)
+        {
+            _scrollUpgButtons[i] = _scrollUpgContent[i].transform.Find("Upgrade_Button").GetComponent<Button>();
+        }
+
 
 
 
@@ -144,10 +170,6 @@ public class UI_GameScene : UI_Scene
 
 
         // ================ Add Button Listner========================================
-
-
-
-
 
 
         for (int i = 0; i < _blockMachineColorButtons.Length; i++)
@@ -181,6 +203,22 @@ public class UI_GameScene : UI_Scene
             Managers._stageManager.AddVehicle();
         });
 
+        Scroll_Close_Button.AddButtonEvent(() => Scroll_Panel.SetActive(false));
+
+
+        Scroll_Button.AddButtonEvent(() =>
+        {
+            if ((Scroll_Panel.activeSelf == false)) ChangePanel(2);
+            else PanelOnOff(Scroll_Panel, false);
+        });
+        Speed_RV_Button.AddButtonEvent(() => { /* add func */});
+
+
+        for (int i = 0; i < _scrollUpgButtons.Length; i++)
+        {
+            int _num = i;
+            _scrollUpgButtons[i].AddButtonEvent(() => Managers._stageManager.VehicleUpgrade(_num));
+        }
 
 
     }
@@ -236,6 +274,10 @@ public class UI_GameScene : UI_Scene
 
                 break;
 
+            case 2:
+                PanelOnOff(Scroll_Panel, true);
+                _stageManager.CheckScrollUpgradePrice();
+                break;
 
         }
 
@@ -277,6 +319,7 @@ public class UI_GameScene : UI_Scene
         BlockMachine_Color_Buttons_Group.transform
             .GetChild(_num).GetComponent<Button>().interactable = false;
     }
+
 
 
 

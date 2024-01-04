@@ -19,6 +19,16 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Vehicle")] public int _vehicle_Spawn_Level = 0;
     [FoldoutGroup("Vehicle")] public int _vehicle_Capacity_Level = 0;
     [FoldoutGroup("Vehicle")] public int _vehicle_Speed_Level = 0;
+    [FoldoutGroup("Vehicle")] public int _rail_Speed_Level = 0;
+
+    [FoldoutGroup("Vehicle")] public double[] _spawnLevel_Prices = new double[50];
+    [FoldoutGroup("Vehicle")] public double[] _speedLevel_Prices = new double[5];
+    [FoldoutGroup("Vehicle")] public double[] _capacityLevel_Prices = new double[5];
+    [FoldoutGroup("Vehicle")] public double[] _railSpeedLevel_Prices = new double[5];
+
+
+
+
     [FoldoutGroup("Vehicle")] public List<Vehicle> _vehicleList = new List<Vehicle>();
 
 
@@ -38,6 +48,9 @@ public class StageManager : MonoBehaviour
     public BlockStorage _blockStorage;
     public VillageManager _villageManager;
 
+
+
+    UI_GameScene _gameUi;
     // =================================================
 
 
@@ -52,13 +65,20 @@ public class StageManager : MonoBehaviour
 
         _vehicleList = new List<Vehicle>();
 
-        LoadData();
 
-        _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
-
+        _gameUi = Managers._gameUi;
 
 
     }
+
+    private void Start()
+    {
+        LoadData();
+        _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
+
+    }
+
+
 
 
     public void LoadData()
@@ -112,6 +132,9 @@ public class StageManager : MonoBehaviour
         _vehicle_Spawn_Level = ES3.Load<int>("Vehicle_Spawn_Level", 0);
         _vehicle_Speed_Level = ES3.Load<int>("Vehicle_Speed_Level", 0);
         _vehicle_Capacity_Level = ES3.Load<int>("Vehicle_Capacity_Level", 0);
+        _rail_Speed_Level = ES3.Load<int>("Rail_Level", 0);
+
+        _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
 
         for (int i = 0; i < _vehicle_Spawn_Level; i++)
         {
@@ -127,6 +150,7 @@ public class StageManager : MonoBehaviour
         ES3.Save<int>("Vehicle_Capacity_Level", _vehicle_Capacity_Level);
         ES3.Save<double>("Money", _money);
         ES3.Save<int>("BlockMachineCount", _blockMachineCount);
+        ES3.Save<int>("Rail_Level", _rail_Speed_Level);
     }
 
 
@@ -282,6 +306,10 @@ public class StageManager : MonoBehaviour
 
         ES3.Save<double>("Money", _money);
         CheckMoney();
+
+        CheckScrollUpgradePrice();
+
+
     }
 
     public void CheckMoney()
@@ -360,7 +388,7 @@ public class StageManager : MonoBehaviour
 
         _vehicleList.Add(_newVehicle);
 
-        _vehicle_Spawn_Level++;
+        //_vehicle_Spawn_Level++;
 
 
     }
@@ -375,25 +403,155 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void VehicleUpgarde(int _num)
+    public void VehicleUpgrade(int _num)
     {
         switch (_num)
         {
             case 0:
+                CalcMoney(_spawnLevel_Prices[_vehicle_Spawn_Level]);
+                AddVehicle();
                 _vehicle_Spawn_Level++;
                 break;
 
             case 1:
+                CalcMoney(_speedLevel_Prices[_vehicle_Speed_Level]);
                 _vehicle_Speed_Level++;
+                AllVehicleSetLevel();
                 break;
 
             case 2:
+                CalcMoney(_capacityLevel_Prices[_vehicle_Capacity_Level]);
                 _vehicle_Capacity_Level++;
+                AllVehicleSetLevel();
+                break;
+
+            case 3:
+                CalcMoney(_railSpeedLevel_Prices[_rail_Speed_Level]);
+                _rail_Speed_Level++;
+                _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
                 break;
         }
 
         SaveData();
+        CheckScrollUpgradePrice();
+
     }
+
+    [Button]
+    public void CheckScrollUpgradePrice()
+    {
+        if (_vehicle_Spawn_Level < _spawnLevel_Prices.Length)
+        {
+            _gameUi._scrollUpgContent[0].SetActive(true);
+            _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"{_spawnLevel_Prices[_vehicle_Spawn_Level]}";
+
+            if (_money >= _spawnLevel_Prices[_vehicle_Spawn_Level])
+            {
+                _gameUi._scrollUpgButtons[0].interactable = true;
+                _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = Color.white;
+                _gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = Color.white;
+            }
+            else
+            {
+                _gameUi._scrollUpgButtons[0].interactable = false;
+                _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
+                _gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
+            }
+        }
+        else
+        {
+            _gameUi._scrollUpgContent[0].SetActive(false);
+        }
+        // ============
+
+        if (_vehicle_Speed_Level < _speedLevel_Prices.Length)
+        {
+            _gameUi._scrollUpgContent[1].SetActive(true);
+            _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"{_speedLevel_Prices[_vehicle_Speed_Level]}";
+
+            if (_money >= _speedLevel_Prices[_vehicle_Speed_Level])
+            {
+                _gameUi._scrollUpgButtons[1].interactable = true;
+                _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = Color.white;
+                _gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = Color.white;
+            }
+            else
+            {
+                _gameUi._scrollUpgButtons[1].interactable = false;
+                _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
+                _gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
+            }
+        }
+        else
+        {
+            _gameUi._scrollUpgContent[1].SetActive(false);
+        }
+        // ==
+        if (_vehicle_Capacity_Level < _capacityLevel_Prices.Length)
+        {
+            _gameUi._scrollUpgContent[2].SetActive(true);
+            _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"{_capacityLevel_Prices[_vehicle_Capacity_Level]}";
+
+            if (_money >= _capacityLevel_Prices[_vehicle_Capacity_Level])
+            {
+                _gameUi._scrollUpgButtons[2].interactable = true;
+                _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = Color.white;
+                _gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = Color.white;
+            }
+            else
+            {
+                _gameUi._scrollUpgButtons[2].interactable = false;
+                _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
+                _gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
+            }
+        }
+        else
+        {
+            _gameUi._scrollUpgContent[2].SetActive(false);
+        }
+        // ==
+        if (_rail_Speed_Level < _railSpeedLevel_Prices.Length)
+        {
+            _gameUi._scrollUpgContent[3].SetActive(true);
+            _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"{_railSpeedLevel_Prices[_rail_Speed_Level]}";
+
+            if (_money >= _railSpeedLevel_Prices[_rail_Speed_Level])
+            {
+                _gameUi._scrollUpgButtons[3].interactable = true;
+                _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = Color.white;
+                _gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = Color.white;
+            }
+            else
+            {
+                _gameUi._scrollUpgButtons[3].interactable = false;
+                _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = _gameUi._scrollUpgButtons[3].colors.disabledColor;
+                _gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
+                    = _gameUi._scrollUpgButtons[3].colors.disabledColor;
+            }
+        }
+        else
+        {
+            _gameUi._scrollUpgContent[3].SetActive(false);
+        }
+
+
+    }
+
 
 
 }

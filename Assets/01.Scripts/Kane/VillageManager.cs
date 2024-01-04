@@ -35,16 +35,33 @@ public class VillageManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _completeCount = ES3.Load<int>("CompleteCount", 0);
+        _villageComplete = ES3.Load<bool>("VillageComplete", false);
+
+        for (int i = 0; i < _buildingList.Count; i++)
+        {
+            if (_buildingList[i].isBuildComplete == false)
+            {
+                _buildingList[i].SetCanvas();
+                break;
+            }
+        }
+    }
+
 
     public void CompleteBuild()
     {
         _completeCount++;
+        ES3.Save<int>("CompleteCount", _completeCount);
         if (_completeCount < _buildingList.Count)
             _buildingList[_completeCount].SetCanvas();
 
         if (_completeCount >= _buildingCount)
         {
             _villageComplete = true;
+            ES3.Save<bool>("VillageComplete", _villageComplete);
         }
 
     }
@@ -55,7 +72,8 @@ public class VillageManager : MonoBehaviour
 
         for (int i = 0; i < _buildingList.Count; i++)
         {
-            if (_buildingList[i].isBuildComplete == false)
+            //if (_buildingList[i].isBuildComplete == false)
+            if (_buildingList[i]._currentCount > 0)
             {
                 return _buildingList[i].transform;
             }

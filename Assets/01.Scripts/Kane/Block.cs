@@ -11,8 +11,8 @@ public class Block : MonoBehaviour
         Yellow,
         Green,
         Blue,
-        Black,
-        White,
+        //Black,
+        //White,
         //Purple,
         //Orange
     }

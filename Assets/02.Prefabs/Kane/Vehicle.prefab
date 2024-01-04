@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3758952881610933197, guid: 99c090c325228440e8f03daa083aaf22, type: 3}
+  - {fileID: 2100000, guid: 29a70cf3a7fc54687b43cd843ccb4fd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,13 +112,13 @@ MonoBehaviour:
   _minDistance: 2
   _currentDis: 0
   _floating_Text_Pref: {fileID: 0}
-  _floating_Group: {fileID: 6465882554854300377}
   _target: {fileID: 0}
   _meshes:
   - {fileID: -2179749088324977409, guid: db625c734d3434db183e3e89d9a00f75, type: 3}
   - {fileID: 4561000846535838516, guid: b78c6c59201ff4de4b7d0f43f4fe6451, type: 3}
   - {fileID: -5943898615112286274, guid: ae85fe92779984a9bacc50448fbbf712, type: 3}
   - {fileID: 755311989462657537, guid: 0f69987dd6d8c4ee79f1bfd3033777f7, type: 3}
+  extraRotationSpeed: 5
 --- !u!195 &1721440544920484594
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -130,7 +130,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.12
   m_Speed: 2
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0
@@ -165,8 +165,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3149613147873680805}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.543701, y: 1.0493296, z: -15.608015}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1721440544920485135}

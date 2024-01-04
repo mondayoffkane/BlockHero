@@ -38,7 +38,7 @@ public class Vehicle : MonoBehaviour
 
 
     public GameObject _floating_Text_Pref;
-    public Transform _floating_Group;
+    //public Transform _floating_Group;
 
 
     NavMeshAgent _agent;
@@ -46,6 +46,7 @@ public class Vehicle : MonoBehaviour
 
     public Mesh[] _meshes;
 
+    public float extraRotationSpeed = 5f;
 
     BlockStorage _blockStorage;
     VillageManager _villagemanager;
@@ -55,6 +56,8 @@ public class Vehicle : MonoBehaviour
 
     private void Start()
     {
+        //navMeshAgent.updateRotation = false;
+
         if (_villagemanager == null) _villagemanager = Managers._stageManager._villageManager;
 
         if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
@@ -66,11 +69,11 @@ public class Vehicle : MonoBehaviour
 
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
 
-        if (_floating_Group == null) _floating_Group = Instantiate(new GameObject("Floating_Text_Group")).transform;
-        _floating_Group.transform.SetParent(transform);
-        _floating_Group.transform.localPosition = Vector3.zero;
-        _floating_Group.rotation = Quaternion.Euler(Vector3.zero);
-        _floating_Group.SetAsLastSibling();
+        //if (_floating_Group == null) _floating_Group = Instantiate(new GameObject("Floating_Text_Group")).transform;
+        //_floating_Group.transform.SetParent(transform);
+        //_floating_Group.transform.localPosition = Vector3.zero;
+        //_floating_Group.rotation = Quaternion.Euler(Vector3.zero);
+        //_floating_Group.SetAsLastSibling();
 
 
         DOTween.Sequence().Append(transform.DOScale(_scale, _scaleTime)).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
@@ -90,6 +93,8 @@ public class Vehicle : MonoBehaviour
                     break;
 
                 case State.Move:
+                    Vector3 lookrotation = _agent.steeringTarget - transform.position;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
                     _currentDis = _agent.remainingDistance;
                     if (_agent.remainingDistance <= _minDistance)
                     {
@@ -117,6 +122,7 @@ public class Vehicle : MonoBehaviour
                                 yield return new WaitForSeconds(0.2f);
 
                             }
+                            _boxMeshFilter.gameObject.SetActive(false);
                             yield return new WaitForSeconds(1f);
 
                             _target = _blockStorage.transform.Find("In_Pos");
@@ -144,16 +150,6 @@ public class Vehicle : MonoBehaviour
 
         Building _building = _target.GetComponent<Building>();
         int _blockTypeNum = -1;
-        //for (int i = 0; i < _building._blockArray.Length; i++)
-        //{
-        //    if (_building._blockArray[i] > 0)
-        //    {
-        //        _blockTypeNum = i;
-        //        break;
-        //    }
-        //}
-
-        //if (_blockTypeNum == -1) _blockTypeNum = Random.Range(0, 4);
 
         _blockTypeNum = (int)_building._blockType;
 
@@ -171,8 +167,12 @@ public class Vehicle : MonoBehaviour
             int _tempCount = _blockStorage._blockCountArray[_blockTypeNum];
             _blockStorage._blockCountArray[_blockTypeNum] -= _tempCount;
             _currentCount = _tempCount;
+
         }
         _blockStorage.UpdateBlockCount();
+
+        _boxMeshFilter.gameObject.SetActive(true);
+
 
     }
 
@@ -203,17 +203,18 @@ public class Vehicle : MonoBehaviour
 
     public void Floating_Text(double _num)
     {
-        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, _floating_Group).GetComponent<Transform>();
+        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, Managers._stageManager.transform.Find("4.Floating_Group")).transform;
         _floatingTrans.localScale = Vector3.one * 0.015f;
         _floatingTrans.SetAsLastSibling();
         _floatingTrans.GetChild(0).GetComponent<Text>().text = $"${_num}";
-        _floatingTrans.rotation = Quaternion.Euler(new Vector3(10f, 0f, 0f));
+        _floatingTrans.rotation = Quaternion.Euler(new Vector3(80f, 0f, 0f));
 
 
 
-        _floatingTrans.localPosition = new Vector3(0f, 2f, 0f);
+        //_floatingTrans.localPosition = new Vector3(0f, 1f, 0f);
+        _floatingTrans.position = transform.position + Vector3.up;
 
-        _floatingTrans.DOLocalMoveY(4f, 1f).SetEase(Ease.OutCirc)
+        _floatingTrans.DOMoveZ(transform.position.z + 2f, 1f).SetEase(Ease.OutCirc)
             .OnComplete(() => Managers.Pool.Push(_floatingTrans.GetComponent<Poolable>()));
 
     }

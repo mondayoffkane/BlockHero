@@ -33,6 +33,9 @@ public class BlockStorage : MonoBehaviour
         _floating_Group.SetAsLastSibling();
 
         StartCoroutine(Cor_Update());
+        LoadData();
+
+        UpdateBlockCount();
     }
 
 
@@ -70,6 +73,7 @@ public class BlockStorage : MonoBehaviour
 
                  UpdateBlockCount();
 
+
              });
 
     }
@@ -80,6 +84,8 @@ public class BlockStorage : MonoBehaviour
         {
             Managers._gameUi._blockCountTexts[i].text = _blockCountArray[i].ToString();
         }
+
+        SaveData();
     }
 
 
@@ -105,6 +111,16 @@ public class BlockStorage : MonoBehaviour
 
     }
 
+
+    public void SaveData()
+    {
+        ES3.Save<int[]>($"{GetInstanceID()}_blockCount", _blockCountArray);
+    }
+
+    public void LoadData()
+    {
+        _blockCountArray = ES3.Load<int[]>($"{GetInstanceID()}_blockCount", new int[4]);
+    }
 
 
 

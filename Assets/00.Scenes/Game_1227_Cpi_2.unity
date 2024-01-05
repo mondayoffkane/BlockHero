@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 9cab4569fb4424d38a07d5a638d6d91e, type: 2}
+--- !u!1 &2708289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2708290}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2708290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708289}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.17472741, y: 0.067619324, z: 4.396294}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 24
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &13504287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9102,7 +9133,6 @@ MonoBehaviour:
   _vehicl_Pref: {fileID: 1721440544920484593, guid: 2cc3cb47bc7f74c82971543b5c06ce6c,
     type: 3}
   _buildingList:
-  - {fileID: 1952916170}
   - {fileID: 1898029596}
   - {fileID: 1838507623}
   - {fileID: 657850773}
@@ -9122,6 +9152,7 @@ MonoBehaviour:
   - {fileID: 1966840818}
   - {fileID: 1753493981}
   - {fileID: 1177792578}
+  - {fileID: 1952916170}
   _buildingCount: 0
   _completeCount: 0
   _villageComplete: 0

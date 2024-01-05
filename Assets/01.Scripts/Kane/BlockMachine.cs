@@ -119,7 +119,7 @@ public class BlockMachine : MonoBehaviour
             _block.transform.SetParent(Managers._stageManager.transform.Find("2.BlockPool"));
 
             _block.transform.position = transform.position + Vector3.up * 0.5f;
-
+            transform.DOScale(Vector3.one, 0f);
             DOTween.Sequence().Append(_factoryTop_Obj.DOLocalMoveY(1f, 0.25f)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
             DOTween.Sequence().Append(transform.DOScale(_scale_1, _scaleTime)).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
 

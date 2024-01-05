@@ -88,20 +88,20 @@ public class StageManager : MonoBehaviour
 #if UNITY_EDITOR
     private void FixedUpdate()
     {
-        if (_blockMachineCount < _blockMachineList.Count)
-        {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    _blockStorage._blockCountArray[i] += 100;
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                AddBlockMachine(false);
-            }
-        }
+        //if (_blockMachineCount < _blockMachineList.Count)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.W))
+        //    {
+        //        for (int i = 0; i < 4; i++)
+        //        {
+        //            _blockStorage._blockCountArray[i] += 100;
+        //        }
+        //    }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    AddBlockMachine(false);
+        //}
+        //}
     }
 
 #endif
@@ -190,18 +190,18 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
+        //#if UNITY_EDITOR
 
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CalcMoney(1000d);
+            CalcMoney(5000d);
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            PlayerPrefs.DeleteAll();
-            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
-        }
+        //else if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    PlayerPrefs.DeleteAll();
+        //    UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
+        //}
         // ================= Mouse ====================
         if (Input.GetMouseButtonDown(0))
         {
@@ -235,41 +235,37 @@ public class StageManager : MonoBehaviour
         //}
 
         //#if UNITY_EDITOR
-#elif !UNITY_EDITOR
+        //#elif !UNITY_EDITOR              
 
-        if (Input.touchCount > 0)
-        {
-            Touch _touch = Input.GetTouch(0);
-            if (_touch.phase == TouchPhase.Began)
-            {
-                if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
-                {
-                    Managers._gameUi.ChangePanel(0);
-                    Ray ray;
-                    RaycastHit hit;
-                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit))
-                    {
-                        Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
-                        switch (hit.collider.tag)
-                        {
-                            case "BlockMachine":
-                                _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
-                                Managers._gameUi.ChangePanel(1);
-                                Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
-                                break;
-                            case "HeroFactory":
-                                _selectHeroFactory = hit.transform.GetComponent<HeroFactory>();
-                                if (_selectHeroFactory._currentRecipe == null) _selectHeroFactory.SetRecipe(0);
-                                Managers._gameUi.ChangePanel(2);
-                                break;
-                        }
-                    }
-                }
+        //        if (Input.touchCount > 0)
+        //        {
+        //            Touch _touch = Input.GetTouch(0);
+        //            if (_touch.phase == TouchPhase.Began)
+        //            {
+        //                if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
+        //                {
+        //                    //Managers._gameUi.ChangePanel(0);
+        //                    Ray ray;
+        //                RaycastHit hit;
+        //                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //                if (Physics.Raycast(ray, out hit))
+        //                {
+        //                    Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+        //                    switch (hit.collider.tag)
+        //                    {
+        //                        case "BlockMachine":
+        //                            _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+        //                            Managers._gameUi.ChangePanel(1);
+        //                            Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
+        //                            break;
 
-            }
-        }
-#endif
+        //                    }
+        //                }
+        //                }
+
+        //            }
+        //        }
+        //#endif
     }
 
 
@@ -447,25 +443,25 @@ public class StageManager : MonoBehaviour
         switch (_num)
         {
             case 0:
-                CalcMoney(_spawnLevel_Prices[_vehicle_Spawn_Level]);
+                CalcMoney(-_spawnLevel_Prices[_vehicle_Spawn_Level]);
                 AddVehicle();
                 _vehicle_Spawn_Level++;
                 break;
 
             case 1:
-                CalcMoney(_speedLevel_Prices[_vehicle_Speed_Level]);
+                CalcMoney(-_speedLevel_Prices[_vehicle_Speed_Level]);
                 _vehicle_Speed_Level++;
                 AllVehicleSetLevel();
                 break;
 
             case 2:
-                CalcMoney(_capacityLevel_Prices[_vehicle_Capacity_Level]);
+                CalcMoney(-_capacityLevel_Prices[_vehicle_Capacity_Level]);
                 _vehicle_Capacity_Level++;
                 AllVehicleSetLevel();
                 break;
 
             case 3:
-                CalcMoney(_railSpeedLevel_Prices[_rail_Speed_Level]);
+                CalcMoney(-_railSpeedLevel_Prices[_rail_Speed_Level]);
                 _rail_Speed_Level++;
                 _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
                 break;

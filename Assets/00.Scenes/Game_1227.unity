@@ -7517,7 +7517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1005542282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7525,7 +7525,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1005542281}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67790bca321ba4fc289a12190e22ec23, type: 3}
   m_Name: 
@@ -9102,7 +9102,6 @@ MonoBehaviour:
   _vehicl_Pref: {fileID: 1721440544920484593, guid: 2cc3cb47bc7f74c82971543b5c06ce6c,
     type: 3}
   _buildingList:
-  - {fileID: 1952916170}
   - {fileID: 1898029596}
   - {fileID: 1838507623}
   - {fileID: 657850773}
@@ -9122,6 +9121,7 @@ MonoBehaviour:
   - {fileID: 1966840818}
   - {fileID: 1753493981}
   - {fileID: 1177792578}
+  - {fileID: 1952916170}
   _buildingCount: 0
   _completeCount: 0
   _villageComplete: 0

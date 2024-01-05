@@ -190,7 +190,7 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        //#if UNITY_EDITOR
+#if UNITY_EDITOR
 
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -235,37 +235,37 @@ public class StageManager : MonoBehaviour
         //}
 
         //#if UNITY_EDITOR
-        //#elif !UNITY_EDITOR              
+#elif !UNITY_EDITOR
 
-        //        if (Input.touchCount > 0)
-        //        {
-        //            Touch _touch = Input.GetTouch(0);
-        //            if (_touch.phase == TouchPhase.Began)
-        //            {
-        //                if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
-        //                {
-        //                    //Managers._gameUi.ChangePanel(0);
-        //                    Ray ray;
-        //                RaycastHit hit;
-        //                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //                if (Physics.Raycast(ray, out hit))
-        //                {
-        //                    Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
-        //                    switch (hit.collider.tag)
-        //                    {
-        //                        case "BlockMachine":
-        //                            _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
-        //                            Managers._gameUi.ChangePanel(1);
-        //                            Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
-        //                            break;
+                if (Input.touchCount > 0)
+                {
+                    Touch _touch = Input.GetTouch(0);
+                    if (_touch.phase == TouchPhase.Began)
+                    {
+                        if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
+                        {
+                            //Managers._gameUi.ChangePanel(0);
+                            Ray ray;
+                        RaycastHit hit;
+                        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                        if (Physics.Raycast(ray, out hit))
+                        {
+                            Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+                            switch (hit.collider.tag)
+                            {
+                                case "BlockMachine":
+                                    _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+                                    Managers._gameUi.ChangePanel(1);
+                                    Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
+                                    break;
 
-        //                    }
-        //                }
-        //                }
+                            }
+                        }
+                        }
 
-        //            }
-        //        }
-        //#endif
+                    }
+                }
+#endif
     }
 
 

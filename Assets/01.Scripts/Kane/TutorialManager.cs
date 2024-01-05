@@ -8,6 +8,8 @@ public class TutorialManager : MonoBehaviour
 
     public Vector3[] _imgPoss;
     public Vector2[] _imgSizes;
+    public GameObject[] _cams;
+
 
     public bool isFirst = true;
     public GameObject _maskImg;
@@ -43,6 +45,7 @@ public class TutorialManager : MonoBehaviour
     [Button]
     public void Tutorial_Complete()
     {
+        ES3.Save<bool>("isFirst", false);
         _maskImg.SetActive(false);
         _tutorial_Level++;
     }

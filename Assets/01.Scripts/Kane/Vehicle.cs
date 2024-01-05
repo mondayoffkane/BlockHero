@@ -94,7 +94,13 @@ public class Vehicle : MonoBehaviour
 
                 case State.Move:
                     Vector3 lookrotation = _agent.steeringTarget - transform.position;
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
+
+                    if (lookrotation != Vector3.zero)
+                    {
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
+                    }
+
+
                     _currentDis = _agent.remainingDistance;
                     if (_agent.remainingDistance <= _minDistance)
                     {

@@ -85,7 +85,19 @@ public class StageManager : MonoBehaviour
 
     }
 
+#if UNITY_EDITOR
+    private void FixedUpdate()
+    {
+        if (_blockMachineCount < _blockMachineList.Count)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                AddBlockMachine(false);
+            }
+        }
+    }
 
+#endif
 
 
     public void LoadData()
@@ -128,6 +140,13 @@ public class StageManager : MonoBehaviour
                     break;
                 case 14:
                     _skinnedBlock[3].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 16:
+                    _skinnedBlock[3].SetBlendShapeWeight(1, 100);
+                    break;
+                case 18:
+                    _skinnedBlock[4].SetBlendShapeWeight(0, 100);
                     break;
 
             }
@@ -296,6 +315,12 @@ public class StageManager : MonoBehaviour
                 break;
             case 15:
                 _skinnedBlock[3].SetBlendShapeWeight(0, 100);
+                break;
+            case 17:
+                _skinnedBlock[3].SetBlendShapeWeight(1, 100);
+                break;
+            case 19:
+                _skinnedBlock[4].SetBlendShapeWeight(0, 100);
                 break;
 
 

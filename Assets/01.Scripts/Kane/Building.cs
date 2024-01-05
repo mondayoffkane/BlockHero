@@ -129,12 +129,28 @@ public class Building : MonoBehaviour
 
     public void Build_Button()
     {
+        GameObject _makeingParticle = Managers.Pool.Pop(Resources.Load<GameObject>("Building-Making"), transform).gameObject;
+        DOTween.Sequence()
+            .AppendCallback(() => _makeingParticle.transform.localPosition = Vector3.up * 2f)
+            .AppendInterval(1.5f)
+            .Append(_buildingDeco.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce))
+            .Join(_makeingParticle.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear))
+            .AppendCallback(() =>
+            {
+                Managers.Pool.Push(_makeingParticle.GetComponent<Poolable>());
+                _buildingCanvas.gameObject.SetActive(false);
+                Managers._stageManager.CalcMoney(_rewardPrice);
 
-        _buildingDeco.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
-        _buildingCanvas.gameObject.SetActive(false);
-        Managers._stageManager.CalcMoney(_rewardPrice);
+                Floating_Text(_rewardPrice);
+            });
 
-        Floating_Text(_rewardPrice);
+
+
+        //_buildingDeco.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
+        //_buildingCanvas.gameObject.SetActive(false);
+        //Managers._stageManager.CalcMoney(_rewardPrice);
+
+        //Floating_Text(_rewardPrice);
 
 
 

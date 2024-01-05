@@ -19,6 +19,7 @@ public class UI_GameScene : UI_Scene
     {
         Scroll_Button,
         Speed_RV_Button,
+        View_Button,
         ViewChange_Button,
         AddCar_Button,
         BlockMachine_Close_Button,
@@ -35,6 +36,8 @@ public class UI_GameScene : UI_Scene
         Scroll_Panel,
         Scroll_Content,
     }
+
+    DOTween _camTween;
     // ======================================================
 
     public GameObject BlockMachine_Panel
@@ -56,6 +59,7 @@ public class UI_GameScene : UI_Scene
         , Scroll_Close_Button
         , Scroll_Button
         , Speed_RV_Button
+        , View_Button
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -141,7 +145,7 @@ public class UI_GameScene : UI_Scene
             _scrollUpgButtons[i] = _scrollUpgContent[i].transform.Find("Upgrade_Button").GetComponent<Button>();
         }
 
-
+        View_Button = GetButton(Buttons.View_Button);
 
 
         // ========= Img
@@ -220,6 +224,26 @@ public class UI_GameScene : UI_Scene
             _scrollUpgButtons[i].AddButtonEvent(() => Managers._stageManager.VehicleUpgrade(_num));
         }
 
+        View_Button.AddButtonEvent(() =>
+        {
+            Vector3 _pos = _stageManager._cams[0].transform.position;
+            //_camTween = DOTween.Sequence()
+
+            if (_stageManager._cams[0].transform.position.z < -22)
+            {
+                //_pos.z = -7f;
+                //_stageManager._cams[0].transform.position = _pos;
+
+                _stageManager._cams[0].transform.DOMoveZ(-7f, 0.5f).SetEase(Ease.Linear);
+            }
+            else
+            {
+                //_pos.z = -40f;
+                //_stageManager._cams[0].transform.position = _pos;
+                _stageManager._cams[0].transform.DOMoveZ(-43f, 0.5f).SetEase(Ease.Linear);
+            }
+
+        });
 
     }
 

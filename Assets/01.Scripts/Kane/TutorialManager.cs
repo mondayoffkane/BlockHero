@@ -39,6 +39,7 @@ public class TutorialManager : MonoBehaviour
         //_maskImg.transform.localScale = _imgSizes[_tutorial_Level];
         _maskImg.transform.GetComponent<RectTransform>().sizeDelta = _imgSizes[_tutorial_Level];
 
+        _cams[_tutorial_Level].SetActive(true);
 
     }
 
@@ -47,6 +48,7 @@ public class TutorialManager : MonoBehaviour
     {
         ES3.Save<bool>("isFirst", false);
         _maskImg.SetActive(false);
+        _cams[_tutorial_Level].SetActive(false);
         _tutorial_Level++;
     }
 

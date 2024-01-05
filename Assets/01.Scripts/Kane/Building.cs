@@ -44,8 +44,8 @@ public class Building : MonoBehaviour
 
         _buildingCanvas.transform.Find("Build_Button").GetComponent<Button>().AddButtonEvent(() => Build_Button());
 
-        _currentCount = _maxCount;
-        _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text = $"X{_currentCount}";
+        _currentCount = 0; // _maxCount;
+        _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text = $"{_currentCount}/{_maxCount}";
         _buildingCanvas.transform.Find("BlockCountImg").GetComponent<Image>().sprite = _blockSprites[(int)_blockType];
 
 
@@ -59,7 +59,8 @@ public class Building : MonoBehaviour
 
             _buildingDeco.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
             _buildingCanvas.gameObject.SetActive(false);
-
+            Transform _spark = Managers.Pool.Pop(Resources.Load<GameObject>("Building-Sparks"), transform).transform;
+            _spark.localPosition = Vector3.zero;
 
         }
 
@@ -72,7 +73,7 @@ public class Building : MonoBehaviour
 
     public void LoadData()
     {
-        _currentCount = ES3.Load<int>($"{GetInstanceID()}_currentCount", _maxCount);
+        _currentCount = ES3.Load<int>($"{GetInstanceID()}_currentCount", 0);
         isBuildComplete = ES3.Load<bool>($"{GetInstanceID()}_isBuildComplete", false);
     }
 
@@ -87,8 +88,9 @@ public class Building : MonoBehaviour
     {
 
 
-        _currentCount--;
-        _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text = $"X{_currentCount}";
+        _currentCount++;
+        _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text
+            = $"{_currentCount}/{_maxCount}";
         CheckBuild();
 
         SaveData();
@@ -109,7 +111,7 @@ public class Building : MonoBehaviour
     {
         if (isBuildComplete == false)
         {
-            if (_currentCount <= 0)
+            if (_currentCount >= _maxCount)
             {
                 isBuildComplete = true;
 
@@ -131,17 +133,26 @@ public class Building : MonoBehaviour
     {
         GameObject _makeingParticle = Managers.Pool.Pop(Resources.Load<GameObject>("Building-Making"), transform).gameObject;
         DOTween.Sequence()
-            .AppendCallback(() => _makeingParticle.transform.localPosition = Vector3.up * 2f)
+            .AppendCallback(() =>
+            {
+                _makeingParticle.transform.DOScale(Vector3.one, 0.5f);
+                _makeingParticle.transform.localPosition = Vector3.up * 2f;
+                _buildingCanvas.gameObject.SetActive(false);
+            })
             .AppendInterval(1.5f)
             .Append(_buildingDeco.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce))
-            .Join(_makeingParticle.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear))
+            .Join(_makeingParticle.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.Linear))
             .AppendCallback(() =>
             {
                 Managers.Pool.Push(_makeingParticle.GetComponent<Poolable>());
-                _buildingCanvas.gameObject.SetActive(false);
+
                 Managers._stageManager.CalcMoney(_rewardPrice);
 
                 Floating_Text(_rewardPrice);
+
+                Transform _spark = Managers.Pool.Pop(Resources.Load<GameObject>("Building-Sparks"), transform).transform;
+                _spark.localPosition = Vector3.zero;
+
             });
 
 
@@ -166,9 +177,10 @@ public class Building : MonoBehaviour
 
 
 
-        _floatingTrans.localPosition = new Vector3(0f, 3f, 0f);
+        //_floatingTrans.localPosition = new Vector3(0f, 3f, 0f);
+        _floatingTrans.position = transform.position + new Vector3(0f, 1.5f, 0);
 
-        _floatingTrans.DOLocalMoveZ(2f, 1f).SetEase(Ease.OutCirc)
+        _floatingTrans.DOMoveZ(_floatingTrans.position.z + 2f, 1f).SetEase(Ease.Linear)
             .OnComplete(() => Managers.Pool.Push(_floatingTrans.GetComponent<Poolable>()));
 
     }

@@ -90,6 +90,13 @@ public class StageManager : MonoBehaviour
     {
         if (_blockMachineCount < _blockMachineList.Count)
         {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    _blockStorage._blockCountArray[i] += 100;
+                }
+            }
             if (Input.GetKeyDown(KeyCode.E))
             {
                 AddBlockMachine(false);

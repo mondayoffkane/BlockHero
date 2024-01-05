@@ -73,7 +73,7 @@ public class VillageManager : MonoBehaviour
         for (int i = 0; i < _buildingList.Count; i++)
         {
             //if (_buildingList[i].isBuildComplete == false)
-            if (_buildingList[i]._currentCount > 0)
+            if (_buildingList[i]._currentCount < _buildingList[i]._maxCount)
             {
                 return _buildingList[i].transform;
             }

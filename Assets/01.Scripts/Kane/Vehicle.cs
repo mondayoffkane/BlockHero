@@ -189,7 +189,7 @@ public class Vehicle : MonoBehaviour
         _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
 
         //_target.GetComponent<Building>()._blockArray[(int)_blockType]--;
-        _target.GetComponent<Building>().PushBlock();
+        //_target.GetComponent<Building>().PushBlock();
         _currentCount--;
 
         _block.DOJump(_target.transform.position, 5f, 1, 0.3f).SetEase(Ease.Linear)
@@ -200,6 +200,7 @@ public class Vehicle : MonoBehaviour
 
                 Floating_Text(1);
                 Managers._stageManager.CalcMoney(1);
+                _target.GetComponent<Building>().PushBlock();
             });
         _target.GetComponent<Building>().CheckBuild();
     }

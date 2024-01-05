@@ -81,10 +81,27 @@ public class VillageManager : MonoBehaviour
 
         return _buildingList[Random.Range(0, _buildingList.Count)].transform;
 
-
-
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            for (int i = 0; i < _buildingList.Count; i++)
+            {
+                //if (_buildingList[i].isBuildComplete == false)
+                if (_buildingList[i]._currentCount < _buildingList[i]._maxCount)
+                {
+                    _buildingList[i]._currentCount = _buildingList[i]._maxCount;
+                    _buildingList[i].isBuildComplete = true;
+                    CompleteBuild();
+                    _buildingList[i].Build_Button();
+                    break;
+                }
+            }
+        }
+    }
 
 
 

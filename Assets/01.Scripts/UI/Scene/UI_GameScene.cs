@@ -20,6 +20,7 @@ public class UI_GameScene : UI_Scene
         Scroll_Button,
         Speed_RV_Button,
         View_Button,
+        Cpi_Rail_Button,
         ViewChange_Button,
         AddCar_Button,
         BlockMachine_Close_Button,
@@ -60,6 +61,7 @@ public class UI_GameScene : UI_Scene
         , Scroll_Button
         , Speed_RV_Button
         , View_Button
+        , Cpi_Rail_Button
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -139,7 +141,7 @@ public class UI_GameScene : UI_Scene
         Scroll_Close_Button = GetButton(Buttons.Scroll_Close_Button);
         Scroll_Button = GetButton(Buttons.Scroll_Button);
         Speed_RV_Button = GetButton(Buttons.Speed_RV_Button);
-
+        Cpi_Rail_Button = GetButton(Buttons.Cpi_Rail_Button);
         for (int i = 0; i < Scroll_Content.transform.childCount; i++)
         {
             _scrollUpgButtons[i] = _scrollUpgContent[i].transform.Find("Upgrade_Button").GetComponent<Button>();
@@ -223,6 +225,15 @@ public class UI_GameScene : UI_Scene
             int _num = i;
             _scrollUpgButtons[i].AddButtonEvent(() => Managers._stageManager.VehicleUpgrade(_num));
         }
+
+        Cpi_Rail_Button.AddButtonEvent(() =>
+        {
+            if (_stageManager._rail_Speed_Level < 10)
+            {
+                _stageManager._rail_Speed_Level++;
+                _stageManager._railSpeed = 0.5f - (0.05f * _stageManager._rail_Speed_Level);
+            }
+        });
 
         View_Button.AddButtonEvent(() =>
         {

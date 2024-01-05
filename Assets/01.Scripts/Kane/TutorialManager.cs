@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 
 public class TutorialManager : MonoBehaviour
 {
+    public static TutorialManager _instance;
 
     public Vector3[] _imgPoss;
     public Vector2[] _imgSizes;
@@ -15,6 +16,11 @@ public class TutorialManager : MonoBehaviour
     public GameObject _maskImg;
     public int _tutorial_Level = 0;
 
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
     private void Start()
     {
@@ -34,6 +40,8 @@ public class TutorialManager : MonoBehaviour
     [Button]
     public void Tutorial_Img()
     {
+        Debug.Log("Tutorial Img :" + _tutorial_Level);
+
         _maskImg.SetActive(true);
         _maskImg.transform.GetComponent<RectTransform>().anchoredPosition = _imgPoss[_tutorial_Level];
         //_maskImg.transform.localScale = _imgSizes[_tutorial_Level];
@@ -46,6 +54,7 @@ public class TutorialManager : MonoBehaviour
     [Button]
     public void Tutorial_Complete()
     {
+        Debug.Log("Tutorial Complete : +" + _tutorial_Level);
         ES3.Save<bool>("isFirst", false);
         _maskImg.SetActive(false);
         _cams[_tutorial_Level].SetActive(false);

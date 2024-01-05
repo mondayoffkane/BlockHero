@@ -112,7 +112,7 @@ public class StageManager : MonoBehaviour
         _blockMachineCount = ES3.Load<int>("BlockMachineCount", 0);
 
 
-        _money = ES3.Load<double>("Money", 100d);
+        _money = ES3.Load<double>("Money", 1d);
 
 
         CalcMoney(0);
@@ -287,7 +287,12 @@ public class StageManager : MonoBehaviour
             CalcMoney(-_blockMachine_Prices[_blockMachineCount]);
         }
         _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
-
+        if (_blockMachineCount == 0) TutorialManager._instance.Tutorial_Complete();
+        if (_blockMachineCount == 1)
+        {
+            TutorialManager._instance.Tutorial_Complete();
+            TutorialManager._instance.Tutorial_Img();
+        }
         _blockMachineCount++;
         ES3.Save<int>("BlockMachineCount", _blockMachineCount);
         //Debug.Log("Save BlockMachine Count :" + _blockMachineCount);
@@ -446,6 +451,12 @@ public class StageManager : MonoBehaviour
                 CalcMoney(-_spawnLevel_Prices[_vehicle_Spawn_Level]);
                 AddVehicle();
                 _vehicle_Spawn_Level++;
+                if (TutorialManager._instance._tutorial_Level == 2)
+                {
+                    TutorialManager._instance.Tutorial_Complete();
+                    Managers._gameUi.Scroll_Panel.SetActive(false);
+                    //TutorialManager._instance.Tutorial_Img();
+                }
                 break;
 
             case 1:

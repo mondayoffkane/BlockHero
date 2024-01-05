@@ -85,6 +85,8 @@ public class BlockMachine : MonoBehaviour
 
     public void UpgradeMachine()
     {
+       
+
         Managers._stageManager.CalcMoney(-_upgradePrices[_level]);
         _level++;
         ES3.Save<int>($"BlockMachine_{_machineNum}", _level);

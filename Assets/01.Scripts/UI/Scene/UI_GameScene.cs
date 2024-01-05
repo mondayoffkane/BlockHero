@@ -186,6 +186,14 @@ public class UI_GameScene : UI_Scene
                 //Managers._stageManager.SelectModelSetColor(_num);
                 Managers._stageManager._selectBlockMachine.SetBlockType(_num);
                 BlockMachine_SetColor(_num);
+
+                if (TutorialManager._instance._tutorial_Level == 6)
+                {
+                    TutorialManager._instance.Tutorial_Complete();
+                    BlockMachine_Panel.SetActive(false);
+                    _stageManager._cams[0].transform.position = TutorialManager._instance._cams[6].transform.position;
+                }
+
             });
         }
 
@@ -216,6 +224,15 @@ public class UI_GameScene : UI_Scene
         {
             if ((Scroll_Panel.activeSelf == false)) ChangePanel(2);
             else PanelOnOff(Scroll_Panel, false);
+
+            if (TutorialManager._instance._tutorial_Level == 1)
+            {
+                TutorialManager._instance.Tutorial_Complete();
+
+                _stageManager._cams[0].transform.position = TutorialManager._instance._cams[2].transform.position;
+                TutorialManager._instance.Tutorial_Img();
+
+            }
         });
         Speed_RV_Button.AddButtonEvent(() => { /* add func */});
 
@@ -307,6 +324,12 @@ public class UI_GameScene : UI_Scene
                 //BlockMachine_Upgrade_Button.interactable =
                 Managers._stageManager._selectBlockMachine.CheckPrice();
 
+                if (TutorialManager._instance._tutorial_Level == 5)
+                {
+                    TutorialManager._instance.Tutorial_Complete();
+                    TutorialManager._instance.Tutorial_Img();
+                }
+
                 break;
 
             case 2:
@@ -353,6 +376,9 @@ public class UI_GameScene : UI_Scene
             .GetChild(_num).GetChild(0).gameObject.SetActive(true);
         BlockMachine_Color_Buttons_Group.transform
             .GetChild(_num).GetComponent<Button>().interactable = false;
+
+
+
     }
 
 

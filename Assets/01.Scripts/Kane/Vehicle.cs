@@ -104,7 +104,7 @@ public class Vehicle : MonoBehaviour
                     _currentDis = _agent.remainingDistance;
                     if (_agent.remainingDistance <= _minDistance)
                     {
-                        if (_currentCount == 0)
+                        if (_currentCount == 0) // Arrive BlockStorage
                         {
                             yield return new WaitForSeconds(1f);
                             _target = _villagemanager.FindBuilding();
@@ -115,12 +115,31 @@ public class Vehicle : MonoBehaviour
                                 _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
                                 SetDest(_target);
                             }
+                            else
+                            {
+                                _target = _villagemanager.ReFindBuilding();
+                                if (_target == null)
+                                {
+                                    yield return new WaitForSeconds(1f);
+                                    _state = State.Wait;
+                                    break;
+                                }
+                                PullBlock();
+
+                                if (_currentCount > 0)
+                                {
+                                    _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
+                                    SetDest(_target);
+                                }
+
+
+                            }
 
                         }
                         else
                         {
 
-                            while (_currentCount > 0)
+                            while (_currentCount > 0) // Arrive Building
                             {
 
                                 PushBlock();
@@ -198,8 +217,8 @@ public class Vehicle : MonoBehaviour
             {
                 Managers.Pool.Push(_block.GetComponent<Poolable>());
 
-                Floating_Text(1);
-                Managers._stageManager.CalcMoney(1);
+                Floating_Text(2);
+                Managers._stageManager.CalcMoney(2);
                 _target.GetComponent<Building>().PushBlock();
             });
         _target.GetComponent<Building>().CheckBuild();

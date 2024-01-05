@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ES3Defaults
   m_EditorClassIdentifier: 
   settings:
-    _location: 1
-    path: SaveFile.es3
+    _location: 0
+    path: DashBoard_3.es3
     encryptionType: 0
     compressionType: 0
     encryptionPassword: password

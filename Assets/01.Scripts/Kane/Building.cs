@@ -104,6 +104,7 @@ public class Building : MonoBehaviour
     {
         _buildingDeco.localScale = Vector3.zero;
         _buildingCanvas.gameObject.SetActive(true);
+        _buildingCanvas.transform.Find("Build_Button").Find("Reward_Text").GetComponent<Text>().text = $"{_rewardPrice}";
     }
 
 
@@ -122,6 +123,15 @@ public class Building : MonoBehaviour
 
 
                 _villageManager.CompleteBuild();
+
+                if (TutorialManager._instance._tutorial_Level == 3)
+                {
+                    TutorialManager._instance.Tutorial_Img();
+
+
+
+                }
+
             }
         }
 
@@ -131,6 +141,23 @@ public class Building : MonoBehaviour
 
     public void Build_Button()
     {
+        if (TutorialManager._instance._tutorial_Level == 3)
+        {
+            TutorialManager._instance.Tutorial_Complete();
+            Managers._stageManager._cams[0].transform.position = TutorialManager._instance._cams[3].transform.position;
+
+            DOTween.Sequence().AppendInterval(2f).AppendCallback(() =>
+            {
+                if (TutorialManager._instance._tutorial_Level == 4)
+                {
+
+                    TutorialManager._instance.Tutorial_Img();
+                }
+            });
+
+        }
+
+
         GameObject _makeingParticle = Managers.Pool.Pop(Resources.Load<GameObject>("Building-Making"), transform).gameObject;
         DOTween.Sequence()
             .AppendCallback(() =>

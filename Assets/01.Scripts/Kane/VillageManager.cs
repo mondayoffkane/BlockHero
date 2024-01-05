@@ -83,6 +83,20 @@ public class VillageManager : MonoBehaviour
 
     }
 
+    public Transform ReFindBuilding()
+    {
+        for (int i=0; i<_buildingList.Count; i++)
+        {
+            if (Managers._stageManager._blockStorage._blockCountArray[(int)_buildingList[i]._blockType] > 0)
+            {
+                return _buildingList[i].transform;
+            }
+        }
+
+            return null;
+    }
+
+
 
     private void Update()
     {

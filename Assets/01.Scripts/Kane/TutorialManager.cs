@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using MondayOFF;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -31,9 +32,14 @@ public class TutorialManager : MonoBehaviour
 
         if (isFirst)
         {
+            //MondayOFF.EventTracker.TryStage(0);
+            EventTracker.LogCustomEvent("Village"
+                  , new Dictionary<string, string> { { "Village ", $"VillageTry -0" } });
+
             Tutorial_Img();
         }
 
+        //Managers._gameUi.NextStage_Button.gameObject.SetActive(false);
 
     }
 

@@ -21,6 +21,7 @@ public class UI_GameScene : UI_Scene
         Speed_RV_Button,
         View_Button,
         Cpi_Rail_Button,
+        NextStage_Button,
         ViewChange_Button,
         AddCar_Button,
         BlockMachine_Close_Button,
@@ -33,9 +34,10 @@ public class UI_GameScene : UI_Scene
         FactoryBase_Panel,
         BlockMachine_Panel,
         BlockMachine_Color_Buttons_Group,
-        MaskImg,
         Scroll_Panel,
         Scroll_Content,
+        MaskImg,
+        Unlock_Panel,
     }
 
     DOTween _camTween;
@@ -48,6 +50,7 @@ public class UI_GameScene : UI_Scene
         , MaskImg
         , Scroll_Panel
         , Scroll_Content
+        , Unlock_Panel
         ;
     //Recipe_RawImage;
 
@@ -62,6 +65,7 @@ public class UI_GameScene : UI_Scene
         , Speed_RV_Button
         , View_Button
         , Cpi_Rail_Button
+        , NextStage_Button
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -123,6 +127,9 @@ public class UI_GameScene : UI_Scene
             _scrollUpgContent[i] = Scroll_Content.transform.GetChild(i).gameObject;
         }
 
+
+        Unlock_Panel = GetObject(GameObjects.Unlock_Panel);
+
         // ========= Buttons
 
 
@@ -149,6 +156,7 @@ public class UI_GameScene : UI_Scene
 
         View_Button = GetButton(Buttons.View_Button);
 
+        NextStage_Button = GetButton(Buttons.NextStage_Button);
 
         // ========= Img
 
@@ -273,6 +281,13 @@ public class UI_GameScene : UI_Scene
 
         });
 
+        NextStage_Button.AddButtonEvent(() =>
+        {
+            _stageManager._currentStageNum = _stageManager._currentStageNum == 0 ? 1 : 0;
+            _stageManager.SetStagePos();
+        });
+
+
     }
 
     // ====================================================
@@ -335,6 +350,11 @@ public class UI_GameScene : UI_Scene
             case 2:
                 PanelOnOff(Scroll_Panel, true);
                 _stageManager.CheckScrollUpgradePrice();
+                break;
+
+            case 3:
+                PanelOnOff(Unlock_Panel, true);
+                
                 break;
 
         }

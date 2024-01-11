@@ -21,6 +21,9 @@ public class Vehicle : MonoBehaviour
         Move,
         PickUp,
         PickDown,
+        Return,
+        Sleep
+
 
     }
     public State _state;
@@ -49,7 +52,7 @@ public class Vehicle : MonoBehaviour
     public float extraRotationSpeed = 5f;
 
     BlockStorage _blockStorage;
-    VillageManager _villagemanager;
+    //VillageManager _villagemanager;
     MeshFilter _boxMeshFilter;
     // =====================================
 
@@ -58,7 +61,7 @@ public class Vehicle : MonoBehaviour
     {
         //navMeshAgent.updateRotation = false;
 
-        if (_villagemanager == null) _villagemanager = Managers._stageManager._villageManager;
+        //if (_villagemanager == null) _villagemanager = Managers._stageManager._currentVillageManager;
 
         if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
         StartCoroutine(Cor_Update());
@@ -88,8 +91,9 @@ public class Vehicle : MonoBehaviour
             switch (_state)
             {
                 case State.Wait:
-                    _target = _blockStorage.transform;
-                    SetDest(_target);
+                    //_target = _blockStorage.transform;
+                    //_agent.SetDestination(_target.position);
+                    //SetDest(_target);
                     break;
 
                 case State.Move:
@@ -106,8 +110,9 @@ public class Vehicle : MonoBehaviour
                     {
                         if (_currentCount == 0) // Arrive BlockStorage
                         {
-                            yield return new WaitForSeconds(1f);
-                            _target = _villagemanager.FindBuilding();
+                            //yield return new WaitForSeconds(1f);
+                            //_target = _villagemanager.FindBuilding();
+                            _target = Managers._stageManager._currentVillageManager.FindBuilding();
                             PullBlock();
 
                             if (_currentCount > 0)
@@ -117,10 +122,11 @@ public class Vehicle : MonoBehaviour
                             }
                             else
                             {
-                                _target = _villagemanager.ReFindBuilding();
+                                //_target = _villagemanager.ReFindBuilding();
+                                _target = Managers._stageManager._currentVillageManager.ReFindBuilding();
                                 if (_target == null)
                                 {
-                                    yield return new WaitForSeconds(1f);
+                                    //yield return new WaitForSeconds(1f);
                                     _state = State.Wait;
                                     break;
                                 }
@@ -153,11 +159,23 @@ public class Vehicle : MonoBehaviour
                             _target = _blockStorage.transform.Find("In_Pos");
                             SetDest(_target);
 
+                            _state = State.Return;
+
+
                         }
                     }
                     break;
 
                 case State.PickDown:
+                    break;
+
+                case State.Return:
+                    _currentDis = _agent.remainingDistance;
+                    if (_agent.remainingDistance <= _minDistance)
+                    {
+                        Managers._stageManager._vehicleQueue.Enqueue(this);
+                        _state = State.Sleep;
+                    }
                     break;
 
             }
@@ -261,6 +279,20 @@ public class Vehicle : MonoBehaviour
 
     }
 
+    public void SetReturn()
+    {
+        if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
+        //_agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
+        //_agent.destination = _blockStorage.transform.Find("Out_Pos").position;
+
+        _blockStorage._blockCountArray[(int)_blockType] += _currentCount;
+        _currentCount = 0;
+        //Managers._stageManager._vehicleQueue.Enqueue(this);
+        //_state = State.Return;
+        _state = State.Wait;
+        //_target = _blockStorage.transform.Find("Out_Pos");
+
+    }
 
 
 

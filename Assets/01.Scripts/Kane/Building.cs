@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using MondayOFF;
 
 public class Building : MonoBehaviour
 {
-
+    public int _buildingNum = 0;
     //public int _maxCount = 10;
     //public int _currentCount = 0;
 
@@ -27,13 +28,14 @@ public class Building : MonoBehaviour
 
     public Sprite[] _blockSprites;
 
-    VillageManager _villageManager;
+    [SerializeField] VillageManager _villageManager;
     // =================
 
 
     private void Awake()
     {
-        if (_villageManager == null) _villageManager = Managers._stageManager._villageManager;
+        //if (_villageManager == null) _villageManager = Managers._stageManager._currentVillageManager;
+        if (_villageManager == null) _villageManager = transform.GetComponentInParent<VillageManager>();
 
         _buildingDeco = transform.Find("BuildingDeco");
         _buildingCanvas = transform.Find("Building_Canvas").GetComponent<Canvas>();
@@ -46,6 +48,7 @@ public class Building : MonoBehaviour
 
         _currentCount = 0; // _maxCount;
         _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text = $"{_currentCount}/{_maxCount}";
+
         _buildingCanvas.transform.Find("BlockCountImg").GetComponent<Image>().sprite = _blockSprites[(int)_blockType];
 
 
@@ -64,9 +67,7 @@ public class Building : MonoBehaviour
 
         }
 
-
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
-
 
 
     }
@@ -116,11 +117,13 @@ public class Building : MonoBehaviour
             {
                 isBuildComplete = true;
 
+
                 _buildingCanvas.transform.Find("BlockCountImg").gameObject.SetActive(false);
                 _buildingCanvas.transform.Find("Build_Button").gameObject.SetActive(true);
 
                 // build button on
-
+                EventTracker.LogCustomEvent("Village"
+                       , new Dictionary<string, string> { { "Village ", $"VillageeNum -{_villageManager._villageLevel}_BuildNum-{_buildingNum}" } });
 
                 _villageManager.CompleteBuild();
 

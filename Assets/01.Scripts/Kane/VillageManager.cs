@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MondayOFF;
+using DG.Tweening;
 
 public class VillageManager : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class VillageManager : MonoBehaviour
 
     public List<Building> _buildingList = new List<Building>();
 
-    public int _buildingCount = 0;
+    //public int _buildingCount = 0;
     public int _completeCount = 0;
 
 
@@ -24,7 +26,7 @@ public class VillageManager : MonoBehaviour
 
     // ==================================
 
-    private void OnEnable()
+    private void Awake()
     {
         int _count = transform.Find("MapAreaGroup").childCount;
         AreaGroups = new Transform[_count];
@@ -37,8 +39,9 @@ public class VillageManager : MonoBehaviour
 
     private void Start()
     {
-        _completeCount = ES3.Load<int>("CompleteCount", 0);
-        _villageComplete = ES3.Load<bool>("VillageComplete", false);
+        _completeCount = ES3.Load<int>($"CompleteCount_{_villageLevel}", 0);
+        //_villageComplete = ES3.Load<bool>($"VillageComplete_{_villageLevel}", false);
+
 
         for (int i = 0; i < _buildingList.Count; i++)
         {
@@ -54,15 +57,38 @@ public class VillageManager : MonoBehaviour
     public void CompleteBuild()
     {
         _completeCount++;
-        ES3.Save<int>("CompleteCount", _completeCount);
+        ES3.Save<int>($"CompleteCount_{_villageLevel}", _completeCount);
         if (_completeCount < _buildingList.Count)
             _buildingList[_completeCount].SetCanvas();
 
-        if (_completeCount >= _buildingCount)
+        if (_completeCount >= _buildingList.Count)
         {
             _villageComplete = true;
-            ES3.Save<bool>("VillageComplete", _villageComplete);
+            ES3.Save<bool>($"VillageComplete_{_villageLevel}", _villageComplete);
+
+            if (_villageLevel == 0)
+            {
+                Managers._stageManager._stageLevel++;
+                ES3.Save<int>("StageLevel", Managers._stageManager._stageLevel);
+
+                EventTracker.LogCustomEvent("Village"
+                       , new Dictionary<string, string> { { "Village ", $"VillageClear -{_villageLevel}" } });
+
+                DOTween.Sequence()
+                    .AppendCallback(() =>
+                    {
+                        Managers._gameUi.ChangePanel(3);
+
+                    }).AppendInterval(2f)
+                    .AppendCallback(() => Managers._gameUi.PanelOnOff(Managers._gameUi.Unlock_Panel, false))
+                    .OnComplete(() => Managers._gameUi.NextStage_Button.gameObject.SetActive(true)); ;
+                   
+
+
+            }
         }
+
+
 
     }
 
@@ -85,7 +111,7 @@ public class VillageManager : MonoBehaviour
 
     public Transform ReFindBuilding()
     {
-        for (int i=0; i<_buildingList.Count; i++)
+        for (int i = 0; i < _buildingList.Count; i++)
         {
             if (Managers._stageManager._blockStorage._blockCountArray[(int)_buildingList[i]._blockType] > 0)
             {
@@ -93,7 +119,7 @@ public class VillageManager : MonoBehaviour
             }
         }
 
-            return null;
+        return null;
     }
 
 

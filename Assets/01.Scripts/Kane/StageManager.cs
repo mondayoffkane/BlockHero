@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using MondayOFF;
 
 public class StageManager : MonoBehaviour
 {
@@ -26,32 +27,30 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Vehicle")] public double[] _capacityLevel_Prices = new double[5];
     [FoldoutGroup("Vehicle")] public double[] _railSpeedLevel_Prices = new double[5];
 
-
-
-
     [FoldoutGroup("Vehicle")] public List<Vehicle> _vehicleList = new List<Vehicle>();
-
+    [FoldoutGroup("Vehicle")][ShowInInspector] public Queue<Vehicle> _vehicleQueue = new Queue<Vehicle>();
 
     [FoldoutGroup("Stage")] public double _money = 1000d;
+    [FoldoutGroup("Stage")] public List<VillageManager> _villageList = new List<VillageManager>();
+    [FoldoutGroup("Stage")] public VillageManager _currentVillageManager;
+    [FoldoutGroup("Stage")] public int _stageLevel = 0;
+    [FoldoutGroup("Stage")] public int _currentStageNum = 0;
+
 
     public GameObject[] _cams;
     public GameObject _machineCanvas;
     Button _machineBuyButton;
     Text _machinePriceText;
 
-    public Transform[] _PackPosGroups;
-
-
-
-    public int _maxSpawnCount = 10;
 
     public BlockStorage _blockStorage;
-    public VillageManager _villageManager;
-
 
 
     UI_GameScene _gameUi;
     Color _redColor;
+
+    public bool isSet = false;
+    public int _playTime = 0;
     // =================================================
 
 
@@ -59,6 +58,7 @@ public class StageManager : MonoBehaviour
 
     private void OnEnable()
     {
+
 
         ColorUtility.TryParseHtmlString("#FF4D00", out _redColor);
 
@@ -82,8 +82,40 @@ public class StageManager : MonoBehaviour
     {
         LoadData();
         _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
+        SetStagePos();
+
+        StartCoroutine(Cor_Update());
+    }
+
+    IEnumerator Cor_Update()
+    {
+        //yield return new WaitForSeconds(3f);
+        while (true)
+        {
+
+            yield return new WaitForSeconds(1f);
+            _playTime++;
+            if ((_playTime % 10) == 0)
+            {
+                ES3.Save<int>("PlayTime", _playTime);
+
+                EventTracker.LogCustomEvent("Village"
+                    , new Dictionary<string, string> { { "Village ", $"PlayTime -{_playTime}" } });
+            }
+
+
+            if (Managers._stageManager.isSet && _vehicleQueue.Count > 0 && (_blockStorage._blockCountArray[0] > 0 || _blockStorage._blockCountArray[1] > 0 || _blockStorage._blockCountArray[2] > 0 || _blockStorage._blockCountArray[3] > 0))
+            {
+                Vehicle _vehicle = _vehicleQueue.Dequeue();
+                _vehicle._state = Vehicle.State.Move;
+                _vehicle.GetComponent<NavMeshAgent>().Warp(_blockStorage.transform.Find("Out_Pos").position);
+            }
+
+        }
+
 
     }
+
 
 #if UNITY_EDITOR
     private void FixedUpdate()
@@ -113,7 +145,18 @@ public class StageManager : MonoBehaviour
 
 
         _money = ES3.Load<double>("Money", 1d);
+        _stageLevel = ES3.Load<int>("StageLevel", 0);
+        if (_stageLevel > 0)
+        {
+            Managers._gameUi.NextStage_Button.gameObject.SetActive(true);
+        }
+        else
+        {
+            Managers._gameUi.NextStage_Button.gameObject.SetActive(false);
+        }
 
+
+        _playTime = ES3.Load<int>("PlayTime", _playTime);
 
         CalcMoney(0);
 
@@ -295,6 +338,10 @@ public class StageManager : MonoBehaviour
         }
         _blockMachineCount++;
         ES3.Save<int>("BlockMachineCount", _blockMachineCount);
+        EventTracker.LogCustomEvent("BlockMachine"
+, new Dictionary<string, string> { { "BlockMachine", $"AddMachine-{_blockMachineCount}" } });
+
+
         //Debug.Log("Save BlockMachine Count :" + _blockMachineCount);
 
         switch (_blockMachineCount)
@@ -420,13 +467,19 @@ public class StageManager : MonoBehaviour
 
     public void AddVehicle()
     {
-        NavMeshAgent _vehicle = Managers.Pool.Pop(_villageManager._vehicl_Pref).GetComponent<NavMeshAgent>();
+
+
+        NavMeshAgent _vehicle = Managers.Pool.Pop(_currentVillageManager._vehicl_Pref).GetComponent<NavMeshAgent>();
+        _vehicle.GetComponent<Vehicle>()._state = Vehicle.State.Wait;
         _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
+        _vehicle.destination = _blockStorage.transform.Find("Out_Pos").position;
 
         Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
         _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
 
         _vehicleList.Add(_newVehicle);
+        _vehicleQueue.Enqueue(_newVehicle);
+        //Debug.Log(_vehicleQueue.Count);
 
         //_vehicle_Spawn_Level++;
 
@@ -457,24 +510,39 @@ public class StageManager : MonoBehaviour
                     Managers._gameUi.Scroll_Panel.SetActive(false);
                     //TutorialManager._instance.Tutorial_Img();
                 }
+
+                EventTracker.LogCustomEvent("Vehicle"
+, new Dictionary<string, string> { { "Vehicle", $"AddVehicle-{_vehicle_Spawn_Level}" } });
+
                 break;
 
             case 1:
                 CalcMoney(-_speedLevel_Prices[_vehicle_Speed_Level]);
                 _vehicle_Speed_Level++;
                 AllVehicleSetLevel();
+
+                EventTracker.LogCustomEvent("Vehicle"
+, new Dictionary<string, string> { { "Vehicle", $"SpeedUp-{_vehicle_Speed_Level}" } });
+
                 break;
 
             case 2:
                 CalcMoney(-_capacityLevel_Prices[_vehicle_Capacity_Level]);
                 _vehicle_Capacity_Level++;
                 AllVehicleSetLevel();
+
+                EventTracker.LogCustomEvent("Vehicle"
+, new Dictionary<string, string> { { "Vehicle", $"CapacityUp-{_vehicle_Capacity_Level}" } });
+
                 break;
 
             case 3:
                 CalcMoney(-_railSpeedLevel_Prices[_rail_Speed_Level]);
                 _rail_Speed_Level++;
                 _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
+
+                EventTracker.LogCustomEvent("BlockMachine"
+ , new Dictionary<string, string> { { "BlockMachine", $"RailUpgrade-{_rail_Speed_Level}" } });
                 break;
         }
 
@@ -621,6 +689,46 @@ public class StageManager : MonoBehaviour
 
 
     }
+
+    [Button]
+    public void SetStagePos()
+    {
+        isSet = false;
+        _vehicleQueue.Clear();
+
+
+        for (int i = 0; i < _vehicleList.Count; i++)
+        {
+            _vehicleList[i].GetComponent<NavMeshAgent>()
+                .Warp(_blockStorage.transform.Find("Out_Pos").position);
+            _vehicleList[i]._target = _blockStorage.transform.Find("Out_Pos");
+            _vehicleList[i].SetDest(_blockStorage.transform.Find("Out_Pos"));
+
+            _vehicleQueue.Enqueue(_vehicleList[i]);
+
+            _vehicleList[i].SetReturn();
+        }
+
+        for (int i = 0; i < _villageList.Count; i++)
+        {
+            _villageList[i].transform.DOMoveX(15f * (float)(i - _currentStageNum), 1f).SetEase(Ease.InOutCirc)
+                .OnComplete(() =>
+                {
+                    _currentVillageManager = _villageList[_currentStageNum];
+                    GetComponent<NavMeshSurface>().BuildNavMesh();
+                    isSet = true;
+                });
+        }
+
+        //for (int i = 0; i < _vehicleList.Count; i++)
+        //{
+        //_vehicleList[i].SetReturn();
+        //}
+
+
+
+    }
+
 
 
 

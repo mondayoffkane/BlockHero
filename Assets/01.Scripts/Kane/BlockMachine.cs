@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using MondayOFF;
+
+
 
 public class BlockMachine : MonoBehaviour
 {
@@ -51,7 +54,7 @@ public class BlockMachine : MonoBehaviour
         if (_connectMeshfilter != null)
             _connectMeshfilter.sharedMesh = _connectMesh;
 
-        SetBlockType((int)_spawnBlockType);
+        SetBlockType((int)_spawnBlockType, false);
 
         LoadData();
 
@@ -70,7 +73,7 @@ public class BlockMachine : MonoBehaviour
         _spawnInterval = 6f - 1f * _level;
     }
 
-    public void SetBlockType(int _num)
+    public void SetBlockType(int _num, bool isLog = true)
     {
         _spawnBlockType = (Block.BlockType)_num;
 
@@ -78,6 +81,11 @@ public class BlockMachine : MonoBehaviour
         _topMeshfilter.sharedMesh = _topMeshes[_num];
         _bodyMeshfilter.sharedMesh = _bodyMeshes[_num];
 
+        if (isLog)
+        {
+            EventTracker.LogCustomEvent("BlockMachine"
+ , new Dictionary<string, string> { { "BlockMachine", $"Machine-{_machineNum}_ChangeColor-{_spawnBlockType.ToString()}" } });
+        }
 
         // add material change
 
@@ -85,11 +93,14 @@ public class BlockMachine : MonoBehaviour
 
     public void UpgradeMachine()
     {
-       
+
 
         Managers._stageManager.CalcMoney(-_upgradePrices[_level]);
         _level++;
         ES3.Save<int>($"BlockMachine_{_machineNum}", _level);
+        EventTracker.LogCustomEvent("BlockMachine"
+, new Dictionary<string, string> { { "BlockMachine", $"Machine-{_machineNum}_Upgrade-{_level}" } });
+
         _spawnInterval = 6f - 1f * _level;
         CheckPrice();
     }

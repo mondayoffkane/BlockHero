@@ -70,6 +70,7 @@ public class Building : MonoBehaviour
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
 
 
+        _rewardPrice = _maxCount * 10d;  //_maxCount * 10d > 100 ? _maxCount * 5d : _maxCount * 10d;
     }
 
     public void LoadData()
@@ -123,7 +124,7 @@ public class Building : MonoBehaviour
 
                 // build button on
                 EventTracker.LogCustomEvent("Village"
-                       , new Dictionary<string, string> { { "Village ", $"VillageeNum -{_villageManager._villageLevel}_BuildNum-{_buildingNum}" } });
+                       , new Dictionary<string, string> { { "Village", $"Stage-{_villageManager._villageLevel}_Count-{_buildingNum}" } });
 
                 _villageManager.CompleteBuild();
 

@@ -34,7 +34,7 @@ public class TutorialManager : MonoBehaviour
         {
             //MondayOFF.EventTracker.TryStage(0);
             EventTracker.LogCustomEvent("Village"
-                  , new Dictionary<string, string> { { "Village ", $"VillageTry -0" } });
+                  , new Dictionary<string, string> { { "Village", $"VillageTry -0" } });
 
             Tutorial_Img();
         }

@@ -72,7 +72,7 @@ public class VillageManager : MonoBehaviour
                 ES3.Save<int>("StageLevel", Managers._stageManager._stageLevel);
 
                 EventTracker.LogCustomEvent("Village"
-                       , new Dictionary<string, string> { { "Village ", $"VillageClear -{_villageLevel}" } });
+                       , new Dictionary<string, string> { { "Village", $"VillageClear -{_villageLevel}" } });
 
                 DOTween.Sequence()
                     .AppendCallback(() =>
@@ -82,7 +82,7 @@ public class VillageManager : MonoBehaviour
                     }).AppendInterval(2f)
                     .AppendCallback(() => Managers._gameUi.PanelOnOff(Managers._gameUi.Unlock_Panel, false))
                     .OnComplete(() => Managers._gameUi.NextStage_Button.gameObject.SetActive(true)); ;
-                   
+
 
 
             }

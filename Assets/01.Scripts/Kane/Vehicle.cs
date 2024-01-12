@@ -256,7 +256,7 @@ public class Vehicle : MonoBehaviour
 
 
         //_floatingTrans.localPosition = new Vector3(0f, 1f, 0f);
-        _floatingTrans.position = transform.position + Vector3.up;
+        _floatingTrans.position = transform.position + Vector3.up * 2f;
 
         _floatingTrans.DOMoveZ(transform.position.z + 2f, 1f).SetEase(Ease.OutCirc)
             .OnComplete(() => Managers.Pool.Push(_floatingTrans.GetComponent<Poolable>()));

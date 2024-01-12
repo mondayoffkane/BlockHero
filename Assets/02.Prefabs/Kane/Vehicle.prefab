@@ -109,7 +109,7 @@ MonoBehaviour:
   _capacity_Level: 0
   _maxCount: 2
   _currentCount: 0
-  _minDistance: 0.5
+  _minDistance: 0.7
   _currentDis: 0
   _floating_Text_Pref: {fileID: 0}
   _target: {fileID: 0}

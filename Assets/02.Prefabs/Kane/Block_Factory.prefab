@@ -885,11 +885,11 @@ MonoBehaviour:
   _machineNum: 0
   _level: 0
   _upgradePrices:
+  - 50
   - 100
-  - 200
-  - 300
-  - 400
+  - 250
   - 500
+  - 1000
   _spawnBlockType: 0
   _blockPref: {fileID: 7286330375840144761, guid: ae8e5515a34184c6b9e126baffd4e417,
     type: 3}

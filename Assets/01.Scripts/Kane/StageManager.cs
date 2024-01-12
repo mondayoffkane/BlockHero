@@ -100,7 +100,7 @@ public class StageManager : MonoBehaviour
                 ES3.Save<int>("PlayTime", _playTime);
 
                 EventTracker.LogCustomEvent("Village"
-                    , new Dictionary<string, string> { { "Village ", $"PlayTime -{_playTime}" } });
+                    , new Dictionary<string, string> { { "Village", $"PlayTime -{_playTime}" } });
             }
 
 
@@ -572,19 +572,17 @@ public class StageManager : MonoBehaviour
                 _gameUi._scrollUpgButtons[0].interactable = false;
                 _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = _redColor; //= _gameUi._scrollUpgButtons[0].colors.disabledColor;
-                //_gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
-                //    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
+
             }
         }
         else
         {
-            //_gameUi._scrollUpgContent[0].SetActive(false);
+
             _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                    = Color.white;
             _gameUi._scrollUpgButtons[0].interactable = false;
-            //_gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-            //    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
-            //_gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
-            //    = _gameUi._scrollUpgButtons[0].colors.disabledColor;
+
         }
         // ============
 
@@ -606,19 +604,17 @@ public class StageManager : MonoBehaviour
                 _gameUi._scrollUpgButtons[1].interactable = false;
                 _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = _redColor;//= _gameUi._scrollUpgButtons[1].colors.disabledColor;
-                //_gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
-                //    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
+
             }
         }
         else
         {
             //_gameUi._scrollUpgContent[1].SetActive(false);
             _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                   = Color.white;
             _gameUi._scrollUpgButtons[1].interactable = false;
-            //_gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-            //    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
-            //_gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
-            //    = _gameUi._scrollUpgButtons[1].colors.disabledColor;
+
         }
         // ==
         if (_vehicle_Capacity_Level < _capacityLevel_Prices.Length)
@@ -639,19 +635,17 @@ public class StageManager : MonoBehaviour
                 _gameUi._scrollUpgButtons[2].interactable = false;
                 _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                    = _redColor;// = gameUi._scrollUpgButtons[2].colors.disabledColor;
-                //_gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
-                //    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
+
             }
         }
         else
         {
-            //_gameUi._scrollUpgContent[2].SetActive(false);
+
             _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                   = Color.white;
             _gameUi._scrollUpgButtons[2].interactable = false;
-            //_gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-            //    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
-            //_gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
-            //    = _gameUi._scrollUpgButtons[2].colors.disabledColor;
+
         }
         // ==
         if (_rail_Speed_Level < _railSpeedLevel_Prices.Length)
@@ -672,19 +666,17 @@ public class StageManager : MonoBehaviour
                 _gameUi._scrollUpgButtons[3].interactable = false;
                 _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = _redColor; //_gameUi._scrollUpgButtons[3].colors.disabledColor;
-                //_gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
-                //    = _gameUi._scrollUpgButtons[3].colors.disabledColor;
+
             }
         }
         else
         {
-            //_gameUi._scrollUpgContent[3].SetActive(false);
+
             _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().text = $"Max";
+            _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
+                   = Color.white;
             _gameUi._scrollUpgButtons[3].interactable = false;
-            //_gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-            //= _gameUi._scrollUpgButtons[3].colors.disabledColor;
-            //_gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
-            //= _gameUi._scrollUpgButtons[3].colors.disabledColor;
+
         }
 
 
@@ -699,19 +691,21 @@ public class StageManager : MonoBehaviour
 
         for (int i = 0; i < _vehicleList.Count; i++)
         {
+            _vehicleList[i].SetReturn();
+
+            _vehicleList[i]._target = _blockStorage.transform.Find("Out_Pos");
             _vehicleList[i].GetComponent<NavMeshAgent>()
                 .Warp(_blockStorage.transform.Find("Out_Pos").position);
-            _vehicleList[i]._target = _blockStorage.transform.Find("Out_Pos");
-            _vehicleList[i].SetDest(_blockStorage.transform.Find("Out_Pos"));
+            //_vehicleList[i].SetDest(_blockStorage.transform.Find("Out_Pos"));
+            _vehicleList[i].GetComponent<NavMeshAgent>().destination = _blockStorage.transform.Find("Out_Pos").position;
 
             _vehicleQueue.Enqueue(_vehicleList[i]);
 
-            _vehicleList[i].SetReturn();
         }
 
         for (int i = 0; i < _villageList.Count; i++)
         {
-            _villageList[i].transform.DOMoveX(15f * (float)(i - _currentStageNum), 1f).SetEase(Ease.InOutCirc)
+            _villageList[i].transform.DOMoveX(20f * (float)(i - _currentStageNum), 1f).SetEase(Ease.InOutCirc)
                 .OnComplete(() =>
                 {
                     _currentVillageManager = _villageList[_currentStageNum];

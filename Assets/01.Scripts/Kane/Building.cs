@@ -55,6 +55,9 @@ public class Building : MonoBehaviour
 
         LoadData();
 
+        _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text
+            = $"{_currentCount}/{_maxCount}";
+
         CheckBuild();
 
         if (isBuildComplete)
@@ -66,6 +69,9 @@ public class Building : MonoBehaviour
             _spark.localPosition = Vector3.zero;
 
         }
+
+
+
 
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
 
@@ -117,7 +123,7 @@ public class Building : MonoBehaviour
             if (_currentCount >= _maxCount)
             {
                 isBuildComplete = true;
-
+                Debug.Log($"{_buildingNum}_Complete");
 
                 _buildingCanvas.transform.Find("BlockCountImg").gameObject.SetActive(false);
                 _buildingCanvas.transform.Find("Build_Button").gameObject.SetActive(true);

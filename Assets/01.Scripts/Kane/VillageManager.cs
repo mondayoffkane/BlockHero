@@ -119,7 +119,7 @@ public class VillageManager : MonoBehaviour
             }
         }
 
-        return null;
+        return null; //_buildingList[Random.Range(0, _buildingList.Count)].transform;
     }
 
 

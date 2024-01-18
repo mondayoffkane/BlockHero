@@ -109,7 +109,7 @@ MonoBehaviour:
   _capacity_Level: 0
   _maxCount: 2
   _currentCount: 0
-  _minDistance: 0.7
+  _minDistance: 2.5
   _currentDis: 0
   _floating_Text_Pref: {fileID: 0}
   _target: {fileID: 0}
@@ -119,6 +119,7 @@ MonoBehaviour:
   - {fileID: -5943898615112286274, guid: ae85fe92779984a9bacc50448fbbf712, type: 3}
   - {fileID: 755311989462657537, guid: 0f69987dd6d8c4ee79f1bfd3033777f7, type: 3}
   extraRotationSpeed: 5
+  _showDestination: {x: 0, y: 0, z: 0}
 --- !u!195 &1721440544920484594
 NavMeshAgent:
   m_ObjectHideFlags: 0

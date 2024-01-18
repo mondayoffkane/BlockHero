@@ -54,14 +54,12 @@ public class Vehicle : MonoBehaviour
     BlockStorage _blockStorage;
     //VillageManager _villagemanager;
     MeshFilter _boxMeshFilter;
+
     // =====================================
 
 
     private void Start()
     {
-        //navMeshAgent.updateRotation = false;
-
-        //if (_villagemanager == null) _villagemanager = Managers._stageManager._currentVillageManager;
 
         if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
         StartCoroutine(Cor_Update());
@@ -71,12 +69,6 @@ public class Vehicle : MonoBehaviour
 
 
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
-
-        //if (_floating_Group == null) _floating_Group = Instantiate(new GameObject("Floating_Text_Group")).transform;
-        //_floating_Group.transform.SetParent(transform);
-        //_floating_Group.transform.localPosition = Vector3.zero;
-        //_floating_Group.rotation = Quaternion.Euler(Vector3.zero);
-        //_floating_Group.SetAsLastSibling();
 
 
         DOTween.Sequence().Append(transform.DOScale(_scale, _scaleTime)).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
@@ -88,12 +80,13 @@ public class Vehicle : MonoBehaviour
         while (true)
         {
             yield return null;
+
+
+
             switch (_state)
             {
                 case State.Wait:
-                    //_target = _blockStorage.transform;
-                    //_agent.SetDestination(_target.position);
-                    //SetDest(_target);
+
                     break;
 
                 case State.Move:
@@ -105,13 +98,11 @@ public class Vehicle : MonoBehaviour
                     }
 
 
-                    _currentDis = _agent.remainingDistance;
-                    if (_agent.remainingDistance <= _minDistance)
+                    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
+                    if (_currentDis  /*_agent.remainingDistance*/ <= _minDistance)
                     {
                         if (_currentCount == 0) // Arrive BlockStorage
                         {
-                            //yield return new WaitForSeconds(1f);
-                            //_target = _villagemanager.FindBuilding();
                             _target = Managers._stageManager._currentVillageManager.FindBuilding();
                             PullBlock();
 
@@ -122,12 +113,14 @@ public class Vehicle : MonoBehaviour
                             }
                             else
                             {
-                                //_target = _villagemanager.ReFindBuilding();
+
                                 _target = Managers._stageManager._currentVillageManager.ReFindBuilding();
                                 if (_target == null)
                                 {
-                                    //yield return new WaitForSeconds(1f);
+
                                     _state = State.Wait;
+
+                                    Managers._stageManager._vehicleQueue.Enqueue(this);
                                     break;
                                 }
                                 PullBlock();
@@ -170,8 +163,9 @@ public class Vehicle : MonoBehaviour
                     break;
 
                 case State.Return:
-                    _currentDis = _agent.remainingDistance;
-                    if (_agent.remainingDistance <= _minDistance)
+
+                    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
+                    if (_currentDis <= _minDistance)
                     {
                         Managers._stageManager._vehicleQueue.Enqueue(this);
                         _state = State.Sleep;
@@ -185,6 +179,7 @@ public class Vehicle : MonoBehaviour
     public void SetDest(Transform _trans)
     {
         _agent.SetDestination(_trans.position);
+
         _state = State.Move;
     }
 
@@ -221,12 +216,11 @@ public class Vehicle : MonoBehaviour
 
     public void PushBlock()
     {
-        Transform _block = Managers.Pool.Pop(_blockPref, transform).transform;
-        _block.transform.localPosition = Vector3.zero;
+        Transform _block = Managers.Pool.Pop(_blockPref, _target.transform).transform;
+        //_block.transform.localPosition = Vector3.zero;
+        _block.transform.position = transform.position;
         _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
 
-        //_target.GetComponent<Building>()._blockArray[(int)_blockType]--;
-        //_target.GetComponent<Building>().PushBlock();
         _currentCount--;
 
         _block.DOJump(_target.transform.position, 5f, 1, 0.3f).SetEase(Ease.Linear)
@@ -253,9 +247,6 @@ public class Vehicle : MonoBehaviour
         _floatingTrans.GetChild(0).GetComponent<Text>().text = $"${_num}";
         _floatingTrans.rotation = Quaternion.Euler(new Vector3(80f, 0f, 0f));
 
-
-
-        //_floatingTrans.localPosition = new Vector3(0f, 1f, 0f);
         _floatingTrans.position = transform.position + Vector3.up * 2f;
 
         _floatingTrans.DOMoveZ(transform.position.z + 2f, 1f).SetEase(Ease.OutCirc)
@@ -282,15 +273,12 @@ public class Vehicle : MonoBehaviour
     public void SetReturn()
     {
         if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
-        //_agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
-        //_agent.destination = _blockStorage.transform.Find("Out_Pos").position;
 
         _blockStorage._blockCountArray[(int)_blockType] += _currentCount;
         _currentCount = 0;
-        //Managers._stageManager._vehicleQueue.Enqueue(this);
-        //_state = State.Return;
+
         _state = State.Wait;
-        //_target = _blockStorage.transform.Find("Out_Pos");
+
 
     }
 

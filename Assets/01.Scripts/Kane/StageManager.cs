@@ -44,10 +44,12 @@ public class StageManager : MonoBehaviour
 
 
     public BlockStorage _blockStorage;
-
+    Transform _vehicleGroup;
 
     UI_GameScene _gameUi;
     Color _redColor;
+
+    public float _vehicleTerm = 1f;
 
     public bool isSet = false;
     public int _playTime = 0;
@@ -75,7 +77,7 @@ public class StageManager : MonoBehaviour
 
         _gameUi = Managers._gameUi;
 
-
+        _vehicleGroup = transform.Find("Vehicle_Group");
     }
 
     private void Start()
@@ -93,7 +95,7 @@ public class StageManager : MonoBehaviour
         while (true)
         {
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_vehicleTerm);
             _playTime++;
             if ((_playTime % 10) == 0)
             {
@@ -108,6 +110,7 @@ public class StageManager : MonoBehaviour
             {
                 Vehicle _vehicle = _vehicleQueue.Dequeue();
                 _vehicle._state = Vehicle.State.Move;
+                _vehicle._target = _blockStorage.transform.Find("Out_Pos");
                 _vehicle.GetComponent<NavMeshAgent>().Warp(_blockStorage.transform.Find("Out_Pos").position);
             }
 
@@ -469,7 +472,7 @@ public class StageManager : MonoBehaviour
     {
 
 
-        NavMeshAgent _vehicle = Managers.Pool.Pop(_currentVillageManager._vehicl_Pref).GetComponent<NavMeshAgent>();
+        NavMeshAgent _vehicle = Managers.Pool.Pop(_currentVillageManager._vehicl_Pref, _vehicleGroup).GetComponent<NavMeshAgent>();
         _vehicle.GetComponent<Vehicle>()._state = Vehicle.State.Wait;
         _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
         _vehicle.destination = _blockStorage.transform.Find("Out_Pos").position;

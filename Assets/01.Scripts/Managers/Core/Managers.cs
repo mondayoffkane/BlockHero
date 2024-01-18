@@ -25,22 +25,22 @@ public class Managers : MonoBehaviour
     public static UIManager UI => Instance._ui;
 
     public static GameManager Game => Instance._game;
-    static StageManager StageManager;
-    public static StageManager _stageManager
-    {
-        get
-        {
-            if (StageManager == null)
-            {
-                StageManager = GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
-            }
-            return StageManager;
-        }
-        set
-        {
-            StageManager = value;
-        }
-    }
+    //static StageManager StageManager;
+    //public static StageManager _stageManager
+    //{
+    //    get
+    //    {
+    //        if (StageManager == null)
+    //        {
+    //            StageManager = GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
+    //        }
+    //        return StageManager;
+    //    }
+    //    set
+    //    {
+    //        StageManager = value;
+    //    }
+    //}
 
     public static UI_GameScene _gameUi;
 
@@ -68,9 +68,11 @@ public class Managers : MonoBehaviour
             _instance._scene.Init();
             _instance._resource.Init();
 
-            _instance._game = go.AddComponent<GameManager>();
+            //_instance._game = go.AddComponent<GameManager>();
 
-            if (_stageManager == null) _stageManager = GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
+            _instance._game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+            //if (_stageManager == null) _stageManager = GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
 
         }
     }

@@ -192,14 +192,14 @@ public class UI_GameScene : UI_Scene
             _blockMachineColorButtons[i].AddButtonEvent(() =>
             {
                 //Managers._stageManager.SelectModelSetColor(_num);
-                Managers._stageManager._selectBlockMachine.SetBlockType(_num);
+                Managers.Game.currentStageManager._selectBlockMachine.SetBlockType(_num);
                 BlockMachine_SetColor(_num);
 
                 if (TutorialManager._instance._tutorial_Level == 6)
                 {
                     TutorialManager._instance.Tutorial_Complete();
                     BlockMachine_Panel.SetActive(false);
-                    _stageManager._cams[0].transform.position = TutorialManager._instance._cams[6].transform.position;
+                    Managers.Game.currentStageManager._cams[0].transform.position = TutorialManager._instance._cams[6].transform.position;
                 }
 
             });
@@ -211,18 +211,18 @@ public class UI_GameScene : UI_Scene
 
         BlockMachine_Upgrade_Button.AddButtonEvent(() =>
         {
-            Managers._stageManager.SelectBlockMachine_Upgrade();
+            Managers.Game.currentStageManager.SelectBlockMachine_Upgrade();
         });
 
         ViewChange_Button.AddButtonEvent(() =>
         {
-            if (Managers._stageManager._cams[0].activeSelf) Managers._stageManager.ChangeCam(1);
-            else Managers._stageManager.ChangeCam(0);
+            if (Managers.Game.currentStageManager._cams[0].activeSelf) Managers.Game.currentStageManager.ChangeCam(1);
+            else Managers.Game.currentStageManager.ChangeCam(0);
         });
 
         AddCar_Button.AddButtonEvent(() =>
         {
-            Managers._stageManager.AddVehicle();
+            Managers.Game.currentStageManager.AddVehicle();
         });
 
         Scroll_Close_Button.AddButtonEvent(() => Scroll_Panel.SetActive(false));
@@ -237,7 +237,7 @@ public class UI_GameScene : UI_Scene
             {
                 TutorialManager._instance.Tutorial_Complete();
 
-                _stageManager._cams[0].transform.position = TutorialManager._instance._cams[2].transform.position;
+                Managers.Game.currentStageManager._cams[0].transform.position = TutorialManager._instance._cams[2].transform.position;
                 TutorialManager._instance.Tutorial_Img();
 
             }
@@ -248,43 +248,48 @@ public class UI_GameScene : UI_Scene
         for (int i = 0; i < _scrollUpgButtons.Length; i++)
         {
             int _num = i;
-            _scrollUpgButtons[i].AddButtonEvent(() => Managers._stageManager.VehicleUpgrade(_num));
+            _scrollUpgButtons[i].AddButtonEvent(() => Managers.Game.currentStageManager.VehicleUpgrade(_num));
         }
 
         Cpi_Rail_Button.AddButtonEvent(() =>
         {
-            if (_stageManager._rail_Speed_Level < 10)
+            if (Managers.Game.currentStageManager._rail_Speed_Level < 10)
             {
-                _stageManager._rail_Speed_Level++;
-                _stageManager._railSpeed = 0.5f - (0.05f * _stageManager._rail_Speed_Level);
+                Managers.Game.currentStageManager._rail_Speed_Level++;
+                Managers.Game.currentStageManager._railSpeed = 0.5f - (0.05f * Managers.Game.currentStageManager._rail_Speed_Level);
             }
         });
 
         View_Button.AddButtonEvent(() =>
         {
-            Vector3 _pos = _stageManager._cams[0].transform.position;
+            Vector3 _pos = Managers.Game.currentStageManager._cams[0].transform.position;
             //_camTween = DOTween.Sequence()
 
-            if (_stageManager._cams[0].transform.position.z < -22)
+            if (Managers.Game.currentStageManager._cams[0].transform.position.z < -22)
             {
                 //_pos.z = -7f;
                 //_stageManager._cams[0].transform.position = _pos;
 
-                _stageManager._cams[0].transform.DOMoveZ(-7f, 0.5f).SetEase(Ease.Linear);
+                Managers.Game.currentStageManager._cams[0].transform.DOMoveZ(-7f, 0.5f).SetEase(Ease.Linear);
             }
             else
             {
                 //_pos.z = -40f;
                 //_stageManager._cams[0].transform.position = _pos;
-                _stageManager._cams[0].transform.DOMoveZ(-43f, 0.5f).SetEase(Ease.Linear);
+                Managers.Game.currentStageManager._cams[0].transform.DOMoveZ(-43f, 0.5f).SetEase(Ease.Linear);
             }
 
         });
 
         NextStage_Button.AddButtonEvent(() =>
         {
-            _stageManager._currentStageNum = _stageManager._currentStageNum == 0 ? 1 : 0;
-            _stageManager.SetStagePos();
+            //_stageManager._currentStageNum = _stageManager._currentStageNum == 0 ? 1 : 0;
+            //_stageManager.SetStagePos();
+
+            //Debug.Log("Null Func");
+            Managers.Game.ChangeStage(-1);
+
+
         });
 
 
@@ -293,12 +298,12 @@ public class UI_GameScene : UI_Scene
     // ====================================================
 
     //public HeroFactory _currentHeroFactory;
-    StageManager _stageManager;
+    //StageManager _stageManager;
 
     private void Start()
     {
         StartCoroutine(Cor_Update());
-        _stageManager = Managers._stageManager;
+        //_stageManager = Managers.Game.currentStageManager;
     }
 
     IEnumerator Cor_Update()
@@ -331,13 +336,13 @@ public class UI_GameScene : UI_Scene
         {
             case 0:
 
-                PanelOnOff(FactoryBase_Panel, true, 0);
+                //PanelOnOff(FactoryBase_Panel, true, 0);
                 break;
 
             case 1:
                 PanelOnOff(BlockMachine_Panel, true);
                 //BlockMachine_Upgrade_Button.interactable =
-                Managers._stageManager._selectBlockMachine.CheckPrice();
+                Managers.Game.currentStageManager._selectBlockMachine.CheckPrice();
 
                 if (TutorialManager._instance._tutorial_Level == 5)
                 {
@@ -349,12 +354,12 @@ public class UI_GameScene : UI_Scene
 
             case 2:
                 PanelOnOff(Scroll_Panel, true);
-                _stageManager.CheckScrollUpgradePrice();
+                Managers.Game.currentStageManager.CheckScrollUpgradePrice();
                 break;
 
             case 3:
                 PanelOnOff(Unlock_Panel, true);
-                
+
                 break;
 
         }

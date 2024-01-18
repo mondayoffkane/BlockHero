@@ -27,12 +27,15 @@ public class BlockStorage : MonoBehaviour
 
     // ===================================
 
-    private void Start()
+    private void OnEnable()
     {
         if (_floating_Pref == null) _floating_Pref = Resources.Load<GameObject>("Floating_Pref");
-        if (_floating_Group == null) _floating_Group = Instantiate(new GameObject("Floating_Group")).transform;
-        _floating_Group.transform.SetParent(transform);
-        _floating_Group.SetAsLastSibling();
+        if (_floating_Group == null)
+        {
+            _floating_Group = Instantiate(new GameObject("Floating_Group")).transform;
+            _floating_Group.transform.SetParent(transform);
+            _floating_Group.SetAsLastSibling();
+        }
 
         StartCoroutine(Cor_Update());
         LoadData();
@@ -63,7 +66,7 @@ public class BlockStorage : MonoBehaviour
                   .Append(transform.DOScale(_scale_2, _scaleTime).SetEase(Ease.Linear));
 
         DOTween.Sequence()
-             .Append(_block.transform.DOMove(transform.position + Vector3.up, Managers._stageManager._railSpeed))
+             .Append(_block.transform.DOMove(transform.position + Vector3.up, Managers.Game.currentStageManager._railSpeed))
              .OnComplete(() =>
              {
                  int _typeNum = (int)_block.GetComponent<Block>()._blockType;

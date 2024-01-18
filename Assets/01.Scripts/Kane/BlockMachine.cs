@@ -36,15 +36,19 @@ public class BlockMachine : MonoBehaviour
 
     public float _scaleTime = 0.25f;
 
+    //public GameObject _machineCanvas;
+    //Button _machineBuyButton;
+    //Text _machinePriceText;
 
 
     // =======private ============
-
+    [SerializeField] StageManager stageManager;
 
     // =======================================
     private void OnEnable()
     {
         if (_blockPref == null) Resources.Load<GameObject>("Block_Pref");
+        if (stageManager == null) stageManager = GetComponentInParent<StageManager>();
 
         _factoryTop_Obj = transform.Find("Top_Obj");
         _topMeshfilter = _factoryTop_Obj.GetComponent<MeshFilter>();
@@ -56,11 +60,18 @@ public class BlockMachine : MonoBehaviour
 
         SetBlockType((int)_spawnBlockType, false);
 
+
+        //_machineBuyButton.AddButtonEvent(() => AddBlockMachine());
+
+
+
         LoadData();
 
         StartCoroutine(Cor_Update());
 
-        transform.GetChild(1).SetParent(Managers._stageManager.transform.Find("3.RailGroup"));
+
+
+        if (transform.Find("Rail_Group")) transform.Find("Rail_Group").SetParent(stageManager.transform.Find("3.RailGroup"));
 
     }
 
@@ -69,7 +80,7 @@ public class BlockMachine : MonoBehaviour
 
     public void LoadData()
     {
-        _level = ES3.Load<int>($"BlockMachine_{_machineNum}", 0);
+        _level = ES3.Load<int>($"BlockMachine_{stageManager._stageLevel}_{_machineNum}", 0);
         _spawnInterval = 6f - 1f * _level;
     }
 
@@ -84,7 +95,7 @@ public class BlockMachine : MonoBehaviour
         if (isLog)
         {
             EventTracker.LogCustomEvent("BlockMachine"
- , new Dictionary<string, string> { { "BlockMachine", $"Machine-{_machineNum}_ChangeColor-{_spawnBlockType.ToString()}" } });
+ , new Dictionary<string, string> { { "BlockMachine", $"StageNum-{stageManager._stageLevel}_Machine-{_machineNum}_ChangeColor-{_spawnBlockType.ToString()}" } });
         }
 
         // add material change
@@ -95,11 +106,11 @@ public class BlockMachine : MonoBehaviour
     {
 
 
-        Managers._stageManager.CalcMoney(-_upgradePrices[_level]);
+        Managers.Game.CalcMoney(-_upgradePrices[_level]);
         _level++;
-        ES3.Save<int>($"BlockMachine_{_machineNum}", _level);
+        ES3.Save<int>($"BlockMachine_{stageManager._stageLevel}_{_machineNum}", _level);
         EventTracker.LogCustomEvent("BlockMachine"
-, new Dictionary<string, string> { { "BlockMachine", $"Machine-{_machineNum}_Upgrade-{_level}" } });
+, new Dictionary<string, string> { { "BlockMachine", $"StageNum-{stageManager._stageLevel}_Machine-{_machineNum}_Upgrade-{_level}" } });
 
         _spawnInterval = 6f - 1f * _level;
         CheckPrice();
@@ -129,7 +140,7 @@ public class BlockMachine : MonoBehaviour
         {
             Block _block = Managers.Pool.Pop(_blockPref).GetComponent<Block>();
             _block.SetInit(_spawnBlockType);
-            _block.transform.SetParent(Managers._stageManager.transform.Find("2.BlockPool"));
+            _block.transform.SetParent(stageManager.transform.Find("2.BlockPool"));
 
             _block.transform.position = transform.position + Vector3.up * 0.5f;
             transform.DOScale(Vector3.one, 0f);
@@ -155,7 +166,7 @@ public class BlockMachine : MonoBehaviour
 
             Managers._gameUi.BlockMachine_UpgradeValue_Text.text = $"-1s";
 
-            if (Managers._stageManager._money >= _upgradePrices[_level])
+            if (Managers.Game.money >= _upgradePrices[_level])
             {
                 Managers._gameUi.BlockMachine_Upgrade_Button.interactable = true;
                 Managers._gameUi.BlockMachine_Upgrade_Price_Text.color = Color.white;

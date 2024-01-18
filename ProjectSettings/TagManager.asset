@@ -10,6 +10,7 @@ TagManager:
   - HeroFactory
   - BlockMachine
   - BlockStorage
+  - GameManager
   layers:
   - Default
   - TransparentFX

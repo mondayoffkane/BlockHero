@@ -35,7 +35,7 @@ public class TutorialManager : MonoBehaviour
             //MondayOFF.EventTracker.TryStage(0);
             EventTracker.LogCustomEvent("Village"
                   , new Dictionary<string, string> { { "Village", $"VillageTry -0" } });
-            Debug.Log("Point");
+            //Debug.Log("Point");
 
             Tutorial_Img();
         }

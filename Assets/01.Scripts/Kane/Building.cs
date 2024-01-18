@@ -28,14 +28,14 @@ public class Building : MonoBehaviour
 
     public Sprite[] _blockSprites;
 
-    [SerializeField] VillageManager _villageManager;
+    [SerializeField] StageManager stageManager;
     // =================
 
 
     private void Awake()
     {
         //if (_villageManager == null) _villageManager = Managers._stageManager._currentVillageManager;
-        if (_villageManager == null) _villageManager = transform.GetComponentInParent<VillageManager>();
+        if (stageManager == null) stageManager = transform.GetComponentInParent<StageManager>();
 
         _buildingDeco = transform.Find("BuildingDeco");
         _buildingCanvas = transform.Find("Building_Canvas").GetComponent<Canvas>();
@@ -76,6 +76,8 @@ public class Building : MonoBehaviour
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
 
 
+
+
         _rewardPrice = _maxCount * 10d;  //_maxCount * 10d > 100 ? _maxCount * 5d : _maxCount * 10d;
     }
 
@@ -110,6 +112,10 @@ public class Building : MonoBehaviour
 
     public void SetCanvas()
     {
+        if (_buildingDeco == null) _buildingDeco = transform.Find("BuildingDeco");
+        if (_buildingCanvas == null) _buildingCanvas = transform.Find("Building_Canvas").GetComponent<Canvas>();
+
+
         _buildingDeco.localScale = Vector3.zero;
         _buildingCanvas.gameObject.SetActive(true);
         _buildingCanvas.transform.Find("Build_Button").Find("Reward_Text").GetComponent<Text>().text = $"{_rewardPrice}";
@@ -130,9 +136,9 @@ public class Building : MonoBehaviour
 
                 // build button on
                 EventTracker.LogCustomEvent("Village"
-                       , new Dictionary<string, string> { { "Village", $"Stage-{_villageManager._villageLevel}_Count-{_buildingNum}" } });
+                       , new Dictionary<string, string> { { "Village", $"Stage-{stageManager._stageLevel}_Count-{_buildingNum}" } });
 
-                _villageManager.CompleteBuild();
+                stageManager.BuildComplete();
 
                 if (TutorialManager._instance._tutorial_Level == 3)
                 {
@@ -154,7 +160,7 @@ public class Building : MonoBehaviour
         if (TutorialManager._instance._tutorial_Level == 3)
         {
             TutorialManager._instance.Tutorial_Complete();
-            Managers._stageManager._cams[0].transform.position = TutorialManager._instance._cams[3].transform.position;
+            Managers.Game.currentStageManager._cams[0].transform.position = TutorialManager._instance._cams[3].transform.position;
 
             DOTween.Sequence().AppendInterval(2f).AppendCallback(() =>
             {
@@ -183,7 +189,7 @@ public class Building : MonoBehaviour
             {
                 Managers.Pool.Push(_makeingParticle.GetComponent<Poolable>());
 
-                Managers._stageManager.CalcMoney(_rewardPrice);
+                Managers.Game.CalcMoney(_rewardPrice);
 
                 Floating_Text(_rewardPrice);
 
@@ -206,7 +212,7 @@ public class Building : MonoBehaviour
 
     public void Floating_Text(double _num)
     {
-        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, Managers._stageManager.transform.Find("4.Floating_Group")).transform;
+        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, Managers.Game.currentStageManager.transform.Find("4.Floating_Group")).transform;
         _floatingTrans.localScale = Vector3.one * 0.015f;
         _floatingTrans.SetAsLastSibling();
         _floatingTrans.GetChild(0).GetComponent<Text>().text = $"${_num}";

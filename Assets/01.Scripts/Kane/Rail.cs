@@ -19,9 +19,9 @@ public class Rail : MonoBehaviour
     public bool _isReady = true;
 
     // ==============================
-    private void Start()
+    private void OnEnable()
     {
-        _stageManager = Managers._stageManager;
+        _stageManager = GetComponentInParent<StageManager>();
 
         //_nextRail = _nextNode.GetComponent<Rail>();
 
@@ -102,7 +102,7 @@ public class Rail : MonoBehaviour
         _isReady = false;
 
 
-        _currentBlock.DOMove(transform.position + Vector3.up*0.5f, _stageManager._railSpeed)
+        _currentBlock.DOMove(transform.position + Vector3.up * 0.5f, _stageManager._railSpeed)
             .OnComplete(() => { _isReady = true; });
 
     }

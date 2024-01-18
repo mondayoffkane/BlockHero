@@ -93,7 +93,7 @@ public class JoyStickController : MonoBehaviour
         CanMove = true;
         isButtonClick = false;
 
-        Managers.Game.JoyStickController = this;
+        //Managers.Game.JoyStickController = this;
     }
     //JoyStickEditor 에서 활용함
     public void SetRigidBody()

@@ -61,7 +61,7 @@ public class Vehicle : MonoBehaviour
     private void Start()
     {
 
-        if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
+        if (_blockStorage == null) _blockStorage = Managers.Game.currentStageManager._blockStorage;
         StartCoroutine(Cor_Update());
 
         if (_agent == null) _agent = transform.GetComponent<NavMeshAgent>();
@@ -103,7 +103,7 @@ public class Vehicle : MonoBehaviour
                     {
                         if (_currentCount == 0) // Arrive BlockStorage
                         {
-                            _target = Managers._stageManager._currentVillageManager.FindBuilding();
+                            _target = Managers.Game.currentStageManager.FindBuilding();
                             PullBlock();
 
                             if (_currentCount > 0)
@@ -114,13 +114,13 @@ public class Vehicle : MonoBehaviour
                             else
                             {
 
-                                _target = Managers._stageManager._currentVillageManager.ReFindBuilding();
+                                _target = Managers.Game.currentStageManager.ReFindBuilding();
                                 if (_target == null)
                                 {
 
                                     _state = State.Wait;
 
-                                    Managers._stageManager._vehicleQueue.Enqueue(this);
+                                    Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
                                     break;
                                 }
                                 PullBlock();
@@ -167,7 +167,7 @@ public class Vehicle : MonoBehaviour
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
                     if (_currentDis <= _minDistance)
                     {
-                        Managers._stageManager._vehicleQueue.Enqueue(this);
+                        Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
                         _state = State.Sleep;
                     }
                     break;
@@ -230,7 +230,7 @@ public class Vehicle : MonoBehaviour
                 Managers.Pool.Push(_block.GetComponent<Poolable>());
 
                 Floating_Text(2);
-                Managers._stageManager.CalcMoney(2);
+                Managers.Game.CalcMoney(2);
                 _target.GetComponent<Building>().PushBlock();
             });
         _target.GetComponent<Building>().CheckBuild();
@@ -241,7 +241,7 @@ public class Vehicle : MonoBehaviour
 
     public void Floating_Text(double _num)
     {
-        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, Managers._stageManager.transform.Find("4.Floating_Group")).transform;
+        Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, Managers.Game.currentStageManager.transform.Find("4.Floating_Group")).transform;
         _floatingTrans.localScale = Vector3.one * 0.015f;
         _floatingTrans.SetAsLastSibling();
         _floatingTrans.GetChild(0).GetComponent<Text>().text = $"${_num}";
@@ -272,7 +272,7 @@ public class Vehicle : MonoBehaviour
 
     public void SetReturn()
     {
-        if (_blockStorage == null) _blockStorage = Managers._stageManager._blockStorage;
+        if (_blockStorage == null) _blockStorage = Managers.Game.currentStageManager._blockStorage;
 
         _blockStorage._blockCountArray[(int)_blockType] += _currentCount;
         _currentCount = 0;

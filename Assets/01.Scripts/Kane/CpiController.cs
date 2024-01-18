@@ -17,13 +17,13 @@ public class CpiController : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                Managers._stageManager._blockStorage._blockCountArray[i] += 100;
-                Managers._stageManager._blockStorage.UpdateBlockCount();
+                Managers.Game.currentStageManager._blockStorage._blockCountArray[i] += 100;
+                Managers.Game.currentStageManager._blockStorage.UpdateBlockCount();
             }
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Managers._stageManager.AddBlockMachine(false);
+            Managers.Game.currentStageManager.AddBlockMachine(false);
         }
 
 
@@ -68,18 +68,18 @@ public class CpiController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Managers._stageManager._rail_Speed_Level++;
-            Managers._stageManager._railSpeed = 0.5f - (0.05f * Managers._stageManager._rail_Speed_Level);
+            Managers.Game.currentStageManager._rail_Speed_Level++;
+            Managers.Game.currentStageManager._railSpeed = 0.5f - (0.05f * Managers.Game.currentStageManager._rail_Speed_Level);
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Managers._stageManager._rail_Speed_Level--;
-            Managers._stageManager._railSpeed = 0.5f - (0.05f * Managers._stageManager._rail_Speed_Level);
+            Managers.Game.currentStageManager._rail_Speed_Level--;
+            Managers.Game.currentStageManager._railSpeed = 0.5f - (0.05f * Managers.Game.currentStageManager._rail_Speed_Level);
         }
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            foreach (BlockMachine _blockmachine in Managers._stageManager._blockMachineList)
+            foreach (BlockMachine _blockmachine in Managers.Game.currentStageManager._blockMachineList)
             {
                 _blockmachine._level++;
                 _blockmachine._spawnInterval = 6f - 1f * _blockmachine._level;
@@ -87,7 +87,7 @@ public class CpiController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            foreach (BlockMachine _blockmachine in Managers._stageManager._blockMachineList)
+            foreach (BlockMachine _blockmachine in Managers.Game.currentStageManager._blockMachineList)
             {
                 _blockmachine._level--;
                 _blockmachine._spawnInterval = 6f - 1f * _blockmachine._level;

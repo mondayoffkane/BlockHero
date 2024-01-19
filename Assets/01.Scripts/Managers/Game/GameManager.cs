@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         GetComponent<NavMeshSurface>().BuildNavMesh();
 
 
-        CheckMoney();
+        //CheckMoney();
         CheckScrollUpgradePrice();
 
     }

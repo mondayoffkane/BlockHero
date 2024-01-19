@@ -40,7 +40,7 @@ public class Building : MonoBehaviour
         _buildingDeco = transform.Find("BuildingDeco");
         _buildingCanvas = transform.Find("Building_Canvas").GetComponent<Canvas>();
 
-
+        //Debug.Log("canvas off");
         _buildingDeco.localScale = Vector3.zero;
         _buildingCanvas.gameObject.SetActive(false);
 
@@ -112,12 +112,17 @@ public class Building : MonoBehaviour
 
     public void SetCanvas()
     {
+
+
         if (_buildingDeco == null) _buildingDeco = transform.Find("BuildingDeco");
         if (_buildingCanvas == null) _buildingCanvas = transform.Find("Building_Canvas").GetComponent<Canvas>();
 
 
         _buildingDeco.localScale = Vector3.zero;
         _buildingCanvas.gameObject.SetActive(true);
+        //Debug.Log("Set Canvas");
+        //Debug.Log(_buildingCanvas.gameObject.activeSelf);
+        //UnityEditor.EditorApplication.isPaused = true;
         _buildingCanvas.transform.Find("Build_Button").Find("Reward_Text").GetComponent<Text>().text = $"{_rewardPrice}";
     }
 

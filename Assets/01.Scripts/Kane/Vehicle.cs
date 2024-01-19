@@ -10,8 +10,17 @@ using Sirenix.OdinInspector;
 
 public class Vehicle : MonoBehaviour
 {
-    public Vector3 _scale = new Vector3(0.9f, 1.1f, 0.9f);
-    public float _scaleTime = 0.5f;
+    public enum VehicleType
+    {
+        Car,
+        Train,
+        Boat
+    }
+    public VehicleType vehicleType;
+
+
+    public Vector3 _scale = new Vector3(0.9f, 1.2f, 0.9f);
+    public float _scaleTime = 0.25f;
 
     public GameObject _blockPref;
 
@@ -35,34 +44,32 @@ public class Vehicle : MonoBehaviour
     public int _maxCount = 10;
     public int _currentCount;
 
-    public float _minDistance = 1f;
+    public float _minDistance = 2f;
     public float _currentDis;
     //
 
 
     public GameObject _floating_Text_Pref;
-    //public Transform _floating_Group;
-
-
-    NavMeshAgent _agent;
+    
+    protected NavMeshAgent _agent;
     public Transform _target;
 
     public Mesh[] _meshes;
 
     public float extraRotationSpeed = 5f;
 
-    BlockStorage _blockStorage;
-    //VillageManager _villagemanager;
-    MeshFilter _boxMeshFilter;
+    protected BlockStorage _blockStorage;
+
+    protected MeshFilter _boxMeshFilter;
 
     // =====================================
 
 
-    private void Start()
+    protected  virtual void  Start()
     {
 
         if (_blockStorage == null) _blockStorage = Managers.Game.currentStageManager._blockStorage;
-        StartCoroutine(Cor_Update());
+        
 
         if (_agent == null) _agent = transform.GetComponent<NavMeshAgent>();
         _boxMeshFilter = transform.GetChild(0).GetComponent<MeshFilter>();
@@ -75,106 +82,7 @@ public class Vehicle : MonoBehaviour
 
     }
 
-    IEnumerator Cor_Update()
-    {
-        while (true)
-        {
-            yield return null;
-
-
-
-            switch (_state)
-            {
-                case State.Wait:
-
-                    break;
-
-                case State.Move:
-                    Vector3 lookrotation = _agent.steeringTarget - transform.position;
-
-                    if (lookrotation != Vector3.zero)
-                    {
-                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
-                    }
-
-
-                    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
-                    if (_currentDis  /*_agent.remainingDistance*/ <= _minDistance)
-                    {
-                        if (_currentCount == 0) // Arrive BlockStorage
-                        {
-                            _target = Managers.Game.currentStageManager.FindBuilding();
-                            PullBlock();
-
-                            if (_currentCount > 0)
-                            {
-                                _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
-                                SetDest(_target);
-                            }
-                            else
-                            {
-
-                                _target = Managers.Game.currentStageManager.ReFindBuilding();
-                                if (_target == null)
-                                {
-
-                                    _state = State.Wait;
-
-                                    Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
-                                    break;
-                                }
-                                PullBlock();
-
-                                if (_currentCount > 0)
-                                {
-                                    _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
-                                    SetDest(_target);
-                                }
-
-
-                            }
-
-                        }
-                        else
-                        {
-
-                            while (_currentCount > 0) // Arrive Building
-                            {
-
-                                PushBlock();
-
-                                yield return new WaitForSeconds(0.2f);
-
-                            }
-                            _boxMeshFilter.gameObject.SetActive(false);
-                            yield return new WaitForSeconds(1f);
-
-                            _target = _blockStorage.transform.Find("In_Pos");
-                            SetDest(_target);
-
-                            _state = State.Return;
-
-
-                        }
-                    }
-                    break;
-
-                case State.PickDown:
-                    break;
-
-                case State.Return:
-
-                    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
-                    if (_currentDis <= _minDistance)
-                    {
-                        Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
-                        _state = State.Sleep;
-                    }
-                    break;
-
-            }
-        }
-    }
+   
 
     public void SetDest(Transform _trans)
     {

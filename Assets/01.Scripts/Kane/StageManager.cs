@@ -88,7 +88,7 @@ public class StageManager : MonoBehaviour
         CheckMoney();
 
         _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
-        SetStage();
+        //SetStage();
 
         StartCoroutine(Cor_Update());
     }
@@ -447,7 +447,7 @@ public class StageManager : MonoBehaviour
     [Button]
     public void CheckScrollUpgradePrice()
     {
-        Debug.Log("Update Scroll Price");
+        //Debug.Log("Update Scroll Price");
         if (_vehicle_Spawn_Level < _spawnLevel_Prices.Length)
         {
             _gameUi._scrollUpgContent[0].SetActive(true);

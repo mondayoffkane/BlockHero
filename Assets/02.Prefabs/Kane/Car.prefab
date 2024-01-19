@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1721440544920485135}
   - component: {fileID: 1721440544920485134}
   - component: {fileID: 1721440544920485133}
-  - component: {fileID: 1721440544920484595}
+  - component: {fileID: 9130340862886470743}
   - component: {fileID: 1721440544920484594}
   m_Layer: 0
-  m_Name: Vehicle
+  m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1721440544920484595
+--- !u!114 &9130340862886470743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,9 +96,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1721440544920484593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 516336609ee0544c194d689743a8cd60, type: 3}
+  m_Script: {fileID: 11500000, guid: ed73adb93bc9e409c92072a3eadb2a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vehicleType: 0
   _scale: {x: 0.9, y: 1.2, z: 0.9}
   _scaleTime: 0.25
   _blockPref: {fileID: 3625907748834728379, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
@@ -107,9 +108,9 @@ MonoBehaviour:
   _blockType: 0
   _speed_Level: 0
   _capacity_Level: 0
-  _maxCount: 2
+  _maxCount: 10
   _currentCount: 0
-  _minDistance: 2.5
+  _minDistance: 2
   _currentDis: 0
   _floating_Text_Pref: {fileID: 0}
   _target: {fileID: 0}
@@ -119,7 +120,6 @@ MonoBehaviour:
   - {fileID: -5943898615112286274, guid: ae85fe92779984a9bacc50448fbbf712, type: 3}
   - {fileID: 755311989462657537, guid: 0f69987dd6d8c4ee79f1bfd3033777f7, type: 3}
   extraRotationSpeed: 5
-  _showDestination: {x: 0, y: 0, z: 0}
 --- !u!195 &1721440544920484594
 NavMeshAgent:
   m_ObjectHideFlags: 0

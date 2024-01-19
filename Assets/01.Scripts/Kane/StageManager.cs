@@ -35,10 +35,10 @@ public class StageManager : MonoBehaviour
 
     //[FoldoutGroup("Village")] public double _money = 1000d;
     [FoldoutGroup("Village")] public List<Building> buildingList = new List<Building>();
-    [FoldoutGroup("Village")] public int _completeCount = 0;
+    [FoldoutGroup("Village")] public int buldingCompleteCount = 0;
     [FoldoutGroup("Village")] public bool _villageComplete = false;
     [FoldoutGroup("Village")] public Transform[] AreaGroups;
-    [FoldoutGroup("Village")] public int buldingCompleteCount;
+
 
 
 
@@ -358,12 +358,12 @@ public class StageManager : MonoBehaviour
 
     public void BuildComplete()
     {
-        _completeCount++;
-        ES3.Save<int>($"CompleteCount_{_stageLevel}", _completeCount);
-        if (_completeCount < buildingList.Count)
-            buildingList[_completeCount].SetCanvas();
+        buldingCompleteCount++;
+        ES3.Save<int>($"CompleteCount_{_stageLevel}", buldingCompleteCount);
+        if (buldingCompleteCount < buildingList.Count)
+            buildingList[buldingCompleteCount].SetCanvas();
 
-        if (_completeCount >= buildingList.Count)
+        if (buldingCompleteCount >= buildingList.Count)
         {
             _villageComplete = true;
             ES3.Save<bool>($"VillageComplete_{_stageLevel}", _villageComplete);

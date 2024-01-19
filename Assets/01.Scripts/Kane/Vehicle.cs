@@ -125,7 +125,7 @@ public class Vehicle : MonoBehaviour
     public void PushBlock()
     {
         Transform _block = Managers.Pool.Pop(_blockPref, _target.transform).transform;
-        //_block.transform.localPosition = Vector3.zero;
+        
         _block.transform.position = transform.position;
         _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
 

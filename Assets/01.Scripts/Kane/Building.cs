@@ -71,12 +71,7 @@ public class Building : MonoBehaviour
         }
 
 
-
-
         if (_floating_Text_Pref == null) _floating_Text_Pref = Resources.Load<GameObject>("Floating_Text_Pref");
-
-
-
 
         _rewardPrice = _maxCount * 10d;  //_maxCount * 10d > 100 ? _maxCount * 5d : _maxCount * 10d;
     }
@@ -85,6 +80,7 @@ public class Building : MonoBehaviour
     {
         _currentCount = ES3.Load<int>($"{GetInstanceID()}_currentCount", 0);
         isBuildComplete = ES3.Load<bool>($"{GetInstanceID()}_isBuildComplete", false);
+
     }
 
     public void SaveData()
@@ -94,19 +90,15 @@ public class Building : MonoBehaviour
     }
 
 
-    public void PushBlock()
+    public void PushBlock(int _count = 1)
     {
-
-
-        _currentCount++;
+        //Debug.Log(transform.name + " : " + _currentCount);
+        _currentCount += _count;
         _buildingCanvas.transform.Find("BlockCountImg").GetChild(0).GetComponent<Text>().text
             = $"{_currentCount}/{_maxCount}";
         CheckBuild();
 
         SaveData();
-
-
-
 
     }
 
@@ -120,9 +112,7 @@ public class Building : MonoBehaviour
 
         _buildingDeco.localScale = Vector3.zero;
         _buildingCanvas.gameObject.SetActive(true);
-        //Debug.Log("Set Canvas");
-        //Debug.Log(_buildingCanvas.gameObject.activeSelf);
-        //UnityEditor.EditorApplication.isPaused = true;
+
         _buildingCanvas.transform.Find("Build_Button").Find("Reward_Text").GetComponent<Text>().text = $"{_rewardPrice}";
     }
 
@@ -202,15 +192,6 @@ public class Building : MonoBehaviour
                 _spark.localPosition = Vector3.zero;
 
             });
-
-
-
-        //_buildingDeco.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
-        //_buildingCanvas.gameObject.SetActive(false);
-        //Managers._stageManager.CalcMoney(_rewardPrice);
-
-        //Floating_Text(_rewardPrice);
-
 
 
     }

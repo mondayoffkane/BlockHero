@@ -1471,6 +1471,90 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42395460}
   m_Mesh: {fileID: 3352871075511026773, guid: 8a6a339e5ea9e4f638bc0d6e984bf32a, type: 3}
+--- !u!1001 &48528861
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1059959166}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec83a1d6d2a454b469012c133f70c3d8, type: 2}
+    - target: {fileID: 919132149155446097, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_Name
+      value: Road-Rail
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7ee6939b84c184da4a4e6f044cb0f60e,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ee6939b84c184da4a4e6f044cb0f60e, type: 3}
 --- !u!1 &51264211
 GameObject:
   m_ObjectHideFlags: 0
@@ -7142,7 +7226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &255495356
 Transform:
   m_ObjectHideFlags: 0
@@ -8667,7 +8751,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322311518}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalPosition: {x: 2.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20441,6 +20525,86 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 800154911803257876, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 800154911803257876, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 800154911803257876, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 800154911803257876, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915543143322888904, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915543143322888904, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915543143322888904, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915543143322888904, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5125876469208998354, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5125876469208998354, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5125876469208998354, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5125876469208998354, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5183429524759102717, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5183429524759102717, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5183429524759102717, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5183429524759102717, guid: fcdb8febb13c542c78fa4c2201cd6897,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6607876303112603198, guid: fcdb8febb13c542c78fa4c2201cd6897,
         type: 3}
       propertyPath: m_Name
@@ -22954,7 +23118,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bcc4edbfb66cc490eb345372b8b1c545,
         type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bcc4edbfb66cc490eb345372b8b1c545,
         type: 3}
@@ -22964,7 +23128,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bcc4edbfb66cc490eb345372b8b1c545,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcc4edbfb66cc490eb345372b8b1c545, type: 3}
@@ -23386,6 +23550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stageLevel: 0
+  vehicleType: 0
   _blockMachineList:
   - {fileID: 1486613030}
   - {fileID: 1745748880}
@@ -23437,7 +23602,8 @@ MonoBehaviour:
   - 8000
   - 9000
   - 10000
-  _vehicl_Pref: {fileID: 1721440544920484593, guid: 2cc3cb47bc7f74c82971543b5c06ce6c,
+  _vehicle_Head_Pref: {fileID: 0}
+  _vehicle_Pref: {fileID: 1721440544920484593, guid: 2cc3cb47bc7f74c82971543b5c06ce6c,
     type: 3}
   _vehicle_Spawn_Level: 0
   _vehicle_Capacity_Level: 0
@@ -23541,6 +23707,21 @@ MonoBehaviour:
   buldingCompleteCount: 0
   _villageComplete: 0
   AreaGroups: []
+  scrollUpImg:
+  - {fileID: 21300000, guid: a4bc8c8985a36440c84bcea5534a429e, type: 3}
+  - {fileID: 21300000, guid: c8532edf0dece410a9bc420abfbbebe9, type: 3}
+  - {fileID: 21300000, guid: ae69bdbe73e8a4a44bd01daf14c3a739, type: 3}
+  - {fileID: 21300000, guid: 1945a7b8bf7eb4547ab6d7c3037451d3, type: 3}
+  scrollUpName:
+  - Add Truck
+  - Speed Up
+  - Capacity Up
+  - Rail Speed Up
+  scrollUpExplain:
+  - +1 Truck
+  - +10% Truck Speed
+  - +1 Capacity
+  - +5% Rail Speed
   _cams:
   - {fileID: 67109300}
   - {fileID: 1470880451}
@@ -23548,6 +23729,7 @@ MonoBehaviour:
   _blockStorage: {fileID: 4586171673958900844}
   _vehicleTerm: 1
   _playTime: 0
+  isHeadReady: 1
 --- !u!1 &1088351102
 GameObject:
   m_ObjectHideFlags: 0
@@ -25974,6 +26156,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1974ed4da5d124a4fb44a3d928a84117,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec83a1d6d2a454b469012c133f70c3d8, type: 2}
     - target: {fileID: 919132149155446097, guid: 1974ed4da5d124a4fb44a3d928a84117,
         type: 3}
       propertyPath: m_Name
@@ -28839,6 +29026,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Building_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691506590350914277, guid: 2f79063c83f8746b8b33f073054e4913,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f79063c83f8746b8b33f073054e4913, type: 3}
@@ -33416,7 +33608,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1468502705}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: -2.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38685,7 +38877,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f8f4ec5f94a3d4da2832ebd099afe175,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8f4ec5f94a3d4da2832ebd099afe175, type: 3}
@@ -41610,6 +41802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stageLevel: 1
+  vehicleType: 1
   _blockMachineList:
   - {fileID: 981794568}
   - {fileID: 314922200}
@@ -41661,7 +41854,9 @@ MonoBehaviour:
   - 8000
   - 9000
   - 10000
-  _vehicl_Pref: {fileID: 1721440544920484593, guid: ef9c085de92aa4828837c0313d03b815,
+  _vehicle_Head_Pref: {fileID: 1721440544920484593, guid: ef9c085de92aa4828837c0313d03b815,
+    type: 3}
+  _vehicle_Pref: {fileID: 1721440544920484593, guid: 8b08c3c74c56b45e095757b88d7f8c80,
     type: 3}
   _vehicle_Spawn_Level: 0
   _vehicle_Capacity_Level: 0
@@ -41765,13 +41960,29 @@ MonoBehaviour:
   buldingCompleteCount: 0
   _villageComplete: 0
   AreaGroups: []
+  scrollUpImg:
+  - {fileID: 21300000, guid: f52444fc19b6d43568facf7e8707c886, type: 3}
+  - {fileID: 21300000, guid: 784ae6e87cdd34971a39109304b1ea49, type: 3}
+  - {fileID: 21300000, guid: ae69bdbe73e8a4a44bd01daf14c3a739, type: 3}
+  - {fileID: 21300000, guid: 1945a7b8bf7eb4547ab6d7c3037451d3, type: 3}
+  scrollUpName:
+  - Add Train
+  - Speed Up
+  - Capacity Up
+  - Rail Speed Up
+  scrollUpExplain:
+  - +1 Train
+  - +10% Train Speeed
+  - +1 Capacity
+  - +10% Rail Speed
   _cams:
   - {fileID: 67109300}
   - {fileID: 1470880451}
   _machineCanvas: {fileID: 290428048}
   _blockStorage: {fileID: 884217272}
-  _vehicleTerm: 1
+  _vehicleTerm: 0.4
   _playTime: 0
+  isHeadReady: 1
 --- !u!4 &1911858436
 Transform:
   m_ObjectHideFlags: 0
@@ -42613,7 +42824,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963397012}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: -2.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44543,6 +44754,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Building_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691506590350914277, guid: 2f79063c83f8746b8b33f073054e4913,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f79063c83f8746b8b33f073054e4913, type: 3}

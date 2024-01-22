@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Train : Vehicle
 {
+    public bool isHead = false;
 
     protected override void Start()
     {
@@ -16,7 +17,12 @@ public class Train : Vehicle
         while (true)
         {
             yield return null;
+            Vector3 lookrotation = _agent.steeringTarget - transform.position;
 
+            if (lookrotation != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime * 10f);
+            }
 
 
             switch (_state)
@@ -26,76 +32,43 @@ public class Train : Vehicle
                     break;
 
                 case State.Move:
-                    Vector3 lookrotation = _agent.steeringTarget - transform.position;
 
-                    if (lookrotation != Vector3.zero)
-                    {
-                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
-                    }
 
 
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
-                    if (_currentDis  /*_agent.remainingDistance*/ <= _minDistance)
+                    if (_currentDis <= _minDistance)
                     {
-                        if (_currentCount == 0) // Arrive BlockStorage
+                        _target = Managers.Game.currentStageManager.FindBuilding();
+                        if (isHead == false)
                         {
-                            _target = Managers.Game.currentStageManager.FindBuilding();
                             PullBlock();
-
-                            if (_currentCount > 0)
-                            {
-                                _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
-                                SetDest(_target);
-                            }
-                            else
-                            {
-
-                                _target = Managers.Game.currentStageManager.ReFindBuilding();
-                                if (_target == null)
-                                {
-
-                                    _state = State.Wait;
-
-                                    Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
-                                    break;
-                                }
-                                PullBlock();
-
-                                if (_currentCount > 0)
-                                {
-                                    _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
-                                    SetDest(_target);
-                                }
-
-
-                            }
-
                         }
-                        else
-                        {
-                            SetDest(transform);
-                            while (_currentCount > 0) // Arrive Building
-                            {
+                        _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
+                        SetDest(_target, State.PickDown);
 
-                                PushBlock();
-
-                                //yield return new WaitForSeconds(0.2f);
-
-                            }
-                            _boxMeshFilter.gameObject.SetActive(false);
-                            //yield return new WaitForSeconds(1f);
-
-                            _target = _blockStorage.transform.Find("In_Pos");
-                            SetDest(_target);
-
-                            _state = State.Return;
-
-
-                        }
                     }
                     break;
 
+                //case State.PickUp:
+                //    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
+                //    if (_currentDis <= _minDistance)
+                //    {
+                //        setde
+                //    }
+                //    break;
+
                 case State.PickDown:
+                    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
+                    if (_currentDis <= _minDistance)
+                    {
+                        if (isHead == false && _currentCount > 0) PushBlock2(_currentCount);
+                        _boxMeshFilter.gameObject.SetActive(false);
+                        _agent.SetDestination(_blockStorage.transform.Find("In_Pos").transform.position);
+                        yield return new WaitForSeconds(1f);
+                        _target = _blockStorage.transform.Find("In_Pos");
+                        SetDest(_target, State.Return);
+                        //_state = State.Return;
+                    }
                     break;
 
                 case State.Return:
@@ -103,8 +76,12 @@ public class Train : Vehicle
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
                     if (_currentDis <= _minDistance)
                     {
-                        Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
-                        _state = State.Sleep;
+                        //Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
+                        Managers.Game.currentStageManager.VehicleEnqueue(this);
+
+                        SetDest(_blockStorage.transform.Find("Out_Pos"), State.Sleep);
+                        _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
+
                     }
                     break;
 

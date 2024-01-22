@@ -10,13 +10,7 @@ using Sirenix.OdinInspector;
 
 public class Vehicle : MonoBehaviour
 {
-    public enum VehicleType
-    {
-        Car,
-        Train,
-        Boat
-    }
-    public VehicleType vehicleType;
+
 
 
     public Vector3 _scale = new Vector3(0.9f, 1.2f, 0.9f);
@@ -50,7 +44,7 @@ public class Vehicle : MonoBehaviour
 
 
     public GameObject _floating_Text_Pref;
-    
+
     protected NavMeshAgent _agent;
     public Transform _target;
 
@@ -65,11 +59,11 @@ public class Vehicle : MonoBehaviour
     // =====================================
 
 
-    protected  virtual void  Start()
+    protected virtual void Start()
     {
 
         if (_blockStorage == null) _blockStorage = Managers.Game.currentStageManager._blockStorage;
-        
+
 
         if (_agent == null) _agent = transform.GetComponent<NavMeshAgent>();
         _boxMeshFilter = transform.GetChild(0).GetComponent<MeshFilter>();
@@ -82,13 +76,13 @@ public class Vehicle : MonoBehaviour
 
     }
 
-   
 
-    public void SetDest(Transform _trans)
+
+    public void SetDest(Transform _trans, State _selectState = State.Move)
     {
         _agent.SetDestination(_trans.position);
 
-        _state = State.Move;
+        _state = _selectState;
     }
 
     public void PullBlock()
@@ -117,7 +111,13 @@ public class Vehicle : MonoBehaviour
         }
         _blockStorage.UpdateBlockCount();
 
-        _boxMeshFilter.gameObject.SetActive(true);
+        if (_currentCount != 0)
+            _boxMeshFilter.gameObject.SetActive(true);
+        else
+            _boxMeshFilter.gameObject.SetActive(false);
+
+
+
 
 
     }
@@ -125,7 +125,7 @@ public class Vehicle : MonoBehaviour
     public void PushBlock()
     {
         Transform _block = Managers.Pool.Pop(_blockPref, _target.transform).transform;
-        
+
         _block.transform.position = transform.position;
         _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
 
@@ -139,10 +139,34 @@ public class Vehicle : MonoBehaviour
 
                 Floating_Text(2);
                 Managers.Game.CalcMoney(2);
+                Debug.Log("Push : " + _target.name);
                 _target.GetComponent<Building>().PushBlock();
             });
-        _target.GetComponent<Building>().CheckBuild();
+        //_target.GetComponent<Building>().CheckBuild();
     }
+
+    public void PushBlock2(int _count)
+    {
+        Transform _block = Managers.Pool.Pop(_blockPref, _target.transform).transform;
+
+        _block.transform.position = transform.position;
+        _block.GetComponent<MeshFilter>().sharedMesh = _boxMeshFilter.sharedMesh;
+
+        _currentCount = 0;
+
+        _block.DOJump(_target.transform.position, 5f, 1, 0.3f).SetEase(Ease.Linear)
+            .Join(_block.DOScale(Vector3.one * 0.5f, 0.5f).SetEase(Ease.Linear))
+            .OnComplete(() =>
+            {
+                Managers.Pool.Push(_block.GetComponent<Poolable>());
+
+                Floating_Text(2 * _count);
+                Managers.Game.CalcMoney(2 * _count);
+
+                _target.GetComponent<Building>().PushBlock(_count);
+            });
+    }
+
 
 
 
@@ -172,8 +196,8 @@ public class Vehicle : MonoBehaviour
         _capacity_Level = _CapLevel;
 
 
-        _agent.speed = 2f + 0.5f * _speed_Level;
-        _maxCount = 2 + 2 * _capacity_Level;
+        _agent.speed = 2f + 0.2f * _speed_Level;
+        _maxCount = 2 + 1 * _capacity_Level;
 
 
     }
@@ -189,6 +213,9 @@ public class Vehicle : MonoBehaviour
 
 
     }
+
+
+
 
 
 

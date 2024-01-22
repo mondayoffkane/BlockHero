@@ -121,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbbcaf8b8cde49bab922accafb28a1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleType: 0
   _scale: {x: 0.9, y: 1.2, z: 0.9}
   _scaleTime: 0.25
   _blockPref: {fileID: 3625907748834728379, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
@@ -132,7 +131,7 @@ MonoBehaviour:
   _capacity_Level: 0
   _maxCount: 10
   _currentCount: 0
-  _minDistance: 2
+  _minDistance: 2.5
   _currentDis: 0
   _floating_Text_Pref: {fileID: 0}
   _target: {fileID: 0}
@@ -142,6 +141,7 @@ MonoBehaviour:
   - {fileID: -5943898615112286274, guid: ae85fe92779984a9bacc50448fbbf712, type: 3}
   - {fileID: 755311989462657537, guid: 0f69987dd6d8c4ee79f1bfd3033777f7, type: 3}
   extraRotationSpeed: 5
+  isHead: 1
 --- !u!1 &3149613147873680805
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,6 +189,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Temp_BlockPref
+      objectReference: {fileID: 0}
+    - target: {fileID: 3625907748834728379, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7752947330218979532, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
         type: 3}

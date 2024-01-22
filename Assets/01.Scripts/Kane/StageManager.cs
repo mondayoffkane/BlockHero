@@ -11,7 +11,13 @@ using MondayOFF;
 public class StageManager : MonoBehaviour
 {
     public int _stageLevel = 0;
-
+    public enum VehicleType
+    {
+        Car,
+        Train,
+        Boat
+    }
+    public VehicleType vehicleType;
 
     [FoldoutGroup("BlockMachine")] public List<BlockMachine> _blockMachineList = new List<BlockMachine>();
     [FoldoutGroup("BlockMachine")] public float _railSpeed = 0.5f;
@@ -20,7 +26,8 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("BlockMachine")] public int _blockMachineCount;
     [FoldoutGroup("BlockMachine")] public double[] _blockMachine_Prices = new double[8];
 
-    [FoldoutGroup("Vehicle")] public GameObject _vehicl_Pref;
+    [FoldoutGroup("Vehicle")] public GameObject _vehicle_Head_Pref;
+    [FoldoutGroup("Vehicle")] public GameObject _vehicle_Pref;
     [FoldoutGroup("Vehicle")] public int _vehicle_Spawn_Level = 0;
     [FoldoutGroup("Vehicle")] public int _vehicle_Capacity_Level = 0;
     [FoldoutGroup("Vehicle")] public int _vehicle_Speed_Level = 0;
@@ -39,6 +46,12 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Village")] public bool _villageComplete = false;
     [FoldoutGroup("Village")] public Transform[] AreaGroups;
 
+    [FoldoutGroup("UI")] public Sprite[] scrollUpImg;
+    [FoldoutGroup("UI")] public string[] scrollUpName;
+    [FoldoutGroup("UI")] public string[] scrollUpExplain;
+
+    [FoldoutGroup("Order")] public Sprite[] peopleSprites;
+    [FoldoutGroup("Order")] public Sprite[] blockSprites;
 
 
 
@@ -59,6 +72,8 @@ public class StageManager : MonoBehaviour
 
     //public bool isSet = false;
     public int _playTime = 0;
+    //[SerializeField] bool isHeadReady = true;
+    [SerializeField] int queueCount;
     // =================================================
 
 
@@ -87,32 +102,74 @@ public class StageManager : MonoBehaviour
         LoadData();
         CheckMoney();
 
+
+
+
         _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
         //SetStage();
 
-        StartCoroutine(Cor_Update());
+        switch (vehicleType)
+        {
+            case VehicleType.Car:
+                StartCoroutine(Cor_Update());
+                break;
+
+            case VehicleType.Train:
+                StartCoroutine(Cor_Upgrade_Train());
+                break;
+        }
+
     }
 
     IEnumerator Cor_Update()
     {
-        //yield return new WaitForSeconds(3f);
         while (true)
         {
-
             yield return new WaitForSeconds(_vehicleTerm);
-            //Debug.Log("Cor Update");
 
             if (_vehicleQueue.Count > 0 && (_blockStorage._blockCountArray[0] > 0 || _blockStorage._blockCountArray[1] > 0 || _blockStorage._blockCountArray[2] > 0 || _blockStorage._blockCountArray[3] > 0))
             {
+
                 Vehicle _vehicle = _vehicleQueue.Dequeue();
                 _vehicle._state = Vehicle.State.Move;
                 _vehicle._target = _blockStorage.transform.Find("Out_Pos");
-                _vehicle.GetComponent<NavMeshAgent>().Warp(_blockStorage.transform.Find("Out_Pos").position);
-            }
+                _vehicle.GetComponent<NavMeshAgent>()
+                    .Warp(_blockStorage.transform.Find("Out_Pos").position);
 
+            }
+        }
+    }
+
+
+    IEnumerator Cor_Upgrade_Train()
+    {
+        Debug.Log("Cor Update Train");
+
+        yield return new WaitForSeconds(_vehicleTerm);
+        queueCount = _vehicleList.Count;
+        for (int i = 0; i < _vehicleList.Count; i++)
+        {
+            Vehicle _vehicle = _vehicleList[i];
+            if (_vehicle._state == Vehicle.State.Wait || _vehicle._state == Vehicle.State.Sleep)
+                _vehicle._state = Vehicle.State.Move;
+            _vehicle._target = _blockStorage.transform.Find("Out_Pos");
+            _vehicle.GetComponent<NavMeshAgent>()
+                .Warp(_blockStorage.transform.Find("Out_Pos").position);
+            yield return new WaitForSeconds(_vehicleTerm);  // new WaitForSeconds(1f);
         }
 
+    }
 
+    private void Start()
+    {
+        for (int i = 0; i < buildingList.Count; i++)
+        {
+            if (buildingList[i].isBuildComplete == false)
+            {
+                buildingList[i].SetCanvas();
+                break;
+            }
+        }
     }
 
 
@@ -122,14 +179,7 @@ public class StageManager : MonoBehaviour
 
         buldingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
 
-        for (int i = 0; i < buildingList.Count; i++)
-        {
-            if (buildingList[i].isBuildComplete == false)
-            {
-                buildingList[i].SetCanvas();
-                break;
-            }
-        }
+
 
 
         _playTime = ES3.Load<int>("PlayTime", _playTime);
@@ -176,16 +226,32 @@ public class StageManager : MonoBehaviour
 
             }
 
-
         }
 
-        // Vehicl
+        // Vehicle
         _vehicle_Spawn_Level = ES3.Load<int>($"Stage_{_stageLevel}_Vehicle_Spawn_Level", 0);
         _vehicle_Speed_Level = ES3.Load<int>($"Stage_{_stageLevel}_Vehicle_Speed_Level", 0);
         _vehicle_Capacity_Level = ES3.Load<int>($"Stage_{_stageLevel}_Vehicle_Capacity_Level", 0);
         _rail_Speed_Level = ES3.Load<int>($"Stage_{_stageLevel}_Rail_Level", 0);
 
         _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
+
+
+        switch (vehicleType)
+        {
+            case VehicleType.Train:
+                NavMeshAgent _vehicle = Managers.Pool.Pop(_vehicle_Head_Pref, _vehicleGroup).GetComponent<NavMeshAgent>();
+                _vehicle.GetComponent<Vehicle>()._state = Vehicle.State.Wait;
+                _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
+                _vehicle.destination = _blockStorage.transform.Find("Out_Pos").position;
+
+                Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
+                _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
+                _vehicleList.Add(_newVehicle);
+
+                break;
+        }
+
 
         for (int i = 0; i < _vehicle_Spawn_Level; i++)
         {
@@ -275,20 +341,32 @@ public class StageManager : MonoBehaviour
 
     public void AddVehicle()
     {
-
-        NavMeshAgent _vehicle = Managers.Pool.Pop(_vehicl_Pref, _vehicleGroup).GetComponent<NavMeshAgent>();
+        NavMeshAgent _vehicle = Managers.Pool.Pop(_vehicle_Pref, _vehicleGroup).GetComponent<NavMeshAgent>();
         _vehicle.GetComponent<Vehicle>()._state = Vehicle.State.Wait;
         _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
         _vehicle.destination = _blockStorage.transform.Find("Out_Pos").position;
 
         Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
         _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
-
         _vehicleList.Add(_newVehicle);
-        _vehicleQueue.Enqueue(_newVehicle);
-        //Debug.Log(_vehicleQueue.Count);
 
-        //_vehicle_Spawn_Level++;
+
+        switch (vehicleType)
+        {
+            case VehicleType.Car:
+                _vehicleQueue.Enqueue(_newVehicle);
+                //_vehicleQueue.Enqueue(_newVehicle);
+
+                break;
+
+            case VehicleType.Train:
+                //_newVehicle = _vehicleList[_vehicleList.Count - 1];
+                //_newVehicle.GetComponent<NavMeshAgent>().Warp(_vehicleList[_vehicleList.Count - 1].transform.position);
+                //_newVehicle.GetComponent<NavMeshAgent>().destination = _vehicleList[_vehicleList.Count - 1].GetComponent<NavMeshAgent>().destination;
+                //_newVehicle.SetDest(_vehicleList[_vehicleList.Count - 1]._target);
+                break;
+        }
+
 
 
     }
@@ -342,7 +420,7 @@ public class StageManager : MonoBehaviour
             case 3:
                 Managers.Game.CalcMoney(-_railSpeedLevel_Prices[_rail_Speed_Level]);
                 _rail_Speed_Level++;
-                _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
+                _railSpeed = 0.5f - (0.025f * _rail_Speed_Level);
 
                 EventTracker.LogCustomEvent("BlockMachine"
  , new Dictionary<string, string> { { "BlockMachine", $"RailUpgrade-{_rail_Speed_Level}" } });
@@ -359,7 +437,7 @@ public class StageManager : MonoBehaviour
     public void BuildComplete()
     {
         buldingCompleteCount++;
-        ES3.Save<int>($"CompleteCount_{_stageLevel}", buldingCompleteCount);
+        ES3.Save<int>($"Stage_{_stageLevel}_buildingCompleteCount", buldingCompleteCount);
         if (buldingCompleteCount < buildingList.Count)
             buildingList[buldingCompleteCount].SetCanvas();
 
@@ -447,7 +525,18 @@ public class StageManager : MonoBehaviour
     [Button]
     public void CheckScrollUpgradePrice()
     {
-        //Debug.Log("Update Scroll Price");
+
+        for (int i = 0; i < 4; i++)
+        {
+            _gameUi._scrollUpgContent[i].transform.Find("Image").GetComponent<Image>().sprite =
+                    scrollUpImg[i];
+            _gameUi._scrollUpgContent[i].transform.Find("Name_Text").GetComponent<Text>().text = scrollUpName[i];
+            _gameUi._scrollUpgContent[i].transform.Find("Explain_Text").GetComponent<Text>().text = scrollUpExplain[i];
+
+        }
+
+
+
         if (_vehicle_Spawn_Level < _spawnLevel_Prices.Length)
         {
             _gameUi._scrollUpgContent[0].SetActive(true);
@@ -593,7 +682,14 @@ public class StageManager : MonoBehaviour
             //_vehicleList[i].SetDest(_blockStorage.transform.Find("Out_Pos"));
             _vehicleList[i].GetComponent<NavMeshAgent>().destination = _blockStorage.transform.Find("Out_Pos").position;
 
-            _vehicleQueue.Enqueue(_vehicleList[i]);
+            switch (vehicleType)
+            {
+                case VehicleType.Car:
+                    _vehicleQueue.Enqueue(_vehicleList[i]);
+
+                    break;
+            }
+
 
         }
 
@@ -619,9 +715,30 @@ public class StageManager : MonoBehaviour
             //_cams[i].SetActive(false);
         }
 
+    }
 
+    public void VehicleEnqueue(Vehicle _vehicle)
+    {
+        _vehicleQueue.Enqueue(_vehicle);
+        switch (vehicleType)
+        {
+            case VehicleType.Train:
+                if (_vehicleQueue.Count >= queueCount)
+                {
+                    StartCoroutine(Cor_Upgrade_Train());
+                    _vehicleQueue.Clear();
+                }
+
+                break;
+        }
+    }
+
+    public void Order()
+    {
 
     }
+
+
 
 
 }

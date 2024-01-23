@@ -112,7 +112,16 @@ public class GameManager : MonoBehaviour
         {
             if (!EventSystem.current.IsPointerOverGameObject())// 
             {
+                Managers._gameUi.ChangePanel(0);
+            }
+        }
 
+
+        else if (Input.GetMouseButtonUp(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())// 
+            {
+                //Debug.Log("None Ui");
                 Ray ray;
                 RaycastHit hit;
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -129,44 +138,52 @@ public class GameManager : MonoBehaviour
 
                     }
                 }
-
             }
-
-
-
-
+            //else
+            //{
+            //    //Debug.Log("On Ui");
+            //}
         }
 
-#elif !UNITY_EDITOR
+#elif !UNITY_EDITOR                                          
 
-                if (Input.touchCount > 0)
+        if (Input.touchCount > 0)
+        {
+            Touch _touch = Input.GetTouch(0);
+            if (_touch.phase == TouchPhase.Began)
+            {
+                if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
                 {
-                    Touch _touch = Input.GetTouch(0);
-                    if (_touch.phase == TouchPhase.Began)
+                    Managers._gameUi.ChangePanel(0);
+                }
+            }
+
+            else if (_touch.phase == TouchPhase.Ended)
+            {
+                //if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
+                if (!Managers._gameUi.BlockMachine_Panel.activeSelf)
+                {
+                    //Debug.Log("None Ui");
+                    Ray ray;
+                    RaycastHit hit;
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit))
                     {
-                        if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))
+                        Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+                        switch (hit.collider.tag)
                         {
-                            //Managers._gameUi.ChangePanel(0);
-                            Ray ray;
-                        RaycastHit hit;
-                        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        if (Physics.Raycast(ray, out hit))
-                        {
-                            Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
-                            switch (hit.collider.tag)
-                            {
-                                case "BlockMachine":
-                                    _selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
-                                    Managers._gameUi.ChangePanel(1);
-                                    Managers._gameUi.BlockMachine_SetColor((int)_selectBlockMachine._spawnBlockType);
-                                    break;
+                            case "BlockMachine":
+                                currentStageManager._selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+                                Managers._gameUi.ChangePanel(1);
+                                Managers._gameUi.BlockMachine_SetColor((int)currentStageManager._selectBlockMachine._spawnBlockType);
+                                break;
 
-                            }
                         }
-                        }
-
                     }
                 }
+
+            }
+        }
 #endif
     }
 
@@ -196,7 +213,8 @@ public class GameManager : MonoBehaviour
 
     void CheckScrollUpgradePrice()
     {
-        currentStageManager.CheckScrollUpgradePrice();
+        //currentStageManager.CheckScrollUpgradePrice();
+        currentStageManager.ChangeUI();
     }
 
 

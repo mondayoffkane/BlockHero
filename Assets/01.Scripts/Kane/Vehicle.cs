@@ -139,7 +139,7 @@ public class Vehicle : MonoBehaviour
 
                 Floating_Text(2);
                 Managers.Game.CalcMoney(2);
-                Debug.Log("Push : " + _target.name);
+                //Debug.Log("Push : " + _target.name);
                 _target.GetComponent<Building>().PushBlock();
             });
         //_target.GetComponent<Building>().CheckBuild();

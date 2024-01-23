@@ -54,6 +54,16 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Order")] public Sprite[] blockSprites;
 
 
+    public struct OrderStruct
+    {
+        public Sprite personSprite;
+        public Sprite blockSprite;
+        public int orderCount;
+        public int[] blockCount;
+        public int rewardCount;
+    }
+    public OrderStruct[] orderStructs;
+
 
 
     public GameObject[] _cams;
@@ -522,6 +532,18 @@ public class StageManager : MonoBehaviour
     }
 
 
+    public void ChangeUI()
+    {
+        CheckScrollUpgradePrice();
+        CheckOrderPanel();
+    }
+
+    public void CheckOrderPanel()
+    {
+
+    }
+
+
     [Button]
     public void CheckScrollUpgradePrice()
     {
@@ -735,9 +757,28 @@ public class StageManager : MonoBehaviour
 
     public void Order()
     {
-
+        for (int i = 0; i < 3; i++)
+        {
+            int num = i;
+            orderStructs[num] = CreateOrder();
+            Managers._gameUi.SetOrderPanel(num, orderStructs[num]);
+        }
     }
 
+    public OrderStruct CreateOrder()
+    {
+        OrderStruct newOrder = new OrderStruct();
+        newOrder.personSprite = peopleSprites[Random.Range(0, peopleSprites.Length)];
+        newOrder.blockSprite = blockSprites[Random.Range(0, blockSprites.Length)];
+        newOrder.orderCount = Random.Range(1, 3);
+        for (int i = 0; i < newOrder.orderCount; i++)
+        {
+            newOrder.blockCount[i] = Random.Range(0, 11) * 10;
+        }
+        newOrder.rewardCount = 100;
+
+        return newOrder;
+    }
 
 
 

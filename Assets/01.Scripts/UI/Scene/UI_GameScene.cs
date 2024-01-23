@@ -38,6 +38,8 @@ public class UI_GameScene : UI_Scene
         Scroll_Content,
         MaskImg,
         Unlock_Panel,
+        Order_Panel,
+        Order_Group,
     }
 
     DOTween _camTween;
@@ -51,6 +53,8 @@ public class UI_GameScene : UI_Scene
         , Scroll_Panel
         , Scroll_Content
         , Unlock_Panel
+        , Order_Panel
+        , Order_Group
         ;
     //Recipe_RawImage;
 
@@ -129,6 +133,8 @@ public class UI_GameScene : UI_Scene
 
 
         Unlock_Panel = GetObject(GameObjects.Unlock_Panel);
+        Order_Panel = GetObject(GameObjects.Order_Panel);
+        Order_Group = GetObject(GameObjects.Order_Group);
 
         // ========= Buttons
 
@@ -329,6 +335,7 @@ public class UI_GameScene : UI_Scene
         //Debug.Log("Panel OnOff");
         PanelOnOff(FactoryBase_Panel, false);
         PanelOnOff(BlockMachine_Panel, false);
+        PanelOnOff(Scroll_Panel, false);
 
 
 
@@ -406,9 +413,15 @@ public class UI_GameScene : UI_Scene
 
     }
 
+    public void SetOrderPanel(int _num, StageManager.OrderStruct _newOrder)
+    {
+        //_content.transform.Find("Person_Img").GetComponent<Image>().sprite =
+        //Order_Group.transform.Find("")
 
 
+        Order_Group.transform.GetChild(_num).Find("Person_Img").GetComponent<Image>().sprite = _newOrder.personSprite;
 
+    }
 
 
 

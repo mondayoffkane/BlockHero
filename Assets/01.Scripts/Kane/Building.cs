@@ -124,7 +124,7 @@ public class Building : MonoBehaviour
             if (_currentCount >= _maxCount)
             {
                 isBuildComplete = true;
-                Debug.Log($"{_buildingNum}_Complete");
+                //Debug.Log($"{_buildingNum}_Complete");
 
                 _buildingCanvas.transform.Find("BlockCountImg").gameObject.SetActive(false);
                 _buildingCanvas.transform.Find("Build_Button").gameObject.SetActive(true);

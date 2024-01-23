@@ -74,7 +74,7 @@ public class Train : Vehicle
                 case State.Return:
 
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
-                    if (_currentDis <= _minDistance)
+                    if (_currentDis <= 1f /*_minDistance*/)
                     {
                         //Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
                         Managers.Game.currentStageManager.VehicleEnqueue(this);

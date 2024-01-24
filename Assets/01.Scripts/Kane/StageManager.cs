@@ -54,6 +54,12 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Order")] public Sprite[] peopleSprites;
     [FoldoutGroup("Order")] public Sprite[] blockSprites;
 
+    [FoldoutGroup("RV")] public bool rvDoubleSpawn;
+    [FoldoutGroup("RV")] public float rvDoubleSpawnTime;
+    [FoldoutGroup("RV")] public bool rvVehicleSpeedUp;
+    [FoldoutGroup("RV")] public float rvVehicleSpeedUpTime;
+    [FoldoutGroup("RV")] public bool rvRailSpeedUp;
+    [FoldoutGroup("RV")] public float rvRailSpeedUpTime = 60f;
 
     public struct OrderStruct
     {
@@ -71,7 +77,7 @@ public class StageManager : MonoBehaviour
         public float currentTerm;
     }
     [ShowInInspector]
-    public OrderStruct[] orderStructs;
+    public OrderStruct[] orderStructs = new OrderStruct[3];
 
 
 
@@ -140,7 +146,11 @@ public class StageManager : MonoBehaviour
                 break;
         }
 
-        InitOrder();
+        //InitOrder();
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    ES3.Save<OrderStruct>($"Order_{_stageLevel}_{i}", orderStructs[i]);
+        //}
 
     }
 
@@ -219,10 +229,26 @@ public class StageManager : MonoBehaviour
     public void LoadData()
     {
         _blockMachineCount = ES3.Load<int>($"Stage_{_stageLevel}_BlockMachineCount", 0);
-
         buldingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
 
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    int num = i;
+        //    orderStructs[num] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{num}", CreateOrder());
+        //    //Debug.Log(orderStructs[num].personSprite);
+        //    Managers._gameUi.SetOrderPanel(num, orderStructs[num]);
+        //    CheckOrder(num);
+        //}
 
+        orderStructs[0] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{0}", CreateOrder());
+        orderStructs[1] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{1}", CreateOrder());
+        orderStructs[2] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{2}", CreateOrder());
+        Managers._gameUi.SetOrderPanel(0, orderStructs[0]);
+        Managers._gameUi.SetOrderPanel(1, orderStructs[1]);
+        Managers._gameUi.SetOrderPanel(2, orderStructs[2]);
+        CheckOrder(0);
+        CheckOrder(1);
+        CheckOrder(2);
 
 
         _playTime = ES3.Load<int>("PlayTime", _playTime);
@@ -315,6 +341,13 @@ public class StageManager : MonoBehaviour
 
         ES3.Save<int>($"Stage_{_stageLevel}_BlockMachineCount", _blockMachineCount);
         ES3.Save<int>($"Stage_{_stageLevel}_Rail_Level", _rail_Speed_Level);
+
+
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    ES3.Save<OrderStruct>($"Order_{_stageLevel}_{i}", orderStructs[i]);
+        //}
+
     }
 
     // ====== Block Machine ============================================================
@@ -727,6 +760,13 @@ public class StageManager : MonoBehaviour
     [Button]
     public void SetStage()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            Managers._gameUi.BlockCount_Group.transform
+                 .GetChild(i).GetComponent<Image>().sprite = blockSprites[i];
+
+        }
+
 
         _vehicleQueue.Clear();
 
@@ -792,19 +832,27 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    [Button]
-    public void InitOrder()
-    {
-        orderStructs = new OrderStruct[3];
-        for (int i = 0; i < 3; i++)
-        {
-            int num = i;
-            orderStructs[num] = CreateOrder();
-            Managers._gameUi.SetOrderPanel(num, orderStructs[num]);
-            CheckOrder(num);
-            //UnityEditor.EditorApplication.isPaused = true;
-        }
-    }
+    //[Button]
+    //public void InitOrder()
+    //{
+    //    //orderStructs = new OrderStruct[3];
+    //    for (int i = 0; i < 3; i++)
+    //    {
+    //        ES3.Save<OrderStruct>($"Order_{_stageLevel}_{i}", orderStructs[i]);
+    //    }
+    //    if (!ES3.KeyExists($"Order_{_stageLevel}_0"))
+    //    {
+
+    //        for (int i = 0; i < 3; i++)
+    //        {
+    //            int num = i;
+    //            orderStructs[num] = CreateOrder();
+    //            Managers._gameUi.SetOrderPanel(num, orderStructs[num]);
+    //            CheckOrder(num);
+    //            //UnityEditor.EditorApplication.isPaused = true;
+    //        }
+    //    }
+    //}
 
     [Button]
     public void CheckOrder(int _num)
@@ -812,6 +860,12 @@ public class StageManager : MonoBehaviour
 
         if (orderStructs[_num].isComplete == true)
         {
+            if (Managers._gameUi.Order_Group.transform.GetChild(_num)
+                .Find("Wait_Img").gameObject.activeSelf == false)
+            {
+                Managers._gameUi.Order_Group.transform.GetChild(_num)
+                    .Find("Wait_Img").gameObject.SetActive(true);
+            }
             Managers._gameUi.Order_Group.transform.GetChild(_num).Find("Wait_Img").Find("Wait_Text").GetComponent<Text>().text = $"{(int)(orderStructs[_num].currentTerm / 60):00} : {(orderStructs[_num].currentTerm % 60):00}";
 
             if (orderStructs[_num].currentTerm <= 0)
@@ -848,6 +902,12 @@ public class StageManager : MonoBehaviour
 
             //orderType
             //blockCount
+
+            for (int i = 0; i < 3; i++)
+            {
+                ES3.Save<OrderStruct>($"Order_{_stageLevel}_{i}", orderStructs[i]);
+            }
+
         }
     }
 
@@ -855,6 +915,7 @@ public class StageManager : MonoBehaviour
 
     public OrderStruct CreateOrder()
     {
+        Debug.Log("Create Order  ");
         OrderStruct newOrder = new OrderStruct();
         newOrder.personSprite = peopleSprites[Random.Range(0, peopleSprites.Length)];
 
@@ -862,7 +923,9 @@ public class StageManager : MonoBehaviour
         newOrder.orderType = new int[newOrder.orderCount];
         newOrder.blockCount = new int[newOrder.orderCount];
         newOrder.blockSprite = new Sprite[2];
-        newOrder.waitTerm = 5f; //30f * 60f;
+        newOrder.waitTerm =
+                             //5f;
+                             30f * 60f;
 
         for (int i = 0; i < newOrder.orderCount; i++)
         {
@@ -871,6 +934,8 @@ public class StageManager : MonoBehaviour
             newOrder.blockSprite[i] = blockSprites[newOrder.orderType[i]];
         }
         newOrder.rewardCount = 100;
+
+
 
         return newOrder;
     }
@@ -896,5 +961,33 @@ public class StageManager : MonoBehaviour
         CheckOrder(_num);
         //
     }
+
+    // ====================================================
+
+    public void RV_Order_Refresh(int _num)
+    {
+        orderStructs[_num].isComplete = false;
+        orderStructs[_num] = CreateOrder();
+        Managers._gameUi.SetOrderPanel(_num, orderStructs[_num]);
+        orderStructs[_num].currentTerm = orderStructs[_num].waitTerm;
+        Managers._gameUi.Order_Group.transform.GetChild(_num)
+            .Find("Wait_Img").gameObject.SetActive(false);
+    }
+
+    public void RV_DoubleSpawn()
+    {
+
+    }
+
+    public void RV_VehicleSpeedUp()
+    {
+
+    }
+
+    public void RV_RailSpeedUp()
+    {
+
+    }
+
 }
 

@@ -311,17 +311,23 @@ public class UI_GameScene : UI_Scene
         NextStage_Button.AddButtonEvent(() =>
         {
 
-            Managers.Game.ChangeStage();
-
+            Managers.Game.ChangeStage(1);
+            NextStage_Button.gameObject.SetActive(false);
 
         });
 
-        Order_Close_Button.AddButtonEvent(() => Order_Panel.SetActive(false));
+        Order_Close_Button.AddButtonEvent(() => PanelOnOff(Order_Panel, false));
 
-        Order_Button.AddButtonEvent(() => PanelOnOff(Order_Panel, true));
+        Order_Button.AddButtonEvent(() => ChangePanel(4));
         Test_PreStage_Button.AddButtonEvent(() => Managers.Game.ChangeStage(-1));
         Test_NextStage_Button.AddButtonEvent(() => Managers.Game.ChangeStage(1));
 
+        for (int i = 0; i < 3; i++)
+        {
+            int _num = i;
+            Order_Group.transform.GetChild(_num).Find("Wait_Img").Find("RV_Order_Refesh_Button")
+                .GetComponent<Button>().AddButtonEvent(() => Managers.Game.currentStageManager.RV_Order_Refresh(_num));
+        }
 
     }
 
@@ -360,6 +366,7 @@ public class UI_GameScene : UI_Scene
         PanelOnOff(FactoryBase_Panel, false);
         PanelOnOff(BlockMachine_Panel, false);
         PanelOnOff(Scroll_Panel, false);
+        PanelOnOff(Order_Panel, false);
 
 
 
@@ -391,6 +398,10 @@ public class UI_GameScene : UI_Scene
             case 3:
                 PanelOnOff(Unlock_Panel, true);
 
+                break;
+
+            case 4:
+                PanelOnOff(Order_Panel, true);
                 break;
 
         }
@@ -458,11 +469,10 @@ public class UI_GameScene : UI_Scene
             Order_Group.transform.GetChild(_num).Find("Order_BG_1").Find("Order_Count_Text").GetComponent<Text>().text = $"{_newOrder.blockCount[1]}";
         }
 
+        Order_Group.transform.GetChild(_num).Find("Claim_Button").Find("Reward_Text").GetComponent<Text>().text = $"{_newOrder.rewardCount}";
         //Order_Group.transform.GetChild(_num).Find("Wait_Img").gameObject.SetActive(false);
 
     }
-
-
 
 
 

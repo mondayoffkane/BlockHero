@@ -22,11 +22,15 @@ public class UI_GameScene : UI_Scene
         View_Button,
         Cpi_Rail_Button,
         NextStage_Button,
+        Order_Button,
         ViewChange_Button,
         AddCar_Button,
         BlockMachine_Close_Button,
         BlockMachine_Upgrade_Button,
         Scroll_Close_Button,
+        Order_Close_Button,
+        Test_PreStage_Button,
+        Test_NextStage_Button,
     }
     enum GameObjects
     {
@@ -70,6 +74,10 @@ public class UI_GameScene : UI_Scene
         , View_Button
         , Cpi_Rail_Button
         , NextStage_Button
+        , Order_Close_Button
+        , Order_Button
+        , Test_PreStage_Button
+        , Test_NextStage_Button
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -163,6 +171,19 @@ public class UI_GameScene : UI_Scene
         View_Button = GetButton(Buttons.View_Button);
 
         NextStage_Button = GetButton(Buttons.NextStage_Button);
+        Order_Close_Button = GetButton(Buttons.Order_Close_Button);
+
+        for (int i = 0; i < 3; i++)
+        {
+            int _num = i;
+            Order_Group.transform.GetChild(_num).Find("Claim_Button").GetComponent<Button>().AddButtonEvent(() => Managers.Game.currentStageManager.RewardOrder(_num));
+
+        }
+
+        Order_Button = GetButton(Buttons.Order_Button);
+        Test_PreStage_Button = GetButton(Buttons.Test_PreStage_Button);
+        Test_NextStage_Button = GetButton(Buttons.Test_NextStage_Button);
+
 
         // ========= Img
 
@@ -289,14 +310,17 @@ public class UI_GameScene : UI_Scene
 
         NextStage_Button.AddButtonEvent(() =>
         {
-            //_stageManager._currentStageNum = _stageManager._currentStageNum == 0 ? 1 : 0;
-            //_stageManager.SetStagePos();
 
-            //Debug.Log("Null Func");
-            Managers.Game.ChangeStage(-1);
+            Managers.Game.ChangeStage();
 
 
         });
+
+        Order_Close_Button.AddButtonEvent(() => Order_Panel.SetActive(false));
+
+        Order_Button.AddButtonEvent(() => PanelOnOff(Order_Panel, true));
+        Test_PreStage_Button.AddButtonEvent(() => Managers.Game.ChangeStage(-1));
+        Test_NextStage_Button.AddButtonEvent(() => Managers.Game.ChangeStage(1));
 
 
     }
@@ -415,13 +439,29 @@ public class UI_GameScene : UI_Scene
 
     public void SetOrderPanel(int _num, StageManager.OrderStruct _newOrder)
     {
-        //_content.transform.Find("Person_Img").GetComponent<Image>().sprite =
-        //Order_Group.transform.Find("")
-
 
         Order_Group.transform.GetChild(_num).Find("Person_Img").GetComponent<Image>().sprite = _newOrder.personSprite;
 
+        Order_Group.transform.GetChild(_num).Find("Order_BG_0").Find("OrderBlock_Img").GetComponent<Image>().sprite =
+            _newOrder.blockSprite[0];
+        Order_Group.transform.GetChild(_num).Find("Order_BG_0").Find("Order_Count_Text").GetComponent<Text>().text = $"{_newOrder.blockCount[0]}";
+
+        if (_newOrder.orderCount < 2)
+        {
+            Order_Group.transform.GetChild(_num).Find("Order_BG_1").gameObject.SetActive(false);
+        }
+        else
+        {
+            Order_Group.transform.GetChild(_num).Find("Order_BG_1").gameObject.SetActive(true);
+            Order_Group.transform.GetChild(_num).Find("Order_BG_1").Find("OrderBlock_Img").GetComponent<Image>().sprite =
+            _newOrder.blockSprite[1];
+            Order_Group.transform.GetChild(_num).Find("Order_BG_1").Find("Order_Count_Text").GetComponent<Text>().text = $"{_newOrder.blockCount[1]}";
+        }
+
+        //Order_Group.transform.GetChild(_num).Find("Wait_Img").gameObject.SetActive(false);
+
     }
+
 
 
 

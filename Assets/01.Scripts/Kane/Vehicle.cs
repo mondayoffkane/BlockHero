@@ -59,7 +59,7 @@ public class Vehicle : MonoBehaviour
     // =====================================
 
 
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
 
         if (_blockStorage == null) _blockStorage = Managers.Game.currentStageManager._blockStorage;
@@ -93,21 +93,26 @@ public class Vehicle : MonoBehaviour
 
         _blockTypeNum = (int)_building._blockType;
 
-
-        _blockType = (Block.BlockType)_blockTypeNum;
-        _boxMeshFilter.sharedMesh = _meshes[(int)_blockType];
-
-        if (_blockStorage._blockCountArray[_blockTypeNum] >= _maxCount)
+        if (_building._currentCount < _building._maxCount)
         {
-            _blockStorage._blockCountArray[_blockTypeNum] -= _maxCount;
-            _currentCount = _maxCount;
-        }
-        else
-        {
-            int _tempCount = _blockStorage._blockCountArray[_blockTypeNum];
-            _blockStorage._blockCountArray[_blockTypeNum] -= _tempCount;
-            _currentCount = _tempCount;
 
+
+
+            _blockType = (Block.BlockType)_blockTypeNum;
+            _boxMeshFilter.sharedMesh = _meshes[(int)_blockType];
+
+            if (_blockStorage._blockCountArray[_blockTypeNum] >= _maxCount)
+            {
+                _blockStorage._blockCountArray[_blockTypeNum] -= _maxCount;
+                _currentCount = _maxCount;
+            }
+            else
+            {
+                int _tempCount = _blockStorage._blockCountArray[_blockTypeNum];
+                _blockStorage._blockCountArray[_blockTypeNum] -= _tempCount;
+                _currentCount = _tempCount;
+
+            }
         }
         _blockStorage.UpdateBlockCount();
 

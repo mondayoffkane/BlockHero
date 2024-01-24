@@ -6,9 +6,12 @@ public class Train : Vehicle
 {
     public bool isHead = false;
 
-    protected override void Start()
+    public Transform _headTarget;
+
+
+    protected override void OnEnable()
     {
-        base.Start();
+        base.OnEnable();
         StartCoroutine(Cor_Update());
     }
 
@@ -38,9 +41,19 @@ public class Train : Vehicle
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
                     if (_currentDis <= _minDistance)
                     {
-                        _target = Managers.Game.currentStageManager.FindBuilding();
+                        if (isHead)
+                        {
+                            _target = Managers.Game.currentStageManager.FindBuilding();
+                            _headTarget = _target;
+                        }
+                        else
+                        {
+                            _target = Managers.Game.currentStageManager._vehicleHead._headTarget;
+                        }
+
                         if (isHead == false)
                         {
+
                             PullBlock();
                         }
                         _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);

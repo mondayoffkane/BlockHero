@@ -17,6 +17,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject _maskImg;
     public int _tutorial_Level = 0;
 
+    public bool isComplete = false;
 
     private void Awake()
     {
@@ -47,25 +48,32 @@ public class TutorialManager : MonoBehaviour
     [Button]
     public void Tutorial_Img()
     {
-        Debug.Log("Tutorial Img :" + _tutorial_Level);
+        if (isComplete == false)
+        {
 
-        _maskImg.SetActive(true);
-        _maskImg.transform.GetComponent<RectTransform>().anchoredPosition = _imgPoss[_tutorial_Level];
-        //_maskImg.transform.localScale = _imgSizes[_tutorial_Level];
-        _maskImg.transform.GetComponent<RectTransform>().sizeDelta = _imgSizes[_tutorial_Level];
+            Debug.Log("Tutorial Img :" + _tutorial_Level);
 
-        _cams[_tutorial_Level].SetActive(true);
+            _maskImg.SetActive(true);
+            _maskImg.transform.GetComponent<RectTransform>().anchoredPosition = _imgPoss[_tutorial_Level];
+            //_maskImg.transform.localScale = _imgSizes[_tutorial_Level];
+            _maskImg.transform.GetComponent<RectTransform>().sizeDelta = _imgSizes[_tutorial_Level];
 
+            _cams[_tutorial_Level].SetActive(true);
+
+        }
     }
 
     [Button]
     public void Tutorial_Complete()
     {
-        Debug.Log("Tutorial Complete : +" + _tutorial_Level);
-        ES3.Save<bool>("isFirst", false);
-        _maskImg.SetActive(false);
-        _cams[_tutorial_Level].SetActive(false);
-        _tutorial_Level++;
+        if (isComplete == false)
+        {
+            Debug.Log("Tutorial Complete : +" + _tutorial_Level);
+            ES3.Save<bool>("isFirst", false);
+            _maskImg.SetActive(false);
+            _cams[_tutorial_Level].SetActive(false);
+            _tutorial_Level++;
+        }
     }
 
 

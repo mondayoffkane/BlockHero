@@ -39,6 +39,7 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Vehicle")] public double[] _railSpeedLevel_Prices = new double[5];
     [FoldoutGroup("Vehicle")] public List<Vehicle> _vehicleList = new List<Vehicle>();
     [FoldoutGroup("Vehicle")][ShowInInspector] public Queue<Vehicle> _vehicleQueue = new Queue<Vehicle>();
+    [FoldoutGroup("Vehicle")] public Train _vehicleHead;
 
     //[FoldoutGroup("Village")] public double _money = 1000d;
     [FoldoutGroup("Village")] public List<Building> buildingList = new List<Building>();
@@ -56,12 +57,20 @@ public class StageManager : MonoBehaviour
 
     public struct OrderStruct
     {
+
         public Sprite personSprite;
-        public Sprite blockSprite;
+        public Sprite[] blockSprite;
         public int orderCount;
+        public int[] orderType;
         public int[] blockCount;
         public int rewardCount;
+
+        //////
+        public bool isComplete;
+        public float waitTerm;
+        public float currentTerm;
     }
+    [ShowInInspector]
     public OrderStruct[] orderStructs;
 
 
@@ -118,10 +127,12 @@ public class StageManager : MonoBehaviour
         _machineBuyButton.AddButtonEvent(() => AddBlockMachine());
         //SetStage();
 
+        StartCoroutine(Cor_Update());
+
         switch (vehicleType)
         {
             case VehicleType.Car:
-                StartCoroutine(Cor_Update());
+                StartCoroutine(Cor_Update_Car());
                 break;
 
             case VehicleType.Train:
@@ -129,9 +140,11 @@ public class StageManager : MonoBehaviour
                 break;
         }
 
+        InitOrder();
+
     }
 
-    IEnumerator Cor_Update()
+    IEnumerator Cor_Update_Car()
     {
         while (true)
         {
@@ -153,7 +166,7 @@ public class StageManager : MonoBehaviour
 
     IEnumerator Cor_Upgrade_Train()
     {
-        Debug.Log("Cor Update Train");
+        //Debug.Log("Cor Update Train");
 
         yield return new WaitForSeconds(_vehicleTerm);
         queueCount = _vehicleList.Count;
@@ -169,6 +182,26 @@ public class StageManager : MonoBehaviour
         }
 
     }
+
+    IEnumerator Cor_Update()
+    {
+        while (true)
+        {
+            WaitForSeconds _1s = new WaitForSeconds(1f);
+            yield return _1s;
+
+            for (int i = 0; i < 3; i++)
+            {
+                int num = i;
+                if (orderStructs[i].isComplete && orderStructs[i].currentTerm > 0)
+                {
+                    orderStructs[i].currentTerm--;
+                }
+                CheckOrder(num);
+            }
+        }
+    }
+
 
     private void Start()
     {
@@ -246,28 +279,32 @@ public class StageManager : MonoBehaviour
 
         _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
 
-
-        switch (vehicleType)
+        if (_vehicleList.Count == 0)
         {
-            case VehicleType.Train:
-                NavMeshAgent _vehicle = Managers.Pool.Pop(_vehicle_Head_Pref, _vehicleGroup).GetComponent<NavMeshAgent>();
-                _vehicle.GetComponent<Vehicle>()._state = Vehicle.State.Wait;
-                _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
-                _vehicle.destination = _blockStorage.transform.Find("Out_Pos").position;
 
-                Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
-                _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
-                _vehicleList.Add(_newVehicle);
 
-                break;
+            switch (vehicleType)
+            {
+                case VehicleType.Train:
+                    NavMeshAgent _vehicle = Managers.Pool.Pop(_vehicle_Head_Pref, _vehicleGroup).GetComponent<NavMeshAgent>();
+                    _vehicle.GetComponent<Vehicle>()._state = Vehicle.State.Wait;
+                    _vehicle.Warp(_blockStorage.transform.Find("Out_Pos").position);
+                    _vehicle.destination = _blockStorage.transform.Find("Out_Pos").position;
+
+                    Vehicle _newVehicle = _vehicle.GetComponent<Vehicle>();
+                    _newVehicle.SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
+                    _vehicleList.Add(_newVehicle);
+                    _vehicleHead = (Train)_newVehicle;
+                    break;
+            }
+
+
+            for (int i = 0; i < _vehicle_Spawn_Level; i++)
+            {
+                AddVehicle();
+            }
+            AllVehicleSetLevel();
         }
-
-
-        for (int i = 0; i < _vehicle_Spawn_Level; i++)
-        {
-            AddVehicle();
-        }
-        AllVehicleSetLevel();
 
     }
     public void SaveData()
@@ -718,7 +755,7 @@ public class StageManager : MonoBehaviour
 
         // add UI Change 
         _blockStorage.UpdateBlockCount();
-
+        //dd
 
 
 
@@ -755,32 +792,109 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void Order()
+    [Button]
+    public void InitOrder()
     {
+        orderStructs = new OrderStruct[3];
         for (int i = 0; i < 3; i++)
         {
             int num = i;
             orderStructs[num] = CreateOrder();
             Managers._gameUi.SetOrderPanel(num, orderStructs[num]);
+            CheckOrder(num);
+            //UnityEditor.EditorApplication.isPaused = true;
         }
     }
+
+    [Button]
+    public void CheckOrder(int _num)
+    {
+
+        if (orderStructs[_num].isComplete == true)
+        {
+            Managers._gameUi.Order_Group.transform.GetChild(_num).Find("Wait_Img").Find("Wait_Text").GetComponent<Text>().text = $"{(int)(orderStructs[_num].currentTerm / 60):00} : {(orderStructs[_num].currentTerm % 60):00}";
+
+            if (orderStructs[_num].currentTerm <= 0)
+            {
+                orderStructs[_num].isComplete = false;
+                orderStructs[_num] = CreateOrder();
+                Managers._gameUi.SetOrderPanel(_num, orderStructs[_num]);
+                orderStructs[_num].currentTerm = orderStructs[_num].waitTerm;
+                Managers._gameUi.Order_Group.transform.GetChild(_num).Find("Wait_Img").gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            bool isClaim = true;
+            for (int i = 0; i < orderStructs[_num].orderCount; i++)
+            {
+                if (_blockStorage._blockCountArray[orderStructs[_num].orderType[i]] >= orderStructs[_num].blockCount[i])
+                {
+
+                }
+                else
+                {
+                    isClaim = false;
+                }
+            }
+            if (isClaim)
+            {
+                Managers._gameUi.Order_Group.transform.GetChild(_num).Find("Claim_Button").GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                Managers._gameUi.Order_Group.transform.GetChild(_num).Find("Claim_Button").GetComponent<Button>().interactable = false;
+            }
+
+            //orderType
+            //blockCount
+        }
+    }
+
+
 
     public OrderStruct CreateOrder()
     {
         OrderStruct newOrder = new OrderStruct();
         newOrder.personSprite = peopleSprites[Random.Range(0, peopleSprites.Length)];
-        newOrder.blockSprite = blockSprites[Random.Range(0, blockSprites.Length)];
+
         newOrder.orderCount = Random.Range(1, 3);
+        newOrder.orderType = new int[newOrder.orderCount];
+        newOrder.blockCount = new int[newOrder.orderCount];
+        newOrder.blockSprite = new Sprite[2];
+        newOrder.waitTerm = 5f; //30f * 60f;
+
         for (int i = 0; i < newOrder.orderCount; i++)
         {
-            newOrder.blockCount[i] = Random.Range(0, 11) * 10;
+            newOrder.orderType[i] = Random.Range(0, 4);
+            newOrder.blockCount[i] = Random.Range(1, 11) * 10;
+            newOrder.blockSprite[i] = blockSprites[newOrder.orderType[i]];
         }
         newOrder.rewardCount = 100;
 
         return newOrder;
     }
 
+    public void RewardOrder(int _num)
+    {
+        Managers.Game.CalcMoney(orderStructs[_num].rewardCount);
+        orderStructs[_num].isComplete = true;
+        orderStructs[_num].currentTerm = orderStructs[_num].waitTerm;
+        Managers._gameUi.Order_Group.transform.GetChild(_num).Find("Wait_Img").gameObject.SetActive(true);
 
 
+        for (int i = 0; i < orderStructs[_num].orderCount; i++)
+        {
+            _blockStorage._blockCountArray[orderStructs[_num].orderType[i]] -=
+            orderStructs[_num].blockCount[i];
+
+            //Debug.Log($"Order Type :{orderStructs[_num].orderType[i]} / Count :{orderStructs[_num].blockCount[i]}");
+        }
+
+
+        _blockStorage.UpdateBlockCount();
+        CheckOrder(_num);
+        //
+    }
 }
 

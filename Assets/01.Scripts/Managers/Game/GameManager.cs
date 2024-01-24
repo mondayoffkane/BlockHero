@@ -58,7 +58,9 @@ public class GameManager : MonoBehaviour
             stageManagers[i].gameObject.SetActive(false);
         }
 
-        if (_num == -1) currentStageLevel = 1;
+        currentStageLevel += _num;
+        if (currentStageLevel > 1) currentStageLevel = 1;
+        else if (currentStageLevel < 0) currentStageLevel = 0;
 
         currentStageManager = stageManagers[currentStageLevel];
         currentStageManager.gameObject.SetActive(true);

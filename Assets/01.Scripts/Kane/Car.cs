@@ -6,9 +6,9 @@ public class Car : Vehicle
 {
 
 
-    protected override void Start()
+    protected override void OnEnable()
     {
-        base.Start();
+        base.OnEnable();
         StartCoroutine(Cor_Update());
     }
 

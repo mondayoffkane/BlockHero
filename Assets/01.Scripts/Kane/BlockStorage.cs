@@ -84,6 +84,8 @@ public class BlockStorage : MonoBehaviour
                      _blockCountArray[0] += 3;
                  }
 
+
+
              });
 
     }

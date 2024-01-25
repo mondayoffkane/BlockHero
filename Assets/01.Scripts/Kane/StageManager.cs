@@ -56,11 +56,11 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Order")] public Sprite[] peopleSprites;
     [FoldoutGroup("Order")] public Sprite[] blockSprites;
 
-    [FoldoutGroup("RV")] public bool rvDoubleSpawn;
+    [FoldoutGroup("RV")] public bool isRvDoubleSpawn;
     [FoldoutGroup("RV")] public float rvDoubleSpawnTime;
-    [FoldoutGroup("RV")] public bool rvVehicleSpeedUp;
+    [FoldoutGroup("RV")] public bool isRvVehicleSpeedUp;
     [FoldoutGroup("RV")] public float rvVehicleSpeedUpTime;
-    [FoldoutGroup("RV")] public bool rvRailSpeedUp;
+    [FoldoutGroup("RV")] public bool isRvRailSpeedUp;
     [FoldoutGroup("RV")] public float rvRailSpeedUpTime = 60f;
 
     public struct OrderStruct
@@ -101,6 +101,7 @@ public class StageManager : MonoBehaviour
     public int _playTime = 0;
     //[SerializeField] bool isHeadReady = true;
     [SerializeField] int queueCount;
+    //public bool isUnLimit = false;
     // =================================================
 
 
@@ -153,6 +154,10 @@ public class StageManager : MonoBehaviour
         //{
         //    ES3.Save<OrderStruct>($"Order_{_stageLevel}_{i}", orderStructs[i]);
         //}
+        isRvDoubleSpawn = false;
+        isRvRailSpeedUp = false;
+        isRvVehicleSpeedUp = false;
+
 
     }
 
@@ -190,7 +195,7 @@ public class StageManager : MonoBehaviour
             _vehicle._target = _blockStorage.transform.Find("Out_Pos");
             _vehicle.GetComponent<NavMeshAgent>()
                 .Warp(_blockStorage.transform.Find("Out_Pos").position);
-            yield return new WaitForSeconds(_vehicleTerm);  // new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.15f / _vehicleList[0].GetComponent<NavMeshAgent>().speed);  // new WaitForSeconds(1f);
         }
 
     }
@@ -305,7 +310,7 @@ public class StageManager : MonoBehaviour
         _vehicle_Capacity_Level = ES3.Load<int>($"Stage_{_stageLevel}_Vehicle_Capacity_Level", 0);
         _rail_Speed_Level = ES3.Load<int>($"Stage_{_stageLevel}_Rail_Level", 0);
 
-        _railSpeed = 0.5f - (0.05f * _rail_Speed_Level);
+        _railSpeed = 0.5f - (0.025f * _rail_Speed_Level);
 
         if (_vehicleList.Count == 0)
         {
@@ -536,6 +541,7 @@ public class StageManager : MonoBehaviour
 
     public Transform FindBuilding()
     {
+
         for (int i = 0; i < buildingList.Count; i++)
         {
             if (buildingList[i]._currentCount < buildingList[i]._maxCount)
@@ -549,15 +555,18 @@ public class StageManager : MonoBehaviour
 
     public Transform ReFindBuilding()
     {
-        for (int i = 0; i < buildingList.Count; i++)
-        {
-            if (Managers.Game.currentStageManager._blockStorage._blockCountArray[(int)buildingList[i]._blockType] > 0)
-            {
-                return buildingList[i].transform;
-            }
-        }
 
-        return null;
+        //for (int i = 0; i < buildingList.Count; i++)
+        //{
+        int _num = Random.Range(0, buldingCompleteCount);
+        if (Managers.Game.currentStageManager
+            ._blockStorage._blockCountArray[(int)buildingList[_num]._blockType] > 0)
+        {
+            return buildingList[_num].transform;
+        }
+        //}
+
+        return buildingList[_num].transform;
     }
 
 
@@ -978,17 +987,98 @@ public class StageManager : MonoBehaviour
 
     public void RV_DoubleSpawn()
     {
+        isRvDoubleSpawn = true;
 
+        DOTween.Sequence().
+            AppendCallback(() =>
+            {
+
+                Managers._gameUi.RvDoubleSpawn_Button.interactable = false;
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").gameObject.SetActive(true);
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group")
+                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
+                .Find("Time_Text").GetComponent<Text>().DOCounter(60, 0, 60f).SetEase(Ease.Linear);
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Rv_Img").gameObject.SetActive(false);
+
+            })
+            .AppendInterval(60f)
+            .OnComplete(() =>
+            {
+                isRvDoubleSpawn = false;
+                Managers._gameUi.RvDoubleSpawn_Button.interactable = true;
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").gameObject.SetActive(false);
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
+                .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
+            });
     }
 
     public void RV_VehicleSpeedUp()
     {
+        isRvVehicleSpeedUp = true;
 
+        DOTween.Sequence().
+            AppendCallback(() =>
+            {
+                for (int i = 0; i < _vehicleList.Count; i++)
+                {
+                    _vehicleList[i].SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
+                }
+                Managers._gameUi.RvVehicleSpeedUp_Button.interactable = false;
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").gameObject.SetActive(true);
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group")
+                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").transform
+                .Find("Time_Text").GetComponent<Text>().DOCounter(60, 0, 60f).SetEase(Ease.Linear);
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(false);
+
+
+            })
+            .AppendInterval(60f)
+            .OnComplete(() =>
+            {
+                isRvVehicleSpeedUp = false;
+                for (int i = 0; i < _vehicleList.Count; i++)
+                {
+                    _vehicleList[i].SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
+                }
+                Managers._gameUi.RvVehicleSpeedUp_Button.interactable = true;
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").gameObject.SetActive(false);
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").transform
+                .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
+
+
+            });
     }
 
     public void RV_RailSpeedUp()
     {
+        isRvRailSpeedUp = true;
+        //isUnLimit = true;
+        DOTween.Sequence().
+            AppendCallback(() =>
+            {
+                Managers._gameUi.RvRailSpeedUp_Button.interactable = false;
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").gameObject.SetActive(true);
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group")
+                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform
+                .Find("Time_Text").GetComponent<Text>().DOCounter(60, 0, 60f).SetEase(Ease.Linear);
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(false);
 
+            })
+            .AppendInterval(60f)
+            .OnComplete(() =>
+            {
+                isRvRailSpeedUp = false;
+                Managers._gameUi.RvRailSpeedUp_Button.interactable = true;
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").gameObject.SetActive(false);
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform
+                .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
+            });
     }
 
 }

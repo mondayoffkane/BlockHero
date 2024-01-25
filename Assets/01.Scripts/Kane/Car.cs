@@ -54,7 +54,7 @@ public class Car : Vehicle
                                 _target = Managers.Game.currentStageManager.ReFindBuilding();
                                 if (_target == null)
                                 {
-
+                                    Debug.Log("Target Null");
                                     _state = State.Wait;
 
                                     Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
@@ -66,6 +66,10 @@ public class Car : Vehicle
                                 {
                                     _agent.Warp(_blockStorage.transform.Find("Out_Pos").position);
                                     SetDest(_target);
+                                }
+                                else
+                                {
+                                    Debug.Log("CurrentCount = 0");
                                 }
 
 
@@ -100,6 +104,9 @@ public class Car : Vehicle
                     break;
 
                 case State.Return:
+
+
+
 
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
                     if (_currentDis <= _minDistance)

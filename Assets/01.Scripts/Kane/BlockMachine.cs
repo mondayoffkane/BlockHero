@@ -127,7 +127,7 @@ public class BlockMachine : MonoBehaviour
 
             Spawnblock();
 
-            yield return new WaitForSeconds(_spawnInterval);
+            yield return new WaitForSeconds(stageManager.isRvDoubleSpawn ? _spawnInterval * 0.5f : _spawnInterval);
         }
     }
 

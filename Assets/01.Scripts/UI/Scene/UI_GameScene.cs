@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System;
 //using System.Drawing;
+using MondayOFF;
 
 public class UI_GameScene : UI_Scene
 {
@@ -31,6 +32,9 @@ public class UI_GameScene : UI_Scene
         Order_Close_Button,
         Test_PreStage_Button,
         Test_NextStage_Button,
+        RvDoubleSpawn_Button,
+        RvRailSpeedUp_Button,
+        RvVehicleSpeedUp_Button,
     }
     enum GameObjects
     {
@@ -44,6 +48,7 @@ public class UI_GameScene : UI_Scene
         Unlock_Panel,
         Order_Panel,
         Order_Group,
+        RV_Panel,
     }
 
     DOTween _camTween;
@@ -59,6 +64,7 @@ public class UI_GameScene : UI_Scene
         , Unlock_Panel
         , Order_Panel
         , Order_Group
+        , RV_Panel
         ;
     //Recipe_RawImage;
 
@@ -78,6 +84,10 @@ public class UI_GameScene : UI_Scene
         , Order_Button
         , Test_PreStage_Button
         , Test_NextStage_Button
+        , RvDoubleSpawn_Button,
+        RvRailSpeedUp_Button,
+        RvVehicleSpeedUp_Button
+
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -144,6 +154,7 @@ public class UI_GameScene : UI_Scene
         Order_Panel = GetObject(GameObjects.Order_Panel);
         Order_Group = GetObject(GameObjects.Order_Group);
 
+        RV_Panel = GetObject(GameObjects.RV_Panel);
         // ========= Buttons
 
 
@@ -184,6 +195,9 @@ public class UI_GameScene : UI_Scene
         Test_PreStage_Button = GetButton(Buttons.Test_PreStage_Button);
         Test_NextStage_Button = GetButton(Buttons.Test_NextStage_Button);
 
+        RvDoubleSpawn_Button = GetButton(Buttons.RvDoubleSpawn_Button);
+        RvRailSpeedUp_Button = GetButton(Buttons.RvRailSpeedUp_Button);
+        RvVehicleSpeedUp_Button = GetButton(Buttons.RvVehicleSpeedUp_Button);
 
         // ========= Img
 
@@ -326,8 +340,12 @@ public class UI_GameScene : UI_Scene
         {
             int _num = i;
             Order_Group.transform.GetChild(_num).Find("Wait_Img").Find("RV_Order_Refesh_Button")
-                .GetComponent<Button>().AddButtonEvent(() => Managers.Game.currentStageManager.RV_Order_Refresh(_num));
+                .GetComponent<Button>().AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_Order_Refresh(_num)));
         }
+
+        RvDoubleSpawn_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_DoubleSpawn()));
+        RvRailSpeedUp_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_RailSpeedUp()));
+        RvVehicleSpeedUp_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_VehicleSpeedUp()));
 
     }
 
@@ -475,6 +493,17 @@ public class UI_GameScene : UI_Scene
     }
 
 
+    public void InitRvPanel()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            RV_Panel.transform.GetChild(i).GetComponent<Button>().interactable = true;
+            DOTween.Kill(RV_Panel.transform.GetChild(i).Find("Guage_Group").Find("Guage_Img").GetComponent<Image>()); DOTween.Kill(RV_Panel.transform.GetChild(i).Find("Guage_Group").Find("Time_Text").GetComponent<Text>());
+            RV_Panel.transform.GetChild(i).Find("Guage_Group").gameObject.SetActive(false);
+            RV_Panel.transform.GetChild(i).Find("Rv_Img").gameObject.SetActive(true);
+
+        }
+    }
 
 
 }

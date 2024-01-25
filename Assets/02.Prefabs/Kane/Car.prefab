@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed73adb93bc9e409c92072a3eadb2a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleType: 0
   _scale: {x: 0.9, y: 1.2, z: 0.9}
   _scaleTime: 0.25
   _blockPref: {fileID: 3625907748834728379, guid: 4bfa6ffa2909a4703b37e92c16a11a88,
@@ -131,7 +130,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.12
   m_Speed: 2
-  m_Acceleration: 100
+  m_Acceleration: 500
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0

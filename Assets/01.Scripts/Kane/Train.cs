@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Train : Vehicle
 {
@@ -89,7 +90,18 @@ public class Train : Vehicle
                     _currentDis = Vector3.Distance(transform.position, _target.transform.position);
                     if (_currentDis <= 1f /*_minDistance*/)
                     {
-                        //Managers.Game.currentStageManager._vehicleQueue.Enqueue(this);
+                        _target = _blockStorage.transform.Find("Out_Pos");
+                        _agent.Warp(_blockStorage.transform.Find("In_Pos2").position);
+                        SetDest(_blockStorage.transform.Find("Out_Pos"), State.Return2);
+
+                    }
+                    break;
+
+                case State.Return2:
+                    _currentDis = Vector3.Distance(transform.position, _target.transform.position);
+                    if (_currentDis <= 1f /*_minDistance*/)
+                    {
+
                         Managers.Game.currentStageManager.VehicleEnqueue(this);
 
                         SetDest(_blockStorage.transform.Find("Out_Pos"), State.Sleep);
@@ -102,6 +114,11 @@ public class Train : Vehicle
         }
     }
 
+    [Button]
+    public void DebugPosition()
+    {
+        Debug.Log($"TargetPos : {_target.transform.position} / DestPos : {_agent.destination}");
+    }
 
 
 }

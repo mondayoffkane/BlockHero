@@ -98,7 +98,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.12
   m_Speed: 2
-  m_Acceleration: 100
+  m_Acceleration: 500
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0
@@ -142,6 +142,7 @@ MonoBehaviour:
   - {fileID: 755311989462657537, guid: 0f69987dd6d8c4ee79f1bfd3033777f7, type: 3}
   extraRotationSpeed: 5
   isHead: 1
+  _headTarget: {fileID: 0}
 --- !u!1 &3149613147873680805
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,41 +73,41 @@ public class MoveCam : MonoBehaviour
         }
 
 
-        //#if UNITY_EDITOR
+
 #elif !UNITY_EDITOR
-  if (Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
             Touch _touch = Input.GetTouch(0);
             if (_touch.phase == TouchPhase.Began)
             {
                 if (!EventSystem.current.IsPointerOverGameObject(_touch.fingerId))// 
                 {
-                   isClick = true;
-                _startY = Input.mousePosition.y;
-                _endY = Input.mousePosition.y;
-                _startPos = transform.position;
+                    isClick = true;
+                    _startY = Input.mousePosition.y;
+                    _endY = Input.mousePosition.y;
+                    _startPos = transform.position;
                 }
             }
             else if (_touch.phase == TouchPhase.Moved)
             {
                 if (isClick)
                 {
-                     _endY = Input.mousePosition.y;
-                transform.position = _startPos + new Vector3(0f, 0f, (_startY - _endY) * _mouseSense);
-                if (transform.position.z > _limitZ.x)
-                {
-                    transform.position = new Vector3(0f, transform.position.y, _limitZ.x);
-                }
-                else if (transform.position.z < _limitZ.y)
-                {
-                    transform.position = new Vector3(0f, transform.position.y, _limitZ.y);
-                }
+                    _endY = Input.mousePosition.y;
+                    transform.position = _startPos + new Vector3(0f, 0f, (_startY - _endY) * _mouseSense);
+                    if (transform.position.z > _limitZ.x)
+                    {
+                        transform.position = new Vector3(0f, transform.position.y, _limitZ.x);
+                    }
+                    else if (transform.position.z < _limitZ.y)
+                    {
+                        transform.position = new Vector3(0f, transform.position.y, _limitZ.y);
+                    }
 
                 }
             }
             else if (_touch.phase == TouchPhase.Ended)
             {
-                 isClick = false;
+                isClick = false;
             }
         }
 

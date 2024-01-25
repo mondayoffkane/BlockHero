@@ -7,9 +7,7 @@ using Sirenix.OdinInspector;
 public class Rail : MonoBehaviour
 {
     public Transform[] _prevNodes;
-    //public Rail _nextRail;
 
-    //public float _moveInterval = 1f;
 
     public Transform _currentBlock;
 
@@ -17,6 +15,7 @@ public class Rail : MonoBehaviour
     public float _waitTime = 0f;
 
     public bool _isReady = true;
+
 
     // ==============================
     private void OnEnable()
@@ -31,9 +30,22 @@ public class Rail : MonoBehaviour
 
     IEnumerator Cor_Update()
     {
+        WaitForSeconds _wait = new WaitForSeconds(0.5f);
         while (true)
         {
-            yield return null;
+            switch (_stageManager.isRvRailSpeedUp /*isUnLimit*/)
+            {
+                case false:
+                    //yield return new WaitForSeconds(_stageManager._railSpeed * 0.5f);
+                    yield return null;
+
+                    break;
+
+                case true:
+
+                    yield return new WaitForSeconds(_stageManager._railSpeed * 0.5f);
+                    break;
+            }
             _waitTime += Time.deltaTime;
 
             if (_currentBlock == null)
@@ -99,7 +111,11 @@ public class Rail : MonoBehaviour
     {
 
         _currentBlock = _Block;
-        _isReady = false;
+        if (_stageManager.isRvRailSpeedUp/*isUnLimit*/ == false)
+        {
+            _isReady = false;
+
+        }
 
 
         _currentBlock.DOMove(transform.position + Vector3.up * 0.5f, _stageManager._railSpeed)

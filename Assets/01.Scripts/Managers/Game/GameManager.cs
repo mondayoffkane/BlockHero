@@ -72,6 +72,12 @@ public class GameManager : MonoBehaviour
         //CheckMoney();
         CheckScrollUpgradePrice();
 
+
+        Managers._gameUi.InitRvPanel();
+
+        money = 0;
+        CalcMoney(0);
+
     }
 
 
@@ -102,7 +108,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        //#if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.R))
         {
             CalcMoney(10000);
@@ -110,44 +116,44 @@ public class GameManager : MonoBehaviour
 
 
         // ================= Mouse ====================
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if (!EventSystem.current.IsPointerOverGameObject())// 
-        //    {
-        //        Managers._gameUi.ChangePanel(0);
-        //    }
-        //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())// 
+            {
+                Managers._gameUi.ChangePanel(0);
+            }
+        }
 
 
-        //else if (Input.GetMouseButtonUp(0))
-        //{
-        //    if (!EventSystem.current.IsPointerOverGameObject())// 
-        //    {
-        //        //Debug.Log("None Ui");
-        //        Ray ray;
-        //        RaycastHit hit;
-        //        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //        if (Physics.Raycast(ray, out hit))
-        //        {
-        //            Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
-        //            switch (hit.collider.tag)
-        //            {
-        //                case "BlockMachine":
-        //                    currentStageManager._selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
-        //                    Managers._gameUi.ChangePanel(1);
-        //                    Managers._gameUi.BlockMachine_SetColor((int)currentStageManager._selectBlockMachine._spawnBlockType);
-        //                    break;
+        else if (Input.GetMouseButtonUp(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())// 
+            {
+                //Debug.Log("None Ui");
+                Ray ray;
+                RaycastHit hit;
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Debug.DrawLine(ray.origin, hit.point, Color.red, 1.5f);
+                    switch (hit.collider.tag)
+                    {
+                        case "BlockMachine":
+                            currentStageManager._selectBlockMachine = hit.transform.GetComponent<BlockMachine>();
+                            Managers._gameUi.ChangePanel(1);
+                            Managers._gameUi.BlockMachine_SetColor((int)currentStageManager._selectBlockMachine._spawnBlockType);
+                            break;
 
-        //            }
-        //        }
-        //    }
-        //    //else
-        //    //{
-        //    //    //Debug.Log("On Ui");
-        //    //}
-        //}
+                    }
+                }
+            }
+            //else
+            //{
+            //    //Debug.Log("On Ui");
+            //}
+        }
 
-        //#elif !UNITY_EDITOR                                          
+#elif !UNITY_EDITOR
 
         if (Input.touchCount > 0)
         {
@@ -197,7 +203,7 @@ public class GameManager : MonoBehaviour
 
             }
         }
-        //#endif
+#endif
     }
 
 

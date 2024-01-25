@@ -25,6 +25,7 @@ public class Vehicle : MonoBehaviour
         PickUp,
         PickDown,
         Return,
+        Return2,
         Sleep
 
 
@@ -87,19 +88,18 @@ public class Vehicle : MonoBehaviour
 
     public void PullBlock()
     {
-
+        //Debug.Log("Pull Block");
         Building _building = _target.GetComponent<Building>();
         int _blockTypeNum = -1;
 
         _blockTypeNum = (int)_building._blockType;
 
+        _blockType = (Block.BlockType)_blockTypeNum;
+        _boxMeshFilter.sharedMesh = _meshes[(int)_blockType];
+
+
         if (_building._currentCount < _building._maxCount)
         {
-
-
-
-            _blockType = (Block.BlockType)_blockTypeNum;
-            _boxMeshFilter.sharedMesh = _meshes[(int)_blockType];
 
             if (_blockStorage._blockCountArray[_blockTypeNum] >= _maxCount)
             {
@@ -112,6 +112,14 @@ public class Vehicle : MonoBehaviour
                 _blockStorage._blockCountArray[_blockTypeNum] -= _tempCount;
                 _currentCount = _tempCount;
 
+            }
+        }
+        else
+        {
+            _currentCount = 1;
+            if (_blockStorage._blockCountArray[_blockTypeNum] >= 1)
+            {
+                _blockStorage._blockCountArray[_blockTypeNum] -= 1;
             }
         }
         _blockStorage.UpdateBlockCount();
@@ -203,6 +211,11 @@ public class Vehicle : MonoBehaviour
 
         _agent.speed = 2f + 0.2f * _speed_Level;
         _maxCount = 2 + 1 * _capacity_Level;
+
+        if (Managers.Game.currentStageManager.isRvVehicleSpeedUp)
+        {
+            _agent.speed *= 2f;
+        }
 
 
     }

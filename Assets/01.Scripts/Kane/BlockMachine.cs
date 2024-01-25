@@ -65,7 +65,7 @@ public class BlockMachine : MonoBehaviour
 
 
 
-        //LoadData();
+        LoadData();
 
         StartCoroutine(Cor_Update());
 

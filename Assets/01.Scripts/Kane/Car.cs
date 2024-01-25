@@ -31,7 +31,7 @@ public class Car : Vehicle
 
                     if (lookrotation != Vector3.zero)
                     {
-                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
+                        transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime);
                     }
 
 

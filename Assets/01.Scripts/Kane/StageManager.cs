@@ -361,62 +361,65 @@ public class StageManager : MonoBehaviour
 
     public void AddBlockMachine(bool isPay = true)
     {
-        if (isPay)
+        if (_blockMachineCount < _blockMachineList.Count)
         {
-            Managers.Game.CalcMoney(-_blockMachine_Prices[_blockMachineCount]);
+            if (isPay)
+            {
+                Managers.Game.CalcMoney(-_blockMachine_Prices[_blockMachineCount]);
+            }
+            _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
+            if (_stageLevel == 0 && _blockMachineCount == 0) TutorialManager._instance.Tutorial_Complete();
+            if (_stageLevel == 0 && _blockMachineCount == 1)
+            {
+                TutorialManager._instance.Tutorial_Complete();
+                TutorialManager._instance.Tutorial_Img();
+            }
+            _blockMachineCount++;
+            ES3.Save<int>($"Stage_{_stageLevel}_BlockMachineCount", _blockMachineCount);
+            EventTracker.LogCustomEvent("BlockMachine"
+    , new Dictionary<string, string> { { "BlockMachine", $"StageNum-{_stageLevel}_AddMachine-{_blockMachineCount}" } });
+
+
+            //Debug.Log("Save BlockMachine Count :" + _blockMachineCount);
+
+            switch (_blockMachineCount)
+            {
+                case 3:
+                    _skinnedBlock[0].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 5:
+                    _skinnedBlock[0].SetBlendShapeWeight(1, 100);
+                    break;
+
+                case 7:
+                    _skinnedBlock[1].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 9:
+                    _skinnedBlock[1].SetBlendShapeWeight(1, 100);
+                    break;
+                case 11:
+                    _skinnedBlock[2].SetBlendShapeWeight(0, 100);
+                    break;
+
+                case 13:
+                    _skinnedBlock[2].SetBlendShapeWeight(1, 100);
+                    break;
+                case 15:
+                    _skinnedBlock[3].SetBlendShapeWeight(0, 100);
+                    break;
+                case 17:
+                    _skinnedBlock[3].SetBlendShapeWeight(1, 100);
+                    break;
+                case 19:
+                    _skinnedBlock[4].SetBlendShapeWeight(0, 100);
+                    break;
+
+
+            }
+            CheckMoney();
         }
-        _blockMachineList[_blockMachineCount].gameObject.SetActive(true);
-        if (_stageLevel == 0 && _blockMachineCount == 0) TutorialManager._instance.Tutorial_Complete();
-        if (_stageLevel == 0 && _blockMachineCount == 1)
-        {
-            TutorialManager._instance.Tutorial_Complete();
-            TutorialManager._instance.Tutorial_Img();
-        }
-        _blockMachineCount++;
-        ES3.Save<int>($"Stage_{_stageLevel}_BlockMachineCount", _blockMachineCount);
-        EventTracker.LogCustomEvent("BlockMachine"
-, new Dictionary<string, string> { { "BlockMachine", $"StageNum-{_stageLevel}_AddMachine-{_blockMachineCount}" } });
-
-
-        //Debug.Log("Save BlockMachine Count :" + _blockMachineCount);
-
-        switch (_blockMachineCount)
-        {
-            case 3:
-                _skinnedBlock[0].SetBlendShapeWeight(0, 100);
-                break;
-
-            case 5:
-                _skinnedBlock[0].SetBlendShapeWeight(1, 100);
-                break;
-
-            case 7:
-                _skinnedBlock[1].SetBlendShapeWeight(0, 100);
-                break;
-
-            case 9:
-                _skinnedBlock[1].SetBlendShapeWeight(1, 100);
-                break;
-            case 11:
-                _skinnedBlock[2].SetBlendShapeWeight(0, 100);
-                break;
-
-            case 13:
-                _skinnedBlock[2].SetBlendShapeWeight(1, 100);
-                break;
-            case 15:
-                _skinnedBlock[3].SetBlendShapeWeight(0, 100);
-                break;
-            case 17:
-                _skinnedBlock[3].SetBlendShapeWeight(1, 100);
-                break;
-            case 19:
-                _skinnedBlock[4].SetBlendShapeWeight(0, 100);
-                break;
-
-
-        }
-        CheckMoney();
     }
     public void SelectBlockMachine_Upgrade()
     {

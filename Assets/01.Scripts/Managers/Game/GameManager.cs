@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < stageManagers.Length; i++)
         {
-            stageManagers[i].gameObject.SetActive(false);
+            if (stageManagers[i] != null)
+                stageManagers[i].gameObject.SetActive(false);
         }
 
         currentStageLevel += _num;

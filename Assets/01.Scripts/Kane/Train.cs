@@ -25,7 +25,9 @@ public class Train : Vehicle
 
             if (lookrotation != Vector3.zero)
             {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime * 10f);
+                transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, Quaternion.LookRotation(lookrotation), extraRotationSpeed * Time.deltaTime * 10f);
+
+                //transform.rotation = Quaternion.se
             }
 
 

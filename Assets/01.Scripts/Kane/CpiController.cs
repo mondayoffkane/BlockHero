@@ -13,6 +13,10 @@ public class CpiController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Managers.Game.CalcMoney(10000);
+        }
         if (Input.GetKeyDown(KeyCode.T))
         {
             for (int i = 0; i < 4; i++)
@@ -33,10 +37,10 @@ public class CpiController : MonoBehaviour
             Managers._gameUi.Scroll_Button.gameObject.SetActive(Managers._gameUi.View_Button.gameObject.activeSelf);
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            Managers._gameUi.Cpi_Rail_Button.gameObject.SetActive(!Managers._gameUi.Cpi_Rail_Button.gameObject.activeSelf);
-        }
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    Managers._gameUi.Cpi_Rail_Button.gameObject.SetActive(!Managers._gameUi.Cpi_Rail_Button.gameObject.activeSelf);
+        //}
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -63,12 +67,14 @@ public class CpiController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PlayerPrefs.DeleteAll();
+            //Managers.Game.ChangeStage(0);
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Managers.Game.currentStageManager._rail_Speed_Level++;
+            if (Managers.Game.currentStageManager._rail_Speed_Level > 10) Managers.Game.currentStageManager._rail_Speed_Level = 10;
             Managers.Game.currentStageManager._railSpeed = 0.5f - (0.05f * Managers.Game.currentStageManager._rail_Speed_Level);
         }
         if (Input.GetKeyDown(KeyCode.X))
@@ -82,7 +88,7 @@ public class CpiController : MonoBehaviour
             foreach (BlockMachine _blockmachine in Managers.Game.currentStageManager._blockMachineList)
             {
                 _blockmachine._level++;
-                _blockmachine._spawnInterval = 6f - 1f * _blockmachine._level;
+                _blockmachine._spawnInterval = 6f - 0.5f * _blockmachine._level;
             }
         }
         if (Input.GetKeyDown(KeyCode.J))
@@ -90,8 +96,16 @@ public class CpiController : MonoBehaviour
             foreach (BlockMachine _blockmachine in Managers.Game.currentStageManager._blockMachineList)
             {
                 _blockmachine._level--;
-                _blockmachine._spawnInterval = 6f - 1f * _blockmachine._level;
+                _blockmachine._spawnInterval = 6f - 0.5f * _blockmachine._level;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            Managers.Game.ChangeStage(-1);
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Managers.Game.ChangeStage(1);
         }
 
 

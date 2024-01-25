@@ -79,6 +79,7 @@ public class Managers : MonoBehaviour
 
     public static void GameInit()
     {
+        _instance._game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         Instance._game.Init();
     }
 

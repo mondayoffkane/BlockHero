@@ -804,8 +804,9 @@ public class StageManager : MonoBehaviour
         }
 
 
-        // add UI Change 
-        _blockStorage.UpdateBlockCount();
+        // add UI Change
+        if (transform.gameObject.activeSelf)
+            _blockStorage.UpdateBlockCount();
         //dd
 
 

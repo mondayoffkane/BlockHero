@@ -15,6 +15,7 @@ public class BlockStorage : MonoBehaviour
 
 
     public GameObject _floating_Pref;
+
     public Transform _floating_Group;
 
     // ====================================
@@ -29,7 +30,7 @@ public class BlockStorage : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_floating_Pref == null) _floating_Pref = Resources.Load<GameObject>("Floating_Pref");
+        //if (_floating_Pref == null) _floating_Pref = Resources.Load<GameObject>("Floating_Pref");
         if (_floating_Group == null)
         {
             _floating_Group = Instantiate(new GameObject("Floating_Group")).transform;

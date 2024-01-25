@@ -50,6 +50,8 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("UI")] public Sprite[] scrollUpImg;
     [FoldoutGroup("UI")] public string[] scrollUpName;
     [FoldoutGroup("UI")] public string[] scrollUpExplain;
+    [FoldoutGroup("UI")] public Sprite[] blockCountSprites;
+
 
     [FoldoutGroup("Order")] public Sprite[] peopleSprites;
     [FoldoutGroup("Order")] public Sprite[] blockSprites;
@@ -763,7 +765,7 @@ public class StageManager : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             Managers._gameUi.BlockCount_Group.transform
-                 .GetChild(i).GetComponent<Image>().sprite = blockSprites[i];
+                 .GetChild(i).GetComponent<Image>().sprite = blockCountSprites[i];
 
         }
 

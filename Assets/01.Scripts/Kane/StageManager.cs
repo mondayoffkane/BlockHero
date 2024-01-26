@@ -71,7 +71,7 @@ public class StageManager : MonoBehaviour
         public int orderCount;
         public int[] orderType;
         public int[] blockCount;
-        public int rewardCount;
+        public double rewardCount;
 
         //////
         public bool isComplete;
@@ -955,12 +955,14 @@ public class StageManager : MonoBehaviour
         newOrder.waitTerm =
                              //5f;
                              30f * 60f;
-
+        newOrder.rewardCount = 0;
         for (int i = 0; i < newOrder.orderCount; i++)
         {
             newOrder.orderType[i] = Random.Range(0, 4);
-            newOrder.blockCount[i] = Random.Range(1, 11) * 10;
+            int _count = Random.Range(1, 11) * 10;
+            newOrder.blockCount[i] = _count;
             newOrder.blockSprite[i] = blockSprites[newOrder.orderType[i]];
+            newOrder.rewardCount += (_count * 5d);
         }
 
         if (newOrder.orderCount > 1)
@@ -975,7 +977,7 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        newOrder.rewardCount = 100;
+        //newOrder.rewardCount = 100;
 
 
 

@@ -492,6 +492,8 @@ public class UI_GameScene : UI_Scene
         Order_Group.transform.GetChild(_num).Find("Claim_Button").Find("Reward_Text").GetComponent<Text>().text = $"{_newOrder.rewardCount}";
         //Order_Group.transform.GetChild(_num).Find("Wait_Img").gameObject.SetActive(false);
 
+
+
     }
 
 

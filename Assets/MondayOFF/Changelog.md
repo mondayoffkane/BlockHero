@@ -1,3 +1,9 @@
+# v3.0.35
+
+- [Adverty] Updated to 4.2.0
+- [Singular] Updated to 4.2.0
+- [Ads] Added Smaato Adpater
+
 # v3.0.34
 
 - [IAP] Added `OnPurchaseFailed(Product, PurchaseFailureReason)` event

@@ -82,7 +82,7 @@ namespace MondayOFF
                 Amazon.UseGeoLocation(true);
                 // Amazon.SetConsentStatus(AdsManager.HAS_USER_CONSENT ? Amazon.ConsentStatus.EXPLICIT_YES : Amazon.ConsentStatus.EXPLICIT_NO);
 #if UNITY_IOS
-                Amazon.SetAPSPublisherExtendedIdFeatureEnabled(true);
+                Amazon.SetAPSPublisherExtendedIdFeatureEnabled(Privacy.HAS_ATT_CONSENT);
 #endif
                 // Amazon.EnableTesting(true);
                 // Amazon.EnableLogging(true);

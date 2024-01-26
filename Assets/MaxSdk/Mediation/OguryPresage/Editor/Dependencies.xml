@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dependencies>
     <androidPackages>
-        <androidPackage spec="com.applovin.mediation:ogury-presage-adapter:5.6.1.0">
+        <androidPackage spec="com.applovin.mediation:ogury-presage-adapter:5.6.2.0">
             <repositories>
                 <repository>https://maven.ogury.co</repository>
             </repositories>

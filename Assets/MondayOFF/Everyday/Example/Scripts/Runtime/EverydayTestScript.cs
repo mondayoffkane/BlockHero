@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using MondayOFF;
+using AudienceNetwork;
 
 public class EverydayTestScript : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class EverydayTestScript : MonoBehaviour
 
     private void Start()
     {
+        AdsManager.ShowBanner();
         AdsManager.OnInitialized -= HideInitializeAdsManagerButton;
         AdsManager.OnInitialized += HideInitializeAdsManagerButton;
 
@@ -27,7 +29,6 @@ public class EverydayTestScript : MonoBehaviour
 
         AdsManager.OnAfterInterstitial -= HideBadCanvasAfterAd;
         AdsManager.OnAfterInterstitial += HideBadCanvasAfterAd;
-
 
         AdsManager.OnBeforeRewarded -= ShowBadCanvas;
         AdsManager.OnBeforeRewarded += ShowBadCanvas;

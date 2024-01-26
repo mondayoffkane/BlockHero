@@ -9,7 +9,7 @@
 
 @interface SingularLinkParams: NSObject
 
-- (id)initWithDeeplink:(NSString *)deeplink passthrough:(NSString *)passthrough isDeferred:(BOOL)isDeferred url:(NSURL *)url;
+- (id) initWithDeeplink:(NSString*)deeplink passthrough:(NSString*)passthrough isDeferred:(BOOL)isDeferred url:(NSURL*)url;
 
 - (NSString *)getDeepLink;
 - (NSString *)getPassthrough;

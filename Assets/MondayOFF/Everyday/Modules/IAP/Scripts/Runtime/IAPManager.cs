@@ -58,6 +58,8 @@ namespace MondayOFF
             }
         }
 
+        public static bool IsInitialized => _storeListener != null && _storeListener.isInitialized;
+
         private static StoreListener _storeListener = default;
 
         public static (string isoCurrencyCode, string localizedPriceString) GetLocalizedPrice(in string productID)

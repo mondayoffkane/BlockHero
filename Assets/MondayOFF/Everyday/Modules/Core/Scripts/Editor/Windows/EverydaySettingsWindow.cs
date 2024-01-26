@@ -208,6 +208,8 @@ namespace MondayOFF
                     },
                     (value) =>
                     {
+                        PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, (string)value);
+                        PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, (string)value);
                         PlayerSettings.applicationIdentifier = value;
                     },
                     null
@@ -309,31 +311,6 @@ namespace MondayOFF
                     },
                     AppLovinSettings.Instance
                 );
-
-                EditorGUILayout.Space(MENU_GAP);
-
-                EditorGUI.indentLevel--;
-                EditorGUILayout.LabelField("(iOS Only)", EditorStyles.boldLabel);
-                EditorGUI.indentLevel++;
-
-                AddField(
-                   " User Tracking Usage Description [?]",
-                   "This is required for iOS 14+. A message that informs the user why an app is requesting permission to use data for tracking the user or the device.k",
-                   () =>
-                   {
-                       _textAreaStyle.wordWrap = true;
-                       return EditorGUILayout.TextArea(
-                        EverydaySettings.Instance.userTrackingUsageDescription,
-                        _textAreaStyle,
-                        GUILayout.Height(EditorGUIUtility.singleLineHeight * 3)
-                        );
-                   },
-                   (value) =>
-                   {
-                       EverydaySettings.Instance.userTrackingUsageDescription = ((string)value);
-                   },
-                   EverydaySettings.Instance
-               );
 
                 EditorGUILayout.Space(MENU_GAP);
 

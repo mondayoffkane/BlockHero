@@ -34,7 +34,7 @@ namespace MondayOFF {
             Privacy.CCPA_STRING = new string(privacyCharacters);
 
             EverydayLogger.Debug($"Is GDPR applicable?: {Privacy.IS_GDPR_APPLICABLE}");
-            EverydayLogger.Debug($"GDPR string: {Privacy.GDPR_STRING}");
+            EverydayLogger.Debug($"GDPR string: {Privacy.TCString}");
             EverydayLogger.Debug($"Privacy string: {Privacy.CCPA_STRING}");
         }
     }

@@ -17,6 +17,7 @@ namespace Adverty.PlatformSpecific.Editor
                 project.ReadFromFile(path);
                 string target = project.GetUnityFrameworkTargetGuid();
                 project.AddBuildProperty(target, "OTHER_LDFLAGS", "-lbz2 -lz -liconv");
+                project.AddFrameworkToProject(target, "VideoToolbox.framework", false);
                 project.WriteToFile(path);
             }
         }

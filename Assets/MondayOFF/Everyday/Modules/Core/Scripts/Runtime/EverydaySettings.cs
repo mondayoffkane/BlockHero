@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MondayOFF
 {
-    public partial class EverydaySettings : ScriptableObject
+    public class EverydaySettings : ScriptableObject
     {
         public static EverydaySettings Instance
         {
@@ -47,7 +47,11 @@ namespace MondayOFF
         [SerializeField] internal bool isTestMode = false;
         [SerializeField] internal AdSettings adSettings = default;
         [SerializeField] internal string gameId = "";
-        [SerializeField] internal string userTrackingUsageDescription = "This uses device info for more personalized ads and content";
+        [Header("Splash Screen")]
+        [PreviewSprite]
+        [SerializeField] internal Sprite companyLogo = default;
+        [DisableEditing]
+        [SerializeField] internal string gameSceneName = default;
 
         public static LogLevel GetLogLevel()
         {

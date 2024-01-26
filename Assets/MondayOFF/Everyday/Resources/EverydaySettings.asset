@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EverydaySettings
   m_EditorClassIdentifier: 
   initializeOnLaunch: 1
-  initializationDelay: 2
+  initializationDelay: 1.5
   logLevel: 3
   isTestMode: 0
   adSettings:
@@ -21,12 +21,12 @@ MonoBehaviour:
     showBannerOnLoad: 1
     adInitializationOrder: 84
     adInitializationDelay: 2
-    interstitialInterval: 30
+    interstitialInterval: 60
     resetTimerOnRewarded: 1
     bannerPosition: 7
-    AOS_IS_AdUnitID: 
-    AOS_RV_AdUnitID: 
-    AOS_BN_AdUnitID: 
+    AOS_IS_AdUnitID: 1222b59cc01a9c49
+    AOS_RV_AdUnitID: b0183a85b878da4a
+    AOS_BN_AdUnitID: 38b0ed4eb8ab6117
     AOS_IS_Backup_AdUnitID: 
     AOS_RV_Backup_AdUnitID: 
     AOS_BN_Backup_AdUnitID: 
@@ -49,16 +49,14 @@ MonoBehaviour:
     iOS_PlayOnApiKey: 
     iOS_storeID: 
     iOS_AdvertyApiKey: 
-    showPlayOnAfterInterstitial: 1
+    showPlayOnAfterInterstitial: 0
     playOnInterstitialCount: 2
     playOnPosition:
       useScreenPositioning: 0
       playOnLogoAnchor: 0
       playOnLogoOffset: {x: 0, y: 150}
       playOnLogoSize: 64
-    initializeAdvertyOnAwake: 1
+    initializeAdvertyOnAwake: 0
   gameId: 
-  userTrackingUsageDescription: This uses device info for more personalized ads and
-    content
   companyLogo: {fileID: 0}
-  gameSceneName: 
+  gameSceneName: Game_0118

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: -287999543, guid: 4316d2708ef03534092a3f674fd291fc, type: 3}
   m_Name: AdvertySettings
   m_EditorClassIdentifier: 
-  enableLogs: 0
+  enableLogs: 1
   platform: 0
   androidKeyData:
     APIKey: 
@@ -26,11 +26,9 @@ MonoBehaviour:
     APIKey: 
     HostUrl: 
     ApplicationKey: 
-  isLazyLoadAllowed: 1
   clickHandling: 0
   sandboxMode: 0
-  renderPipelineType: BuiltIn
+  renderPipelineType: 
   renderPipelineVersion: 
   advertyLogLevel: 6
   reloadDomainEnabled: 0
-  showDebugWebView: 0

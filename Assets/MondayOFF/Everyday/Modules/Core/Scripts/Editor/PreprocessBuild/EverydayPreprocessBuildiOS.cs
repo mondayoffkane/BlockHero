@@ -40,7 +40,7 @@ namespace MondayOFF
 
             VerifyGVhSettings();
 
-            CheckUserTrackingUsageDescription();
+            // CheckUserTrackingUsageDescription();
         }
 
         // Validate iOS target version
@@ -89,22 +89,22 @@ namespace MondayOFF
             Google.IOSResolver.PodfileStaticLinkFrameworks = false;
         }
 
-        private static void CheckUserTrackingUsageDescription()
-        {
-            if (string.IsNullOrEmpty(EverydaySettings.Instance.userTrackingUsageDescription))
-            {
-                var dialogResult = EditorUtility.DisplayDialog(
-                    "Tracking Usage Descriptiong Missing",
-                    "Tracking Usage Description is missing in the settings. Please enter it in the settings.",
-                    "Open Everyday Settings");
+        // private static void CheckUserTrackingUsageDescription()
+        // {
+        //     if (string.IsNullOrEmpty(EverydaySettings.Instance.userTrackingUsageDescription))
+        //     {
+        //         var dialogResult = EditorUtility.DisplayDialog(
+        //             "Tracking Usage Descriptiong Missing",
+        //             "Tracking Usage Description is missing in the settings. Please enter it in the settings.",
+        //             "Open Everyday Settings");
 
-                if (dialogResult)
-                {
-                    EverydaySettingsWindow.Open();
-                    throw new UnityEditor.Build.BuildFailedException("[EVERYDAY] Tracking Usage Description is missing in the settings.");
-                }
-            }
-        }
+        //         if (dialogResult)
+        //         {
+        //             EverydaySettingsWindow.Open();
+        //             throw new UnityEditor.Build.BuildFailedException("[EVERYDAY] Tracking Usage Description is missing in the settings.");
+        //         }
+        //     }
+        // }
     }
 }
 #endif

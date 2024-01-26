@@ -39,6 +39,7 @@ MonoBehaviour:
     - Everyday
     - Everyday.Events
     - Everyday.IAP
+    - Everyday.SplashScreen
     - Google.Play.Common
     - Google.Play.Core
     - Google.Play.Review

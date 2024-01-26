@@ -467,12 +467,12 @@ public class StageManager : MonoBehaviour
             _vehicleList[i].SetLevel(_vehicle_Speed_Level, _vehicle_Capacity_Level);
         }
     }
-    public void VehicleUpgrade(int _num)
+    public void VehicleUpgrade(int _num, bool isPay = true)
     {
         switch (_num)
         {
             case 0:
-                Managers.Game.CalcMoney(-_spawnLevel_Prices[_vehicle_Spawn_Level]);
+                if (isPay) Managers.Game.CalcMoney(-_spawnLevel_Prices[_vehicle_Spawn_Level]);
                 AddVehicle();
                 _vehicle_Spawn_Level++;
                 if (TutorialManager._instance._tutorial_Level == 2)
@@ -488,7 +488,7 @@ public class StageManager : MonoBehaviour
                 break;
 
             case 1:
-                Managers.Game.CalcMoney(-_speedLevel_Prices[_vehicle_Speed_Level]);
+                if (isPay) Managers.Game.CalcMoney(-_speedLevel_Prices[_vehicle_Speed_Level]);
                 _vehicle_Speed_Level++;
                 AllVehicleSetLevel();
 
@@ -498,7 +498,7 @@ public class StageManager : MonoBehaviour
                 break;
 
             case 2:
-                Managers.Game.CalcMoney(-_capacityLevel_Prices[_vehicle_Capacity_Level]);
+                if (isPay) Managers.Game.CalcMoney(-_capacityLevel_Prices[_vehicle_Capacity_Level]);
                 _vehicle_Capacity_Level++;
                 AllVehicleSetLevel();
 
@@ -508,7 +508,7 @@ public class StageManager : MonoBehaviour
                 break;
 
             case 3:
-                Managers.Game.CalcMoney(-_railSpeedLevel_Prices[_rail_Speed_Level]);
+                if (isPay) Managers.Game.CalcMoney(-_railSpeedLevel_Prices[_rail_Speed_Level]);
                 _rail_Speed_Level++;
                 _railSpeed = 0.5f - (0.025f * _rail_Speed_Level);
 
@@ -651,6 +651,7 @@ public class StageManager : MonoBehaviour
             if (Managers.Game.money >= _spawnLevel_Prices[_vehicle_Spawn_Level])
             {
                 _gameUi._scrollUpgButtons[0].interactable = true;
+                _gameUi._scrollUpgButtons[0].transform.Find("Rv_Button").gameObject.SetActive(false);
                 _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = Color.white;
                 _gameUi._scrollUpgButtons[0].transform.Find("Coin_Img").GetComponent<Image>().color
@@ -659,8 +660,9 @@ public class StageManager : MonoBehaviour
             else
             {
                 _gameUi._scrollUpgButtons[0].interactable = false;
+                _gameUi._scrollUpgButtons[0].transform.Find("Rv_Button").gameObject.SetActive(true);
                 _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = _redColor; //= _gameUi._scrollUpgButtons[0].colors.disabledColor;
+                = _redColor; //= _gameUi._scrollUpgButtons[0].colors.disabledColor;
 
             }
         }
@@ -671,6 +673,7 @@ public class StageManager : MonoBehaviour
             _gameUi._scrollUpgButtons[0].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = Color.white;
             _gameUi._scrollUpgButtons[0].interactable = false;
+            _gameUi._scrollUpgButtons[0].transform.Find("Rv_Button").gameObject.SetActive(false);
 
         }
         // ============
@@ -683,16 +686,20 @@ public class StageManager : MonoBehaviour
             if (Managers.Game.money >= _speedLevel_Prices[_vehicle_Speed_Level])
             {
                 _gameUi._scrollUpgButtons[1].interactable = true;
-                _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = Color.white;
-                _gameUi._scrollUpgButtons[1].transform.Find("Coin_Img").GetComponent<Image>().color
-                    = Color.white;
+                _gameUi._scrollUpgButtons[1].transform.Find("Rv_Button").gameObject.SetActive(false);
+
+                _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text")
+                    .GetComponent<Text>().color = Color.white;
+                _gameUi._scrollUpgButtons[1].transform.Find("Coin_Img")
+                    .GetComponent<Image>().color = Color.white;
             }
             else
             {
                 _gameUi._scrollUpgButtons[1].interactable = false;
-                _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
-                    = _redColor;//= _gameUi._scrollUpgButtons[1].colors.disabledColor;
+                _gameUi._scrollUpgButtons[1].transform.Find("Rv_Button").gameObject.SetActive(true);
+
+                _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text")
+                    .GetComponent<Text>().color = _redColor;//= _gameUi._scrollUpgButtons[1].colors.disabledColor;
 
             }
         }
@@ -703,6 +710,7 @@ public class StageManager : MonoBehaviour
             _gameUi._scrollUpgButtons[1].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                    = Color.white;
             _gameUi._scrollUpgButtons[1].interactable = false;
+            _gameUi._scrollUpgButtons[1].transform.Find("Rv_Button").gameObject.SetActive(false);
 
         }
         // ==
@@ -714,6 +722,7 @@ public class StageManager : MonoBehaviour
             if (Managers.Game.money >= _capacityLevel_Prices[_vehicle_Capacity_Level])
             {
                 _gameUi._scrollUpgButtons[2].interactable = true;
+                _gameUi._scrollUpgButtons[2].transform.Find("Rv_Button").gameObject.SetActive(false);
                 _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = Color.white;
                 _gameUi._scrollUpgButtons[2].transform.Find("Coin_Img").GetComponent<Image>().color
@@ -722,6 +731,7 @@ public class StageManager : MonoBehaviour
             else
             {
                 _gameUi._scrollUpgButtons[2].interactable = false;
+                _gameUi._scrollUpgButtons[2].transform.Find("Rv_Button").gameObject.SetActive(true);
                 _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                    = _redColor;// = gameUi._scrollUpgButtons[2].colors.disabledColor;
 
@@ -734,6 +744,7 @@ public class StageManager : MonoBehaviour
             _gameUi._scrollUpgButtons[2].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                    = Color.white;
             _gameUi._scrollUpgButtons[2].interactable = false;
+            _gameUi._scrollUpgButtons[2].transform.Find("Rv_Button").gameObject.SetActive(false);
 
         }
         // ==
@@ -745,6 +756,7 @@ public class StageManager : MonoBehaviour
             if (Managers.Game.money >= _railSpeedLevel_Prices[_rail_Speed_Level])
             {
                 _gameUi._scrollUpgButtons[3].interactable = true;
+                _gameUi._scrollUpgButtons[3].transform.Find("Rv_Button").gameObject.SetActive(false);
                 _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = Color.white;
                 _gameUi._scrollUpgButtons[3].transform.Find("Coin_Img").GetComponent<Image>().color
@@ -753,6 +765,7 @@ public class StageManager : MonoBehaviour
             else
             {
                 _gameUi._scrollUpgButtons[3].interactable = false;
+                _gameUi._scrollUpgButtons[3].transform.Find("Rv_Button").gameObject.SetActive(true);
                 _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                     = _redColor; //_gameUi._scrollUpgButtons[3].colors.disabledColor;
 
@@ -765,6 +778,7 @@ public class StageManager : MonoBehaviour
             _gameUi._scrollUpgButtons[3].transform.Find("UpgradePrice_Text").GetComponent<Text>().color
                    = Color.white;
             _gameUi._scrollUpgButtons[3].interactable = false;
+            _gameUi._scrollUpgButtons[3].transform.Find("Rv_Button").gameObject.SetActive(false);
 
         }
 
@@ -930,7 +944,7 @@ public class StageManager : MonoBehaviour
 
     public OrderStruct CreateOrder()
     {
-        Debug.Log("Create Order  ");
+        //Debug.Log("Create Order  ");
         OrderStruct newOrder = new OrderStruct();
         newOrder.personSprite = peopleSprites[Random.Range(0, peopleSprites.Length)];
 
@@ -948,6 +962,19 @@ public class StageManager : MonoBehaviour
             newOrder.blockCount[i] = Random.Range(1, 11) * 10;
             newOrder.blockSprite[i] = blockSprites[newOrder.orderType[i]];
         }
+
+        if (newOrder.orderCount > 1)
+        {
+            if (newOrder.orderType[0] == newOrder.orderType[1])
+            {
+                Debug.Log("Same Type is Change");
+
+                newOrder.orderType[1] += Random.Range(1, 4);
+                if (newOrder.orderType[1] >= 4) newOrder.orderType[1] -= 4;
+                newOrder.blockSprite[1] = blockSprites[newOrder.orderType[1]];
+            }
+        }
+
         newOrder.rewardCount = 100;
 
 
@@ -987,6 +1014,8 @@ public class StageManager : MonoBehaviour
         orderStructs[_num].currentTerm = orderStructs[_num].waitTerm;
         Managers._gameUi.Order_Group.transform.GetChild(_num)
             .Find("Wait_Img").gameObject.SetActive(false);
+
+        CheckOrder(_num);
     }
 
     public void RV_DoubleSpawn()
@@ -999,6 +1028,8 @@ public class StageManager : MonoBehaviour
 
                 Managers._gameUi.RvDoubleSpawn_Button.interactable = false;
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").gameObject.SetActive(true);
+                Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
+               .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group")
                 .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
@@ -1031,6 +1062,8 @@ public class StageManager : MonoBehaviour
                 }
                 Managers._gameUi.RvVehicleSpeedUp_Button.interactable = false;
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").gameObject.SetActive(true);
+                Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").transform
+                .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group")
                 .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").transform
@@ -1066,6 +1099,8 @@ public class StageManager : MonoBehaviour
             {
                 Managers._gameUi.RvRailSpeedUp_Button.interactable = false;
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").gameObject.SetActive(true);
+                Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform
+                .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group")
                 .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform

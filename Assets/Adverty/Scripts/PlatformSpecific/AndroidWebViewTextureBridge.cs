@@ -10,7 +10,10 @@ namespace Adverty.PlatformSpecific
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         [DllImport(LIBRARY_NAME)]
-        private static extern IntPtr getCustomRenderEventFunc();
+        private static extern IntPtr GetWebViewRenderEventFunc();
+
+        [DllImport(LIBRARY_NAME)]
+        private static extern int GetWebViewGraphicsEventID(); 
 
         [DllImport(LIBRARY_NAME)]
         private static extern void setOnPageStarted(IntPtr ptr, IntPtr onPageStartedDelegate);
@@ -18,12 +21,21 @@ namespace Adverty.PlatformSpecific
         [DllImport(LIBRARY_NAME)]
         private static extern IntPtr create(int cbo, int width, int height, int loadTimeout, int scale, bool showDebugView);
 #endif
-        public IntPtr GetCustomRenderEventFunc()
+        public IntPtr GetRenderEventFunc()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            return getCustomRenderEventFunc();
+            return GetWebViewRenderEventFunc();
 #else
             return IntPtr.Zero;
+#endif
+        }
+
+        public int GetRenderEventID()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            return GetWebViewGraphicsEventID();
+#else
+            return -1;
 #endif
         }
 

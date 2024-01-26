@@ -36,7 +36,7 @@ public class SingularSDK : MonoBehaviour
     public bool enableLogging = false;
     public int logLevel = 0;
     public static string fcmDeviceToken = null;
-    public static string facebookAppId;
+    public string facebookAppId;
     public bool clipboardAttribution = false;
     public static string openUri;
     public bool collectOAID = false;
@@ -66,7 +66,7 @@ public class SingularSDK : MonoBehaviour
     private static bool Initialized = false;
 
     private const string UNITY_WRAPPER_NAME = "Unity";
-    private const string UNITY_VERSION = "4.1.1";
+    private const string UNITY_VERSION = "4.2.0";
 
 
 #if UNITY_ANDROID
@@ -102,10 +102,7 @@ public class SingularSDK : MonoBehaviour
         // }
 
         if (instance)
-        {
-            Destroy(this);
             return;
-        }
 
         // Initialize singleton
         instance = this;
@@ -157,7 +154,7 @@ public class SingularSDK : MonoBehaviour
     {
         shortLinkCallback = completionHandler;
 #if UNITY_IOS
-        createReferrerShortLink_(baseLink, referrerName, referrerId, JsonConvert.SerializeObject(passthroughParams));
+        createReferrerShortLink_( baseLink,  referrerName,  referrerId, JsonConvert.SerializeObject(passthroughParams));
 #elif UNITY_ANDROID
         jniSingularUnityBridge.CallStatic("createReferrerShortLink", baseLink, referrerName, referrerId, JsonConvert.SerializeObject(passthroughParams));
 
@@ -176,9 +173,8 @@ public class SingularSDK : MonoBehaviour
             DEFAULT_SHORT_LINKS_TIMEOUT : instance.shortlinkResolveTimeout);
         config.SetValue("globalProperties", instance.globalProperties);
         config.SetValue("sessionTimeoutSec", instance.sessionTimeoutSec);
-
 #if UNITY_ANDROID
-        config.SetValue("facebookAppId", facebookAppId);
+        config.SetValue("facebookAppId", instance.facebookAppId);
         config.SetValue("customUserId", customUserId);
         config.SetValue("imei", imei);
         config.SetValue("openUri", openUri);
@@ -316,10 +312,7 @@ public class SingularSDK : MonoBehaviour
     private static extern void CustomRevenue_(string eventName, string currency, double amount);
 
     [DllImport("__Internal")]
-    private static extern void RevenueWithAllParams_(string currency, double amount, string productSKU, string productName, string productCategory, int productQuantity, double productPrice);
-
-    [DllImport("__Internal")]
-    private static extern void CustomRevenueWithAllParams_(string eventName, string currency, double amount, string productSKU, string productName, string productCategory, int productQuantity, double productPrice);
+    private static extern void RevenueWithAllParams_(string currency, double amount, string productSKU, string productName, string productCategory, int productQuantity, double productPrice);[DllImport("__Internal")] private static extern void CustomRevenueWithAllParams_(string eventName, string currency, double amount, string productSKU, string productName, string productCategory, int productQuantity, double productPrice);
 
     // Auxiliary functions;
     [DllImport("__Internal")]
@@ -378,7 +371,7 @@ public class SingularSDK : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern string GetGlobalProperties_();
-
+    
     [DllImport("__Internal")]
     private static extern bool SetGlobalProperty_(string key, string value, bool overrideExisting);
 
@@ -421,140 +414,94 @@ public class SingularSDK : MonoBehaviour
     [DllImport("__Internal")]
     private static extern int SkanGetConversionValue_();
 
-    private static void CreateDictionary(int parent, NSType parentType, string key, Dictionary<string, object> source)
-    {
+    private static void CreateDictionary(int parent, NSType parentType, string key, Dictionary<string, object> source) {
         int dictionaryIndex = New_NSDictionary();
 
         Dictionary<string, object>.Enumerator enumerator = source.GetEnumerator();
 
-        while (enumerator.MoveNext())
-        {
+        while (enumerator.MoveNext()) {
             //test if string,int,float,double,null;
             NSType type = NSType.STRING;
-            if (enumerator.Current.Value == null)
-            {
+            if (enumerator.Current.Value == null) {
                 type = NSType.NULL;
                 Push_To_Child_Dictionary(enumerator.Current.Key, "", (int)type, dictionaryIndex);
-            }
-            else
-            {
+            } else {
                 System.Type valueType = enumerator.Current.Value.GetType();
 
-                if (valueType == typeof(int))
-                {
+                if (valueType == typeof(int)) {
                     type = NSType.INT;
-                }
-                else if (valueType == typeof(long))
-                {
+                } else if (valueType == typeof(long)) {
                     type = NSType.LONG;
-                }
-                else if (valueType == typeof(float))
-                {
+                } else if (valueType == typeof(float)) {
                     type = NSType.FLOAT;
-                }
-                else if (valueType == typeof(double))
-                {
+                } else if (valueType == typeof(double)) {
                     type = NSType.DOUBLE;
-                }
-                else if (valueType == typeof(Dictionary<string, object>))
-                {
+                } else if (valueType == typeof(Dictionary<string, object>)) {
                     type = NSType.DICTIONARY;
                     CreateDictionary(dictionaryIndex, NSType.DICTIONARY, enumerator.Current.Key, (Dictionary<string, object>)enumerator.Current.Value);
-                }
-                else if (valueType == typeof(ArrayList))
-                {
+                } else if (valueType == typeof(ArrayList)) {
                     type = NSType.ARRAY;
                     CreateArray(dictionaryIndex, NSType.DICTIONARY, enumerator.Current.Key, (ArrayList)enumerator.Current.Value);
                 }
 
-                if ((int)type < (int)NSType.ARRAY)
-                {
+                if ((int)type < (int)NSType.ARRAY) {
                     Push_To_Child_Dictionary(enumerator.Current.Key, enumerator.Current.Value.ToString(), (int)type, dictionaryIndex);
                 }
             }
         }
 
-        if (parent < 0)
-        {
+        if (parent < 0) {
             Push_Container_NSDictionary(key, dictionaryIndex);
-        }
-        else
-        {
-            if (parentType == NSType.ARRAY)
-            {
+        } else {
+            if (parentType == NSType.ARRAY) {
                 Push_Container_To_Child_Array(parent, dictionaryIndex);
-            }
-            else
-            {
+            } else {
                 Push_Container_To_Child_Dictionary(key, parent, dictionaryIndex);
             }
         }
     }
 
-    private static void CreateArray(int parent, NSType parentType, string key, ArrayList source)
-    {
+    private static void CreateArray(int parent, NSType parentType, string key, ArrayList source) {
         int arrayIndex = New_NSArray();
 
-        foreach (object o in source)
-        {
+        foreach (object o in source) {
             //test if string,int,float,double,null;
             NSType type = NSType.STRING;
 
-            if (o == null)
-            {
+            if (o == null) {
                 type = NSType.NULL;
                 Push_To_Child_Array("", (int)type, arrayIndex);
-            }
-            else
-            {
+            } else {
                 System.Type valueType = o.GetType();
 
-                if (valueType == typeof(int))
-                {
+                if (valueType == typeof(int)) {
                     type = NSType.INT;
-                }
-                else if (valueType == typeof(long))
-                {
+                } else if (valueType == typeof(long)) {
                     type = NSType.LONG;
-                }
-                else if (valueType == typeof(float))
-                {
+                } else if (valueType == typeof(float)) {
                     type = NSType.FLOAT;
-                }
-                else if (valueType == typeof(double))
-                {
+                } else if (valueType == typeof(double)) {
                     type = NSType.DOUBLE;
-                }
-                else if (valueType == typeof(Dictionary<string, object>))
-                {
+                } else if (valueType == typeof(Dictionary<string, object>)) {
                     type = NSType.DICTIONARY;
                     CreateDictionary(arrayIndex, NSType.ARRAY, "", (Dictionary<string, object>)o);
-                }
-                else if (valueType == typeof(ArrayList))
-                {
+                } else if (valueType == typeof(ArrayList)) {
                     type = NSType.ARRAY;
                     CreateArray(arrayIndex, NSType.ARRAY, "", (ArrayList)o);
                 }
 
-                if ((int)type < (int)NSType.ARRAY)
-                {
+                if ((int)type < (int)NSType.ARRAY) {
                     Push_To_Child_Array(o.ToString(), (int)type, arrayIndex);
                 }
             }
         }
 
-        if (parent < 0)
-        {
+        if (parent < 0) {
             Push_Container_NSDictionary(key, arrayIndex);
-        }
-        else
-        {
-            if (parentType == NSType.ARRAY)
-            {
+        } else {
+            if (parentType == NSType.ARRAY) {
                 Push_Container_To_Child_Array(parent, arrayIndex);
-            }
-            else
-            {
+            } else {
                 Push_Container_To_Child_Dictionary(key, parent, arrayIndex);
             }
         }
@@ -588,48 +535,32 @@ public class SingularSDK : MonoBehaviour
 
             Dictionary<string, object>.Enumerator enumerator = options.GetEnumerator();
 
-            while (enumerator.MoveNext())
-            {
+            while (enumerator.MoveNext()) {
                 NSType type = NSType.STRING;
 
-                if (enumerator.Current.Value == null)
-                {
+                if (enumerator.Current.Value == null) {
                     type = NSType.NULL;
                     Push_NSDictionary(enumerator.Current.Key, "", (int)type);
-                }
-                else
-                {
+                } else {
                     System.Type valueType = enumerator.Current.Value.GetType();
 
-                    if (valueType == typeof(int))
-                    {
+                    if (valueType == typeof(int)) {
                         type = NSType.INT;
-                    }
-                    else if (valueType == typeof(long))
-                    {
+                    } else if (valueType == typeof(long)) {
                         type = NSType.LONG;
-                    }
-                    else if (valueType == typeof(float))
-                    {
+                    } else if (valueType == typeof(float)) {
                         type = NSType.FLOAT;
-                    }
-                    else if (valueType == typeof(double))
-                    {
+                    } else if (valueType == typeof(double)) {
                         type = NSType.DOUBLE;
-                    }
-                    else if (valueType == typeof(Dictionary<string, object>))
-                    {
+                    } else if (valueType == typeof(Dictionary<string, object>)) {
                         type = NSType.DICTIONARY;
                         CreateDictionary(-1, NSType.DICTIONARY, enumerator.Current.Key, (Dictionary<string, object>)enumerator.Current.Value);
-                    }
-                    else if (valueType == typeof(ArrayList))
-                    {
+                    } else if (valueType == typeof(ArrayList)) {
                         type = NSType.ARRAY;
                         CreateArray(-1, NSType.DICTIONARY, enumerator.Current.Key, (ArrayList)enumerator.Current.Value);
                     }
 
-                    if ((int)type < (int)NSType.ARRAY)
-                    {
+                    if ((int)type < (int)NSType.ARRAY) {
                         Push_NSDictionary(enumerator.Current.Key, enumerator.Current.Value.ToString(), (int)type);
                     }
                 }
@@ -726,42 +657,27 @@ public class SingularSDK : MonoBehaviour
 
             Dictionary<string, object>.Enumerator enumerator = args.GetEnumerator();
 
-            while (enumerator.MoveNext())
-            {
+            while (enumerator.MoveNext()) {
                 NSType type = NSType.STRING;
 
-                if (enumerator.Current.Value == null)
-                {
+                if (enumerator.Current.Value == null) {
                     type = NSType.NULL;
                     Push_NSDictionary(enumerator.Current.Key, "", (int)type);
-                }
-                else
-                {
+                } else {
                     System.Type valueType = enumerator.Current.Value.GetType();
 
-                    if (valueType == typeof(int))
-                    {
+                    if (valueType == typeof(int)) {
                         type = NSType.INT;
-                    }
-                    else if (valueType == typeof(long))
-                    {
+                    } else if (valueType == typeof(long)) {
                         type = NSType.LONG;
-                    }
-                    else if (valueType == typeof(float))
-                    {
+                    } else if (valueType == typeof(float)) {
                         type = NSType.FLOAT;
-                    }
-                    else if (valueType == typeof(double) || valueType == typeof(decimal))
-                    {
+                    } else if (valueType == typeof(double) || valueType == typeof(decimal) ) {
                         type = NSType.DOUBLE;
-                    }
-                    else if (valueType == typeof(Dictionary<string, object>))
-                    {
+                    } else if (valueType == typeof(Dictionary<string, object>)) {
                         type = NSType.DICTIONARY;
                         CreateDictionary(-1, NSType.DICTIONARY, enumerator.Current.Key, (Dictionary<string, object>)enumerator.Current.Value);
-                    }
-                    else if (valueType == typeof(ArrayList))
-                    {
+                    } else if (valueType == typeof(ArrayList)) {
                         type = NSType.ARRAY;
                         CreateArray(-1, NSType.DICTIONARY, enumerator.Current.Key, (ArrayList)enumerator.Current.Value);
                     }
@@ -775,24 +691,16 @@ public class SingularSDK : MonoBehaviour
                      *it will be converted according to the hosting app's locale, and some locales use a comma instead of a decimal point, 
                      *so that Push_NSDictionary will have trouble parsing it to NSNumber (for ex. 1.235 will be sent as 1,235)
                     */
-                    if (valueType == typeof(float))
-                    {
+                    if (valueType == typeof(float)){
                         stringVal = ((float)enumerator.Current.Value).ToString(specifier, culture);
-                    }
-                    else if (valueType == typeof(double))
-                    {
+                    }else if (valueType == typeof(double)){
                         stringVal = ((double)enumerator.Current.Value).ToString(specifier, culture);
-                    }
-                    else if (valueType == typeof(decimal))
-                    {
+                    }else if (valueType == typeof(decimal)){
                         stringVal = ((decimal)enumerator.Current.Value).ToString(specifier, culture);
-                    }
-                    else
-                    {
+                    }else{
                         stringVal = enumerator.Current.Value.ToString();
                     }
-                    if ((int)type < (int)NSType.ARRAY)
-                    {
+                    if ((int)type < (int)NSType.ARRAY) {
                         Push_NSDictionary(enumerator.Current.Key, stringVal, (int)type);
                     }
                 }
@@ -825,16 +733,12 @@ public class SingularSDK : MonoBehaviour
         if (!Application.isEditor)
         {
 #if UNITY_IOS || UNITY_ANDROID
-            if (args.Length % 2 != 0)
-            {
+            if (args.Length % 2 != 0) {
                 // Debug.LogWarning("The number of arguments is ann odd number. The arguments are key-value pairs so the number of arguments should be even.");
-            }
-            else
-            {
+            } else {
                 Dictionary<string, object> dict = new Dictionary<string, object>();
 
-                for (int i = 0; i < args.Length; i += 2)
-                {
+                for (int i = 0; i < args.Length; i += 2) {
                     dict.Add(args[i].ToString(), args[i + 1]);
                 }
 
@@ -876,8 +780,7 @@ public class SingularSDK : MonoBehaviour
             return;
         }
 #if UNITY_IOS
-        if (!Application.isEditor)
-        {
+        if (!Application.isEditor) {
             SetAge_(age);
         }
 #endif
@@ -894,8 +797,7 @@ public class SingularSDK : MonoBehaviour
             return;
         }
 #if UNITY_IOS
-        if (!Application.isEditor)
-        {
+        if (!Application.isEditor) {
             SetGender_(gender);
         }
 #endif
@@ -904,13 +806,11 @@ public class SingularSDK : MonoBehaviour
     public static void SetAllowAutoIAPComplete(bool allowed)
     {
 #if UNITY_IOS
-        if (!Application.isEditor)
-        {
+        if (!Application.isEditor) {
             SetAllowAutoIAPComplete_(allowed);
         }
 
-        if (instance != null)
-        {
+        if (instance != null) {
             instance.autoIAPComplete = allowed;
         }
 #elif UNITY_ANDROID
@@ -926,22 +826,15 @@ public class SingularSDK : MonoBehaviour
             return;
 
 #if UNITY_IOS || UNITY_ANDROID
-        if (paused)
-        { //Application goes to background.
-            if (!Application.isEditor)
-            {
-                if (endSessionOnGoingToBackground)
-                {
+        if (paused) { //Application goes to background.
+            if (!Application.isEditor) {
+                if (endSessionOnGoingToBackground) {
                     EndSingularSession();
                 }
             }
-        }
-        else
-        { //Application did become active again.
-            if (!Application.isEditor)
-            {
-                if (restartSessionOnReturningToForeground)
-                {
+        } else { //Application did become active again.
+            if (!Application.isEditor) {
+                if (restartSessionOnReturningToForeground) {
                     RestartSingularSession(instance.SingularAPIKey, instance.SingularAPISecret);
                 }
             }
@@ -1082,8 +975,7 @@ public class SingularSDK : MonoBehaviour
         if (registeredConversionValueUpdatedHandler != null)
         {
             int intValue;
-            if (int.TryParse(value, out intValue))
-            {
+            if (int.TryParse(value, out intValue)) {
                 registeredConversionValueUpdatedHandler.OnConversionValueUpdated(intValue);
             }
         }
@@ -1096,8 +988,7 @@ public class SingularSDK : MonoBehaviour
         if (registeredConversionValuesUpdatedHandler != null)
         {
             ConversionValuesParams conversionValuesParams = JsonConvert.DeserializeObject<ConversionValuesParams>(json);
-            if (conversionValuesParams != null)
-            {
+            if (conversionValuesParams != null){
                 registeredConversionValuesUpdatedHandler.OnConversionValuesUpdated(conversionValuesParams.Value, conversionValuesParams.Coarse, conversionValuesParams.Lock);
             }
         }
@@ -1136,10 +1027,8 @@ public class SingularSDK : MonoBehaviour
     public static void RegisterDeviceTokenForUninstall(string APNSToken)
     {
 #if UNITY_IOS
-        if (!Application.isEditor)
-        {
-            if (APNSToken.Length % 2 != 0)
-            {
+        if (!Application.isEditor) {
+            if (APNSToken.Length % 2 != 0) {
                 Debug.Log("RegisterDeviceTokenForUninstall: token must be an even-length hex string!");
                 return;
             }
@@ -1156,8 +1045,7 @@ public class SingularSDK : MonoBehaviour
     {
         //only works for iOS. Will return null until Singular is initialized.
 #if UNITY_IOS
-        if (!Application.isEditor)
-        {
+        if (!Application.isEditor) {
             return GetAPID_();
         }
 #endif
@@ -1168,8 +1056,7 @@ public class SingularSDK : MonoBehaviour
     {
         //only works for iOS. Will return null until Singular is initialized.
 #if UNITY_IOS
-        if (!Application.isEditor)
-        {
+        if (!Application.isEditor) {
             return GetIDFA_();
         }
 #endif
@@ -1755,8 +1642,7 @@ public class SingularSDK : MonoBehaviour
     {
 #if UNITY_IOS
         int value = SkanGetConversionValue_();
-        if (value == -1)
-        {
+        if (value == -1) {
             return null;
         }
 

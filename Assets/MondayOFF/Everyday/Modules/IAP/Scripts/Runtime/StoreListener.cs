@@ -19,6 +19,7 @@ namespace MondayOFF
         internal static event Action<PurchaseProcessStatus, string> OnAfterPurchaseWithProductId = default;
         internal static event Action<Product, PurchaseFailureReason> OnPurchaseFailedEvent = default;
         internal bool isInitialized = false;
+        internal bool IsInitialized => isInitialized;
 
         private IStoreController storeController = default;
         private IExtensionProvider extensionProvider = default;

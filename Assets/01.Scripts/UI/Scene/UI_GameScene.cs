@@ -290,6 +290,8 @@ public class UI_GameScene : UI_Scene
         {
             int _num = i;
             _scrollUpgButtons[i].AddButtonEvent(() => Managers.Game.currentStageManager.VehicleUpgrade(_num));
+
+            _scrollUpgButtons[i].transform.Find("Rv_Button").GetComponent<Button>().AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.VehicleUpgrade(_num, false)));
         }
 
         Cpi_Rail_Button.AddButtonEvent(() =>

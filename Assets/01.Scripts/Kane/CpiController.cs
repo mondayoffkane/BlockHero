@@ -37,6 +37,15 @@ public class CpiController : MonoBehaviour
             Managers._gameUi.Scroll_Button.gameObject.SetActive(Managers._gameUi.View_Button.gameObject.activeSelf);
         }
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Managers.Game.currentStageManager.buildingList[Managers.Game.currentStageManager.buildingCompleteCount].CheatComplete();
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Managers.Game.currentStageManager.AddVehicle();
+        }
+
         //if (Input.GetKeyDown(KeyCode.I))
         //{
         //    Managers._gameUi.Cpi_Rail_Button.gameObject.SetActive(!Managers._gameUi.Cpi_Rail_Button.gameObject.activeSelf);
@@ -62,6 +71,11 @@ public class CpiController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             Time.timeScale = 1f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Managers.Game.currentStageManager.CheatReturn();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))

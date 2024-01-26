@@ -59365,22 +59365,22 @@ MonoBehaviour:
   - 1000
   - 2000
   - 3000
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 3000
+  - 3000
+  - 3000
+  - 3000
+  - 3000
   _capacityLevel_Prices:
   - 1000
   - 2000
   - 4000
   - 7000
   - 10000
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 10000
+  - 10000
+  - 10000
+  - 10000
+  - 10000
   _railSpeedLevel_Prices:
   - 300
   - 600
@@ -59391,12 +59391,12 @@ MonoBehaviour:
   - 4500
   - 6500
   - 8000
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 8000
+  - 8000
+  - 8000
+  - 8000
+  - 8000
+  - 8000
   - 0
   - 0
   - 0
@@ -59418,12 +59418,13 @@ MonoBehaviour:
   - {fileID: 646004877}
   - {fileID: 1357089547}
   - {fileID: 1465642191}
+  - {fileID: 366864822}
   - {fileID: 769239312}
   - {fileID: 1563791581}
   - {fileID: 1206522278}
   - {fileID: 855168161}
   - {fileID: 867604069}
-  buldingCompleteCount: 0
+  buildingCompleteCount: 0
   _villageComplete: 0
   AreaGroups: []
   scrollUpImg:
@@ -92457,7 +92458,7 @@ MonoBehaviour:
   - {fileID: 593164035}
   - {fileID: 1436764094}
   - {fileID: 1629771746}
-  buldingCompleteCount: 0
+  buildingCompleteCount: 0
   _villageComplete: 0
   AreaGroups: []
   scrollUpImg:

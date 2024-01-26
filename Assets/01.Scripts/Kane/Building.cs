@@ -139,16 +139,29 @@ public class Building : MonoBehaviour
                 {
                     TutorialManager._instance.Tutorial_Img();
 
-
-
                 }
-
             }
         }
-
-
-
     }
+
+    public void CheatComplete()
+    {
+        _currentCount = _maxCount;
+        isBuildComplete = true;
+        //Debug.Log($"{_buildingNum}_Complete");
+
+        _buildingCanvas.transform.Find("BlockCountImg").gameObject.SetActive(false);
+        _buildingCanvas.transform.Find("Build_Button").gameObject.SetActive(true);
+
+        // build button on
+        EventTracker.LogCustomEvent("Village"
+               , new Dictionary<string, string> { { "Village", $"Stage-{stageManager._stageLevel}_Count-{_buildingNum}" } });
+
+        stageManager.BuildComplete();
+
+        SaveData();
+    }
+
 
     public void Build_Button()
     {
@@ -161,7 +174,6 @@ public class Building : MonoBehaviour
             {
                 if (TutorialManager._instance._tutorial_Level == 4)
                 {
-
                     TutorialManager._instance.Tutorial_Img();
                 }
             });

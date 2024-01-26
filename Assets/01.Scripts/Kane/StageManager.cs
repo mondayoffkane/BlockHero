@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour
 
     //[FoldoutGroup("Village")] public double _money = 1000d;
     [FoldoutGroup("Village")] public List<Building> buildingList = new List<Building>();
-    [FoldoutGroup("Village")] public int buldingCompleteCount = 0;
+    [FoldoutGroup("Village")] public int buildingCompleteCount = 0;
     [FoldoutGroup("Village")] public bool _villageComplete = false;
     [FoldoutGroup("Village")] public Transform[] AreaGroups;
 
@@ -236,7 +236,7 @@ public class StageManager : MonoBehaviour
     public void LoadData()
     {
         _blockMachineCount = ES3.Load<int>($"Stage_{_stageLevel}_BlockMachineCount", 0);
-        buldingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
+        buildingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
 
         //for (int i = 0; i < 3; i++)
         //{
@@ -526,12 +526,12 @@ public class StageManager : MonoBehaviour
 
     public void BuildComplete()
     {
-        buldingCompleteCount++;
-        ES3.Save<int>($"Stage_{_stageLevel}_buildingCompleteCount", buldingCompleteCount);
-        if (buldingCompleteCount < buildingList.Count)
-            buildingList[buldingCompleteCount].SetCanvas();
+        buildingCompleteCount++;
+        ES3.Save<int>($"Stage_{_stageLevel}_buildingCompleteCount", buildingCompleteCount);
+        if (buildingCompleteCount < buildingList.Count)
+            buildingList[buildingCompleteCount].SetCanvas();
 
-        if (buldingCompleteCount >= buildingList.Count)
+        if (buildingCompleteCount >= buildingList.Count)
         {
             _villageComplete = true;
             ES3.Save<bool>($"VillageComplete_{_stageLevel}", _villageComplete);
@@ -561,7 +561,7 @@ public class StageManager : MonoBehaviour
 
         //for (int i = 0; i < buildingList.Count; i++)
         //{
-        int _num = Random.Range(0, buldingCompleteCount);
+        int _num = Random.Range(0, buildingCompleteCount);
         if (Managers.Game.currentStageManager
             ._blockStorage._blockCountArray[(int)buildingList[_num]._blockType] > 0)
         {
@@ -1083,6 +1083,13 @@ public class StageManager : MonoBehaviour
                 .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
             });
+    }
+
+    [Button]
+    public void CheatReturn()
+    {
+        StartCoroutine(Cor_Upgrade_Train());
+        _vehicleQueue.Clear();
     }
 
 }

@@ -65,7 +65,7 @@ public class BlockMachine : MonoBehaviour
 
 
 
-        //LoadData();
+        LoadData();
 
         StartCoroutine(Cor_Update());
 
@@ -80,7 +80,7 @@ public class BlockMachine : MonoBehaviour
 
     public void LoadData()
     {
-        _level = ES3.Load<int>($"BlockMachine_{stageManager._stageLevel}_{_machineNum}", 0);
+        //_level = ES3.Load<int>($"BlockMachine_{stageManager._stageLevel}_{_machineNum}", 0);
         _spawnInterval = 6f - 1f * _level;
     }
 

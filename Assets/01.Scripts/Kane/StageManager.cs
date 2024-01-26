@@ -794,6 +794,7 @@ public class StageManager : MonoBehaviour
                  .GetChild(i).GetComponent<Image>().sprite = blockCountSprites[i];
 
         }
+        _blockStorage.UpdateBlockCount();
 
 
         _vehicleQueue.Clear();

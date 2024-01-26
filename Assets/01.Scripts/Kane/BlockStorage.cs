@@ -93,12 +93,16 @@ public class BlockStorage : MonoBehaviour
 
     public void UpdateBlockCount()
     {
-        for (int i = 0; i < 4; i++)
+        if (transform.gameObject.activeSelf)
         {
-            Managers._gameUi._blockCountTexts[i].text = _blockCountArray[i].ToString();
-        }
 
-        SaveData();
+            for (int i = 0; i < 4; i++)
+            {
+                Managers._gameUi._blockCountTexts[i].text = _blockCountArray[i].ToString();
+            }
+
+            SaveData();
+        }
     }
 
 

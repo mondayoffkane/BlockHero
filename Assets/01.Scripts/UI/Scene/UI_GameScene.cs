@@ -310,6 +310,7 @@ public class UI_GameScene : UI_Scene
 
                     case 3:
                         EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_RailSpeed" } });
+
                         break;
                 }
             }));

@@ -63,6 +63,7 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("RV")] public bool isRvRailSpeedUp;
     [FoldoutGroup("RV")] public float rvRailSpeedUpTime = 60f;
 
+
     public struct OrderStruct
     {
 
@@ -102,6 +103,7 @@ public class StageManager : MonoBehaviour
     //[SerializeField] bool isHeadReady = true;
     [SerializeField] int queueCount;
     //public bool isUnLimit = false;
+    //public int[] rvCounts = new int[4];
     // =================================================
 
 
@@ -238,6 +240,9 @@ public class StageManager : MonoBehaviour
         _blockMachineCount = ES3.Load<int>($"Stage_{_stageLevel}_BlockMachineCount", 0);
         buldingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
 
+
+        //rvCounts = ES3.Load<int[]>("rvCounts", new int[4]);
+
         //for (int i = 0; i < 3; i++)
         //{
         //    int num = i;
@@ -349,6 +354,7 @@ public class StageManager : MonoBehaviour
         ES3.Save<int>($"Stage_{_stageLevel}_BlockMachineCount", _blockMachineCount);
         ES3.Save<int>($"Stage_{_stageLevel}_Rail_Level", _rail_Speed_Level);
 
+        //ES3.Save<int[]>("rvCounts", rvCounts);
 
         //for (int i = 0; i < 3; i++)
         //{
@@ -1011,6 +1017,10 @@ public class StageManager : MonoBehaviour
 
     public void RV_Order_Refresh(int _num)
     {
+        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_Order_Refresh" } });
+
+
+
         orderStructs[_num].isComplete = false;
         orderStructs[_num] = CreateOrder();
         Managers._gameUi.SetOrderPanel(_num, orderStructs[_num]);
@@ -1019,10 +1029,14 @@ public class StageManager : MonoBehaviour
             .Find("Wait_Img").gameObject.SetActive(false);
 
         CheckOrder(_num);
+
+
     }
 
     public void RV_DoubleSpawn()
     {
+        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_DoubleSpawn" } });
+
         isRvDoubleSpawn = true;
 
         DOTween.Sequence().
@@ -1054,6 +1068,8 @@ public class StageManager : MonoBehaviour
 
     public void RV_VehicleSpeedUp()
     {
+        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_VehicleSpeedUp" } });
+
         isRvVehicleSpeedUp = true;
 
         DOTween.Sequence().
@@ -1095,6 +1111,8 @@ public class StageManager : MonoBehaviour
 
     public void RV_RailSpeedUp()
     {
+        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_RailSpeedUp" } });
+
         isRvRailSpeedUp = true;
         //isUnLimit = true;
         DOTween.Sequence().

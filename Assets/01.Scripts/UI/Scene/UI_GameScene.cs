@@ -291,7 +291,28 @@ public class UI_GameScene : UI_Scene
             int _num = i;
             _scrollUpgButtons[i].AddButtonEvent(() => Managers.Game.currentStageManager.VehicleUpgrade(_num));
 
-            _scrollUpgButtons[i].transform.Find("Rv_Button").GetComponent<Button>().AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.VehicleUpgrade(_num, false)));
+            _scrollUpgButtons[i].transform.Find("Rv_Button").GetComponent<Button>().AddButtonEvent(() => AdsManager.ShowRewarded(() =>
+            {
+                Managers.Game.currentStageManager.VehicleUpgrade(_num, false);
+                switch (_num)
+                {
+                    case 0:
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_AddVehicle" } });
+                        break;
+
+                    case 1:
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_VehicleSpeed" } });
+                        break;
+
+                    case 2:
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_VehicleCapacity" } });
+                        break;
+
+                    case 3:
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_RailSpeed" } });
+                        break;
+                }
+            }));
         }
 
         Cpi_Rail_Button.AddButtonEvent(() =>

@@ -104,6 +104,8 @@ public class StageManager : MonoBehaviour
     [SerializeField] int queueCount;
     //public bool isUnLimit = false;
     //public int[] rvCounts = new int[4];
+
+    public int popUpType = 0;
     // =================================================
 
 
@@ -382,8 +384,9 @@ public class StageManager : MonoBehaviour
             }
             _blockMachineCount++;
             ES3.Save<int>($"Stage_{_stageLevel}_BlockMachineCount", _blockMachineCount);
-            EventTracker.LogCustomEvent("BlockMachine"
-    , new Dictionary<string, string> { { "BlockMachine", $"StageNum-{_stageLevel}_AddMachine-{_blockMachineCount}" } });
+
+            EventTracker.LogCustomEvent("BlockMachine", new Dictionary<string, string> { { "BlockMachine",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_MachineCount-{_blockMachineCount}" } });
 
 
             //Debug.Log("Save BlockMachine Count :" + _blockMachineCount);
@@ -488,8 +491,8 @@ public class StageManager : MonoBehaviour
                     //TutorialManager._instance.Tutorial_Img();
                 }
 
-                EventTracker.LogCustomEvent("Vehicle"
-, new Dictionary<string, string> { { "Vehicle", $"AddVehicle-{_vehicle_Spawn_Level}" } });
+                EventTracker.LogCustomEvent("Vehicle", new Dictionary<string, string> {{"Vehicle",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_AddVehicle-{_vehicle_Spawn_Level}"}});
 
                 break;
 
@@ -498,8 +501,8 @@ public class StageManager : MonoBehaviour
                 _vehicle_Speed_Level++;
                 AllVehicleSetLevel();
 
-                EventTracker.LogCustomEvent("Vehicle"
-, new Dictionary<string, string> { { "Vehicle", $"SpeedUp-{_vehicle_Speed_Level}" } });
+                EventTracker.LogCustomEvent("Vehicle", new Dictionary<string, string> { { "Vehicle",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_SpeedUp-{_vehicle_Speed_Level}"}});
 
                 break;
 
@@ -508,8 +511,8 @@ public class StageManager : MonoBehaviour
                 _vehicle_Capacity_Level++;
                 AllVehicleSetLevel();
 
-                EventTracker.LogCustomEvent("Vehicle"
-, new Dictionary<string, string> { { "Vehicle", $"CapacityUp-{_vehicle_Capacity_Level}" } });
+                EventTracker.LogCustomEvent("Vehicle", new Dictionary<string, string> { { "Vehicle",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_CapacityUp-{_vehicle_Capacity_Level}"}});
 
                 break;
 
@@ -518,8 +521,8 @@ public class StageManager : MonoBehaviour
                 _rail_Speed_Level++;
                 _railSpeed = 0.5f - (0.025f * _rail_Speed_Level);
 
-                EventTracker.LogCustomEvent("BlockMachine"
- , new Dictionary<string, string> { { "BlockMachine", $"RailUpgrade-{_rail_Speed_Level}" } });
+                EventTracker.LogCustomEvent("BlockMachine", new Dictionary<string, string> { { "BlockMachine",
+                        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RailUpgrade-{_rail_Speed_Level}" } });
                 break;
         }
 
@@ -1017,8 +1020,8 @@ public class StageManager : MonoBehaviour
 
     public void RV_Order_Refresh(int _num)
     {
-        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_Order_Refresh" } });
-
+        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvOrderRefresh"}});
 
 
         orderStructs[_num].isComplete = false;
@@ -1033,10 +1036,11 @@ public class StageManager : MonoBehaviour
 
     }
 
-    public void RV_DoubleSpawn()
+    public void RV_DoubleSpawn(bool notFree = true)
     {
-        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_DoubleSpawn" } });
-
+        if (notFree)
+            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                   $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvDoubleSpawn"}});
         isRvDoubleSpawn = true;
 
         DOTween.Sequence().
@@ -1066,9 +1070,11 @@ public class StageManager : MonoBehaviour
             });
     }
 
-    public void RV_VehicleSpeedUp()
+    public void RV_VehicleSpeedUp(bool notFree = true)
     {
-        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_VehicleSpeedUp" } });
+        if (notFree)
+            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}__RvVehicleSpeedUp"}});
 
         isRvVehicleSpeedUp = true;
 
@@ -1109,9 +1115,11 @@ public class StageManager : MonoBehaviour
             });
     }
 
-    public void RV_RailSpeedUp()
+    public void RV_RailSpeedUp(bool notFree = true)
     {
-        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_RailSpeedUp" } });
+        if (notFree)
+            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvRailSpeedUp"}});
 
         isRvRailSpeedUp = true;
         //isUnLimit = true;
@@ -1140,6 +1148,37 @@ public class StageManager : MonoBehaviour
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
             });
     }
+
+
+    public void FreeRvFunc()
+    {
+        switch (popUpType)
+        {
+            case 0:
+                RV_DoubleSpawn(false);
+                break;
+
+            case 1:
+                RV_RailSpeedUp(false);
+                break;
+
+            case 2:
+                RV_VehicleSpeedUp(false);
+                break;
+        }
+
+        Managers._gameUi.RvPopupPanelOnOff(0, false);
+
+    }
+
+    [Button]
+    public void Test(int _num)
+    {
+        popUpType = _num;
+        Managers._gameUi.RvPopupPanelOnOff(popUpType);
+
+    }
+
 
 }
 

@@ -69,7 +69,7 @@ public class Car : Vehicle
                                 }
                                 else
                                 {
-                                    Debug.Log("CurrentCount = 0");
+                                    //Debug.Log("CurrentCount = 0");
                                 }
 
 

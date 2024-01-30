@@ -94,8 +94,10 @@ public class BlockMachine : MonoBehaviour
 
         if (isLog)
         {
-            EventTracker.LogCustomEvent("BlockMachine"
- , new Dictionary<string, string> { { "BlockMachine", $"StageNum-{stageManager._stageLevel}_Machine-{_machineNum}_ChangeColor-{_spawnBlockType.ToString()}" } });
+
+            EventTracker.LogCustomEvent("BlockMachine", new Dictionary<string, string> { { "BlockMachine",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{stageManager._stageLevel}_ChangeColor-{_spawnBlockType.ToString()}"} });
+
         }
 
         // add material change
@@ -109,8 +111,9 @@ public class BlockMachine : MonoBehaviour
         Managers.Game.CalcMoney(-_upgradePrices[_level]);
         _level++;
         ES3.Save<int>($"BlockMachine_{stageManager._stageLevel}_{_machineNum}", _level);
-        EventTracker.LogCustomEvent("BlockMachine"
-, new Dictionary<string, string> { { "BlockMachine", $"StageNum-{stageManager._stageLevel}_Machine-{_machineNum}_Upgrade-{_level}" } });
+
+        EventTracker.LogCustomEvent("BlockMachine", new Dictionary<string, string> { { "BlockMachine",
+                $" { ((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum{stageManager._stageLevel}_MachineNum-{_machineNum}_Upgrade-{_level}" } });
 
         _spawnInterval = 6f - 1f * _level;
         CheckPrice();

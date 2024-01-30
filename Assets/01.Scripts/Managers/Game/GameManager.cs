@@ -20,9 +20,23 @@ public class GameManager : MonoBehaviour
     public int currentStageLevel;
     public double money = 0d;
     public int playTime = 0;
+    public bool isISReady = true;
+
+    //=== Ads Values
+
+    public int isA = 0;
+    public int IsInterval = 120;
+    public int IsCount = 0;
+    public int RvCount = 0;
+    public enum ABType
+    {
+        A,
+        B
+    }
+
 
     // =====================
-    //public BlockMachine _selectBlockMachine;
+
 
     [ShowInInspector] RaycastHit _tempHit;
     public GameObject[] _tempObj = new GameObject[2];
@@ -99,8 +113,8 @@ public class GameManager : MonoBehaviour
             {
                 ES3.Save<int>("playTime", playTime);
 
-                EventTracker.LogCustomEvent("Village"
-                    , new Dictionary<string, string> { { "Village", $"PlayTime -{playTime}" } });
+                EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_PlayTime-{playTime}"}});
             }
 
 
@@ -256,6 +270,7 @@ public class GameManager : MonoBehaviour
         stageLevel = ES3.Load<int>("stageLevel", 0);
         money = ES3.Load<double>("money", 0);
         //money = ES3.Load<double>("money", 100000);
+        playTime = ES3.Load<int>("playTime", 0);
     }
 
     public void SaveData()
@@ -272,11 +287,12 @@ public class GameManager : MonoBehaviour
 
     public void ClearStage()
     {
+
+        EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_VillageClear-{stageLevel}"}});
+
         stageLevel++;
         ES3.Save<int>("stageLevel", stageLevel);
-
-        EventTracker.LogCustomEvent("Village"
-                       , new Dictionary<string, string> { { "Village", $"VillageClear -{stageLevel}" } });
 
         DOTween.Sequence()
                   .AppendCallback(() =>
@@ -291,7 +307,42 @@ public class GameManager : MonoBehaviour
     }
 
 
+    IEnumerator Cor_ShowIs()
+    {
+        yield return null;
+
+        if (isISReady)
+        {
+            //add UI.AdPanel.SetActive(True);        
+            yield return new WaitForSeconds(1f);
+            //add UI.AdPanel.SetActive(false);      
+            AdsManager.ShowInterstitial();
+
+            EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_IsCount-{IsCount}"}});
+
+            DOTween.Sequence().AppendInterval((float)IsInterval).OnComplete(() => isISReady = true);
+        }
+        else { }
+
+    }
 
 
+
+    public void ShowIsFunc()
+    {
+        if (isISReady)
+        {
+            AdsManager.ShowInterstitial();
+
+            EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_IsCount-{IsCount}"}});
+
+            DOTween.Sequence().AppendInterval((float)IsInterval).OnComplete(() => isISReady = true);
+        }
+
+
+
+    }
 
 }

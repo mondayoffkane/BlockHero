@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     _location: 1
-    path: DashBoard_3.es3
+    path: BlockFactory_itr_1
     encryptionType: 0
     compressionType: 0
     encryptionPassword: password
@@ -43,7 +43,6 @@ MonoBehaviour:
     - Google.Play.Common
     - Google.Play.Core
     - Google.Play.Review
-    - JsonDotNet
     - LeTai.TrueShadow
     - Lofelt.NiceVibrations
     - MaxSdk.Scripts

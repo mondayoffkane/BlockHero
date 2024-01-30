@@ -130,8 +130,8 @@ public class Building : MonoBehaviour
                 _buildingCanvas.transform.Find("Build_Button").gameObject.SetActive(true);
 
                 // build button on
-                EventTracker.LogCustomEvent("Village"
-                       , new Dictionary<string, string> { { "Village", $"Stage-{stageManager._stageLevel}_Count-{_buildingNum}" } });
+                EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{stageManager._stageLevel}_BuildingCount-{_buildingNum}"}});
 
                 stageManager.BuildComplete();
 

@@ -5,6 +5,5 @@
     </androidPackages>
     <iosPods>
         <iosPod name="AppLovinSDK" version="12.1.0" />
-        <iosPod name="GoogleUserMessagingPlatform" version="2.1.0" />
     </iosPods>
 </dependencies>

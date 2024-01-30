@@ -134,7 +134,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.3.8
+  bundleVersion: 0.3.5
   preloadedAssets:
   - {fileID: 11400000, guid: ba64010d5ab9e48cdbb9055515b368ac, type: 2}
   metroInputSource: 0
@@ -161,7 +161,7 @@ PlayerSettings:
     iPhone: com.mondayoff.blockmatchhero
   buildNumber:
     Standalone: 0
-    iPhone: 0
+    iPhone: 1
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
   AndroidBundleVersionCode: 16
@@ -828,7 +828,7 @@ PlayerSettings:
   allowUnsafeCode: 0
   useDeterministicCompilation: 1
   enableRoslynAnalyzers: 1
-  selectedPlatform: 2
+  selectedPlatform: 3
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 0
@@ -914,11 +914,11 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: d53bc24d-3ce0-43ea-9437-f45dbca46d69
+  cloudProjectId: 235db100-927c-468b-9a86-fff85cca9dbc
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: BuildTest_3
-  organizationId: kane_unity75
+  projectName: Block Factory Idle
+  organizationId: mondayoff
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

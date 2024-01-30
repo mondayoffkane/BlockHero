@@ -71,8 +71,7 @@ public class VillageManager : MonoBehaviour
     //            Managers._stageManager._stageLevel++;
     //            ES3.Save<int>("StageLevel", Managers._stageManager._stageLevel);
 
-    //            EventTracker.LogCustomEvent("Village"
-    //                   , new Dictionary<string, string> { { "Village", $"VillageClear -{_villageLevel}" } });
+
 
     //            DOTween.Sequence()
     //                .AppendCallback(() =>

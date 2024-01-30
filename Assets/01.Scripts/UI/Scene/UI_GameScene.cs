@@ -24,6 +24,9 @@ public class UI_GameScene : UI_Scene
         Cpi_Rail_Button,
         NextStage_Button,
         Order_Button,
+        RvDoubleSpawn_Button,
+        RvRailSpeedUp_Button,
+        RvVehicleSpeedUp_Button,
         ViewChange_Button,
         AddCar_Button,
         BlockMachine_Close_Button,
@@ -32,13 +35,11 @@ public class UI_GameScene : UI_Scene
         Order_Close_Button,
         Test_PreStage_Button,
         Test_NextStage_Button,
-        RvDoubleSpawn_Button,
-        RvRailSpeedUp_Button,
-        RvVehicleSpeedUp_Button,
     }
     enum GameObjects
     {
         BlockCount_Group,
+        RV_Panel,
         FactoryBase_Panel,
         BlockMachine_Panel,
         BlockMachine_Color_Buttons_Group,
@@ -48,7 +49,8 @@ public class UI_GameScene : UI_Scene
         Unlock_Panel,
         Order_Panel,
         Order_Group,
-        RV_Panel,
+        Mask_Panel,
+        Rv_Popup_Panel,
     }
 
     DOTween _camTween;
@@ -65,6 +67,8 @@ public class UI_GameScene : UI_Scene
         , Order_Panel
         , Order_Group
         , RV_Panel
+        , Mask_Panel
+        , Rv_Popup_Panel
         ;
     //Recipe_RawImage;
 
@@ -96,18 +100,14 @@ public class UI_GameScene : UI_Scene
 
     public Text
         Money_Text
-        , BlockMachine_Upgrade_Price_Text,
-        BlockMachine_Status_Text,
-        BlockMachine_UpgradeValue_Text
-                ;
+        , BlockMachine_Upgrade_Price_Text
+        , BlockMachine_Status_Text
+        , BlockMachine_UpgradeValue_Text
+        ;
 
     public Text[] _blockCountTexts = new Text[4];
 
 
-    //public Image //BluePrint_Img
-
-
-    //public Image[] _colorButtonImgs;
 
 
     public Color _color;
@@ -155,6 +155,10 @@ public class UI_GameScene : UI_Scene
         Order_Group = GetObject(GameObjects.Order_Group);
 
         RV_Panel = GetObject(GameObjects.RV_Panel);
+
+        Mask_Panel = GetObject(GameObjects.Mask_Panel);
+        Rv_Popup_Panel = GetObject(GameObjects.Rv_Popup_Panel);
+
         // ========= Buttons
 
 
@@ -208,7 +212,7 @@ public class UI_GameScene : UI_Scene
 
         // ========= Text
 
-        //Recipe_Status_Text = GetText(Texts.Recipe_Status_Text);
+
 
         Money_Text = GetText(Texts.Money_Text);
 
@@ -232,7 +236,7 @@ public class UI_GameScene : UI_Scene
             int _num = i;
             _blockMachineColorButtons[i].AddButtonEvent(() =>
             {
-                //Managers._stageManager.SelectModelSetColor(_num);
+
                 Managers.Game.currentStageManager._selectBlockMachine.SetBlockType(_num);
                 BlockMachine_SetColor(_num);
 
@@ -297,19 +301,23 @@ public class UI_GameScene : UI_Scene
                 switch (_num)
                 {
                     case 0:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_AddVehicle" } });
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvAddVehicle"}});
                         break;
 
                     case 1:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_VehicleSpeed" } });
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"}});
                         break;
 
                     case 2:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_VehicleCapacity" } });
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"}});
                         break;
 
                     case 3:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv", $"Rv_RailSpeed" } });
+                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"}});
 
                         break;
                 }
@@ -328,19 +336,17 @@ public class UI_GameScene : UI_Scene
         View_Button.AddButtonEvent(() =>
         {
             Vector3 _pos = Managers.Game.currentStageManager._cams[0].transform.position;
-            //_camTween = DOTween.Sequence()
+
 
             if (Managers.Game.currentStageManager._cams[0].transform.position.z < -22)
             {
-                //_pos.z = -7f;
-                //_stageManager._cams[0].transform.position = _pos;
+
 
                 Managers.Game.currentStageManager._cams[0].transform.DOMoveZ(-7f, 0.5f).SetEase(Ease.Linear);
             }
             else
             {
-                //_pos.z = -40f;
-                //_stageManager._cams[0].transform.position = _pos;
+
                 Managers.Game.currentStageManager._cams[0].transform.DOMoveZ(-43f, 0.5f).SetEase(Ease.Linear);
             }
 
@@ -371,30 +377,37 @@ public class UI_GameScene : UI_Scene
         RvRailSpeedUp_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_RailSpeedUp()));
         RvVehicleSpeedUp_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_VehicleSpeedUp()));
 
+
+
+        Rv_Popup_Panel.transform.Find("Free_Claim_Button").GetComponent<Button>()
+            .AddButtonEvent(() => Managers.Game.currentStageManager.FreeRvFunc());
+
+
+        Rv_Popup_Panel.transform.Find("Close_Button").GetComponent<Button>()
+            .AddButtonEvent(() => Rv_Popup_Panel.SetActive(false));
     }
 
     // ====================================================
 
-    //public HeroFactory _currentHeroFactory;
-    //StageManager _stageManager;
+
 
     private void Start()
     {
-        StartCoroutine(Cor_Update());
-        //_stageManager = Managers.Game.currentStageManager;
+        //StartCoroutine(Cor_Update());
+
     }
 
-    IEnumerator Cor_Update()
-    {
-        while (true)
-        {
-            yield return null;
+    //IEnumerator Cor_Update()
+    //{
+    //    while (true)
+    //    {
+    //        yield return null;
 
 
 
 
-        }
-    }
+    //    }
+    //}
 
 
 
@@ -530,6 +543,56 @@ public class UI_GameScene : UI_Scene
 
         }
     }
+
+
+    public void RvPopupPanelOnOff(int _num, bool isOn = true)
+    {
+        if (isOn)
+        {
+            Rv_Popup_Panel.SetActive(true);
+            DOTween.Sequence()
+                .AppendInterval(2f)
+                .Append(Rv_Popup_Panel.transform.Find("Close_Button").GetChild(0).GetComponent<Text>().DOColor(new Color(1f, 1f, 1f, 0f), 0f))
+                .Append(Rv_Popup_Panel.transform.Find("Close_Button").GetChild(0).GetComponent<Text>().DOColor(new Color(1f, 1f, 1f, 0.8f), 2f).SetEase(Ease.Linear));
+
+
+
+
+            for (int i = 0; i < 3; i++)
+            {
+                Rv_Popup_Panel.transform.Find("Img_Group").GetChild(i).gameObject.SetActive(false);
+            }
+            Rv_Popup_Panel.transform.Find("Img_Group").GetChild(_num).gameObject.SetActive(true);
+
+
+            switch (_num)
+            {
+                case 0:
+                    Rv_Popup_Panel.transform.Find("Explain_Text").GetComponent<Text>().text
+                        = $"Block Spawn X 2 \n 60 Seconds";
+                    break;
+
+                case 1:
+                    Rv_Popup_Panel.transform.Find("Explain_Text").GetComponent<Text>().text
+                        = $"Rail Speed Up X 2 \n 60 Seconds";
+                    break;
+
+                case 2:
+                    Rv_Popup_Panel.transform.Find("Explain_Text").GetComponent<Text>().text
+                        = $"Vhicle Speed Up X 2 \n 60 Seconds";
+                    break;
+            }
+
+
+        }
+        else
+        {
+            Rv_Popup_Panel.SetActive(false);
+        }
+
+    }
+
+
 
 
 }

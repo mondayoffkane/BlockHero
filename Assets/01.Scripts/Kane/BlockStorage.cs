@@ -26,6 +26,7 @@ public class BlockStorage : MonoBehaviour
 
     public Rail _prevNode;
 
+    StageManager stageManager;
     // ===================================
 
     private void OnEnable()
@@ -37,6 +38,9 @@ public class BlockStorage : MonoBehaviour
             _floating_Group.transform.SetParent(transform);
             _floating_Group.SetAsLastSibling();
         }
+
+        if (stageManager == null) stageManager = transform.GetComponentInParent<StageManager>();
+
 
         StartCoroutine(Cor_Update());
         LoadData();
@@ -131,12 +135,12 @@ public class BlockStorage : MonoBehaviour
 
     public void SaveData()
     {
-        ES3.Save<int[]>($"{GetInstanceID()}_blockCount", _blockCountArray);
+        ES3.Save<int[]>($"Stage_{stageManager._stageLevel}_blockCount", _blockCountArray);
     }
 
     public void LoadData()
     {
-        _blockCountArray = ES3.Load<int[]>($"{GetInstanceID()}_blockCount", new int[4]);
+        _blockCountArray = ES3.Load<int[]>($"Stage_{stageManager._stageLevel}_blockCount", new int[4]);
     }
 
 

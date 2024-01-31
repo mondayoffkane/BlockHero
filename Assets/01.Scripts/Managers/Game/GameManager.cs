@@ -40,6 +40,11 @@ public class GameManager : MonoBehaviour
 
     [ShowInInspector] RaycastHit _tempHit;
     public GameObject[] _tempObj = new GameObject[2];
+
+
+    public int orderLevel = 0;
+    public int orderCount = 0;
+
     // ===================================
 
     public void Init() // 처음 초기화
@@ -271,6 +276,10 @@ public class GameManager : MonoBehaviour
         money = ES3.Load<double>("money", 0);
         //money = ES3.Load<double>("money", 100000);
         playTime = ES3.Load<int>("playTime", 0);
+
+        orderLevel = ES3.Load<int>("orderLevel", 0);
+        orderCount = ES3.Load<int>("orderCount", 0);
+
     }
 
     public void SaveData()
@@ -278,12 +287,23 @@ public class GameManager : MonoBehaviour
         ES3.Save<int>("stageLevel", stageLevel);
         ES3.Save<double>("money", money);
 
+        ES3.Save<int>("orderLevel", orderLevel);
+        ES3.Save<int>("orderCount", orderCount);
     }
 
-    //public void TryStage()
-    //{
+    public void OrderComplete()
+    {
+        orderCount++;
+        if (orderCount == 10)
+        {
+            orderCount = 0;
+            orderLevel++;
+        }
+        ES3.Save<int>("orderLevel", orderLevel);
+        ES3.Save<int>("orderCount", orderCount);
+    }
 
-    //}
+
 
     public void ClearStage()
     {

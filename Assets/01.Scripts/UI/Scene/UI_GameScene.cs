@@ -545,15 +545,15 @@ public class UI_GameScene : UI_Scene
     }
 
 
-    public void RvPopupPanelOnOff(int _num, bool isOn = true)
+    public void RvPopupPanelOnOff(int _num, bool isOn = true, float _time = 60f)
     {
         if (isOn)
         {
             Rv_Popup_Panel.SetActive(true);
-            DOTween.Sequence()
-                .AppendInterval(2f)
-                .Append(Rv_Popup_Panel.transform.Find("Close_Button").GetChild(0).GetComponent<Text>().DOColor(new Color(1f, 1f, 1f, 0f), 0f))
-                .Append(Rv_Popup_Panel.transform.Find("Close_Button").GetChild(0).GetComponent<Text>().DOColor(new Color(1f, 1f, 1f, 0.8f), 2f).SetEase(Ease.Linear));
+            //DOTween.Sequence()
+            //    .Append(Rv_Popup_Panel.transform.Find("Close_Button").GetChild(0).GetComponent<Text>().DOColor(new Color(1f, 1f, 1f, 0f), 0f))
+            //    .AppendInterval(2f)
+            //    .Append(Rv_Popup_Panel.transform.Find("Close_Button").GetChild(0).GetComponent<Text>().DOColor(new Color(1f, 1f, 1f, 0.8f), 2f).SetEase(Ease.Linear));
 
 
 
@@ -568,18 +568,24 @@ public class UI_GameScene : UI_Scene
             switch (_num)
             {
                 case 0:
+                    Rv_Popup_Panel.transform.Find("Title_Text").GetComponent<Text>().text
+                        = $"Machine Boost";
                     Rv_Popup_Panel.transform.Find("Explain_Text").GetComponent<Text>().text
-                        = $"Block Spawn X 2 \n 60 Seconds";
+                        = $"Block Spawn X 2 \n {(int)_time} Seconds";
                     break;
 
                 case 1:
+                    Rv_Popup_Panel.transform.Find("Title_Text").GetComponent<Text>().text
+                        = $"Rail Boost";
                     Rv_Popup_Panel.transform.Find("Explain_Text").GetComponent<Text>().text
-                        = $"Rail Speed Up X 2 \n 60 Seconds";
+                        = $"Rail Speed Up X 2 \n {(int)_time} Seconds";
                     break;
 
                 case 2:
+                    Rv_Popup_Panel.transform.Find("Title_Text").GetComponent<Text>().text
+                        = $"Truck Boost";
                     Rv_Popup_Panel.transform.Find("Explain_Text").GetComponent<Text>().text
-                        = $"Vhicle Speed Up X 2 \n 60 Seconds";
+                        = $"Vhicle Speed Up X 2 \n {(int)_time} Seconds";
                     break;
             }
 

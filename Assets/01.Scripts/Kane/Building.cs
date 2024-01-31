@@ -78,15 +78,15 @@ public class Building : MonoBehaviour
 
     public void LoadData()
     {
-        _currentCount = ES3.Load<int>($"{GetInstanceID()}_currentCount", 0);
-        isBuildComplete = ES3.Load<bool>($"{GetInstanceID()}_isBuildComplete", false);
+        _currentCount = ES3.Load<int>($"Stage_{stageManager._stageLevel}_buildingNum_{_buildingNum}_currentCount", 0);
+        isBuildComplete = ES3.Load<bool>($"Stage_{stageManager._stageLevel}_buildingNum_{_buildingNum}_isBuildComplete", false);
 
     }
 
     public void SaveData()
     {
-        ES3.Save<int>($"{GetInstanceID()}_currentCount", _currentCount);
-        ES3.Save<bool>($"{GetInstanceID()}_isBuildComplete", isBuildComplete);
+        ES3.Save<int>($"Stage_{stageManager._stageLevel}_buildingNum_{_buildingNum}_currentCount", _currentCount);
+        ES3.Save<bool>($"Stage_{stageManager._stageLevel}_buildingNum_{_buildingNum}_isBuildComplete", isBuildComplete);
     }
 
 

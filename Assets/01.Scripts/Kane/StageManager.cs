@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour
 
     //[FoldoutGroup("Village")] public double _money = 1000d;
     [FoldoutGroup("Village")] public List<Building> buildingList = new List<Building>();
-    [FoldoutGroup("Village")] public int buldingCompleteCount = 0;
+    [FoldoutGroup("Village")] public int buildingCompleteCount = 0;
     [FoldoutGroup("Village")] public bool _villageComplete = false;
     [FoldoutGroup("Village")] public Transform[] AreaGroups;
 
@@ -98,14 +98,15 @@ public class StageManager : MonoBehaviour
 
     public float _vehicleTerm = 1f;
 
-    //public bool isSet = false;
+
     public int _playTime = 0;
-    //[SerializeField] bool isHeadReady = true;
+
     [SerializeField] int queueCount;
-    //public bool isUnLimit = false;
-    //public int[] rvCounts = new int[4];
+
 
     public int popUpType = 0;
+    [SerializeField] bool isFirstFree = true;
+    //public bool isFree = false;
     // =================================================
 
 
@@ -114,8 +115,7 @@ public class StageManager : MonoBehaviour
     private void Awake()
     {
         ColorUtility.TryParseHtmlString("#FF4D00", out _redColor);
-        //Managers._stageManager = this;
-        //Managers._gameUi.ChangePanel(0);
+
         _vehicleList = new List<Vehicle>();
         _gameUi = Managers._gameUi;
         _vehicleGroup = transform.Find("5.Vehicle_Group");
@@ -134,6 +134,16 @@ public class StageManager : MonoBehaviour
         LoadData();
         CheckMoney();
 
+        if (buildingCompleteCount < 3)
+        {
+            Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(false);
+            Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(false);
+        }
+        else
+        {
+            Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(true);
+            Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(true);
+        }
 
 
 
@@ -240,19 +250,10 @@ public class StageManager : MonoBehaviour
     public void LoadData()
     {
         _blockMachineCount = ES3.Load<int>($"Stage_{_stageLevel}_BlockMachineCount", 0);
-        buldingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
+        buildingCompleteCount = ES3.Load<int>($"Stage_{_stageLevel}_buildingCompleteCount", 0);
 
 
-        //rvCounts = ES3.Load<int[]>("rvCounts", new int[4]);
 
-        //for (int i = 0; i < 3; i++)
-        //{
-        //    int num = i;
-        //    orderStructs[num] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{num}", CreateOrder());
-        //    //Debug.Log(orderStructs[num].personSprite);
-        //    Managers._gameUi.SetOrderPanel(num, orderStructs[num]);
-        //    CheckOrder(num);
-        //}
 
         orderStructs[0] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{0}", CreateOrder());
         orderStructs[1] = ES3.Load<OrderStruct>($"Order_{_stageLevel}_{1}", CreateOrder());
@@ -454,15 +455,11 @@ public class StageManager : MonoBehaviour
         {
             case VehicleType.Car:
                 _vehicleQueue.Enqueue(_newVehicle);
-                //_vehicleQueue.Enqueue(_newVehicle);
 
                 break;
 
             case VehicleType.Train:
-                //_newVehicle = _vehicleList[_vehicleList.Count - 1];
-                //_newVehicle.GetComponent<NavMeshAgent>().Warp(_vehicleList[_vehicleList.Count - 1].transform.position);
-                //_newVehicle.GetComponent<NavMeshAgent>().destination = _vehicleList[_vehicleList.Count - 1].GetComponent<NavMeshAgent>().destination;
-                //_newVehicle.SetDest(_vehicleList[_vehicleList.Count - 1]._target);
+
                 break;
         }
 
@@ -535,12 +532,21 @@ public class StageManager : MonoBehaviour
 
     public void BuildComplete()
     {
-        buldingCompleteCount++;
-        ES3.Save<int>($"Stage_{_stageLevel}_buildingCompleteCount", buldingCompleteCount);
-        if (buldingCompleteCount < buildingList.Count)
-            buildingList[buldingCompleteCount].SetCanvas();
+        if (buildingCompleteCount == 2 && _stageLevel == 0)
+        {
+            this.TaskDelay(3f, () =>
+            {
+                popUpType = 0;
+                Managers._gameUi.RvPopupPanelOnOff(popUpType, true, 20f);
+            });
+        }
 
-        if (buldingCompleteCount >= buildingList.Count)
+        buildingCompleteCount++;
+        ES3.Save<int>($"Stage_{_stageLevel}_buildingCompleteCount", buildingCompleteCount);
+        if (buildingCompleteCount < buildingList.Count)
+            buildingList[buildingCompleteCount].SetCanvas();
+
+        if (buildingCompleteCount >= buildingList.Count)
         {
             _villageComplete = true;
             ES3.Save<bool>($"VillageComplete_{_stageLevel}", _villageComplete);
@@ -548,6 +554,9 @@ public class StageManager : MonoBehaviour
             Managers.Game.ClearStage();
 
         }
+
+
+
 
     }
 
@@ -570,7 +579,7 @@ public class StageManager : MonoBehaviour
 
         //for (int i = 0; i < buildingList.Count; i++)
         //{
-        int _num = Random.Range(0, buldingCompleteCount);
+        int _num = Random.Range(0, buildingCompleteCount);
         if (Managers.Game.currentStageManager
             ._blockStorage._blockCountArray[(int)buildingList[_num]._blockType] > 0)
         {
@@ -1013,6 +1022,7 @@ public class StageManager : MonoBehaviour
 
         _blockStorage.UpdateBlockCount();
         CheckOrder(_num);
+        Managers.Game.OrderComplete();
         //
     }
 
@@ -1036,8 +1046,13 @@ public class StageManager : MonoBehaviour
 
     }
 
-    public void RV_DoubleSpawn(bool notFree = true)
+    public void RV_DoubleSpawn(bool notFree = true, float _time = 60f)
     {
+        if (Managers._gameUi.RvDoubleSpawn_Button.gameObject.activeSelf == false)
+            Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(true);
+
+
+
         if (notFree)
             EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                    $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvDoubleSpawn"}});
@@ -1052,13 +1067,13 @@ public class StageManager : MonoBehaviour
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
                .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group")
-                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
+                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, _time).SetEase(Ease.Linear);
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
-                .Find("Time_Text").GetComponent<Text>().DOCounter(60, 0, 60f).SetEase(Ease.Linear);
+                .Find("Time_Text").GetComponent<Text>().DOCounter((int)_time, 0, _time).SetEase(Ease.Linear);
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Rv_Img").gameObject.SetActive(false);
 
             })
-            .AppendInterval(60f)
+            .AppendInterval(_time)
             .OnComplete(() =>
             {
                 isRvDoubleSpawn = false;
@@ -1067,10 +1082,12 @@ public class StageManager : MonoBehaviour
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Guage_Group").transform
                 .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvDoubleSpawn_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
+
+                //isFree = false;
             });
     }
 
-    public void RV_VehicleSpeedUp(bool notFree = true)
+    public void RV_VehicleSpeedUp(bool notFree = true, float _time = 60f)
     {
         if (notFree)
             EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
@@ -1090,14 +1107,14 @@ public class StageManager : MonoBehaviour
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").transform
                 .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group")
-                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
+                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, _time).SetEase(Ease.Linear);
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Guage_Group").transform
-                .Find("Time_Text").GetComponent<Text>().DOCounter(60, 0, 60f).SetEase(Ease.Linear);
+                .Find("Time_Text").GetComponent<Text>().DOCounter((int)_time, 0, _time).SetEase(Ease.Linear);
                 Managers._gameUi.RvVehicleSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(false);
 
 
             })
-            .AppendInterval(60f)
+            .AppendInterval(_time)
             .OnComplete(() =>
             {
                 isRvVehicleSpeedUp = false;
@@ -1115,13 +1132,18 @@ public class StageManager : MonoBehaviour
             });
     }
 
-    public void RV_RailSpeedUp(bool notFree = true)
+    public void RV_RailSpeedUp(bool notFree = true, float _time = 60f)
     {
+        if (Managers._gameUi.RvRailSpeedUp_Button.gameObject.activeSelf == false)
+            Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(true);
+
+
         if (notFree)
             EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvRailSpeedUp"}});
 
         isRvRailSpeedUp = true;
+        _railSpeed = _railSpeed * 0.5f < 0.05 ? 0.05f : _railSpeed;
         //isUnLimit = true;
         DOTween.Sequence().
             AppendCallback(() =>
@@ -1131,13 +1153,13 @@ public class StageManager : MonoBehaviour
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform
                 .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group")
-                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, 60f).SetEase(Ease.Linear);
+                .transform.Find("Guage_Img").GetComponent<Image>().DOFillAmount(0f, _time).SetEase(Ease.Linear);
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform
-                .Find("Time_Text").GetComponent<Text>().DOCounter(60, 0, 60f).SetEase(Ease.Linear);
+                .Find("Time_Text").GetComponent<Text>().DOCounter((int)_time, 0, _time).SetEase(Ease.Linear);
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(false);
 
             })
-            .AppendInterval(60f)
+            .AppendInterval(_time)
             .OnComplete(() =>
             {
                 isRvRailSpeedUp = false;
@@ -1146,29 +1168,43 @@ public class StageManager : MonoBehaviour
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Guage_Group").transform
                 .Find("Guage_Img").GetComponent<Image>().fillAmount = 1f;
                 Managers._gameUi.RvRailSpeedUp_Button.transform.Find("Rv_Img").gameObject.SetActive(true);
+
+                _railSpeed = 0.5f - (0.025f * _rail_Speed_Level);
+
             });
     }
 
 
     public void FreeRvFunc()
     {
+        float _time = 20f;
         switch (popUpType)
         {
             case 0:
-                RV_DoubleSpawn(false);
+                //isFree = true;
+                RV_DoubleSpawn(false, _time);
                 break;
 
             case 1:
-                RV_RailSpeedUp(false);
+                RV_RailSpeedUp(false, _time);
                 break;
 
             case 2:
-                RV_VehicleSpeedUp(false);
+                RV_VehicleSpeedUp(false, _time);
                 break;
         }
 
         Managers._gameUi.RvPopupPanelOnOff(0, false);
 
+        if (buildingCompleteCount == 3 && isFirstFree && _stageLevel == 0)
+        {
+            isFirstFree = false;
+            this.TaskDelay(10f, () =>
+        {
+            popUpType = 1;
+            Managers._gameUi.RvPopupPanelOnOff(popUpType, true, 20f);
+        });
+        }
     }
 
     [Button]

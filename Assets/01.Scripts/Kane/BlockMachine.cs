@@ -134,16 +134,16 @@ public class BlockMachine : MonoBehaviour
             //    yield return new WaitForSeconds(0.5f);
             //}
             //else
-            if (stageManager.isRvDoubleSpawn)
-            {
-                yield return new WaitForSeconds(_spawnInterval * 0.5f);
-            }
-            else
-            {
-                yield return new WaitForSeconds(_spawnInterval);
-            }
+            //if (stageManager.isRvDoubleSpawn)
+            //{
+            //    yield return new WaitForSeconds(_spawnInterval * 0.5f);
+            //}
+            //else
+            //{
+            //    yield return new WaitForSeconds(_spawnInterval);
+            //}
 
-            //yield return new WaitForSeconds(stageManager.isRvDoubleSpawn ? /*_spawnInterval **/ 0.5f : _spawnInterval);
+            yield return new WaitForSeconds(stageManager.isRvDoubleSpawn ? /*_spawnInterval **/ 0.5f : _spawnInterval);
         }
     }
 

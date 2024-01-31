@@ -45,7 +45,7 @@ public class StageManager : MonoBehaviour
     [FoldoutGroup("Village")] public List<Building> buildingList = new List<Building>();
     [FoldoutGroup("Village")] public int buildingCompleteCount = 0;
     [FoldoutGroup("Village")] public bool _villageComplete = false;
-    [FoldoutGroup("Village")] public Transform[] AreaGroups;
+    //[FoldoutGroup("Village")] public Transform[] AreaGroups;
 
     [FoldoutGroup("UI")] public Sprite[] scrollUpImg;
     [FoldoutGroup("UI")] public string[] scrollUpName;
@@ -99,7 +99,7 @@ public class StageManager : MonoBehaviour
     public float _vehicleTerm = 1f;
 
 
-    public int _playTime = 0;
+    //public int _playTime = 0;
 
     [SerializeField] int queueCount;
 
@@ -120,11 +120,11 @@ public class StageManager : MonoBehaviour
         _gameUi = Managers._gameUi;
         _vehicleGroup = transform.Find("5.Vehicle_Group");
         int _count = transform.Find("6.MapAreaGroup").childCount;
-        AreaGroups = new Transform[_count];
-        for (int i = 0; i < _count; i++)
-        {
-            AreaGroups[i] = transform.Find("6.MapAreaGroup").GetChild(i);
-        }
+        //AreaGroups = new Transform[_count];
+        //for (int i = 0; i < _count; i++)
+        //{
+        //    AreaGroups[i] = transform.Find("6.MapAreaGroup").GetChild(i);
+        //}
 
 
     }
@@ -266,7 +266,7 @@ public class StageManager : MonoBehaviour
         CheckOrder(2);
 
 
-        _playTime = ES3.Load<int>("PlayTime", _playTime);
+        //_playTime = ES3.Load<int>("PlayTime", _playTime);
 
 
         for (int i = 0; i < _blockMachineCount; i++)
@@ -475,6 +475,7 @@ public class StageManager : MonoBehaviour
     }
     public void VehicleUpgrade(int _num, bool isPay = true)
     {
+        Debug.Log("vehicle Upgrade :" + _num);
         switch (_num)
         {
             case 0:

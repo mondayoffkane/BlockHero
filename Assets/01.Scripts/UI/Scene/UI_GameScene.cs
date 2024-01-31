@@ -12,6 +12,7 @@ public class UI_GameScene : UI_Scene
     enum Texts
     {
         Money_Text,
+        Ticket_Text,
         BlockMachine_Upgrade_Price_Text,
         BlockMachine_Status_Text,
         BlockMachine_UpgradeValue_Text,
@@ -24,6 +25,8 @@ public class UI_GameScene : UI_Scene
         Cpi_Rail_Button,
         NextStage_Button,
         Order_Button,
+        Shop_Button,
+        Setting_Button,
         RvDoubleSpawn_Button,
         RvRailSpeedUp_Button,
         RvVehicleSpeedUp_Button,
@@ -35,6 +38,13 @@ public class UI_GameScene : UI_Scene
         Order_Close_Button,
         Test_PreStage_Button,
         Test_NextStage_Button,
+        Product_BoostPack,
+        Product_TicketPack,
+        Product_InfinitePack,
+        Product_Ticket_1,
+        Product_Ticket_2,
+        Product_Ticket_3,
+        Sound_Button,
     }
     enum GameObjects
     {
@@ -48,9 +58,13 @@ public class UI_GameScene : UI_Scene
         MaskImg,
         Unlock_Panel,
         Order_Panel,
+        Order_Level_Group,
         Order_Group,
         Mask_Panel,
         Rv_Popup_Panel,
+        Shop_Panel,
+        AdBreak_Panel,
+        Setting_Panel,
     }
 
     DOTween _camTween;
@@ -69,6 +83,10 @@ public class UI_GameScene : UI_Scene
         , RV_Panel
         , Mask_Panel
         , Rv_Popup_Panel
+        , AdBreak_Panel
+        , Shop_Panel
+        , Setting_Panel
+        , Order_Level_Group
         ;
     //Recipe_RawImage;
 
@@ -91,7 +109,14 @@ public class UI_GameScene : UI_Scene
         , RvDoubleSpawn_Button,
         RvRailSpeedUp_Button,
         RvVehicleSpeedUp_Button
-
+        , Product_BoostPack,
+        Product_TicketPack,
+        Product_InfinitePack,
+        Product_Ticket_1,
+        Product_Ticket_2,
+        Product_Ticket_3
+        , Shop_Button
+        , Setting_Button
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -103,6 +128,7 @@ public class UI_GameScene : UI_Scene
         , BlockMachine_Upgrade_Price_Text
         , BlockMachine_Status_Text
         , BlockMachine_UpgradeValue_Text
+        , Ticket_Text
         ;
 
     public Text[] _blockCountTexts = new Text[4];
@@ -158,6 +184,10 @@ public class UI_GameScene : UI_Scene
 
         Mask_Panel = GetObject(GameObjects.Mask_Panel);
         Rv_Popup_Panel = GetObject(GameObjects.Rv_Popup_Panel);
+        AdBreak_Panel = GetObject(GameObjects.AdBreak_Panel);
+        Shop_Panel = GetObject(GameObjects.Shop_Panel);
+        Setting_Panel = GetObject(GameObjects.Setting_Panel);
+        Order_Level_Group = GetObject(GameObjects.Order_Level_Group);
 
         // ========= Buttons
 
@@ -203,6 +233,19 @@ public class UI_GameScene : UI_Scene
         RvRailSpeedUp_Button = GetButton(Buttons.RvRailSpeedUp_Button);
         RvVehicleSpeedUp_Button = GetButton(Buttons.RvVehicleSpeedUp_Button);
 
+        Shop_Button = GetButton(Buttons.Shop_Button);
+        Setting_Button = GetButton(Buttons.Setting_Button);
+
+
+        //== button IAP
+        Product_BoostPack = GetButton(Buttons.Product_BoostPack);
+        Product_TicketPack = GetButton(Buttons.Product_TicketPack);
+        Product_InfinitePack = GetButton(Buttons.Product_InfinitePack);
+        Product_Ticket_1 = GetButton(Buttons.Product_Ticket_1);
+        Product_Ticket_2 = GetButton(Buttons.Product_Ticket_2);
+        Product_Ticket_3 = GetButton(Buttons.Product_Ticket_3);
+
+
         // ========= Img
 
 
@@ -226,6 +269,8 @@ public class UI_GameScene : UI_Scene
         {
             _blockCountTexts[i] = BlockCount_Group.transform.GetChild(i).GetChild(0).GetComponent<Text>();
         }
+
+        Ticket_Text = GetText(Texts.Ticket_Text);
 
 
         // ================ Add Button Listner========================================
@@ -295,33 +340,62 @@ public class UI_GameScene : UI_Scene
             int _num = i;
             _scrollUpgButtons[i].AddButtonEvent(() => Managers.Game.currentStageManager.VehicleUpgrade(_num));
 
-            _scrollUpgButtons[i].transform.Find("Rv_Button").GetComponent<Button>().AddButtonEvent(() => AdsManager.ShowRewarded(() =>
+            _scrollUpgButtons[i].transform.Find("Rv_Button").GetComponent<Button>().AddButtonEvent(() =>
             {
-                Managers.Game.currentStageManager.VehicleUpgrade(_num, false);
-                switch (_num)
+                if (Managers.Game.infiniteTicket)
                 {
-                    case 0:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                    //int _num = i;
+                    ScrollUpgButtonFunc(_num, true);
+                }
+                else if (Managers.Game.ticketCount > 0)
+                {
+
+                    //int _num = i;
+                    ScrollUpgButtonFunc(_num, true);
+                    Managers.Game.TicketUpdate(-1);
+                }
+                else
+                {
+                    AdsManager.ShowRewarded(() =>
+                    {
+                        //int _num = i;
+                        ScrollUpgButtonFunc(_num);
+                    });
+
+                }
+
+            });
+        }
+
+        void ScrollUpgButtonFunc(int _num, bool isTicket = false)
+        {
+            Debug.Log("ScrollUpgButtonFunc");
+            Managers.Game.currentStageManager.VehicleUpgrade(_num, false);
+            switch (_num)
+            {
+                case 0:
+                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvAddVehicle"}});
-                        break;
+                    break;
 
-                    case 1:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                case 1:
+                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"}});
-                        break;
+                    break;
 
-                    case 2:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                case 2:
+                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"}});
-                        break;
+                    break;
 
-                    case 3:
-                        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                case 3:
+                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"}});
 
-                        break;
-                }
-            }));
+                    break;
+            }
+            if (isTicket == false)
+                Managers.Game.RvCountFunc();
         }
 
         Cpi_Rail_Button.AddButtonEvent(() =>
@@ -370,12 +444,95 @@ public class UI_GameScene : UI_Scene
         {
             int _num = i;
             Order_Group.transform.GetChild(_num).Find("Wait_Img").Find("RV_Order_Refesh_Button")
-                .GetComponent<Button>().AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_Order_Refresh(_num)));
+                .GetComponent<Button>().AddButtonEvent(() =>
+                {
+                    if (Managers.Game.infiniteTicket)
+                    {
+                        Managers.Game.currentStageManager.RV_Order_Refresh(_num);
+                    }
+                    else if (Managers.Game.ticketCount > 0)
+                    {
+                        Managers.Game.TicketUpdate(-1);
+                        Managers.Game.currentStageManager.RV_Order_Refresh(_num);
+                    }
+                    else
+                    {
+                        AdsManager.ShowRewarded(() =>
+                        {
+                            Managers.Game.currentStageManager.RV_Order_Refresh(_num);
+                        });
+                    }
+                });
+
+
         }
 
-        RvDoubleSpawn_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_DoubleSpawn()));
-        RvRailSpeedUp_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_RailSpeedUp()));
-        RvVehicleSpeedUp_Button.AddButtonEvent(() => AdsManager.ShowRewarded(() => Managers.Game.currentStageManager.RV_VehicleSpeedUp()));
+        RvDoubleSpawn_Button.AddButtonEvent(() =>
+        {
+            if (Managers.Game.infiniteTicket)
+            {
+                Managers.Game.currentStageManager.RV_DoubleSpawn();
+            }
+            else if (Managers.Game.ticketCount > 0)
+            {
+                Managers.Game.TicketUpdate(-1);
+                Managers.Game.currentStageManager.RV_DoubleSpawn();
+            }
+            else
+            {
+                AdsManager.ShowRewarded(() =>
+                {
+                    Managers.Game.currentStageManager.RV_DoubleSpawn();
+                });
+            }
+        }
+
+
+        );
+        RvRailSpeedUp_Button.AddButtonEvent(() =>
+        {
+            if (Managers.Game.infiniteTicket)
+            {
+                Managers.Game.currentStageManager.RV_RailSpeedUp();
+            }
+            else if (Managers.Game.ticketCount > 0)
+            {
+                Managers.Game.TicketUpdate(-1);
+                Managers.Game.currentStageManager.RV_RailSpeedUp();
+            }
+            else
+            {
+                AdsManager.ShowRewarded(() =>
+                {
+                    Managers.Game.currentStageManager.RV_RailSpeedUp();
+                });
+            }
+        }
+
+
+        );
+        RvVehicleSpeedUp_Button.AddButtonEvent(() =>
+        {
+            if (Managers.Game.infiniteTicket)
+            {
+                Managers.Game.currentStageManager.RV_VehicleSpeedUp();
+            }
+            else if (Managers.Game.ticketCount > 0)
+            {
+                Managers.Game.TicketUpdate(-1);
+                Managers.Game.currentStageManager.RV_VehicleSpeedUp();
+            }
+            else
+            {
+                AdsManager.ShowRewarded(() =>
+                {
+                    Managers.Game.currentStageManager.RV_VehicleSpeedUp();
+                });
+            }
+        }
+
+
+        );
 
 
 
@@ -385,6 +542,34 @@ public class UI_GameScene : UI_Scene
 
         Rv_Popup_Panel.transform.Find("Close_Button").GetComponent<Button>()
             .AddButtonEvent(() => Rv_Popup_Panel.SetActive(false));
+
+
+        Shop_Button.AddButtonEvent(() =>
+        {
+            ChangePanel(-1);
+            PanelOnOff(Shop_Panel, true);
+        });
+        Setting_Button.AddButtonEvent(() =>
+        {
+            ChangePanel(-1);
+            PanelOnOff(Setting_Panel, true);
+        });
+
+
+
+        // add IAP AddListner ====================================================
+
+        Product_BoostPack.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_boostpack"));
+        Product_TicketPack.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_ticket_pack"));
+        Product_InfinitePack.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_infinite_pack"));
+        Product_Ticket_1.AddButtonEvent(() => AdsManager.ShowRewarded(() =>
+        {
+            Managers.Game.TicketUpdate(3);
+        }));
+        Product_Ticket_2.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_ticket_2"));
+        Product_Ticket_3.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_ticket_3"));
+
+
     }
 
     // ====================================================
@@ -422,7 +607,8 @@ public class UI_GameScene : UI_Scene
         PanelOnOff(BlockMachine_Panel, false);
         PanelOnOff(Scroll_Panel, false);
         PanelOnOff(Order_Panel, false);
-
+        PanelOnOff(Setting_Panel, false);
+        PanelOnOff(Shop_Panel, false);
 
 
         switch (_num)
@@ -458,6 +644,8 @@ public class UI_GameScene : UI_Scene
             case 4:
                 PanelOnOff(Order_Panel, true);
                 break;
+
+
 
         }
 

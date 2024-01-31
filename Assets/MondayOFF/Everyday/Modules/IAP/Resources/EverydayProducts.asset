@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: EverydayProducts
   m_EditorClassIdentifier: MondayOFF.IAP:MondayOFF:MondayOFFProducts
   products:
-  - productID: Consumable
-    productType: 0
-  - productID: Non Consumable
+  - productID: blockmatchhro_boostpack
     productType: 1
+  - productID: blockmatchhro_ticket_pack
+    productType: 1
+  - productID: blockmatchhro_infinite_pack
+    productType: 1
+  - productID: blockmatchhro_ticket_2
+    productType: 0
+  - productID: blockmatchhro_ticket_3
+    productType: 0

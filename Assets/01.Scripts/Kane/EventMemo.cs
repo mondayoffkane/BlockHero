@@ -12,8 +12,29 @@ public class EventMemo : MonoBehaviour
     GameManager gameManager;
     StageManager stageManager;
 
+    public void Test()
+    {
+        {
+            if (Managers.Game.infiniteTicket)
+            {
+
+            }
+            else if (Managers.Game.ticketCount > 0)
+            {
+                Managers.Game.TicketUpdate(-1);
+
+            }
+            else
+            {
+                AdsManager.ShowRewarded(() =>
+                {
+
+                });
+            }
+        }
 
 
+    }
     //public void Memo()
     //{
     //    //======= Machine ===============

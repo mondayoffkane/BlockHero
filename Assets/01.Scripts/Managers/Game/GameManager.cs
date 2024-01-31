@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
         A,
         B
     }
+    // ===  IAP ==============
+    public int ticketCount = 0;
+    public bool noAds = false;
+    public bool allBoost = false;
+    public bool infiniteTicket = false;
 
 
     // =====================
@@ -55,10 +60,96 @@ public class GameManager : MonoBehaviour
         ChangeStage();
 
         CalcMoney(0);
+        TicketUpdate(0);
+
+
+        // consumable
+        //MondayOFF.IAPManager.RegisterProduct("blockmatchhro_ticket_1", BuyTicket_1);
+        MondayOFF.IAPManager.RegisterProduct("blockmatchhro_ticket_2", BuyTicket_2);
+        MondayOFF.IAPManager.RegisterProduct("blockmatchhro_ticket_3", BuyTicket_3);
+
+        // non consumable
+        MondayOFF.IAPManager.RegisterProduct("blockmatchhro_boostpack", BuyAllPack);
+        MondayOFF.IAPManager.RegisterProduct("blockmatchhro_ticket_pack", BuyTicketPack);
+        MondayOFF.IAPManager.RegisterProduct("blockmatchhro_infinite_pack", BuyInfinitePack);
+
+        MondayOFF.IAPManager.OnAfterPurchase += (isSuccess) => Debug.Log("구매 완료!");
 
 
 
     }
+
+    public void BuyTicket_1()
+    {
+        Debug.Log("buy ticket_1");
+
+        TicketUpdate(3);
+
+
+    }
+    public void BuyTicket_2()
+    {
+        Debug.Log("buy ticket_2");
+
+        TicketUpdate(5);
+
+    }
+    public void BuyTicket_3()
+    {
+        Debug.Log("buy ticket_3");
+
+        TicketUpdate(15);
+
+    }
+
+    public void BuyAllPack()
+    {
+        Debug.Log("buy All Pack");
+
+
+
+
+        allBoost = true;
+        ES3.Save<bool>("allBoost", allBoost);
+
+        NoAds.Purchase();
+        noAds = true;
+        ES3.Save<bool>("noAds", noAds);
+
+        ProductsCheck();
+
+    }
+
+    public void BuyTicketPack()
+    {
+        Debug.Log("buy Ticket Pack");
+
+        TicketUpdate(15);
+
+        NoAds.Purchase();
+        noAds = true;
+        ES3.Save<bool>("noAds", noAds);
+
+        ProductsCheck();
+    }
+
+    public void BuyInfinitePack()
+    {
+        Debug.Log("buy infiniteTicket Pack");
+
+        infiniteTicket = true;
+        ES3.Save<bool>("infiniteTicket", infiniteTicket);
+        TicketUpdate(99999);
+
+        NoAds.Purchase();
+        noAds = true;
+        ES3.Save<bool>("noAds", noAds);
+
+        ProductsCheck();
+    }
+
+    // ==== End IAP =============
+
 
 
     public void Clear() // 씬 전환할
@@ -79,7 +170,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentStageLevel += _num;
-        if (currentStageLevel > 1) currentStageLevel = 1;
+        if (currentStageLevel > stageManagers.Length - 1) currentStageLevel = stageManagers.Length - 1;
         else if (currentStageLevel < 0) currentStageLevel = 0;
 
         currentStageManager = stageManagers[currentStageLevel];
@@ -104,6 +195,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Cor_Update());
+        StartCoroutine(Cor_IsUpdate());
     }
 
     IEnumerator Cor_Update()
@@ -125,6 +217,37 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    IEnumerator Cor_IsUpdate()
+    {
+
+
+        yield return new WaitForSeconds(60f);
+
+        while (true)
+        {
+            if (noAds == true) break;
+
+            yield return new WaitForSeconds(IsInterval);
+
+            if (noAds == false)
+            {
+                Managers._gameUi.AdBreak_Panel.SetActive(true);
+                yield return new WaitForSeconds(2f);
+                Managers._gameUi.AdBreak_Panel.SetActive(false);
+                AdsManager.ShowInterstitial();
+                IsCount++;
+
+                EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_IsCount-{IsCount}"}});
+
+                ES3.Save<int>("IsCount", IsCount);
+            }
+
+        }
+    }
+
+
 
     private void Update()
     {
@@ -245,7 +368,7 @@ public class GameManager : MonoBehaviour
 
     public void CalcMoney(double _value)
     {
-        money += _value;
+        money += (_value * (1d + orderLevel * 0.1d));
         if (money < 0) money = 0;
 
         Managers._gameUi.Money_Text.text = $"{money:F0}";
@@ -279,8 +402,45 @@ public class GameManager : MonoBehaviour
 
         orderLevel = ES3.Load<int>("orderLevel", 0);
         orderCount = ES3.Load<int>("orderCount", 0);
+        ticketCount = ES3.Load<int>("ticketCount", 0);
+
+        noAds = ES3.Load<bool>("noAds", false);
+        allBoost = ES3.Load<bool>("allBoost", false);
+        infiniteTicket = ES3.Load<bool>("infiniteTicket", false);
+
+        IsCount = ES3.Load<int>("IsCount", 0);
+        RvCount = ES3.Load<int>("RvCount", 0);
+
+        // ===========================
+
+        ProductsCheck();
+        UpdateOrderPanel();
 
     }
+
+    public void ProductsCheck()
+    {
+        if (noAds == true)
+        {
+            AdsManager.DisableAdType(AdType.Banner | AdType.Interstitial);
+            Managers._gameUi.Product_TicketPack.interactable = false;
+            Managers._gameUi.Product_TicketPack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
+        }
+
+        if (allBoost == true)
+        {
+            Managers._gameUi.Product_BoostPack.interactable = false;
+            Managers._gameUi.Product_BoostPack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
+        }
+
+        if (infiniteTicket == true)
+        {
+            Managers._gameUi.Product_InfinitePack.interactable = false;
+            Managers._gameUi.Product_InfinitePack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
+        }
+    }
+
+
 
     public void SaveData()
     {
@@ -301,6 +461,8 @@ public class GameManager : MonoBehaviour
         }
         ES3.Save<int>("orderLevel", orderLevel);
         ES3.Save<int>("orderCount", orderCount);
+        UpdateOrderPanel();
+
     }
 
 
@@ -326,43 +488,55 @@ public class GameManager : MonoBehaviour
 
     }
 
-
-    IEnumerator Cor_ShowIs()
+    public void RvCountFunc()
     {
-        yield return null;
+        RvCount++;
+        EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}RvCount-{RvCount}"}});
 
-        if (isISReady)
+
+        ES3.Save<int>("RvCount", RvCount);
+
+    }
+
+    public void TicketUpdate(int _count)
+    {
+        ticketCount += _count;
+        if (ticketCount < 0) ticketCount = 0;
+        ES3.Save<int>("ticketCount", ticketCount);
+
+
+        if (ticketCount >= 9999)
         {
-            //add UI.AdPanel.SetActive(True);        
-            yield return new WaitForSeconds(1f);
-            //add UI.AdPanel.SetActive(false);      
-            AdsManager.ShowInterstitial();
-
-            EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
-                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_IsCount-{IsCount}"}});
-
-            DOTween.Sequence().AppendInterval((float)IsInterval).OnComplete(() => isISReady = true);
+            Managers._gameUi.Ticket_Text.text = $"9999";
+            //$"∞";
         }
-        else { }
+        else
+        {
+            Managers._gameUi.Ticket_Text.text = $"{ticketCount}";
+        }
+
+
+    }
+
+    public void UpdateOrderPanel()
+    {
+        Transform orderLevelGroup = Managers._gameUi.Order_Level_Group.transform;
+
+        orderLevelGroup.Find("Order_Level_Text").GetComponent<Text>().text
+            = $"Level {orderLevel}";
+
+        orderLevelGroup.Find("Order_Benefit_Text").GetComponent<Text>().text
+            = $"{(int)(100 + orderLevel * 10)}%";
+
+        orderLevelGroup.Find("Order_Exp_Text").GetComponent<Text>().text
+            = $"{orderCount} / 10";
+
+        orderLevelGroup.Find("Order_Guage_Img").GetComponent<Image>().fillAmount
+            = (float)(orderCount * 0.1f);
 
     }
 
 
-
-    public void ShowIsFunc()
-    {
-        if (isISReady)
-        {
-            AdsManager.ShowInterstitial();
-
-            EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
-                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_IsCount-{IsCount}"}});
-
-            DOTween.Sequence().AppendInterval((float)IsInterval).OnComplete(() => isISReady = true);
-        }
-
-
-
-    }
 
 }

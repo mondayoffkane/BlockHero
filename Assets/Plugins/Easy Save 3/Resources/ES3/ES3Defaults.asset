@@ -51,6 +51,7 @@ MonoBehaviour:
     - NavMeshComponentsTestsPlaymode
     - Nementic.SelectionUtility.Runtime
     - PlayOn
+    - Purchasing.Common
     - SingularSDK
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0

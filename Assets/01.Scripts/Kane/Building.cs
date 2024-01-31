@@ -201,7 +201,8 @@ public class Building : MonoBehaviour
         Transform _floatingTrans = Managers.Pool.Pop(_floating_Text_Pref, Managers.Game.currentStageManager.transform.Find("4.Floating_Group")).transform;
         _floatingTrans.localScale = Vector3.one * 0.015f;
         _floatingTrans.SetAsLastSibling();
-        _floatingTrans.GetChild(0).GetComponent<Text>().text = $"${_num}";
+        _floatingTrans.GetChild(0).GetComponent<Text>().text =
+            $"${_num * (1d + Managers.Game.orderLevel * 0.1d)}";
         _floatingTrans.rotation = Quaternion.Euler(new Vector3(80f, 0f, 0f));
 
 

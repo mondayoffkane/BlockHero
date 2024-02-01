@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Wave
+    second: {fileID: 2100000, guid: 03ab0bef39d2540c79c3055667aa56b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: main
     second: {fileID: 2100000, guid: 29a70cf3a7fc54687b43cd843ccb4fd2, type: 2}
   materials:

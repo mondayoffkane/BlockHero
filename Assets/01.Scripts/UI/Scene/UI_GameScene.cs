@@ -45,6 +45,7 @@ public class UI_GameScene : UI_Scene
         Product_Ticket_2,
         Product_Ticket_3,
         Sound_Button,
+        Restore_Button,
     }
     enum GameObjects
     {
@@ -117,6 +118,9 @@ public class UI_GameScene : UI_Scene
         Product_Ticket_3
         , Shop_Button
         , Setting_Button
+        , Sound_Button
+        , Restore_Button
+
         ;
 
     public Button[] _blockMachineColorButtons = new Button[4];
@@ -236,6 +240,8 @@ public class UI_GameScene : UI_Scene
         Shop_Button = GetButton(Buttons.Shop_Button);
         Setting_Button = GetButton(Buttons.Setting_Button);
 
+        Sound_Button = GetButton(Buttons.Sound_Button);
+        Restore_Button = GetButton(Buttons.Restore_Button);
 
         //== button IAP
         Product_BoostPack = GetButton(Buttons.Product_BoostPack);
@@ -323,7 +329,7 @@ public class UI_GameScene : UI_Scene
             if ((Scroll_Panel.activeSelf == false)) ChangePanel(2);
             else PanelOnOff(Scroll_Panel, false);
 
-            if (TutorialManager._instance._tutorial_Level == 1)
+            if (TutorialManager._instance._tutorial_Level == 1 && Managers.Game.currentStageManager._vehicle_Spawn_Level == 0)
             {
                 TutorialManager._instance.Tutorial_Complete();
 
@@ -344,22 +350,24 @@ public class UI_GameScene : UI_Scene
             {
                 if (Managers.Game.infiniteTicket)
                 {
-                    //int _num = i;
-                    ScrollUpgButtonFunc(_num, true);
+
+                    ScrollUpgButtonFunc(_num, 2);
                 }
                 else if (Managers.Game.ticketCount > 0)
                 {
 
-                    //int _num = i;
-                    ScrollUpgButtonFunc(_num, true);
+
+                    ScrollUpgButtonFunc(_num, 1);
                     Managers.Game.TicketUpdate(-1);
+
+
                 }
                 else
                 {
                     AdsManager.ShowRewarded(() =>
                     {
-                        //int _num = i;
-                        ScrollUpgButtonFunc(_num);
+
+                        ScrollUpgButtonFunc(_num, 0);
                     });
 
                 }
@@ -367,37 +375,77 @@ public class UI_GameScene : UI_Scene
             });
         }
 
-        void ScrollUpgButtonFunc(int _num, bool isTicket = false)
+        void ScrollUpgButtonFunc(int _num, int isTicketType = 0) // 0 : not use / 1 : use ticket / 2 : use Infinite
         {
             Debug.Log("ScrollUpgButtonFunc");
             Managers.Game.currentStageManager.VehicleUpgrade(_num, false);
-            switch (_num)
+
+            switch (isTicketType)
             {
                 case 0:
-                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                    Managers.Game.RvCountFunc();
+                    switch (_num)
+                    {
+                        case 0:
+                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvAddVehicle"}});
+                            break;
+
+                        case 1:
+                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"}});
+                            break;
+
+                        case 2:
+                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"}});
+                            break;
+
+                        case 3:
+                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"}});
+
+                            break;
+                    }
                     break;
 
                 case 1:
-                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
-                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"}});
-                    break;
+                    switch (_num)
+                    {
+                        case 0:
 
-                case 2:
-                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
-                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"}});
-                    break;
+                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_AddVehicle"} });
 
-                case 3:
-                    EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
-                $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"}});
 
+                            break;
+
+                        case 1:
+                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"} });
+
+                            break;
+
+                        case 2:
+                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"} });
+
+                            break;
+
+                        case 3:
+                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"} });
+
+
+                            break;
+                    }
                     break;
             }
-            if (isTicket == false)
-                Managers.Game.RvCountFunc();
-        }
 
+
+
+        }
+       
         Cpi_Rail_Button.AddButtonEvent(() =>
         {
             if (Managers.Game.currentStageManager._rail_Speed_Level < 10)
@@ -469,7 +517,12 @@ public class UI_GameScene : UI_Scene
 
         RvDoubleSpawn_Button.AddButtonEvent(() =>
         {
-            if (Managers.Game.infiniteTicket)
+            if (Managers.Game.allBoost)
+            {
+                Managers.Game.currentStageManager.RV_RailSpeedUp();
+            }
+
+            else if (Managers.Game.infiniteTicket)
             {
                 Managers.Game.currentStageManager.RV_DoubleSpawn();
             }
@@ -491,7 +544,12 @@ public class UI_GameScene : UI_Scene
         );
         RvRailSpeedUp_Button.AddButtonEvent(() =>
         {
-            if (Managers.Game.infiniteTicket)
+            if (Managers.Game.allBoost)
+            {
+                Managers.Game.currentStageManager.RV_RailSpeedUp();
+            }
+
+            else if (Managers.Game.infiniteTicket)
             {
                 Managers.Game.currentStageManager.RV_RailSpeedUp();
             }
@@ -513,7 +571,12 @@ public class UI_GameScene : UI_Scene
         );
         RvVehicleSpeedUp_Button.AddButtonEvent(() =>
         {
-            if (Managers.Game.infiniteTicket)
+            if (Managers.Game.allBoost)
+            {
+                Managers.Game.currentStageManager.RV_RailSpeedUp();
+            }
+
+            else if (Managers.Game.infiniteTicket)
             {
                 Managers.Game.currentStageManager.RV_VehicleSpeedUp();
             }
@@ -548,6 +611,7 @@ public class UI_GameScene : UI_Scene
         {
             ChangePanel(-1);
             PanelOnOff(Shop_Panel, true);
+            Managers.Game.DailyTicketUpdate();
         });
         Setting_Button.AddButtonEvent(() =>
         {
@@ -555,6 +619,18 @@ public class UI_GameScene : UI_Scene
             PanelOnOff(Setting_Panel, true);
         });
 
+
+        Sound_Button.AddButtonEvent(() =>
+        {
+            Managers.Game.isSound = !Managers.Game.isSound;
+            Sound_Button.transform.GetChild(0).gameObject.SetActive(Managers.Game.isSound);
+            Managers.Game.GetComponent<AudioSource>().mute = !Managers.Game.isSound;
+        });
+
+        Restore_Button.AddButtonEvent(() =>
+        {
+            IAPManager.RestorePurchase();
+        });
 
 
         // add IAP AddListner ====================================================
@@ -564,6 +640,7 @@ public class UI_GameScene : UI_Scene
         Product_InfinitePack.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_infinite_pack"));
         Product_Ticket_1.AddButtonEvent(() => AdsManager.ShowRewarded(() =>
         {
+            Managers.Game.DailyFreeTicket();
             Managers.Game.TicketUpdate(3);
         }));
         Product_Ticket_2.AddButtonEvent(() => IAPManager.PurchaseProduct("blockmatchhro_ticket_2"));
@@ -623,7 +700,7 @@ public class UI_GameScene : UI_Scene
                 //BlockMachine_Upgrade_Button.interactable =
                 Managers.Game.currentStageManager._selectBlockMachine.CheckPrice();
 
-                if (TutorialManager._instance._tutorial_Level == 5)
+                if (TutorialManager._instance._tutorial_Level == 5 && Managers.Game.currentStageManager._selectBlockMachine._machineNum == 0)
                 {
                     TutorialManager._instance.Tutorial_Complete();
                     TutorialManager._instance.Tutorial_Img();

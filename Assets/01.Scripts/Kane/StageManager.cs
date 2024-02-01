@@ -134,16 +134,18 @@ public class StageManager : MonoBehaviour
         LoadData();
         CheckMoney();
 
-        if (buildingCompleteCount < 3)
-        {
-            Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(false);
-            Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(false);
-        }
-        else
-        {
-            Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(true);
-            Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(true);
-        }
+        //if (buildingCompleteCount < 3)
+        //{
+        //    Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(false);
+        //    Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(false);
+        //    Managers._gameUi.RvVehicleSpeedUp_Button.gameObject.SetActive(false);
+        //}
+        //else
+        //{
+        //    Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(true);
+        //    Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(true);
+        //    Managers._gameUi.RvVehicleSpeedUp_Button.gameObject.SetActive(true);
+        //}
 
 
 
@@ -475,7 +477,7 @@ public class StageManager : MonoBehaviour
     }
     public void VehicleUpgrade(int _num, bool isPay = true)
     {
-        Debug.Log("vehicle Upgrade :" + _num);
+        //Debug.Log("vehicle Upgrade :" + _num);
         switch (_num)
         {
             case 0:
@@ -1204,6 +1206,7 @@ public class StageManager : MonoBehaviour
         {
             popUpType = 1;
             Managers._gameUi.RvPopupPanelOnOff(popUpType, true, 20f);
+            Managers._gameUi.RvVehicleSpeedUp_Button.gameObject.SetActive(true);
         });
         }
     }

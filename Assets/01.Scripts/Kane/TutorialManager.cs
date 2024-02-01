@@ -19,6 +19,7 @@ public class TutorialManager : MonoBehaviour
 
     public bool isComplete = false;
 
+
     private void Awake()
     {
         _instance = this;
@@ -33,15 +34,15 @@ public class TutorialManager : MonoBehaviour
 
         if (isFirst)
         {
-            //MondayOFF.EventTracker.TryStage(0);
+            
             EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_VillageTry-{Managers.Game.currentStageLevel}"}});
-            //Debug.Log("Point");
+            
 
             Tutorial_Img();
         }
 
-        //Managers._gameUi.NextStage_Button.gameObject.SetActive(false);
+        
 
     }
 
@@ -53,6 +54,7 @@ public class TutorialManager : MonoBehaviour
 
             Debug.Log("Tutorial Img :" + _tutorial_Level);
 
+            //Managers._gameUi.ChangePanel(0);
 
             for (int i = 0; i < Managers._gameUi.Mask_Panel.transform.childCount; i++)
             {
@@ -62,10 +64,7 @@ public class TutorialManager : MonoBehaviour
             Managers._gameUi.Mask_Panel.transform.GetChild(_tutorial_Level).gameObject.SetActive(true);
 
 
-            //_maskImg.SetActive(true);
-            //_maskImg.transform.GetComponent<RectTransform>().anchoredPosition = _imgPoss[_tutorial_Level];
-            //_maskImg.transform.localScale = _imgSizes[_tutorial_Level];
-            //_maskImg.transform.GetComponent<RectTransform>().sizeDelta = _imgSizes[_tutorial_Level];
+
 
             _cams[_tutorial_Level].SetActive(true);
 

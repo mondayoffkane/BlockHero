@@ -33,6 +33,22 @@ public class EventMemo : MonoBehaviour
             }
         }
 
+        //EventTracker.LogCustomEvent("Order", new Dictionary<string, string> { { "Order",
+        //$"{((GameManager.ABType)Managers.Game.isA).ToString()}_OrderCountStack-{orderCountStack}"} });
+
+        //EventTracker.LogCustomEvent("Order", new Dictionary<string, string> { { "Order",
+        //$"{((GameManager.ABType)Managers.Game.isA).ToString()}_OrderLevel-{orderLevel}"} });
+
+
+        //EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        //$"{((GameManager.ABType)Managers.Game.isA).ToString()}_BoostPack"} });
+
+        //EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+        //$"{((GameManager.ABType)Managers.Game.isA).ToString()}_BoostPack"} });
+
+        //EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+        //$"{((GameManager.ABType)Managers.Game.isA).ToString()}_~~"} });
+
 
     }
     //public void Memo()

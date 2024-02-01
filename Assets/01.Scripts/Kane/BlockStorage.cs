@@ -83,7 +83,7 @@ public class BlockStorage : MonoBehaviour
 
                  UpdateBlockCount();
 
-                 if (TutorialManager._instance._tutorial_Level == 1)
+                 if (TutorialManager._instance._tutorial_Level == 1 && Managers.Game.currentStageManager._vehicle_Spawn_Level == 0)
                  {
                      TutorialManager._instance.Tutorial_Img();
                      _blockCountArray[0] += 3;

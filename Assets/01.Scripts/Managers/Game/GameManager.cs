@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using MondayOFF;
+using System;
 
 
 
@@ -49,6 +50,13 @@ public class GameManager : MonoBehaviour
 
     public int orderLevel = 0;
     public int orderCount = 0;
+    public int orderCountStack = 0;
+
+    public bool isSound = true;
+    public bool readyDailyTicket = true;
+    public DateTime lastGetTicketTime;
+
+    public Material _seaMat;
 
     // ===================================
 
@@ -76,6 +84,25 @@ public class GameManager : MonoBehaviour
         MondayOFF.IAPManager.OnAfterPurchase += (isSuccess) => Debug.Log("구매 완료!");
 
 
+        _seaMat.DOOffset(new Vector2(0f, 0f), 0);
+        _seaMat.DOOffset(new Vector2(1f, 0f), 5).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+
+        if (stageLevel == 0)
+        {
+            if (currentStageManager.buildingCompleteCount < 3)
+            {
+                Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(false);
+                Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(false);
+                Managers._gameUi.RvVehicleSpeedUp_Button.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            Managers._gameUi.RvDoubleSpawn_Button.gameObject.SetActive(true);
+            Managers._gameUi.RvRailSpeedUp_Button.gameObject.SetActive(true);
+            Managers._gameUi.RvVehicleSpeedUp_Button.gameObject.SetActive(true);
+        }
+
 
     }
 
@@ -85,29 +112,32 @@ public class GameManager : MonoBehaviour
 
         TicketUpdate(3);
 
+        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_GetTicketX3"} });
 
     }
     public void BuyTicket_2()
     {
-        Debug.Log("buy ticket_2");
+        //Debug.Log("buy ticket_2");
 
         TicketUpdate(5);
 
+        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_TicketX5"} });
     }
     public void BuyTicket_3()
     {
-        Debug.Log("buy ticket_3");
+        //Debug.Log("buy ticket_3");
 
         TicketUpdate(15);
+        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_TicketX15"} });
 
     }
 
     public void BuyAllPack()
     {
-        Debug.Log("buy All Pack");
-
-
-
+        //Debug.Log("buy All Pack");
 
         allBoost = true;
         ES3.Save<bool>("allBoost", allBoost);
@@ -118,11 +148,14 @@ public class GameManager : MonoBehaviour
 
         ProductsCheck();
 
+        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_BoostPack"} });
+
     }
 
     public void BuyTicketPack()
     {
-        Debug.Log("buy Ticket Pack");
+        //Debug.Log("buy Ticket Pack");
 
         TicketUpdate(15);
 
@@ -131,11 +164,15 @@ public class GameManager : MonoBehaviour
         ES3.Save<bool>("noAds", noAds);
 
         ProductsCheck();
+
+        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_TicketPack"} });
+
     }
 
     public void BuyInfinitePack()
     {
-        Debug.Log("buy infiniteTicket Pack");
+        //Debug.Log("buy infiniteTicket Pack");
 
         infiniteTicket = true;
         ES3.Save<bool>("infiniteTicket", infiniteTicket);
@@ -146,6 +183,10 @@ public class GameManager : MonoBehaviour
         ES3.Save<bool>("noAds", noAds);
 
         ProductsCheck();
+
+        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_InfinitePack"} });
+
     }
 
     // ==== End IAP =============
@@ -186,7 +227,7 @@ public class GameManager : MonoBehaviour
 
         Managers._gameUi.InitRvPanel();
 
-        money = 0;
+        //money = 0;
         CalcMoney(0);
 
     }
@@ -214,6 +255,9 @@ public class GameManager : MonoBehaviour
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_PlayTime-{playTime}"}});
             }
 
+            if (Managers._gameUi.Shop_Panel.activeSelf == true)
+                DailyTicketUpdate();
+
 
         }
     }
@@ -230,10 +274,10 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(IsInterval);
 
-            if (noAds == false)
+            if (noAds == false && stageManagers[0]._blockMachineCount >= 4 && AdsManager.IsInterstitialReady())
             {
                 Managers._gameUi.AdBreak_Panel.SetActive(true);
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1.5f);
                 Managers._gameUi.AdBreak_Panel.SetActive(false);
                 AdsManager.ShowInterstitial();
                 IsCount++;
@@ -402,6 +446,7 @@ public class GameManager : MonoBehaviour
 
         orderLevel = ES3.Load<int>("orderLevel", 0);
         orderCount = ES3.Load<int>("orderCount", 0);
+        orderCountStack = ES3.Load<int>("orderCountStack", 0);
         ticketCount = ES3.Load<int>("ticketCount", 0);
 
         noAds = ES3.Load<bool>("noAds", false);
@@ -410,6 +455,9 @@ public class GameManager : MonoBehaviour
 
         IsCount = ES3.Load<int>("IsCount", 0);
         RvCount = ES3.Load<int>("RvCount", 0);
+
+        readyDailyTicket = ES3.Load<bool>("readyDailyTicket", true);
+        lastGetTicketTime = ES3.Load<DateTime>("lastGetTicketTime", lastGetTicketTime);
 
         // ===========================
 
@@ -423,20 +471,24 @@ public class GameManager : MonoBehaviour
         if (noAds == true)
         {
             AdsManager.DisableAdType(AdType.Banner | AdType.Interstitial);
-            Managers._gameUi.Product_TicketPack.interactable = false;
-            Managers._gameUi.Product_TicketPack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
+
+            Managers._gameUi.Product_TicketPack.gameObject.SetActive(false);
+            //Managers._gameUi.Product_TicketPack.interactable = false;
+            //Managers._gameUi.Product_TicketPack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
         }
 
         if (allBoost == true)
         {
-            Managers._gameUi.Product_BoostPack.interactable = false;
-            Managers._gameUi.Product_BoostPack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
+            Managers._gameUi.Product_BoostPack.gameObject.SetActive(false);
+            //Managers._gameUi.Product_BoostPack.interactable = false;
+            //Managers._gameUi.Product_BoostPack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
         }
 
         if (infiniteTicket == true)
         {
-            Managers._gameUi.Product_InfinitePack.interactable = false;
-            Managers._gameUi.Product_InfinitePack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
+            Managers._gameUi.Product_InfinitePack.gameObject.SetActive(false);
+            //Managers._gameUi.Product_InfinitePack.interactable = false;
+            //Managers._gameUi.Product_InfinitePack.transform.Find("SoldOut_Img").gameObject.SetActive(true);
         }
     }
 
@@ -454,14 +506,24 @@ public class GameManager : MonoBehaviour
     public void OrderComplete()
     {
         orderCount++;
+        orderCountStack++;
         if (orderCount == 10)
         {
             orderCount = 0;
             orderLevel++;
+
+            EventTracker.LogCustomEvent("Order", new Dictionary<string, string> { { "Order",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_OrderLevel-{orderLevel}"} });
+
         }
         ES3.Save<int>("orderLevel", orderLevel);
         ES3.Save<int>("orderCount", orderCount);
+        ES3.Save<int>("orderCountStack", orderCountStack);
         UpdateOrderPanel();
+
+        EventTracker.LogCustomEvent("Order", new Dictionary<string, string> { { "Order",
+        $"{((GameManager.ABType)Managers.Game.isA).ToString()}_OrderCountStack-{orderCountStack}"} });
+
 
     }
 
@@ -534,6 +596,49 @@ public class GameManager : MonoBehaviour
 
         orderLevelGroup.Find("Order_Guage_Img").GetComponent<Image>().fillAmount
             = (float)(orderCount * 0.1f);
+
+    }
+
+    public void DailyFreeTicket()
+    {
+        readyDailyTicket = false;
+        ES3.Save<bool>("readyDailyTicket", readyDailyTicket);
+
+        lastGetTicketTime = DateTime.Now;
+        ES3.Save<DateTime>("lastGetTicketTime", lastGetTicketTime);
+
+        DailyTicketUpdate();
+    }
+
+
+    public void DailyTicketUpdate()
+    {
+
+        if (readyDailyTicket)
+        {
+            Managers._gameUi.Product_Ticket_1.interactable = true;
+            Managers._gameUi.Product_Ticket_1.transform.Find("Free_Img").gameObject.SetActive(true);
+            Managers._gameUi.Product_Ticket_1.transform.Find("Time_Img").gameObject.SetActive(false);
+        }
+        else
+        {
+            Managers._gameUi.Product_Ticket_1.interactable = false;
+            Managers._gameUi.Product_Ticket_1.transform.Find("Free_Img").gameObject.SetActive(false);
+            Managers._gameUi.Product_Ticket_1.transform.Find("Time_Img").gameObject.SetActive(true);
+
+            Managers._gameUi.Product_Ticket_1.transform.Find("Time_Img").Find("Time_Text").GetComponent<Text>().text
+                = $"{DateTime.Today.AddDays(1).Subtract(DateTime.Now).ToString(@"hh\:mm\:ss")}";
+
+            //Debug.Log(System.DateTime.Today.AddDays(1).Subtract(System.DateTime.Now).ToString(@"hh\:mm\:ss"));
+
+            if (lastGetTicketTime.Day != DateTime.Now.Day)
+            {
+                readyDailyTicket = true;
+                ES3.Save<bool>("readyDailyTicket", readyDailyTicket);
+                DailyTicketUpdate();
+            }
+
+        }
 
     }
 

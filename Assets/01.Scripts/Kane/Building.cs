@@ -135,7 +135,7 @@ public class Building : MonoBehaviour
 
                 stageManager.BuildComplete();
 
-                if (TutorialManager._instance._tutorial_Level == 3)
+                if (TutorialManager._instance._tutorial_Level == 3 && _buildingNum==0)
                 {
                     TutorialManager._instance.Tutorial_Img();
 
@@ -159,7 +159,7 @@ public class Building : MonoBehaviour
 
             DOTween.Sequence().AppendInterval(2f).AppendCallback(() =>
             {
-                if (TutorialManager._instance._tutorial_Level == 4)
+                if (TutorialManager._instance._tutorial_Level == 4 && _buildingNum==0)
                 {
 
                     TutorialManager._instance.Tutorial_Img();

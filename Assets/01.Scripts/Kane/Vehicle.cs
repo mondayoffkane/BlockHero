@@ -57,6 +57,7 @@ public class Vehicle : MonoBehaviour
 
     protected MeshFilter _boxMeshFilter;
 
+    public double priceValue = 2d;
     // =====================================
 
 
@@ -149,9 +150,9 @@ public class Vehicle : MonoBehaviour
             .OnComplete(() =>
             {
                 Managers.Pool.Push(_block.GetComponent<Poolable>());
-
-                Floating_Text(2);
-                Managers.Game.CalcMoney(2);
+                priceValue = 2d * (Managers.Game.currentStageLevel + 1);
+                Floating_Text(priceValue);
+                Managers.Game.CalcMoney(priceValue);
                 //Debug.Log("Push : " + _target.name);
                 _target.GetComponent<Building>().PushBlock();
             });
@@ -172,9 +173,9 @@ public class Vehicle : MonoBehaviour
             .OnComplete(() =>
             {
                 Managers.Pool.Push(_block.GetComponent<Poolable>());
-
-                Floating_Text(2 * _count);
-                Managers.Game.CalcMoney(2 * _count);
+                priceValue = 2d * (Managers.Game.currentStageLevel + 1);
+                Floating_Text(priceValue * _count);
+                Managers.Game.CalcMoney(priceValue * _count);
 
                 _target.GetComponent<Building>().PushBlock(_count);
             });

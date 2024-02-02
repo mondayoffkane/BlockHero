@@ -445,7 +445,7 @@ public class UI_GameScene : UI_Scene
 
 
         }
-       
+
         Cpi_Rail_Button.AddButtonEvent(() =>
         {
             if (Managers.Game.currentStageManager._rail_Speed_Level < 10)
@@ -519,7 +519,7 @@ public class UI_GameScene : UI_Scene
         {
             if (Managers.Game.allBoost)
             {
-                Managers.Game.currentStageManager.RV_RailSpeedUp();
+                Managers.Game.currentStageManager.RV_DoubleSpawn();
             }
 
             else if (Managers.Game.infiniteTicket)
@@ -573,7 +573,7 @@ public class UI_GameScene : UI_Scene
         {
             if (Managers.Game.allBoost)
             {
-                Managers.Game.currentStageManager.RV_RailSpeedUp();
+                Managers.Game.currentStageManager.RV_VehicleSpeedUp();
             }
 
             else if (Managers.Game.infiniteTicket)

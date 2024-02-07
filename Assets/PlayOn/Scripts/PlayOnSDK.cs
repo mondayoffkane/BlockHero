@@ -143,7 +143,8 @@ public class PlayOnSDK
         Ccpa
     }
 
-    public enum AdSizingMethod{
+    public enum AdSizingMethod
+    {
         Flexible,
         Strict
     }
@@ -254,7 +255,7 @@ public class PlayOnSDK
 #elif UNITY_IOS && !UNITY_EDITOR
         return _playOnIsInitialized();
 #else
-        LogI(LogLevel.Info,"Dummy Initialization. Default value true");
+        LogI(LogLevel.Info, "Dummy Initialization. Default value true");
         return true;
 #endif
     }
@@ -278,7 +279,7 @@ public class PlayOnSDK
 #elif UNITY_IOS && !UNITY_EDITOR
         return _playOnGetDeviceVolumeLevel();
 #else
-        PlayOnSDK.LogW(LogLevel.Debug,"Editor mode is not supported. Returned value always 100");
+        PlayOnSDK.LogW(LogLevel.Debug, "Editor mode is not supported. Returned value always 100");
         return 100.0f;
 #endif
     }
@@ -451,77 +452,78 @@ public class PlayOnSDK
         editorloglevel = level;
 #endif
     }
-    
+
     public static void LogE(LogLevel type, string message)
     {
 #if UNITY_EDITOR
         switch (editorloglevel)
         {
             case LogLevel.Debug:
-            Debug.LogError("PlayOnSDK: " +message);
-            break;
-            
+                Debug.LogError("PlayOnSDK: " + message);
+                break;
+
             case LogLevel.Info:
-            if(type == LogLevel.Info)
-                Debug.LogError("PlayOnSDK: " +message);
-            break;
-            
+                if (type == LogLevel.Info)
+                    Debug.LogError("PlayOnSDK: " + message);
+                break;
+
             case LogLevel.None:
-            break;
+                break;
         }
 #endif
     }
-    
+
     public static void LogW(LogLevel type, string message)
     {
 #if UNITY_EDITOR
         switch (editorloglevel)
         {
             case LogLevel.Debug:
-                Debug.LogWarning("PlayOnSDK: " +message);
+                Debug.LogWarning("PlayOnSDK: " + message);
                 break;
-            
+
             case LogLevel.Info:
-                if(type == LogLevel.Info)
-                    Debug.LogWarning("PlayOnSDK: " +message);
+                if (type == LogLevel.Info)
+                    Debug.LogWarning("PlayOnSDK: " + message);
                 break;
-            
+
             case LogLevel.None:
                 break;
         }
 #endif
     }
-    
+
     public static void LogI(LogLevel type, string message)
     {
 #if UNITY_EDITOR
         switch (editorloglevel)
         {
             case LogLevel.Debug:
-                Debug.Log("PlayOnSDK: " +message);
+                Debug.Log("PlayOnSDK: " + message);
                 break;
-            
+
             case LogLevel.Info:
-                if(type == LogLevel.Info)
-                    Debug.Log("PlayOnSDK: " +message);
+                if (type == LogLevel.Info)
+                    Debug.Log("PlayOnSDK: " + message);
                 break;
-            
+
             case LogLevel.None:
                 break;
         }
 #endif
     }
-    
-	public static void RequestTrackingAuthorization()
-	{
+
+    public static void RequestTrackingAuthorization()
+    {
 #if UNITY_IOS && !UNITY_EDITOR
             _playOnRequestTrackingAuthorization();
 #else
-            PlayOnSDK.LogI(LogLevel.Info, "RequestTrackingAuthorization() ignonred. Requesting tracking authorization is made only for iOS platform.");
+        PlayOnSDK.LogI(LogLevel.Info, "RequestTrackingAuthorization() ignonred. Requesting tracking authorization is made only for iOS platform.");
 #endif
     }
 
-    public static void SetPlayerID(string id){
+    public static void SetPlayerID(string id)
+    {
 #if UNITY_ANDROID && !UNITY_EDITOR
         getBridge ().Call("setPlayerID", id);
 #elif UNITY_IOS && !UNITY_EDITOR
@@ -529,7 +531,8 @@ public class PlayOnSDK
 #endif    
     }
 
-    public static string GetPlayerID(){
+    public static string GetPlayerID()
+    {
         string id = "";
 #if UNITY_ANDROID && !UNITY_EDITOR
         id = getBridge ().Call<string>("getPlayerID");
@@ -553,23 +556,23 @@ public class PlayOnSDK
         int shortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
         if (shortSide >= 1440)
             result = 440;
-        else if(shortSide >= 1080)
+        else if (shortSide >= 1080)
             result = 323;
-        else if(shortSide >= 720)
+        else if (shortSide >= 720)
             result = 252;
-        else if(shortSide >= 480)
+        else if (shortSide >= 480)
             result = 170;
-        
+
         return result;
     }
-    
+
     public static void SetOptimalDPI()
     {
 #if UNITY_EDITOR
         SetUnityEditorDPI(GetOptimalEditorDPI());
 #endif
     }
-    
+
     public static void SetUnityEditorDPI(int dpi)
     {
 #if UNITY_EDITOR
@@ -587,7 +590,8 @@ public class PlayOnSDK
 #endif
     }
 
-    public static bool DPISettedByUser() {
+    public static bool DPISettedByUser()
+    {
 #if UNITY_EDITOR
         return settedDPI;
 #else

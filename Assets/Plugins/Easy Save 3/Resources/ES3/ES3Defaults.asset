@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ES3Defaults
   m_EditorClassIdentifier: 
   settings:
-    _location: 0
+    _location: 1
     path: BlockFactory_itr_1
     encryptionType: 0
     compressionType: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
     - Nementic.SelectionUtility.Runtime
     - PlayOn
     - Purchasing.Common
+    - Remote
     - SingularSDK
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0

@@ -15,9 +15,9 @@ MonoBehaviour:
   products:
   - productID: blockmatchhro_boostpack
     productType: 1
-  - productID: blockmatchhro_ticket_pack
-    productType: 1
   - productID: blockmatchhro_infinite_pack
+    productType: 1
+  - productID: blockmatchhro_ticket_pack
     productType: 1
   - productID: blockmatchhro_ticket_2
     productType: 0

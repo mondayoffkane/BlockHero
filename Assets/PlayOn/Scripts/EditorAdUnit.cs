@@ -18,8 +18,9 @@ public class EditorAdUnit : MonoBehaviour
     private Button _btn;
     private EditorPopUp _popUp;
     private static string AD_POPUP_PREFAB_FILENAME = "PlayOnAdPopup.prefab";
-    
-    public void Init (AdUnit adUnit, PlayOnSDK.Position location, int xOffset, int yOffset, Vector2 size) {
+
+    public void Init(AdUnit adUnit, PlayOnSDK.Position location, int xOffset, int yOffset, Vector2 size)
+    {
         _location = location;
         _adUnit = adUnit;
         _xOffset = xOffset;
@@ -63,7 +64,8 @@ public class EditorAdUnit : MonoBehaviour
         yield return null;
     }
 
-    public void DestroyAd() {
+    public void DestroyAd()
+    {
         _adUnit.editorAdAvailable = true;
         _adUnit.AdCallbacks.OnClose.Invoke();
         _adUnit.AdCallbacks.OnAvailabilityChanged.Invoke(true);
@@ -78,7 +80,8 @@ public class EditorAdUnit : MonoBehaviour
         _adUnit.AdCallbacks.OnClick.Invoke();
     }
 
-    private void SetPosition() {
+    private void SetPosition()
+    {
 
         if (_adUnit.type == PlayOnSDK.AdUnitType.AudioRewardedBannerAd || _adUnit.type == PlayOnSDK.AdUnitType.AudioRewardedLogoAd)
         {
@@ -88,27 +91,27 @@ public class EditorAdUnit : MonoBehaviour
                 PlayOnSDK.LogE(PlayOnSDK.LogLevel.Debug, "Can't find " + AD_POPUP_PREFAB_FILENAME + " asset");
                 return;
             }
-            
+
             EditorPopUp logoPrefab = AssetDatabase.LoadAssetAtPath<EditorPopUp>(prefabPath);
             _popUp = Instantiate(logoPrefab, Vector3.zero, Quaternion.identity);
-            
-            if(_adUnit.rewardType == PlayOnSDK.AdUnitRewardType.EndLevel) 
+
+            if (_adUnit.rewardType == PlayOnSDK.AdUnitRewardType.EndLevel)
                 _popUp.ShowPopUp(EditorPopUpType.Banner, PlayOnSDK.Position.BottomCenter, 0, 0);
-            else 
+            else
                 _popUp.ShowPopUp(EditorPopUpType.Logo, _adUnit.popUpPosition, _adUnit.popUpOffsetX, _adUnit.popUpOffsetY);
-            
+
             DontDestroyOnLoad(_popUp);
         }
 
         float deviceScale = PlayOnSDK.GetDeviceScale();
-        
+
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.sizeDelta = new Vector2((_size.x + 0.5f) * deviceScale / canvas.scaleFactor, (_size.y + 0.5f) * deviceScale / canvas.scaleFactor);
-        
+
         float xPos = _xOffset * deviceScale + 0.5f;
         float yPos = _yOffset * deviceScale + 0.5f;
-        
+
         switch (_location)
         {
             case PlayOnSDK.Position.Centered:

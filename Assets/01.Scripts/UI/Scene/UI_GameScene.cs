@@ -387,22 +387,22 @@ public class UI_GameScene : UI_Scene
                     switch (_num)
                     {
                         case 0:
-                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvAddVehicle"}});
                             break;
 
                         case 1:
-                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"}});
                             break;
 
                         case 2:
-                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"}});
                             break;
 
                         case 3:
-                            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+                            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"}});
 
                             break;
@@ -414,26 +414,26 @@ public class UI_GameScene : UI_Scene
                     {
                         case 0:
 
-                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+                            EventTracker.LogEvent("Ticket", new Dictionary<string, object> { { "Ticket",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_AddVehicle"} });
 
 
                             break;
 
                         case 1:
-                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+                            EventTracker.LogEvent("Ticket", new Dictionary<string, object> { { "Ticket",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_RvVehicleSpeed"} });
 
                             break;
 
                         case 2:
-                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+                            EventTracker.LogEvent("Ticket", new Dictionary<string, object> { { "Ticket",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_RvVehicleCapacity"} });
 
                             break;
 
                         case 3:
-                            EventTracker.LogCustomEvent("Ticket", new Dictionary<string, string> { { "Ticket",
+                            EventTracker.LogEvent("Ticket", new Dictionary<string, object> { { "Ticket",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_Use_StageNum-{Managers.Game.currentStageLevel}_RvRailSpeed"} });
 
 

@@ -388,7 +388,7 @@ public class StageManager : MonoBehaviour
             _blockMachineCount++;
             ES3.Save<int>($"Stage_{_stageLevel}_BlockMachineCount", _blockMachineCount);
 
-            EventTracker.LogCustomEvent("BlockMachine", new Dictionary<string, string> { { "BlockMachine",
+            EventTracker.LogEvent("BlockMachine", new Dictionary<string, object> { { "BlockMachine",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_MachineCount-{_blockMachineCount}" } });
 
 
@@ -491,8 +491,11 @@ public class StageManager : MonoBehaviour
                     //TutorialManager._instance.Tutorial_Img();
                 }
 
-                EventTracker.LogCustomEvent("Vehicle", new Dictionary<string, string> {{"Vehicle",
+                EventTracker.LogEvent("Vehicle", new Dictionary<string, object> {{"Vehicle",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_AddVehicle-{_vehicle_Spawn_Level}"}});
+
+
+
 
                 break;
 
@@ -501,7 +504,7 @@ public class StageManager : MonoBehaviour
                 _vehicle_Speed_Level++;
                 AllVehicleSetLevel();
 
-                EventTracker.LogCustomEvent("Vehicle", new Dictionary<string, string> { { "Vehicle",
+                EventTracker.LogEvent("Vehicle", new Dictionary<string, object> { { "Vehicle",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_SpeedUp-{_vehicle_Speed_Level}"}});
 
                 break;
@@ -511,7 +514,7 @@ public class StageManager : MonoBehaviour
                 _vehicle_Capacity_Level++;
                 AllVehicleSetLevel();
 
-                EventTracker.LogCustomEvent("Vehicle", new Dictionary<string, string> { { "Vehicle",
+                EventTracker.LogEvent("Vehicle", new Dictionary<string, object> { { "Vehicle",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_CapacityUp-{_vehicle_Capacity_Level}"}});
 
                 break;
@@ -521,7 +524,7 @@ public class StageManager : MonoBehaviour
                 _rail_Speed_Level++;
                 _railSpeed = 0.5f - (0.025f * _rail_Speed_Level);
 
-                EventTracker.LogCustomEvent("BlockMachine", new Dictionary<string, string> { { "BlockMachine",
+                EventTracker.LogEvent("BlockMachine", new Dictionary<string, object> { { "BlockMachine",
                         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RailUpgrade-{_rail_Speed_Level}" } });
                 break;
         }
@@ -1033,7 +1036,7 @@ public class StageManager : MonoBehaviour
 
     public void RV_Order_Refresh(int _num)
     {
-        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+        EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvOrderRefresh"}});
 
 
@@ -1057,7 +1060,7 @@ public class StageManager : MonoBehaviour
 
 
         if (notFree)
-            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                    $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvDoubleSpawn"}});
         isRvDoubleSpawn = true;
 
@@ -1093,7 +1096,7 @@ public class StageManager : MonoBehaviour
     public void RV_VehicleSpeedUp(bool notFree = true, float _time = 60f)
     {
         if (notFree)
-            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}__RvVehicleSpeedUp"}});
 
         isRvVehicleSpeedUp = true;
@@ -1142,7 +1145,7 @@ public class StageManager : MonoBehaviour
 
 
         if (notFree)
-            EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+            EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_StageNum-{_stageLevel}_RvRailSpeedUp"}});
 
         isRvRailSpeedUp = true;

@@ -34,15 +34,15 @@ public class TutorialManager : MonoBehaviour
 
         if (isFirst)
         {
-            
-            EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
+
+            EventTracker.LogEvent("Village", new Dictionary<string, object> { { "Village",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_VillageTry-{Managers.Game.currentStageLevel}"}});
-            
+
 
             Tutorial_Img();
         }
 
-        
+
 
     }
 
@@ -52,7 +52,7 @@ public class TutorialManager : MonoBehaviour
         if (isComplete == false)
         {
 
-            Debug.Log("Tutorial Img :" + _tutorial_Level);
+            //Debug.Log("Tutorial Img :" + _tutorial_Level);
 
             //Managers._gameUi.ChangePanel(0);
 
@@ -76,7 +76,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (isComplete == false)
         {
-            Debug.Log("Tutorial Complete : +" + _tutorial_Level);
+            //Debug.Log("Tutorial Complete : +" + _tutorial_Level);
             ES3.Save<bool>("isFirst", false);
             //_maskImg.SetActive(false);
             for (int i = 0; i < Managers._gameUi.Mask_Panel.transform.childCount; i++)

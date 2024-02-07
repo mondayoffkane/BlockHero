@@ -1,24 +1,26 @@
-#if !FIREBASE_ENABLED || UNITY_EDITOR
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MondayOFF
 {
-    public static class EventTracker
+    internal class SingularEventTracker : IEventTracker
     {
-        private static bool _isInitialized = false;
+        public bool IsInitialized => _isInitialized;
+        private bool _isInitialized = false;
 
-        public static void TryStage(int stageNum, string stageName = "Stage")
+        public void TryStage(int stageNum, string stageName = "Stage")
         {
             if (!_isInitialized)
             {
                 EverydayLogger.Info("Event Tracker is NOT initialized!");
                 return;
             }
-            EverydayLogger.Info($"Default Event Tracker: Trying {stageName} {stageNum}");
+            EverydayLogger.Info($"[Singular Event Tracker] Trying {stageName} {stageNum}");
+            SingularSDK.Event("Try", stageName, stageNum);
         }
 
-        public static void ClearStage(int stageNum, string stageName = "Stage")
+        public void ClearStage(int stageNum, string stageName = "Stage")
         {
             // Send event regardless of initialization status
             switch (stageNum)
@@ -36,11 +38,13 @@ namespace MondayOFF
                 return;
             }
 
-            EverydayLogger.Info($"Default Event Tracker: Cleared {stageName} {stageNum}");
+            EverydayLogger.Info($"[Singular Event Tracker] Cleared {stageName} {stageNum}");
+            SingularSDK.Event("Clear", stageName, stageNum);
         }
 
         // Stringify prameter values
-        public static void LogCustomEvent(string eventName, Dictionary<string, string> parameters = null)
+        [System.Obsolete("Use LogEvent() instead")]
+        public void LogCustomEvent(string eventName, Dictionary<string, string> parameters = null)
         {
             if (!_isInitialized)
             {
@@ -50,7 +54,7 @@ namespace MondayOFF
 
             if (parameters == null)
             {
-                EverydayLogger.Info($"Default Event Tracker: {eventName} logged without any parameters");
+                EverydayLogger.Info($"[Singular Event Tracker] {eventName} logged without any parameters");
             }
             else
             {
@@ -60,17 +64,34 @@ namespace MondayOFF
                     paramString += $"{item.Key} : {item.Value}\n";
                 }
 
-                EverydayLogger.Info($"Default Event Tracker: {eventName} logged with parameters: {paramString}");
+                // Not recommended but ok..
+                SingularSDK.Event(parameters.ToDictionary(pair => pair.Key, pair => (object)pair.Value), eventName);
+
+                EverydayLogger.Info($"[Singular Event Tracker] {eventName} logged with parameters: {paramString}");
             }
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void AfterSceneLoad()
+        public void LogEvent(string eventName, Dictionary<string, object> parameters = null)
         {
-            Initialize();
+            if (!_isInitialized)
+            {
+                EverydayLogger.Info("Event Tracker is NOT initialized!");
+                return;
+            }
+
+            if (parameters == null)
+            {
+                EverydayLogger.Info($"[Singular Event Tracker] {eventName} logged without any parameters");
+            }
+            else
+            {
+                SingularSDK.Event(parameters, eventName);
+
+                EverydayLogger.Info($"[Singular Event Tracker] {eventName} logged with parameters: {parameters.ToArray()}");
+            }
         }
 
-        internal static void Initialize()
+        public void Initialize()
         {
             if (!EveryDay.isInitialized)
             {
@@ -92,7 +113,7 @@ namespace MondayOFF
         }
 
 #if UNITY_EDITOR
-        private static void OnEditorStop()
+        private void OnEditorStop()
         {
             EverydayLogger.Info("Stop Playmode Event Tracker");
             _isInitialized = false;
@@ -100,4 +121,3 @@ namespace MondayOFF
 #endif
     }
 }
-#endif

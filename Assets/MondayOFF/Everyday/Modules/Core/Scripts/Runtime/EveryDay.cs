@@ -4,7 +4,7 @@ namespace MondayOFF
 {
     public static partial class EveryDay
     {
-        public const string Version = "3.1.1";
+        public const string Version = "3.1.3";
 
         public static bool isInitialized => initializationStatus == InitializationStatus.Initialized;
 
@@ -20,6 +20,23 @@ namespace MondayOFF
             }
 
             InitializeImpl();
+        }
+
+        public static void SetUserId(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                EverydayLogger.Warn("User ID is null or empty!");
+                return;
+            }
+
+            // not sure if this is needed but it's safe to do so
+            PlayerPrefs.SetString("EverydayUserId", userId);
+
+            MaxSdk.SetUserId(userId);
+            SingularSDK.SetCustomUserId(userId);
+
+            EverydayLogger.Info($"User ID is set to {userId}");
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -65,14 +82,20 @@ namespace MondayOFF
 
         private static void OnMaxSdkInitialized(MaxSdk.SdkConfiguration sdkConfiguration)
         {
-            // Initialize Facebook SDK
-            InitializeFacebook();
-
-            // Initialize Singular SDK
-            InitializeSingularSDK();
+            int attStatus = 0;
+#if UNITY_IOS
+            attStatus = (int)sdkConfiguration.AppTrackingStatus;
+#endif
+            PrepareSettings(attStatus);
 
             MainThreadDispatcher.Instance.Enqueue(() =>
             {
+                // Initialize Facebook SDK
+                InitializeFacebook();
+
+                // Initialize Singular SDK
+                InitializeSingularSDK();
+
                 // Send Max AdInfo to Singular
                 MaxSdkCallbacks.Interstitial.OnAdRevenuePaidEvent -= SingularAdDataSender.SendAdData;
                 MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent -= SingularAdDataSender.SendAdData;
@@ -88,7 +111,7 @@ namespace MondayOFF
                 initializationStatus = InitializationStatus.Initialized;
 
                 var initMessage =
-@$"
+        @$"
 ================== Everyday {Version} ==================
     Log Level: {EverydaySettings.Instance.logLevel}
     Test Mode: {EverydaySettings.Instance.isTestMode}

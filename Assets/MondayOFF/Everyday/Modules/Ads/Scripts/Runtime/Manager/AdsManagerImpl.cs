@@ -262,6 +262,12 @@ namespace MondayOFF
                 return false;
             }
 
+            //if (PlayOnSDK.IsInitialized())
+            //{
+            //    EverydayLogger.Info("PlayOn is already initialized! Probably Audio Banner ");
+            //    return false;
+            //}
+
             _playOn = new PlayOn();
             _playOn.Initialize();
             return true;

@@ -21,42 +21,36 @@ MonoBehaviour:
     showBannerOnLoad: 1
     adInitializationOrder: 84
     adInitializationDelay: 2
-    interstitialInterval: 60
+    interstitialInterval: 30
     resetTimerOnRewarded: 1
     bannerPosition: 7
     AOS_IS_AdUnitID: 1222b59cc01a9c49
     AOS_RV_AdUnitID: b0183a85b878da4a
     AOS_BN_AdUnitID: 38b0ed4eb8ab6117
-    AOS_IS_Backup_AdUnitID: 
-    AOS_RV_Backup_AdUnitID: 
-    AOS_BN_Backup_AdUnitID: 
-    AOS_APS_AppID: 
-    AOS_APS_IS_SlotID: 
-    AOS_APS_RV_SlotID: 
-    AOS_APS_BN_SlotID: 
-    AOS_PlayOnApiKey: 
-    AOS_AdvertyApiKey: 
+    AOS_APS_AppID: b9dd400f-389c-480a-8919-102f44c560f5
+    AOS_APS_IS_SlotID: e034bf11-9c25-49b3-ac76-a42b48647f7a
+    AOS_APS_RV_SlotID: 957d6be0-fb2e-4ea9-8834-d2616c5422bf
+    AOS_APS_BN_SlotID: 48d6e4c8-f74e-4225-9954-61873c9b27da
+    AOS_PlayOnApiKey: 053d0c04-ca6e-47fe-a366-6dbff0677e66
+    AOS_AdvertyApiKey: MmE0ZjQyOGQtNTllZC00NjAwLWI1ZTctNjZiOGIwYWQwN2JlJGh0dHBzOi8vYWRzZXJ2ZXIuYWR2ZXJ0eS5jb20=
     iOS_IS_AdUnitID: b5cf0d2c81409f88
     iOS_RV_AdUnitID: 939043c68451a87e
     iOS_BN_AdUnitID: 5005a33e2154b511
-    iOS_IS_Backup_AdUnitID: 
-    iOS_RV_Backup_AdUnitID: 
-    iOS_BN_Backup_AdUnitID: 
-    iOS_APS_AppID: 
-    iOS_APS_IS_SlotID: 
-    iOS_APS_RV_SlotID: 
-    iOS_APS_BN_SlotID: 
-    iOS_PlayOnApiKey: 
-    iOS_storeID: 
-    iOS_AdvertyApiKey: 
-    showPlayOnAfterInterstitial: 0
+    iOS_APS_AppID: ee3f15a4-6b61-46f9-9033-0cc97db8cdcd
+    iOS_APS_IS_SlotID: ba7ba8be-e7e4-4e49-823a-b0caea2135d4
+    iOS_APS_RV_SlotID: 4fc1e0ef-4c53-4936-a97e-cab6bac5eb27
+    iOS_APS_BN_SlotID: 7b93ba57-402b-4935-b59b-42457ec237a0
+    iOS_PlayOnApiKey: 9837692e-eb87-4de5-858b-1f66bd072177
+    iOS_storeID: 6476915454
+    iOS_AdvertyApiKey: MjA5ZjIxZjgtZTcyZi00MWM0LWFjYTgtNTU1MjY5MWExMzliJGh0dHBzOi8vYWRzZXJ2ZXIuYWR2ZXJ0eS5jb20=
+    showPlayOnAfterInterstitial: 1
     playOnInterstitialCount: 2
     playOnPosition:
-      useScreenPositioning: 0
-      playOnLogoAnchor: 0
+      useScreenPositioning: 1
+      playOnLogoAnchor: 3
       playOnLogoOffset: {x: 0, y: 150}
       playOnLogoSize: 64
-    initializeAdvertyOnAwake: 0
+    initializeAdvertyOnAwake: 1
   gameId: 
   companyLogo: {fileID: 0}
   gameSceneName: Game_0118

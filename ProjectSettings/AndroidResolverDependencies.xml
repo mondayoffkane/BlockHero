@@ -15,7 +15,7 @@
     <package>com.android.support:support-v4:25.3.1</package>
     <package>com.applovin.mediation:adcolony-adapter:4.8.0.4</package>
     <package>com.applovin.mediation:amazon-tam-adapter:9.+@aar</package>
-    <package>com.applovin.mediation:bytedance-adapter:5.6.0.4.0</package>
+    <package>com.applovin.mediation:bytedance-adapter:5.7.0.2.0</package>
     <package>com.applovin.mediation:facebook-adapter:[6.16.0.2]</package>
     <package>com.applovin.mediation:fyber-adapter:8.2.5.0</package>
     <package>com.applovin.mediation:google-adapter:[22.6.0.0]</package>
@@ -23,8 +23,8 @@
     <package>com.applovin.mediation:hyprmx-adapter:6.2.3.0</package>
     <package>com.applovin.mediation:inmobi-adapter:10.6.2.0</package>
     <package>com.applovin.mediation:ironsource-adapter:7.6.0.0.0</package>
-    <package>com.applovin.mediation:mintegral-adapter:16.5.91.0</package>
-    <package>com.applovin.mediation:mobilefuse-adapter:1.6.5.0</package>
+    <package>com.applovin.mediation:mintegral-adapter:16.6.11.0</package>
+    <package>com.applovin.mediation:mobilefuse-adapter:1.7.0.0</package>
     <package>com.applovin.mediation:ogury-presage-adapter:5.6.2.0</package>
     <package>com.applovin.mediation:smaato-adapter:22.5.1.0</package>
     <package>com.applovin.mediation:unityads-adapter:4.9.2.1</package>

@@ -4,7 +4,7 @@ namespace MondayOFF
 {
     public static partial class EveryDay
     {
-        private static void PrepareSettings(in AttAuthorizationStatus consentStatus)
+        private static void PrepareSettings(in int consentStatus)
         {
             Privacy.CCPA_STRING = "1---";
             Privacy.HAS_ATT_CONSENT = true;

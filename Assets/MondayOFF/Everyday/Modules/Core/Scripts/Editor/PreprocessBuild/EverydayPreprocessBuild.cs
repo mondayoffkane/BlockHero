@@ -5,6 +5,7 @@ using UnityEditor.Build.Reporting;
 using System.Linq;
 using Facebook.Unity.Settings;
 using Adverty;
+using AppLovinMax.Scripts.IntegrationManager.Editor;
 
 namespace MondayOFF
 {
@@ -19,6 +20,9 @@ namespace MondayOFF
 #endif
             AppLovinSettings.Instance.SdkKey = Keys.EVERYDAY_MAX_KEY;
             AppLovinSettings.Instance.SaveAsync();
+            AppLovinInternalSettings.Instance.ConsentFlowEnabled = true;
+            AppLovinInternalSettings.Instance.ConsentFlowPrivacyPolicyUrl = "https://mondayoff.me/privacyPolicy.html";
+            AppLovinInternalSettings.Instance.Save();
 
             var settingAssets = AssetDatabase.FindAssets("t:EverydaySettings");
 

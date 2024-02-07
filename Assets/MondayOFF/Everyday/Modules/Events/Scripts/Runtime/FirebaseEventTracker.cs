@@ -1,17 +1,19 @@
-#if FIREBASE_ENABLED && !UNITY_EDITOR
+#if FIREBASE_ENABLED 
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Analytics;
 
 namespace MondayOFF
 {
-    public static class EventTracker
+    internal class FirebaseEventTracker : IEventTracker
     {
-        private static Firebase.FirebaseApp _app = null;
-        private static bool _isInitialized = false;
-        private static System.Action _onInitialized = default;
+        public bool IsInitialized => _isInitialized;
+        private Firebase.FirebaseApp _app = null;
+        private bool _isInitialized = false;
+        private System.Action _onInitialized = default;
 
-        public static void TryStage(int stageNum, string stageName = "Stage")
+
+        public void TryStage(int stageNum, string stageName = "Stage")
         {
             if (!_isInitialized)
             {
@@ -24,7 +26,7 @@ namespace MondayOFF
             );
         }
 
-        public static void ClearStage(int stageNum, string stageName = "Stage")
+        public void ClearStage(int stageNum, string stageName = "Stage")
         {
             // Send event regardless of initialization
             switch (stageNum)
@@ -48,7 +50,8 @@ namespace MondayOFF
         }
 
         // Stringify prameter values
-        public static void LogCustomEvent(string eventName, Dictionary<string, string> parameters)
+        [System.Obsolete("Use LogEvent() instead")]
+        public void LogCustomEvent(string eventName, Dictionary<string, string> parameters)
         {
             if (!_isInitialized)
             {
@@ -72,7 +75,46 @@ namespace MondayOFF
             }
         }
 
-        private static void TrackAdRevenue(string adUnitID, MaxSdkBase.AdInfo adInfo)
+        public void LogEvent(string eventName, Dictionary<string, object> parameters)
+        {
+            if (!_isInitialized)
+            {
+                _onInitialized += () => LogEvent(eventName, parameters);
+                return;
+            }
+
+            if (parameters == null)
+            {
+                FirebaseAnalytics.LogEvent(eventName);
+            }
+            else
+            {
+                var eventParams = new Parameter[parameters.Count];
+                int i = 0;
+                foreach (var item in parameters)
+                {
+                    if (item.Value is string)
+                    {
+                        eventParams[i++] = new Parameter(item.Key, (string)item.Value);
+                    }
+                    else if (item.Value is double || item.Value is float)
+                    {
+                        eventParams[i++] = new Parameter(item.Key, (double)item.Value);
+                    }
+                    else if (item.Value is long || item.Value is int)
+                    {
+                        eventParams[i++] = new Parameter(item.Key, (long)item.Value);
+                    }
+                    else
+                    {
+                        EverydayLogger.Warn($"[Firebase Event Tracker] Unsupported type: {item.Value.GetType()}");
+                    }
+                }
+                FirebaseAnalytics.LogEvent(eventName, eventParams);
+            }
+        }
+
+        private void TrackAdRevenue(string adUnitID, MaxSdkBase.AdInfo adInfo)
         {
             if (!_isInitialized) { return; }
 
@@ -88,14 +130,7 @@ namespace MondayOFF
             FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void AfterSceneLoad()
-        {
-            _isInitialized = false;
-            Initialize();
-        }
-
-        internal static void Initialize()
+        public void Initialize()
         {
             if (_isInitialized)
             {
@@ -130,7 +165,7 @@ namespace MondayOFF
             });
         }
 
-        private static void OnFirebaseInitialized()
+        private void OnFirebaseInitialized()
         {
             MaxSdkCallbacks.Interstitial.OnAdRevenuePaidEvent += TrackAdRevenue;
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += TrackAdRevenue;

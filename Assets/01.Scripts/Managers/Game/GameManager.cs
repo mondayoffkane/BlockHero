@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     }
     // ===  IAP ==============
     public int ticketCount = 0;
-    public bool noAds = false;
+    //public bool noAds = false;
     public bool allBoost = false;
     public bool infiniteTicket = false;
 
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         TicketUpdate(3);
 
-        EventTracker.LogCustomEvent("Rv", new Dictionary<string, string> { { "Rv",
+        EventTracker.LogEvent("Rv", new Dictionary<string, object> { { "Rv",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_GetTicketX3"} });
 
     }
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
 
         TicketUpdate(5);
 
-        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        EventTracker.LogEvent("IAP", new Dictionary<string, object> { { "IAP",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_TicketX5"} });
     }
     public void BuyTicket_3()
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("buy ticket_3");
 
         TicketUpdate(15);
-        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        EventTracker.LogEvent("IAP", new Dictionary<string, object> { { "IAP",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_TicketX15"} });
 
     }
@@ -143,12 +143,12 @@ public class GameManager : MonoBehaviour
         ES3.Save<bool>("allBoost", allBoost);
 
         NoAds.Purchase();
-        noAds = true;
-        ES3.Save<bool>("noAds", noAds);
+        //noAds = true;
+        //ES3.Save<bool>("noAds", noAds);
 
         ProductsCheck();
 
-        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        EventTracker.LogEvent("IAP", new Dictionary<string, object> { { "IAP",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_BoostPack"} });
 
     }
@@ -160,12 +160,12 @@ public class GameManager : MonoBehaviour
         TicketUpdate(15);
 
         NoAds.Purchase();
-        noAds = true;
-        ES3.Save<bool>("noAds", noAds);
+        //noAds = true;
+        //ES3.Save<bool>("noAds", noAds);
 
         ProductsCheck();
 
-        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        EventTracker.LogEvent("IAP", new Dictionary<string, object> { { "IAP",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_TicketPack"} });
 
     }
@@ -179,12 +179,12 @@ public class GameManager : MonoBehaviour
         TicketUpdate(99999);
 
         NoAds.Purchase();
-        noAds = true;
-        ES3.Save<bool>("noAds", noAds);
+        //noAds = true;
+        //ES3.Save<bool>("noAds", noAds);
 
         ProductsCheck();
 
-        EventTracker.LogCustomEvent("IAP", new Dictionary<string, string> { { "IAP",
+        EventTracker.LogEvent("IAP", new Dictionary<string, object> { { "IAP",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_InfinitePack"} });
 
     }
@@ -251,7 +251,7 @@ public class GameManager : MonoBehaviour
             {
                 ES3.Save<int>("playTime", playTime);
 
-                EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
+                EventTracker.LogEvent("Village", new Dictionary<string, object> { { "Village",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_PlayTime-{playTime}"}});
             }
 
@@ -264,17 +264,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Cor_IsUpdate()
     {
+        IsInterval = MondayOFF.RemoteConfig.GetInt("IsInterval");
 
-
-        yield return new WaitForSeconds(60f);
+        yield return new WaitForSeconds(IsInterval);
 
         while (true)
         {
-            if (noAds == true) break;
+            //if (noAds == true) break;
+            if (NoAds.IsNoAds == true) break;
 
+            IsInterval = MondayOFF.RemoteConfig.GetInt("IsInterval");
             yield return new WaitForSeconds(IsInterval);
 
-            if (noAds == false && stageManagers[0]._blockMachineCount >= 4 && AdsManager.IsInterstitialReady())
+            if (NoAds.IsNoAds == false && stageManagers[0]._blockMachineCount >= 4 && AdsManager.IsInterstitialReady())
             {
                 Managers._gameUi.AdBreak_Panel.SetActive(true);
                 yield return new WaitForSeconds(1.5f);
@@ -282,7 +284,7 @@ public class GameManager : MonoBehaviour
                 AdsManager.ShowInterstitial();
                 IsCount++;
 
-                EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
+                EventTracker.LogEvent("Ads", new Dictionary<string, object> { { "Ads",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_IsCount-{IsCount}"}});
 
                 ES3.Save<int>("IsCount", IsCount);
@@ -291,6 +293,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [Button]
+    public void OdeeoTest()
+    {
+        AdsManager.ShowPlayOn();
+    }
 
 
     private void Update()
@@ -449,7 +456,7 @@ public class GameManager : MonoBehaviour
         orderCountStack = ES3.Load<int>("orderCountStack", 0);
         ticketCount = ES3.Load<int>("ticketCount", 0);
 
-        noAds = ES3.Load<bool>("noAds", false);
+        //noAds = ES3.Load<bool>("noAds", false);
         allBoost = ES3.Load<bool>("allBoost", false);
         infiniteTicket = ES3.Load<bool>("infiniteTicket", false);
 
@@ -468,7 +475,7 @@ public class GameManager : MonoBehaviour
 
     public void ProductsCheck()
     {
-        if (noAds == true)
+        if (NoAds.IsNoAds == true)
         {
             AdsManager.DisableAdType(AdType.Banner | AdType.Interstitial);
 
@@ -512,7 +519,7 @@ public class GameManager : MonoBehaviour
             orderCount = 0;
             orderLevel++;
 
-            EventTracker.LogCustomEvent("Order", new Dictionary<string, string> { { "Order",
+            EventTracker.LogEvent("Order", new Dictionary<string, object> { { "Order",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_OrderLevel-{orderLevel}"} });
 
         }
@@ -521,7 +528,7 @@ public class GameManager : MonoBehaviour
         ES3.Save<int>("orderCountStack", orderCountStack);
         UpdateOrderPanel();
 
-        EventTracker.LogCustomEvent("Order", new Dictionary<string, string> { { "Order",
+        EventTracker.LogEvent("Order", new Dictionary<string, object> { { "Order",
         $"{((GameManager.ABType)Managers.Game.isA).ToString()}_OrderCountStack-{orderCountStack}"} });
 
 
@@ -532,7 +539,7 @@ public class GameManager : MonoBehaviour
     public void ClearStage()
     {
 
-        EventTracker.LogCustomEvent("Village", new Dictionary<string, string> { { "Village",
+        EventTracker.LogEvent("Village", new Dictionary<string, object> { { "Village",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}_VillageClear-{stageLevel}"}});
 
         stageLevel++;
@@ -553,7 +560,7 @@ public class GameManager : MonoBehaviour
     public void RvCountFunc()
     {
         RvCount++;
-        EventTracker.LogCustomEvent("Ads", new Dictionary<string, string> { { "Ads",
+        EventTracker.LogEvent("Ads", new Dictionary<string, object> { { "Ads",
                 $"{((GameManager.ABType)Managers.Game.isA).ToString()}RvCount-{RvCount}"}});
 
 

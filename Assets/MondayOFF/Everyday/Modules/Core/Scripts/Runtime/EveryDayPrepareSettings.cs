@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace MondayOFF {
     public static partial class EveryDay {
-        private static void PrepareSettings(in AttAuthorizationStatus consentStatus) {
-            Privacy.HAS_ATT_CONSENT = consentStatus == AttAuthorizationStatus.Authorized;
+        private static void PrepareSettings(in int consentStatus) {
+            // 4 is ATT authorized
+            // see MaxSdkBase.cs
+            Privacy.HAS_ATT_CONSENT = consentStatus == 4;
             // MAX
             MaxSdk.SetHasUserConsent(Privacy.HAS_ATT_CONSENT);
             MaxSdk.SetDoNotSell(!Privacy.HAS_ATT_CONSENT);

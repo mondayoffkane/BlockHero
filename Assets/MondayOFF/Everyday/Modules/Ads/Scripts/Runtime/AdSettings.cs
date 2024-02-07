@@ -19,10 +19,6 @@ namespace MondayOFF
         [SerializeField] internal string AOS_RV_AdUnitID = "";
         [SerializeField] internal string AOS_BN_AdUnitID = "";
 
-        [SerializeField] internal string AOS_IS_Backup_AdUnitID = "";
-        [SerializeField] internal string AOS_RV_Backup_AdUnitID = "";
-        [SerializeField] internal string AOS_BN_Backup_AdUnitID = "";
-
         [SerializeField] internal string AOS_APS_AppID = "";
         [SerializeField] internal string AOS_APS_IS_SlotID = "";
         [SerializeField] internal string AOS_APS_RV_SlotID = "";
@@ -34,10 +30,6 @@ namespace MondayOFF
         [SerializeField] internal string iOS_IS_AdUnitID = "";
         [SerializeField] internal string iOS_RV_AdUnitID = "";
         [SerializeField] internal string iOS_BN_AdUnitID = "";
-
-        [SerializeField] internal string iOS_IS_Backup_AdUnitID = "";
-        [SerializeField] internal string iOS_RV_Backup_AdUnitID = "";
-        [SerializeField] internal string iOS_BN_Backup_AdUnitID = "";
 
         [SerializeField] internal string iOS_APS_AppID = "";
         [SerializeField] internal string iOS_APS_IS_SlotID = "";
